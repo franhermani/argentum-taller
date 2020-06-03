@@ -6,8 +6,22 @@
 
 Link GitHub: https://github.com/franhermani/taller-tp4
 
-# Resolución del TP
+# Comandos útiles - Consola
 
-# Puntos de interés
+### Compilar el proyecto
 
-# Aclaraciones
+```
+bash make.sh
+```
+
+### Limpiar el proyecto (carpeta build)
+
+```
+bash clean.sh
+```
+
+### Verificar nomas de codificación
+
+```
+bash execute.sh
+```

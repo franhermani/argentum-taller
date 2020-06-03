@@ -24,5 +24,6 @@ set(SERVER_FILES
         common/thread.cpp
         common/thread.h)
 
+add_compile_options(-Wall -Werror -pedantic -pedantic-errors)
 add_executable(client client/main.cpp ${CLIENT_FILES})
 add_executable(server server/main.cpp ${SERVER_FILES})

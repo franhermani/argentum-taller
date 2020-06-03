@@ -5,5 +5,8 @@ mkdir -p build
 echo "Switching to build directory... OK"
 cd build
 
-echo "Building project... OK"
+echo "Building project..."
 cmake ..
+
+echo "Building targets..."
+make
