@@ -22,6 +22,9 @@ sudo apt-get install libsdl2-image-dev
 bash make.sh
 ```
 
+*NOTA: si se modifica algún archivo de código luego de haber ejecutado
+make.sh, es necesario ir a build y ejecutar make manualmente*
+
 ### Limpiar el proyecto (carpeta build)
 
 ```
