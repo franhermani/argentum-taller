@@ -6,6 +6,14 @@
 
 Link GitHub: https://github.com/franhermani/taller-tp4
 
+# Herramientas y dependencias a instalar
+
+```
+sudo apt-get install cmake
+sudo apt-get install libsdl2-dev
+sudo apt-get install libsdl2-image-dev
+```
+
 # Comandos útiles - Consola
 
 ### Compilar el proyecto
