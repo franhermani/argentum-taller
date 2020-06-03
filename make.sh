@@ -1,3 +1,5 @@
+#!/usr/bash
+
 echo "Creating build directory... OK"
 rm -rf build
 mkdir -p build
