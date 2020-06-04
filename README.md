@@ -12,6 +12,8 @@ Link GitHub: https://github.com/franhermani/taller-tp4
 sudo apt-get install cmake
 sudo apt-get install libsdl2-dev
 sudo apt-get install libsdl2-image-dev
+sudo apt-get install tiled
+sudo apt-get install glade
 ```
 
 # Comandos útiles - Consola
@@ -23,7 +25,8 @@ bash make.sh
 ```
 
 *NOTA: si se modifica algún archivo de código luego de haber ejecutado
-make.sh, es necesario ir a build y ejecutar make manualmente*
+make.sh, es necesario ir a build y ejecutar make manualmente (o ejecutar
+clean.sh y make.sh nuevamente)*
 
 ### Limpiar el proyecto (carpeta build)
 
