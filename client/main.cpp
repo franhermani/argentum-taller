@@ -1,10 +1,28 @@
 #include <gtkmm.h>
 #include <iostream>
+#include "client.h"
+#include "../common/socket_error.h"
 
 #define OK 0
 #define ERROR 1
+#define NUM_PARAMS 1
 
 int main(int argc, char *argv[]) {
+    if (argc != NUM_PARAMS) {
+        std::cerr << "Uso: ./client\n";
+        return ERROR;
+    }
+    // TODO: esto se lee de una pantalla de login
+    const char *host = "localhost", *port = "8080";
+
+    try {
+        Client client(host, port);
+        client.play();
+    } catch(SocketError& e) {
+        std::cerr << e.what() << "\n";
+    } catch(...) {
+        std::cerr << "Error desconocido\n";
+    }
     return OK;
 }
 
