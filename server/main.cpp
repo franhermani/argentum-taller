@@ -18,8 +18,6 @@ int main(int argc, char *argv[]) {
     try {
         File file(path);
         Server server(file);
-        server.parseConfigFile();
-        server.createThreadAcceptor();
         server.startThreadAcceptor();
         std::string command;
         while (getline(std::cin, command))

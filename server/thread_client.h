@@ -11,6 +11,9 @@ class ThreadClient : public Thread {
     std::atomic<bool> isRunning;
     std::atomic<bool> isFinished;
 
+    // Interactua con los clientes (envia y recibe mensajes)
+    void interactWithClient();
+
 public:
     // Constructor
     explicit ThreadClient(Socket socket);

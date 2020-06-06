@@ -1,13 +1,13 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <string>
 #include "file.h"
 #include "thread_acceptor.h"
 
 class Server {
-    File& configFile;
-    const char *port;
-    ThreadAcceptor *threadAcceptor;
+    std::string port;
+    ThreadAcceptor *threadAcceptor{};
 
 public:
     // Constructor
@@ -21,10 +21,7 @@ public:
     ~Server();
 
     // Lee y parsea el archivo de configuracion
-    void parseConfigFile();
-
-    // Crea el threadAcceptor
-    void createThreadAcceptor();
+    void parseConfigFile(File& file);
 
     // Inicializa el threadAcceptor
     void startThreadAcceptor();

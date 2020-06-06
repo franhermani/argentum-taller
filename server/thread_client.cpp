@@ -8,7 +8,7 @@ ThreadClient::ThreadClient(Socket socket) : socket(std::move(socket)),
 void ThreadClient::run() {
     while (keepTalking) {
         try {
-//            interactWithClient();
+            interactWithClient();
         } catch(SocketError) {
             break;
         }
@@ -24,10 +24,9 @@ const bool ThreadClient::isDead() {
     return (! isRunning);
 }
 
-/*
 void ThreadClient::interactWithClient() {
-    std::string response = receiveMessage();
-    sendMessage(response);
+//    std::string response = receiveMessage();
+//    sendMessage(response);
+    isFinished = true;
     if (isFinished) stop();
 }
-*/
