@@ -18,7 +18,7 @@ sudo apt-get install glade
 
 # Comandos útiles - Consola
 
-### Compilar el proyecto
+### Compilar el proyecto (directorio build)
 
 ```
 bash make.sh
@@ -28,13 +28,13 @@ bash make.sh
 make.sh, es necesario ir a build y ejecutar make manualmente (o ejecutar
 clean.sh y make.sh nuevamente)*
 
-### Limpiar el proyecto (carpeta build)
+### Limpiar el proyecto (directorio build)
 
 ```
 bash clean.sh
 ```
 
-### Verificar nomas de codificación
+### Verificar normas de codificación
 
 ```
 bash execute.sh
