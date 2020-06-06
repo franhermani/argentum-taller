@@ -5,11 +5,11 @@
 #include <atomic>
 #include "../common/thread.h"
 #include "../common/socket.h"
-//#include "server_thread_client.h"
+#include "thread_client.h"
 
 class ThreadAcceptor : public Thread {
     Socket socket;
-//    std::vector<ThreadClient*> clients;
+    std::vector<ThreadClient*> clients;
     std::atomic<bool> keepTalking;
     std::atomic<bool> isRunning;
 
