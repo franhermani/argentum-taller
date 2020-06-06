@@ -1,7 +1,9 @@
 #include <string>
 #include <fstream>
 #include "server.h"
+#include "defines.h"
 #include "file.h"
+#include "json/json.hpp"
 
 Server::Server(File& file) : configFile(file) {}
 
@@ -10,18 +12,21 @@ Server::~Server() {
 }
 
 void Server::parseConfigFile() {
-    // TODO: tener el archivo en formato json y usar jsoncpp
-    std::string line;
-    while (getline(configFile.getFile(), line)) {
-        // ...
-    }
+    using json = nlohmann::json;
+    json j;
+
+    // Convierto el archivo a una estructura json
+    configFile.getFile() >> j;
+
+    // Obtengo el puerto
+    std::string port_str = j[PORT].get<std::string>();
+    port = port_str.c_str();
+
     configFile.closeFD();
 }
 
 void Server::createThreadAcceptor() {
     const char *host = 0;
-    // TODO: esto se lee del archivo
-    port = "8080";
     threadAcceptor = new ThreadAcceptor(host, port);
 }
 
