@@ -1,11 +1,10 @@
 #include <string>
-#include <fstream>
 #include <iostream>
 #include <exception>
 #include "server.h"
 #include "../defines.h"
-#include "../file.h"
-#include "../json/json.hpp"
+#include "../utilities/file.h"
+#include "../utilities/json.hpp"
 
 Server::Server(File& file) {
     parseConfigFile(file);
