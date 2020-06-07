@@ -7,10 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS -pthread)
 
 # CLIENT SOURCE FILES
-file(GLOB CLIENT_FILES "client/*.cpp" "client/*.h" "common/*.cpp" "common/*.h")
+file(GLOB_RECURSE CLIENT_FILES "client/*.cpp" "client/*.h" "common/*.cpp" "common/*.h")
 
 # SERVER SOURCE FILES
-file(GLOB SERVER_FILES "server/*.cpp" "server/*.h" "common/*.cpp" "common/*.h")
+file(GLOB_RECURSE SERVER_FILES "server/*.cpp" "server/*.h" "common/*.cpp" "common/*.h")
 
 # SDL LIBRARY
 file(GLOB SDL_FILES "client/sdl/*.cpp")
