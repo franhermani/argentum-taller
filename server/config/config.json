@@ -1,0 +1,9 @@
+{
+  "communication": {
+    "port": "8080"
+  },
+  "game_params": {
+    "world_width": 1200,
+    "world_height": 800
+  }
+}
