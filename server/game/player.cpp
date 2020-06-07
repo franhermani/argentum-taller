@@ -1,5 +1,5 @@
 #include "player.h"
-#include "commands/defines.h"
+#include "../commands/defines.h"
 
 Player::Player(const std::string &username) : username(username) {}
 

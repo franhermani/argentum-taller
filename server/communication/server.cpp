@@ -1,32 +1,15 @@
-#include <string>
 #include <iostream>
 #include <exception>
 #include "server.h"
-#include "../defines.h"
-#include "../utilities/file.h"
-#include "../utilities/json.hpp"
 
-Server::Server(File& file) {
-    parseConfigFile(file);
+Server::Server(File& file) : fileParser(file), gameManager(fileParser) {
+    port = fileParser.getPort();
     if (port.empty()) throw std::runtime_error("No se especificó el puerto\n");
     threadAcceptor = new ThreadAcceptor(0, port.c_str());
 }
 
 Server::~Server() {
     delete threadAcceptor;
-}
-
-void Server::parseConfigFile(File& file) {
-    using json = nlohmann::json;
-    json j;
-
-    // Convierto el archivo a una estructura json
-    file.getFile() >> j;
-
-    // Obtengo el puerto
-    port = j[PORT].get<std::string>();
-
-    file.closeFD();
 }
 
 void Server::startThreadAcceptor() {

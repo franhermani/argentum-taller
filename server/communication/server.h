@@ -2,12 +2,16 @@
 #define SERVER_H
 
 #include <string>
+#include "../utilities/file_parser.h"
 #include "../utilities/file.h"
+#include "../game/manager.h"
 #include "thread_acceptor.h"
 
 class Server {
     std::string port;
-    ThreadAcceptor *threadAcceptor{};
+    FileParser fileParser;
+    GameManager gameManager;
+    ThreadAcceptor* threadAcceptor{};
 
 public:
     // Constructor
@@ -19,9 +23,6 @@ public:
 
     // Destructor
     ~Server();
-
-    // Lee y parsea el archivo de configuracion
-    void parseConfigFile(File& file);
 
     // Inicializa el threadAcceptor
     void startThreadAcceptor();

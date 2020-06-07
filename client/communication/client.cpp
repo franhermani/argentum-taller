@@ -2,8 +2,8 @@
 #include <iostream>
 #include <exception>
 #include "client.h"
-#include "sdl/window.h"
-#include "sdl/texture.h"
+#include "../sdl/window.h"
+#include "../sdl/texture.h"
 
 Client::Client(const char *host, const char *port) :
 socket(host, port, false), keepPlaying(true) {}

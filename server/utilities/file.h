@@ -2,23 +2,27 @@
 #define FILE_H
 
 #include <fstream>
+#include <string>
 
 class File {
     std::ifstream ifs;
+    std::string path;
     bool isOpen;
 
 public:
     // Constructor
-    // Abre el archivo
-    explicit File(const char *path);
+    explicit File(std::string path);
 
     // Constructor y asignacion por copia deshabilitados
     File(const File&) = delete;
     File& operator=(const File&) = delete;
     
     // Destructor
-    // Cierra el archivo si no se pudo cerrar antes
+    // Cierra el archivo si sigue abierto
     ~File();
+
+    // Abre el archivo
+    void openFD();
 
     // Cierra el archivo
     void closeFD();

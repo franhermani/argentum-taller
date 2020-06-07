@@ -2,7 +2,7 @@
 #define CLIENT_H
 
 #include <string>
-#include "../common/socket.h"
+#include "../../common/socket.h"
 
 class Client {
     Socket socket;

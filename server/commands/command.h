@@ -1,7 +1,7 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include "../player.h"
+#include "../game/player.h"
 
 class Command {
 public:

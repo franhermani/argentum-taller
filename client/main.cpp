@@ -1,6 +1,6 @@
 #include <gtkmm.h>
 #include <iostream>
-#include "client.h"
+#include "communication/client.h"
 #include "../common/socket_error.h"
 
 #define OK 0

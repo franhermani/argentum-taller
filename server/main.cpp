@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
         std::cerr << "Uso: ./server <archivo_de_configuracion>\n";
         return ERROR;
     }
-    const char *path = argv[1];
+    std::string path = argv[1];
 
     try {
         File file(path);
