@@ -3,9 +3,9 @@
 #include <iostream>
 #include <exception>
 #include "server.h"
-#include "defines.h"
-#include "file.h"
-#include "json/json.hpp"
+#include "../defines.h"
+#include "../file.h"
+#include "../json/json.hpp"
 
 Server::Server(File& file) {
     parseConfigFile(file);

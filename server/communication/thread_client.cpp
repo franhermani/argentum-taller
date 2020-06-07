@@ -1,6 +1,6 @@
 #include <utility>
 #include "thread_client.h"
-#include "../common/socket_error.h"
+#include "../../common/socket_error.h"
 
 ThreadClient::ThreadClient(Socket socket) : socket(std::move(socket)),
         keepTalking(true), isRunning(true), isFinished(false) {}

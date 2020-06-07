@@ -2,7 +2,7 @@
 #include <utility>
 #include "thread_acceptor.h"
 #include "thread_client.h"
-#include "../common/socket_accept_error.h"
+#include "../../common/socket_accept_error.h"
 
 ThreadAcceptor::ThreadAcceptor(const char *host, const char *port) :
         socket(host, port, true), keepTalking(true), isRunning(true) {}

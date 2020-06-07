@@ -2,7 +2,7 @@
 #include <exception>
 #include "defines.h"
 #include "file.h"
-#include "server.h"
+#include "communication/server.h"
 
 #define OK 0
 #define ERROR 1

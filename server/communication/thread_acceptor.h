@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <atomic>
-#include "../common/thread.h"
-#include "../common/socket.h"
+#include "../../common/thread.h"
+#include "../../common/socket.h"
 #include "thread_client.h"
 
 class ThreadAcceptor : public Thread {

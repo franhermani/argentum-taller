@@ -2,7 +2,7 @@
 #define SERVER_H
 
 #include <string>
-#include "file.h"
+#include "../file.h"
 #include "thread_acceptor.h"
 
 class Server {

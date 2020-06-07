@@ -2,8 +2,8 @@
 #define THREAD_CLIENT_H
 
 #include <atomic>
-#include "../common/thread.h"
-#include "../common/socket.h"
+#include "../../common/thread.h"
+#include "../../common/socket.h"
 
 class ThreadClient : public Thread {
     Socket socket;
