@@ -1,48 +1,48 @@
 #include <vector>
 #include <utility>
-#include "thread_acceptor.h"
-#include "thread_client.h"
+#include "clients_acceptor.h"
+#include "client_receiver.h"
 #include "../../common/socket_accept_error.h"
 
-ThreadAcceptor::ThreadAcceptor(const char *host, const char *port) :
+ClientsAcceptor::ClientsAcceptor(const char *host, const char *port) :
         socket(host, port, true), keepTalking(true), isRunning(true) {}
 
-void ThreadAcceptor::run() {
+void ClientsAcceptor::run() {
     while (keepTalking) {
         try {
             socket.listenToClients();
-            createThreadClient();
-            startThreadClient();
-            cleanDeadClients();
+            createClientHandler();
+            startClientHandler();
+            cleanDeadClientHandlers();
         } catch(SocketAcceptError) {
             break;
         }
     }
     isRunning = false;
-    joinClients();
+    joinClientHandlers();
 }
 
-void ThreadAcceptor::stop() {
+void ClientsAcceptor::stop() {
     keepTalking = false;
     socket.finish();
 }
 
-const bool ThreadAcceptor::isDead() {
+const bool ClientsAcceptor::isDead() {
     return (! isRunning);
 }
 
-void ThreadAcceptor::createThreadClient() {
+void ClientsAcceptor::createClientHandler() {
     Socket socket_client = socket.acceptClients();
-    clients.push_back(new ThreadClient(std::move(socket_client)));
+    clients.push_back(new ClientHandler(std::move(socket_client)));
 }
 
-void ThreadAcceptor::startThreadClient() {
+void ClientsAcceptor::startClientHandler() {
     clients.back()->start();
 }
 
-void ThreadAcceptor::cleanDeadClients() {
-    std::vector<ThreadClient*> tmp;
-    std::vector<ThreadClient*>::iterator iter = clients.begin();
+void ClientsAcceptor::cleanDeadClientHandlers() {
+    std::vector<ClientHandler*> tmp;
+    auto iter = clients.begin();
     for (; iter != clients.end(); ++iter) {
         if ((*iter)->isDead()) {
             (*iter)->join();
@@ -54,7 +54,7 @@ void ThreadAcceptor::cleanDeadClients() {
     clients.swap(tmp);
 }
 
-void ThreadAcceptor::joinClients() {
+void ClientsAcceptor::joinClientHandlers() {
     size_t i;
     for (i = 0; i < clients.size(); i ++) {
         clients[i]->join();

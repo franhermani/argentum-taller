@@ -1,36 +1,33 @@
-#ifndef THREAD_CLIENT_H
-#define THREAD_CLIENT_H
+#ifndef CLIENT_SENDER_H
+#define CLIENT_SENDER_H
 
 #include <atomic>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 
-class ThreadClient : public Thread {
-    Socket socket;
+class ClientSender : public Thread {
+    Socket& socket;
     std::atomic<bool> keepTalking;
     std::atomic<bool> isRunning;
     std::atomic<bool> isFinished;
 
-    // Interactua con los clientes (envia y recibe mensajes)
-    void interactWithClient();
-
 public:
     // Constructor
-    explicit ThreadClient(Socket socket);
+    explicit ClientSender(Socket& socket);
 
     // Constructor y asignacion por copia deshabilitados
-    ThreadClient(const ThreadClient&) = delete;
-    ThreadClient& operator=(const ThreadClient&) = delete;
+    ClientSender(const ClientSender&) = delete;
+    ClientSender& operator=(const ClientSender&) = delete;
 
     // Llama a interactWithClient hasta que finalice la partida
-    virtual void run() override;
+    void run() override;
 
     // Setea la variable booleana 'keepTalking' en false
-    virtual void stop() override;
+    void stop() override;
 
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
-    virtual const bool isDead() override;
+    const bool isDead() override;
 };
 
-#endif // THREAD_CLIENT_H
+#endif // CLIENT_SENDER_H

@@ -18,13 +18,13 @@ int main(int argc, char *argv[]) {
     try {
         File file(path);
         Server server(file);
-        server.startThreadAcceptor();
+        server.startClientsAcceptor();
         std::string command;
         while (getline(std::cin, command))
             if (command == EXIT_CHAR) break;
 
-        server.stopThreadAcceptor();
-        server.joinThreadAcceptor();
+        server.stopClientsAcceptor();
+        server.joinClientsAcceptor();
     } catch (const std::exception &e) {
         std::cerr << e.what();
         return ERROR;

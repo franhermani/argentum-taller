@@ -5,13 +5,13 @@
 #include "../utilities/file_parser.h"
 #include "../utilities/file.h"
 #include "../game/manager.h"
-#include "thread_acceptor.h"
+#include "clients_acceptor.h"
 
 class Server {
     std::string port;
     FileParser fileParser;
     GameManager gameManager;
-    ThreadAcceptor* threadAcceptor{};
+    ClientsAcceptor* clientsAcceptor{};
 
 public:
     // Constructor
@@ -24,14 +24,14 @@ public:
     // Destructor
     ~Server();
 
-    // Inicializa el threadAcceptor
-    void startThreadAcceptor();
+    // Inicializa el thread aceptador
+    void startClientsAcceptor();
 
-    // Finaliza la ejecucion del threadAcceptor
-    void stopThreadAcceptor();
+    // Finaliza la ejecucion del thread aceptador
+    void stopClientsAcceptor();
 
-    // Espera a que finalice el threadAcceptor
-    void joinThreadAcceptor();
+    // Espera a que finalice el thread aceptador
+    void joinClientsAcceptor();
 };
 
 #endif // SERVER_H

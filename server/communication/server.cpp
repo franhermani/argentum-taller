@@ -5,21 +5,21 @@
 Server::Server(File& file) : fileParser(file), gameManager(fileParser) {
     port = fileParser.getPort();
     if (port.empty()) throw std::runtime_error("No se especificó el puerto\n");
-    threadAcceptor = new ThreadAcceptor(0, port.c_str());
+    clientsAcceptor = new ClientsAcceptor(0, port.c_str());
 }
 
 Server::~Server() {
-    delete threadAcceptor;
+    delete clientsAcceptor;
 }
 
-void Server::startThreadAcceptor() {
-    threadAcceptor->start();
+void Server::startClientsAcceptor() {
+    clientsAcceptor->start();
 }
 
-void Server::stopThreadAcceptor() {
-    threadAcceptor->stop();
+void Server::stopClientsAcceptor() {
+    clientsAcceptor->stop();
 }
 
-void Server::joinThreadAcceptor() {
-    threadAcceptor->join();
+void Server::joinClientsAcceptor() {
+    clientsAcceptor->join();
 }
