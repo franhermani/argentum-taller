@@ -6,12 +6,14 @@
 
 ServerProtocol::ServerProtocol(Socket& socket) : socket(socket) {}
 
-void ServerProtocol::encodeMessage() {
+const char* ServerProtocol::encodeMessage(const std::string& message) {
     // TODO: ...
+    return "Hola mundo";
 }
 
-void ServerProtocol::decodeMessage() {
+const std::string ServerProtocol::decodeMessage(const char* message) {
     // TODO: ...
+    return "Hola mundo";
 }
 
 void ServerProtocol::sendMessage(const std::string& message) {
@@ -26,5 +28,6 @@ const std::string ServerProtocol::receiveMessage() {
     buffer[10] = '\0';
     std::string str(buffer);
     std::cout << buffer << "\n";
+    // TODO: decodeMessage(str);
     return buffer;
 }

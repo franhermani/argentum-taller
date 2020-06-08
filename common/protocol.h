@@ -7,11 +7,11 @@ class Protocol {
 protected:
     // Codifica un mensaje segun el protocolo
     // Metodo a definir por las clases derivadas
-    virtual void encodeMessage() = 0;
+    virtual const char* encodeMessage(const std::string& message) = 0;
 
     // Decodifica un mensaje segun el protocolo
     // Metodo a definir por las clases derivadas
-    virtual void decodeMessage() = 0;
+    virtual const std::string decodeMessage(const char* message) = 0;
 
 public:
     // Recibe un mensaje a traves del socket
