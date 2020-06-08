@@ -17,8 +17,15 @@ public:
     Client(const Client& other) = delete;
     Client& operator=(const Client& other) = delete;
 
+    // Destructor
+    // Libera la memoria reservada para el connection handler
+    ~Client();
+
     // Conecta al cliente con el servidor
     void connectToServer();
+
+    // Desconecta al cliente del servidor
+    void disconnectFromServer();
 
     // Comienza el juego
     void play();

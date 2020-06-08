@@ -17,7 +17,9 @@ int main(int argc, char *argv[]) {
 
     try {
         Client client(host, port);
-        client.play();
+        client.connectToServer();
+//        client.disconnectFromServer();
+//        client.play();
     } catch(SocketError& e) {
         std::cerr << e.what() << "\n";
     } catch(...) {

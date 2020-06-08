@@ -10,8 +10,17 @@ keepPlaying(true) {
     connectionHandler = new ConnectionHandler(host, port);
 }
 
+Client::~Client() {
+    delete connectionHandler;
+}
+
 void Client::connectToServer() {
-    // TODO: ...
+    connectionHandler->start();
+}
+
+// TODO: ver cuando llamar a este metodo
+void Client::disconnectFromServer() {
+    connectionHandler->stop();
 }
 
 void Client::play() {

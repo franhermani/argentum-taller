@@ -1,5 +1,3 @@
-#include <utility>
-#include <iostream>
 #include "connection_handler.h"
 
 ConnectionHandler::ConnectionHandler(const char *host, const char *port) :
