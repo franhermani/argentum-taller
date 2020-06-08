@@ -14,7 +14,7 @@ void ClientsAcceptor::run() {
             createClientHandler();
             startClientHandler();
             cleanDeadClientHandlers();
-        } catch(SocketAcceptError) {
+        } catch(SocketAcceptError&) {
             break;
         }
     }
@@ -57,6 +57,7 @@ void ClientsAcceptor::cleanDeadClientHandlers() {
 void ClientsAcceptor::joinClientHandlers() {
     size_t i;
     for (i = 0; i < clients.size(); i ++) {
+        clients[i]->stop();
         clients[i]->join();
         delete clients[i];
     }

@@ -1,7 +1,6 @@
 #include <utility>
 #include <iostream>
 #include "client_handler.h"
-#include "../../common/socket_error.h"
 
 ClientHandler::ClientHandler(Socket socket) : socket(std::move(socket)),
 keepTalking(true), isRunning(true), isFinished(false) {
@@ -15,18 +14,20 @@ ClientHandler::~ClientHandler() {
 }
 
 void ClientHandler::run() {
+    clientSender->start();
+    clientReceiver->start();
+
     while (keepTalking) {
-        try {
-            // TODO: ...
-            keepTalking = false;
-        } catch(SocketError) {
-            break;
-        }
+        // TODO: ver que va aca
     }
     isRunning = false;
 }
 
 void ClientHandler::stop() {
+    clientSender->stop();
+    clientSender->join();
+    clientReceiver->stop();
+    clientReceiver->join();
     keepTalking = false;
 }
 

@@ -1,14 +1,16 @@
+#include <string>
 #include "client_receiver.h"
 #include "../../common/socket_error.h"
 
-ClientReceiver::ClientReceiver(Socket& socket) : socket(socket),
+ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket),
         keepTalking(true), isRunning(true), isFinished(false) {}
 
 void ClientReceiver::run() {
+    std::string message;
+
     while (keepTalking) {
         try {
-            // TODO: ...
-            keepTalking = false;
+            message = protocol.receiveMessage();
         } catch(SocketError) {
             break;
         }

@@ -3,10 +3,10 @@
 
 #include <atomic>
 #include "../../common/thread.h"
-#include "../../common/socket.h"
+#include "protocol.h"
 
 class ClientSender : public Thread {
-    Socket& socket;
+    ServerProtocol protocol;
     std::atomic<bool> keepTalking;
     std::atomic<bool> isRunning;
     std::atomic<bool> isFinished;
@@ -19,7 +19,7 @@ public:
     ClientSender(const ClientSender&) = delete;
     ClientSender& operator=(const ClientSender&) = delete;
 
-    // Llama a interactWithClient hasta que finalice la partida
+    // Envia un mensaje segun el protocolo
     void run() override;
 
     // Setea la variable booleana 'keepTalking' en false
