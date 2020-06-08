@@ -35,7 +35,7 @@ public:
 
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
-    const bool isDead() override;
+    bool isDead() override;
 };
 
 #endif // CLIENT_HANDLER_H

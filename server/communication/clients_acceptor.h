@@ -43,7 +43,7 @@ public:
     void stop() override;
 
     // Devuelve true si el thread no esta corriendo o false en caso contrario
-    const bool isDead() override;
+    bool isDead() override;
 };
 
 #endif // CLIENTS_ACCEPTOR_H

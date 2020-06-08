@@ -27,7 +27,7 @@ void ClientsAcceptor::stop() {
     socket.finish();
 }
 
-const bool ClientsAcceptor::isDead() {
+bool ClientsAcceptor::isDead() {
     return (! isRunning);
 }
 

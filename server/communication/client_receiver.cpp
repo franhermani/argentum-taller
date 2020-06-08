@@ -11,7 +11,7 @@ void ClientReceiver::run() {
     while (keepTalking) {
         try {
             message = protocol.receiveMessage();
-        } catch(SocketError) {
+        } catch(SocketError&) {
             break;
         }
     }
@@ -22,6 +22,6 @@ void ClientReceiver::stop() {
     keepTalking = false;
 }
 
-const bool ClientReceiver::isDead() {
+bool ClientReceiver::isDead() {
     return (! isRunning);
 }

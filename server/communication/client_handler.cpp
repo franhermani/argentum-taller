@@ -31,6 +31,6 @@ void ClientHandler::stop() {
     keepTalking = false;
 }
 
-const bool ClientHandler::isDead() {
+bool ClientHandler::isDead() {
     return (! isRunning);
 }

@@ -12,7 +12,7 @@ void ClientSender::run() {
         try {
             message = "Hola mundo\n";
             protocol.sendMessage(message);
-        } catch(SocketError) {
+        } catch(SocketError&) {
             break;
         }
     }
@@ -23,6 +23,6 @@ void ClientSender::stop() {
     keepTalking = false;
 }
 
-const bool ClientSender::isDead() {
+bool ClientSender::isDead() {
     return (! isRunning);
 }
