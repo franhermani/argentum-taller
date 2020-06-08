@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include "protocol.h"
 
@@ -15,13 +16,15 @@ void ServerProtocol::decodeMessage() {
 
 void ServerProtocol::sendMessage(const std::string& message) {
     // TODO: ...
-//    socket.sendBytes(message.c_str(), message.length());
+    socket.sendBytes(message.c_str(), message.length());
 }
 
 const std::string ServerProtocol::receiveMessage() {
-    // TODO: recibir en 2 bytes la longitud de todo el mensaje
-//    char buffer[BUF_MAX_SIZE];
-//    socket.receiveBytes(buffer, )
-    std::string str = "Hola mundo\n";
-    return str;
+    // TODO: ...
+    char buffer[BUF_MAX_SIZE];
+    socket.receiveBytes(buffer, 10);
+    buffer[10] = '\0';
+    std::string str(buffer);
+    std::cout << buffer << "\n";
+    return buffer;
 }

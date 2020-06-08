@@ -36,6 +36,7 @@ int main(int argc, char *argv[]) {
     auto refBuilder = Gtk::Builder::create();
 
     try {
+        // TODO: no encuentra el archivo
         refBuilder->add_from_file("basic.glade");
     } catch(const Glib::FileError& e) {
         std::cerr << "FileError: " << e.what() << std::endl;

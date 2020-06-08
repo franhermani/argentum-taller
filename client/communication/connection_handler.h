@@ -1,31 +1,31 @@
-#ifndef CLIENT_HANDLER_H
-#define CLIENT_HANDLER_H
+#ifndef CONNECTION_HANDLER_H
+#define CONNECTION_HANDLER_H
 
 #include <atomic>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
-#include "client_sender.h"
-#include "client_receiver.h"
+#include "connection_sender.h"
+#include "connection_receiver.h"
 
-class ClientHandler : public Thread {
+class ConnectionHandler : public Thread {
     Socket socket;
     std::atomic<bool> keepTalking;
     std::atomic<bool> isRunning;
     std::atomic<bool> isFinished;
-    ClientSender* clientSender;
-    ClientReceiver* clientReceiver;
+    ConnectionSender* connectionSender;
+    ConnectionReceiver* connectionReceiver;
 
 public:
     // Constructor
-    explicit ClientHandler(Socket socket);
+    explicit ConnectionHandler(const char *host, const char *port);
 
     // Constructor y asignacion por copia deshabilitados
-    ClientHandler(const ClientHandler&) = delete;
-    ClientHandler& operator=(const ClientHandler&) = delete;
+    ConnectionHandler(const ConnectionHandler&) = delete;
+    ConnectionHandler& operator=(const ConnectionHandler&) = delete;
 
     // Destructor
     // Elimina la memoria reservada para los thread sender y receiver
-    ~ClientHandler();
+    ~ConnectionHandler();
 
     // Inicializa los thread sender y receiver
     void run() override;
@@ -38,4 +38,4 @@ public:
     bool isDead() override;
 };
 
-#endif // CLIENT_HANDLER_H
+#endif // CONNECTION_HANDLER_H

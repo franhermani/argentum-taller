@@ -2,20 +2,23 @@
 #define CLIENT_H
 
 #include <string>
-#include "../../common/socket.h"
+#include "connection_handler.h"
 
 class Client {
-    Socket socket;
+    ConnectionHandler* connectionHandler;
     bool keepPlaying;
 
 public:
     // Constructor
-    // Asocia al cliente al 'host' y 'port' recibidos por consola
+    // Asocia al cliente al 'host' y 'port' recibidos
     Client(const char *host, const char *port);
 
     // Constructor y asignacion por copia deshabilitados
     Client(const Client& other) = delete;
     Client& operator=(const Client& other) = delete;
+
+    // Conecta al cliente con el servidor
+    void connectToServer();
 
     // Comienza el juego
     void play();

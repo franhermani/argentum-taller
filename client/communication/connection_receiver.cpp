@@ -1,17 +1,16 @@
 #include <string>
-#include "client_sender.h"
+#include "connection_receiver.h"
 #include "../../common/socket_error.h"
 
-ClientSender::ClientSender(Socket& socket) : protocol(socket),
+ConnectionReceiver::ConnectionReceiver(Socket& socket) : protocol(socket),
 keepTalking(true), isRunning(true), isFinished(false) {}
 
-void ClientSender::run() {
+void ConnectionReceiver::run() {
     std::string message;
 
     while (keepTalking) {
         try {
-            message = "Chau mundo";
-            protocol.sendMessage(message);
+            message = protocol.receiveMessage();
         } catch(SocketError&) {
             break;
         }
@@ -19,10 +18,10 @@ void ClientSender::run() {
     isRunning = false;
 }
 
-void ClientSender::stop() {
+void ConnectionReceiver::stop() {
     keepTalking = false;
 }
 
-bool ClientSender::isDead() {
+bool ConnectionReceiver::isDead() {
     return (! isRunning);
 }

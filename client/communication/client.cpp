@@ -6,7 +6,13 @@
 #include "../sdl/texture.h"
 
 Client::Client(const char *host, const char *port) :
-socket(host, port, false), keepPlaying(true) {}
+keepPlaying(true) {
+    connectionHandler = new ConnectionHandler(host, port);
+}
+
+void Client::connectToServer() {
+    // TODO: ...
+}
 
 void Client::play() {
     // TODO: esto es de prueba
