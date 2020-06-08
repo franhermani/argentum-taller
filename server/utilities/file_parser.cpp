@@ -1,10 +1,6 @@
 #include <string>
-#include <utility>
 #include "file_parser.h"
-#include "../utilities/json.hpp"
-#include "../defines.h"
-
-using json = nlohmann::json;
+#include "json.hpp"
 
 FileParser::FileParser(File& file) : file(file) {}
 
@@ -12,8 +8,16 @@ const std::string FileParser::getPort() {
     json j;
     file.openFD();
     file.getFile() >> j;
-    std::string port = j[PORT].get<std::string>();
     file.closeFD();
 
-    return std::move(port);
+    return j["communication"]["port"].get<std::string>();
+}
+
+const json FileParser::getGameParams() {
+    json j;
+    file.openFD();
+    file.getFile() >> j;
+    file.closeFD();
+
+    return j["game_params"];
 }

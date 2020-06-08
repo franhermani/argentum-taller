@@ -32,7 +32,7 @@ public:
 
     // Indica si el thread esta corriendo o no
     // (redefinido por sus clases derivadas)
-    virtual const bool isDead() = 0;
+    virtual bool isDead() = 0;
 
     // Espera a que finalice el thread
     void join();
