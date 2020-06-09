@@ -8,8 +8,6 @@ using json = nlohmann::json;
 
 class GameParams {
     json jsonParams;
-    int worldWidth;
-    int worldHeight;
 
 public:
     // Constructor

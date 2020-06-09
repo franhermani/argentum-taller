@@ -9,10 +9,10 @@ class ServerProtocol : public Protocol {
     Socket& socket;
 
     // Codifica un mensaje segun el protocolo
-    void encodeMessage() override;
+    const char* encodeMessage(const std::string& message) override;
 
     // Decodifica un mensaje segun el protocolo
-    void decodeMessage() override;
+    const std::string decodeMessage(const char* message) override;
 
 public:
     // Constructor
