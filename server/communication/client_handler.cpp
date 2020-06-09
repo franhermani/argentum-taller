@@ -2,8 +2,9 @@
 #include <iostream>
 #include "client_handler.h"
 
-ClientHandler::ClientHandler(Socket socket_received) : socket(std::move(socket_received)),
-keepTalking(true), isRunning(true), isFinished(false) {
+ClientHandler::ClientHandler(Socket socket_received) :
+socket(std::move(socket_received)), keepTalking(true),
+isRunning(true), isFinished(false) {
     clientSender = new ClientSender(socket);
     clientReceiver = new ClientReceiver(socket);
 }

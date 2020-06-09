@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
         client.connectToServer();
 //        client.disconnectFromServer();
 //        client.play();
+        // TODO: este loop en realidad no va, pero si lo saco se cuelga
         std::string command;
         while (getline(std::cin, command))
             if (command == EXIT_CHAR) break;
