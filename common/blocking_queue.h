@@ -12,7 +12,6 @@ public:
         return "Queue is closed";
     }
 };
-
 template <class T> class BlockingQueue {
 private:
     std::mutex m;
@@ -26,6 +25,7 @@ public:
     void close();
     ~BlockingQueue();
 };
+template class BlockingQueue<std::string>;
 
 
 #endif //TP2_BLOCKINGQUEUE_H

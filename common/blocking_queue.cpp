@@ -37,5 +37,4 @@ void BlockingQueue<T>::close() {
 template <class T>
 BlockingQueue<T>::~BlockingQueue() {}
 
-template class BlockingQueue<std::string>;
 
