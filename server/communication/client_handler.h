@@ -1,7 +1,6 @@
 #ifndef CLIENT_HANDLER_H
 #define CLIENT_HANDLER_H
 
-#include <atomic>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "client_sender.h"
@@ -9,9 +8,6 @@
 
 class ClientHandler : public Thread {
     Socket socket;
-    std::atomic<bool> keepTalking;
-    std::atomic<bool> isRunning;
-    std::atomic<bool> isFinished;
     ClientSender* clientSender;
     ClientReceiver* clientReceiver;
 
@@ -30,7 +26,7 @@ public:
     // Inicializa los thread sender y receiver
     void run() override;
 
-    // Setea la variable booleana 'keepTalking' en false
+    // Setea la variable booleana 'keepRunning' en false
     void stop() override;
 
     // Devuelve true si el thread no esta corriendo o

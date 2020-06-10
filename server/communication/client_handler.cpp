@@ -3,8 +3,9 @@
 #include "client_handler.h"
 
 ClientHandler::ClientHandler(Socket socket_received) :
-socket(std::move(socket_received)), keepTalking(true),
-isRunning(true), isFinished(false) {
+socket(std::move(socket_received)) {
+    keepRunning = true;
+    isRunning = true;
     clientSender = new ClientSender(socket);
     clientReceiver = new ClientReceiver(socket);
 }
@@ -18,7 +19,7 @@ void ClientHandler::run() {
     clientSender->start();
     clientReceiver->start();
 
-    while (keepTalking) {
+    while (keepRunning) {
         // TODO: ver que va aca
     }
     isRunning = false;
@@ -29,7 +30,7 @@ void ClientHandler::stop() {
     clientSender->join();
     clientReceiver->stop();
     clientReceiver->join();
-    keepTalking = false;
+    keepRunning = false;
 }
 
 bool ClientHandler::isDead() {

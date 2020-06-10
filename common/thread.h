@@ -2,9 +2,14 @@
 #define THREAD_H
 
 #include <thread>
+#include <atomic>
 
 class Thread {
     std::thread thread;
+
+protected:
+    std::atomic<bool> keepRunning;
+    std::atomic<bool> isRunning;
 
 public:
     // Constructor

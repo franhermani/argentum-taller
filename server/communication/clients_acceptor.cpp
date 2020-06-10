@@ -5,10 +5,13 @@
 #include "../../common/socket_accept_error.h"
 
 ClientsAcceptor::ClientsAcceptor(const char *host, const char *port) :
-        socket(host, port, true), keepTalking(true), isRunning(true) {}
+socket(host, port, true) {
+    keepRunning = true;
+    isRunning = true;
+}
 
 void ClientsAcceptor::run() {
-    while (keepTalking) {
+    while (keepRunning) {
         try {
             socket.listenToClients();
             createClientHandler();
@@ -23,7 +26,7 @@ void ClientsAcceptor::run() {
 }
 
 void ClientsAcceptor::stop() {
-    keepTalking = false;
+    keepRunning = false;
     socket.finish();
 }
 

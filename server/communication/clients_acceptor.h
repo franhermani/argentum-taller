@@ -2,7 +2,6 @@
 #define CLIENTS_ACCEPTOR_H
 
 #include <vector>
-#include <atomic>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "client_handler.h"
@@ -10,8 +9,6 @@
 class ClientsAcceptor : public Thread {
     Socket socket;
     std::vector<ClientHandler*> clients;
-    std::atomic<bool> keepTalking;
-    std::atomic<bool> isRunning;
 
     // Crea el thread del cliente
     void createClientHandler();
@@ -39,7 +36,7 @@ public:
     // y los pone a correr
     void run() override;
 
-    // Setea la variable booleana 'keep_talking' en false
+    // Setea la variable booleana 'keepRunning' en false
     void stop() override;
 
     // Devuelve true si el thread no esta corriendo o false en caso contrario
