@@ -9,52 +9,47 @@
 
 ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 
-// TODO: tendria que recibir el ID del NPC u objeto o username de player
+// TODO: tendria que recibir el ID del NPC, Player u Objeto
 const char* ClientProtocol::encodeMessage(const std::string& message) {
     std::string type = message.substr(0,1);
     std::vector<char> v;
 
+    // Comando
     if (type == "/") {
-        // Comando
-        // Copio los primeros 3 caracteres
-        std::string command = message.substr(1,3);
+        // Copio los primeros 4 caracteres
+        std::string command = message.substr(1,4);
         memcpy(&v[v.size()], command.c_str(), command.length());
 
         // Copio la longitud
         // TODO: modularizar esto
         /*
         uint16_t length;
-        if (command == "med") {
+        if (command == "medi") {
             length = 0;
-        } else if (command == "res") {
+        } else if (command == "resu") {
             bool id_sacerdote = false;
-            length = id_sacerdote ? 3 : 0;
-        } else if (command == "cur") {
-            length = 3;
-        } else if (command == "dep") {
+            length = id_sacerdote ? 4 : 0;
+        } else if (command == "cura") {
+            length = 4;
+        } else if (command == "depo") {
+            length = 10;
+        } else if (command == "reti") {
+            length = 10;
+        } else if (command == "list") {
+            length = 4;
+        } else if (command == "comp") {
             length = 8;
-        } else if (command == "ret") {
+        } else if (command == "vend") {
             length = 8;
-        } else if (command == "lis") {
-            length = 3;
-        } else if (command == "com") {
-            length = 6;
-        } else if (command == "ven") {
-            length = 6;
-        } else if (command == "tom") {
-            length = 3;
-        } else if (command == "tir") {
-            length = 3;
+        } else if (command == "toma") {
+            length = 4;
+        } else if (command == "tira") {
+            length = 4;
         }
         */
         // Copio el contenido del mensaje
         // TODO: ...
-
-    } else if (type == "@") {
-        // Mensaje por el chat
-        // encoded_msg = ...
     }
-
     return v.data();
 }
 

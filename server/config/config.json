@@ -24,7 +24,7 @@
         }
       },
       "inventory": {
-        "max_objects": 12
+        "max_objects": 10
       },
       "experience": {
         "limit_eq": {
