@@ -1,14 +1,15 @@
 #ifndef TP2_BLOCKING_QUEUE_H
 #define TP2_BLOCKING_QUEUE_H
 
+#include <exception>
 #include <mutex>
 #include <queue>
 #include <condition_variable>
+#include "user_event.h"
 
-class ClosedQueueException : public std::exception {
-public:
-    const char* what() {
-        return "The queue is closed";
+struct ClosedQueueException : public std::exception {
+    const char* what() const throw() {
+        return "The queue is closed\n";
     }
 };
 
@@ -40,7 +41,7 @@ public:
     void close();
 };
 
-// TODO: definir aca los tipos T que usemos a lo largo del TP
-//template class BlockingQueue<std::string>;
+// Definir aca los tipos T que usemos a lo largo del TP
+template class BlockingQueue<UserEvent>;
 
 #endif //TP2_BLOCKING_QUEUE_H

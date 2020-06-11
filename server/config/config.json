@@ -3,6 +3,7 @@
     "port": "8080"
   },
   "game_params": {
+    "ms_per_update": 60,
     "world": {
       "x_tiles": 2000,
       "y_tiles": 2000

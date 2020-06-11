@@ -2,8 +2,6 @@
 #include <chrono>
 #include "manager.h"
 
-#define MS_PER_UPDATE 60
-
 GameManager::GameManager(FileParser& file_parser) : fileParser(file_parser),
 params(fileParser.getGameParams()) {
     world = new World(params);
@@ -19,16 +17,23 @@ void GameManager::run() {
     using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
 
+    int ms_per_update = fileParser.getGameParams()["ms_per_update"];
+
     while (keepRunning) {
         auto start = clock::now();
 
-        // TODO:
-        // - Saco un evento de la cola
-        // - Llamo al handler del evento
-
+        while (true) {
+            try {
+                UserEvent user_event = usersEvents.pop();
+                handleEvent(user_event);
+                world->update(ms_per_update);
+            } catch(ClosedQueueException&) {
+                break;
+            }
+        }
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
-        auto time_to_sleep = MS_PER_UPDATE - elapsed;
+        auto time_to_sleep = ms_per_update - elapsed;
         if (time_to_sleep > 0) std::this_thread::sleep_for(ms(time_to_sleep));
     }
     isRunning = false;
@@ -40,4 +45,8 @@ void GameManager::stop() {
 
 bool GameManager::isDead() {
     return (! isRunning);
+}
+
+void GameManager::handleEvent(UserEvent &user_event) {
+    // TODO: ...
 }

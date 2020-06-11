@@ -17,6 +17,9 @@ public:
     // Constructor y asignacion por copia deshabilitados
     World(const World& other) = delete;
     World& operator=(const World& other) = delete;
+
+    // Actualiza el mundo segun los milisegundos recibidos
+    void update(int ms);
 };
 
 #endif // GAME_WORLD_H

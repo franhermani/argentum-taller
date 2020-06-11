@@ -6,11 +6,14 @@
 #include "../utilities/file_parser.h"
 #include "world.h"
 #include "params.h"
+#include "../../common/blocking_queue.h"
+#include "../../common/user_event.h"
 
 class GameManager : public Thread {
     FileParser& fileParser;
     World* world;
     GameParams params;
+    BlockingQueue<UserEvent> usersEvents;
 
 public:
     // Constructor
@@ -33,6 +36,9 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
+
+    // Handler de los eventos de los usuarios
+    void handleEvent(UserEvent& user_event);
 };
 
 #endif // GAME_MANAGER_H
