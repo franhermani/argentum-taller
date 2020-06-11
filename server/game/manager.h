@@ -3,21 +3,21 @@
 
 #include <vector>
 #include "../../common/thread.h"
-#include "../utilities/file_parser.h"
+#include "../utilities/json_parser.h"
 #include "world.h"
 #include "params.h"
 #include "../../common/blocking_queue.h"
 #include "../../common/user_event.h"
 
 class GameManager : public Thread {
-    FileParser& fileParser;
+    JsonParser& jsonParser;
     World* world;
     GameParams params;
     BlockingQueue<UserEvent> usersEvents;
 
 public:
     // Constructor
-    explicit GameManager(FileParser& file_parser);
+    explicit GameManager(JsonParser& json_parser);
 
     // Constructor y asignacion por copia deshabilitados
     GameManager(const GameManager& other) = delete;

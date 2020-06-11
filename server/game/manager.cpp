@@ -2,8 +2,8 @@
 #include <chrono>
 #include "manager.h"
 
-GameManager::GameManager(FileParser& file_parser) : fileParser(file_parser),
-params(fileParser.getGameParams()) {
+GameManager::GameManager(JsonParser& json_parser) : jsonParser(json_parser),
+params(jsonParser.getGameParams()) {
     world = new World(params);
     keepRunning = true;
     isRunning = true;
@@ -17,7 +17,7 @@ void GameManager::run() {
     using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
 
-    int ms_per_update = fileParser.getGameParams()["ms_per_update"];
+    int ms_per_update = jsonParser.getGameParams()["ms_per_update"];
 
     while (keepRunning) {
         auto start = clock::now();

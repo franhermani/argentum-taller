@@ -2,14 +2,14 @@
 #define SERVER_H
 
 #include <string>
-#include "../utilities/file_parser.h"
+#include "../utilities/json_parser.h"
 #include "../utilities/file.h"
 #include "../game/manager.h"
 #include "clients_acceptor.h"
 
 class Server {
     std::string port;
-    FileParser fileParser;
+    JsonParser fileParser;
     GameManager gameManager;
     ClientsAcceptor* clientsAcceptor{};
 

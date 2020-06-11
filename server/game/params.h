@@ -1,7 +1,7 @@
 #ifndef GAME_PARAMS_H
 #define GAME_PARAMS_H
 
-#include "../utilities/file_parser.h"
+#include "../utilities/json_parser.h"
 #include "../utilities/json.hpp"
 
 using json = nlohmann::json;
