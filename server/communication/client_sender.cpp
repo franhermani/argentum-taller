@@ -2,13 +2,15 @@
 #include "client_sender.h"
 #include "../../common/socket_error.h"
 
-ClientSender::ClientSender(Socket& socket) : protocol(socket),
-keepTalking(true), isRunning(true), isFinished(false) {}
+ClientSender::ClientSender(Socket& socket) : protocol(socket) {
+    keepRunning = true;
+    isRunning = true;
+}
 
 void ClientSender::run() {
     std::string message;
 
-    while (keepTalking) {
+    while (keepRunning) {
         try {
             message = "Chau mundo";
             protocol.sendMessage(message);
@@ -20,7 +22,7 @@ void ClientSender::run() {
 }
 
 void ClientSender::stop() {
-    keepTalking = false;
+    keepRunning = false;
 }
 
 bool ClientSender::isDead() {

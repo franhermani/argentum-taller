@@ -2,13 +2,15 @@
 #include "client_receiver.h"
 #include "../../common/socket_error.h"
 
-ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket),
-        keepTalking(true), isRunning(true), isFinished(false) {}
+ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket) {
+    keepRunning = true;
+    isRunning = true;
+}
 
 void ClientReceiver::run() {
     std::string message;
 
-    while (keepTalking) {
+    while (keepRunning) {
         try {
             message = protocol.receiveMessage();
         } catch(SocketError&) {
@@ -19,7 +21,7 @@ void ClientReceiver::run() {
 }
 
 void ClientReceiver::stop() {
-    keepTalking = false;
+    keepRunning = false;
 }
 
 bool ClientReceiver::isDead() {
