@@ -25,6 +25,7 @@ void GameManager::run() {
     while (keepRunning) {
         auto start = clock::now();
 
+        /*
         while (true) {
             try {
                 UserEvent user_event = usersEvents.pop();
@@ -34,6 +35,7 @@ void GameManager::run() {
                 break;
             }
         }
+         */
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = ms_per_update - elapsed;

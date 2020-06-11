@@ -15,13 +15,13 @@ Server::~Server() {
 }
 
 void Server::startGame() {
-//    gameManager->start();
+    gameManager->start();
     clientsAcceptor->start();
 }
 
 void Server::endGame() {
     clientsAcceptor->stop();
     clientsAcceptor->join();
-//    gameManager->stop();
-//    gameManager->join();
+    gameManager->stop();
+    gameManager->join();
 }

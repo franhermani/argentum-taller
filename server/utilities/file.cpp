@@ -12,7 +12,8 @@ File::~File() {
 void File::openFD() {
     if (isOpen) return;
     ifs.open(path, std::ifstream::in);
-    if (! ifs.good()) throw std::runtime_error("Error al abrir el archivo\n");
+    if (! ifs.good()) throw std::runtime_error(
+            std::string("Error al abrir el archivo ") + path + "\n");
     isOpen = true;
 }
 
