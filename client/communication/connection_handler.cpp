@@ -1,8 +1,9 @@
 #include "connection_handler.h"
 
 ConnectionHandler::ConnectionHandler(const char *host, const char *port) :
-socket(host, port, false), keepTalking(true), isRunning(true),
-isFinished(false) {
+socket(host, port, false) {
+    keepRunning = true;
+    isRunning = true;
     connectionSender = new ConnectionSender(socket);
     connectionReceiver = new ConnectionReceiver(socket);
 }
@@ -16,7 +17,7 @@ void ConnectionHandler::run() {
     connectionSender->start();
     connectionReceiver->start();
 
-    while (keepTalking) {
+    while (keepRunning) {
         // TODO: ver que va aca
     }
     isRunning = false;
@@ -27,7 +28,7 @@ void ConnectionHandler::stop() {
     connectionSender->join();
     connectionReceiver->stop();
     connectionReceiver->join();
-    keepTalking = false;
+    keepRunning = false;
 }
 
 bool ConnectionHandler::isDead() {

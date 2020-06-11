@@ -1,15 +1,11 @@
 #ifndef CONNECTION_SENDER_H
 #define CONNECTION_SENDER_H
 
-#include <atomic>
 #include "../../common/thread.h"
 #include "protocol.h"
 
 class ConnectionSender : public Thread {
     ClientProtocol protocol;
-    std::atomic<bool> keepTalking;
-    std::atomic<bool> isRunning;
-    std::atomic<bool> isFinished;
 
 public:
     // Constructor
@@ -22,7 +18,7 @@ public:
     // Envia un mensaje segun el protocolo
     void run() override;
 
-    // Setea la variable booleana 'keepTalking' en false
+    // Setea la variable booleana 'keepRunning' en false
     void stop() override;
 
     // Devuelve true si el thread no esta corriendo o
