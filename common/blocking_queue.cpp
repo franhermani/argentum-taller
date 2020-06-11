@@ -1,4 +1,5 @@
 #include "blocking_queue.h"
+#include <utility>
 
 template <class T>
 BlockingQueue<T>::BlockingQueue() : isClosed(false)   {}
@@ -9,7 +10,7 @@ BlockingQueue<T>::~BlockingQueue() {}
 template <class T>
 void BlockingQueue<T>::push(T t){
     std::unique_lock<std::mutex> lk(m);
-    queue.push(t);
+    queue.push(std::move(t));
     cv.notify_all();
 }
 
@@ -22,7 +23,7 @@ T BlockingQueue<T>::pop() {
     }
     T t = queue.front();
     queue.pop();
-    return t;
+    return std::move(t);
 }
 
 template <class T>
