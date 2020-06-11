@@ -16,12 +16,6 @@ file(GLOB_RECURSE SERVER_FILES "server/*.cpp" "server/*.h" "common/*.cpp" "commo
 file(GLOB SDL_FILES "client/sdl/*.cpp")
 add_library(sdl-lib ${SDL_FILES})
 
-# GTK
-find_package(PkgConfig)
-pkg_check_modules(GTKMM gtkmm-3.0)
-link_directories(${GTKMM_LIBRARY_DIRS})
-include_directories(include ${GTKMM_INCLUDE_DIRS})
-
 # COMPILATION
 add_compile_options(-Wall -Werror -pedantic -pedantic-errors)
 
@@ -30,5 +24,4 @@ add_executable(client client/main.cpp ${CLIENT_FILES})
 add_executable(server server/main.cpp ${SERVER_FILES})
 
 # LINK LIBRARIES
-target_link_libraries(client ${GTKMM_LIBRARIES})
 target_link_libraries(client sdl-lib SDL2 SDL2_image)
