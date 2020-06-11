@@ -6,8 +6,13 @@
 
 GameManager::GameManager(FileParser& file_parser) : fileParser(file_parser),
 params(fileParser.getGameParams()) {
+    world = new World(params);
     keepRunning = true;
     isRunning = true;
+}
+
+GameManager::~GameManager() {
+    delete world;
 }
 
 void GameManager::run() {

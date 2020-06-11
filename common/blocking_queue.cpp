@@ -1,9 +1,10 @@
-
 #include "blocking_queue.h"
-
 
 template <class T>
 BlockingQueue<T>::BlockingQueue() : isClosed(false)   {}
+
+template <class T>
+BlockingQueue<T>::~BlockingQueue() {}
 
 template <class T>
 void BlockingQueue<T>::push(T t){
@@ -16,12 +17,9 @@ template <class T>
 T BlockingQueue<T>::pop() {
     std::unique_lock<std::mutex> lk(m);
     while (queue.empty()) {
-        if (isClosed) {
-            throw ClosedQueueException();
-        }
+        if (isClosed) throw ClosedQueueException();
         cv.wait(lk);
     }
-
     T t = queue.front();
     queue.pop();
     return t;
@@ -33,8 +31,3 @@ void BlockingQueue<T>::close() {
     isClosed = true;
     cv.notify_all();
 }
-
-template <class T>
-BlockingQueue<T>::~BlockingQueue() {}
-
-

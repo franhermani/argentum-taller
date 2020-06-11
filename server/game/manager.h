@@ -2,17 +2,14 @@
 #define GAME_MANAGER_H
 
 #include <vector>
-#include <atomic>
 #include "../../common/thread.h"
-#include "player.h"
+#include "../utilities/file_parser.h"
 #include "world.h"
 #include "params.h"
-#include "../utilities/file_parser.h"
 
 class GameManager : public Thread {
     FileParser& fileParser;
-    World world;
-    std::vector<Player> players;
+    World* world;
     GameParams params;
 
 public:
@@ -22,6 +19,10 @@ public:
     // Constructor y asignacion por copia deshabilitados
     GameManager(const GameManager& other) = delete;
     GameManager& operator=(const GameManager& other) = delete;
+
+    // Destructor
+    // Libera la memoria reservada para el world
+    ~GameManager();
 
     // Game loop
     void run() override;
