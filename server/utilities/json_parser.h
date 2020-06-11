@@ -8,21 +8,21 @@
 using json = nlohmann::json;
 
 class JsonParser {
-    json j;
+    // Convierte el archivo en formato Json a un json pp dicho
+    const json fileToJson(File& file);
 
 public:
     // Constructor
-    // Guarda el contenido del json file en 'j'
-    explicit JsonParser(File& file);
+    JsonParser();
 
     // Obtiene el puerto del archivo
-    const std::string getPort();
+    const std::string getPort(File& file);
 
     // Obtiene los parametros del juego en formato json
-    const json getGameParams();
+    const json getConfigParams(File& file);
 
     // Obtiene el mapa generado por Tiled en formato json
-    const json getWorldParams();
+    const json getWorldParams(File& file);
 };
 
 #endif // FILE_PARSER_H

@@ -9,8 +9,8 @@
 
 class Server {
     std::string port;
-    JsonParser fileParser;
-    GameManager gameManager;
+    JsonParser jsonParser;
+    GameManager* gameManager;
     ClientsAcceptor* clientsAcceptor{};
 
 public:
@@ -24,14 +24,11 @@ public:
     // Destructor
     ~Server();
 
-    // Inicializa el thread aceptador
-    void startClientsAcceptor();
+    // Inicializa el game manager y el aceptador de clientes
+    void startGame();
 
-    // Finaliza la ejecucion del thread aceptador
-    void stopClientsAcceptor();
-
-    // Espera a que finalice el thread aceptador
-    void joinClientsAcceptor();
+    // Finaliza el game manager y el aceptador de clientes
+    void endGame();
 };
 
 #endif // SERVER_H

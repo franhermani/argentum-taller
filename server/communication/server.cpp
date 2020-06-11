@@ -2,24 +2,26 @@
 #include <exception>
 #include "server.h"
 
-Server::Server(File& file) : fileParser(file), gameManager(fileParser) {
-    port = fileParser.getPort();
+Server::Server(File& file) {
+    port = jsonParser.getPort(file);
     if (port.empty()) throw std::runtime_error("No se especificó el puerto\n");
+    gameManager = new GameManager(file);
     clientsAcceptor = new ClientsAcceptor(0, port.c_str());
 }
 
 Server::~Server() {
+    delete gameManager;
     delete clientsAcceptor;
 }
 
-void Server::startClientsAcceptor() {
+void Server::startGame() {
+//    gameManager->start();
     clientsAcceptor->start();
 }
 
-void Server::stopClientsAcceptor() {
+void Server::endGame() {
     clientsAcceptor->stop();
-}
-
-void Server::joinClientsAcceptor() {
     clientsAcceptor->join();
+//    gameManager->stop();
+//    gameManager->join();
 }

@@ -13,18 +13,14 @@ int main(int argc, char *argv[]) {
         std::cerr << "Uso: ./server <archivo_de_configuracion>\n";
         return ERROR;
     }
-    std::string path = argv[1];
-
+    std::string path = argv[1], command;
     try {
         File file(path);
         Server server(file);
-        server.startClientsAcceptor();
-        std::string command;
+        server.startGame();
         while (getline(std::cin, command))
             if (command == EXIT_CHAR) break;
-
-        server.stopClientsAcceptor();
-        server.joinClientsAcceptor();
+        server.endGame();
     } catch (const std::exception &e) {
         std::cerr << e.what();
         return ERROR;

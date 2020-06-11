@@ -10,21 +10,21 @@
 #include "../../common/user_event.h"
 
 class GameManager : public Thread {
-    JsonParser& jsonParser;
+    JsonParser jsonParser;
+    GameParams* params;
     World* world;
-    GameParams params;
     BlockingQueue<UserEvent> usersEvents;
 
 public:
     // Constructor
-    explicit GameManager(JsonParser& json_parser);
+    explicit GameManager(File& config_file);
 
     // Constructor y asignacion por copia deshabilitados
     GameManager(const GameManager& other) = delete;
     GameManager& operator=(const GameManager& other) = delete;
 
     // Destructor
-    // Libera la memoria reservada para el world
+    // Libera la memoria reservada para 'params' y 'world'
     ~GameManager();
 
     // Game loop
