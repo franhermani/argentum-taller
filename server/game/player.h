@@ -11,7 +11,7 @@ class Player : public GameObject {
 
 public:
     // Constructor
-    explicit Player(const World& world, const std::string& username);
+    Player(World& world, const std::string& username);
 
     // Constructor y asignacion por copia deshabilitados
     Player(const Player& other) = delete;

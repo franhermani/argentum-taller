@@ -1,8 +1,10 @@
 #include "player.h"
 #include "../commands/defines.h"
 
-Player::Player(const World& world, const std::string &username) :
-world(const_cast<World &>(world)), username(username) {}
+Player::Player(World& world, const std::string &username) :
+world(world), username(username){
+    isImpenetrable = true;
+}
 
 void Player::moveTo(int direction) {
     int new_x = posX, new_y = posY;
