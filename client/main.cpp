@@ -17,9 +17,10 @@ int main(int argc, char *argv[]) {
 
     try {
         Client client(host, port);
-        client.connectToServer();
+        //client.connectToServer();
 //        client.disconnectFromServer();
 //        client.play();
+        client.render_map();
         // TODO: este loop en realidad no va, pero si lo saco se cuelga
         std::string command;
         while (getline(std::cin, command))

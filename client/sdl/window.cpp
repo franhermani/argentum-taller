@@ -39,3 +39,10 @@ void SDLWindow::render() {
 SDL_Renderer* SDLWindow::getRenderer() const {
     return renderer;
 }
+SDL_Surface* SDLWindow::getSurface() const {
+    return SDL_GetWindowSurface(window);
+}
+
+void SDLWindow::UpdateWindowSurface() {
+    SDL_UpdateWindowSurface(window);
+}

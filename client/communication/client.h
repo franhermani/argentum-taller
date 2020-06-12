@@ -29,6 +29,8 @@ public:
 
     // Comienza el juego
     void play();
+
+    void render_map();
 };
 
 #endif // CLIENT_H

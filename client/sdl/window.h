@@ -30,6 +30,10 @@ public:
 
     // Devuelve el renderer
     SDL_Renderer* getRenderer() const;
+
+    SDL_Surface* getSurface() const;
+
+    void UpdateWindowSurface();
 };
 
 #endif // SDL_WINDOW_H
