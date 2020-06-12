@@ -1,7 +1,7 @@
 #include "player.h"
 #include "../commands/defines.h"
 
-Player::Player(World& world, const std::string &username) :
+Player::Player(World& world, const std::string& username) :
 world(world), username(username){
     isImpenetrable = true;
 }
@@ -20,6 +20,8 @@ void Player::moveTo(int direction) {
             break;
         case UP:
             new_y += 1;
+            break;
+        default:
             break;
     }
     if ((world.inMapBoundaries(new_x, new_y)) &&

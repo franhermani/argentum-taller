@@ -12,8 +12,8 @@ GameManager::GameManager(File& config_file) {
 }
 
 GameManager::~GameManager() {
-    delete params;
     delete world;
+    delete params;
 }
 
 void GameManager::run() {
