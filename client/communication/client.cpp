@@ -52,6 +52,7 @@ SDL_Surface* gScreenSurface = NULL;
 //Current displayed image
 SDL_Surface* gStretchedSurface = NULL;
 SDL_Surface* gStretchedSurface_2 = NULL;
+SDL_Surface* guerrero = NULL;
 
 
 //gHelloWorld = SDL_LoadBMP( "/home/martinrosas/taller/taller-tp4/resources/images/hello_world.bmp" );
@@ -93,6 +94,7 @@ bool loadMedia()
     //Load stretching surface
     gStretchedSurface = loadSurface( "/home/martinrosas/taller/taller-tp4/resources/images/24083.png" );
     gStretchedSurface_2 = loadSurface( "/home/martinrosas/taller/taller-tp4/resources/images/24082.png" );
+    guerrero = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito.png");
 
     if( gStretchedSurface == NULL )
     {
@@ -188,28 +190,34 @@ void Client::render_map() {
                 stretchRect.y = 0;
                 stretchRect.w = 40;
                 stretchRect.h = 40;
-                SDL_BlitScaled(gStretchedSurface_2, NULL, gScreenSurface, &stretchRect);
+                SDL_BlitScaled(gStretchedSurface_2, NULL, ScreenSurface, &stretchRect);
 
                 //Update the surface
-                SDL_UpdateWindowSurface(gWindow );
+                SDL_UpdateWindowSurface(gWindow);
                 window.UpdateWindowSurface();
             }
-            /*
-            //SDL_Window window = *gWindow;
-            SDLTexture im("../resources/images/guerrero.jpg", window);
+
+            //SDLTexture im("/home/martinrosas/taller/taller-tp4/resources/images/guerrero.jpg", window);
+
             Area srcArea(0, 0, 300, 300);
             bool running = true;
             int x = 100;
             int y = 150;
             while (running) {
                 SDL_Event event;
-                Area destArea(x, y, 300, 300);
+                //Area destArea(x, y, 300, 300);
                 //window.fill();
-                im.render(srcArea, destArea);
+                //im.render(srcArea, destArea);
+                SDL_Rect stretchRect;
+                stretchRect.x = x;
+                stretchRect.y = y;
+                stretchRect.w = 22;
+                stretchRect.h = 47;
+                SDL_BlitScaled(guerrero, NULL, ScreenSurface, &stretchRect);
                 SDL_WaitEvent(&event);
                 switch (event.type) {
                     case SDL_KEYDOWN: {
-                        auto& keyEvent = (SDL_KeyboardEvent&) event;
+                        auto &keyEvent = (SDL_KeyboardEvent &) event;
                         switch (keyEvent.keysym.sym) {
                             case SDLK_LEFT:
                                 x -= 10;
@@ -234,13 +242,16 @@ void Client::render_map() {
                         running = false;
                         break;
                 }
-                */
-                //window->render();
-            }
-            SDL_Delay(10000);
 
-            //Free resources and close SDL
-            close();
+                //window.render();
+                window.UpdateWindowSurface();
+
+            }
+
+        }
+        //SDL_Delay(10000);
+        //Free resources and close SDL
+        close();
 
 
 
