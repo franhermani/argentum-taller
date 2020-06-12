@@ -3,7 +3,11 @@
 
 class GameObject {
 protected:
+    int id;
     int posX, posY;
+    bool isImpenetrable;
+
+    friend class World;
 };
 
 #endif // GAME_OBJECT_H

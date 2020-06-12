@@ -21,6 +21,27 @@ void World::loadMatrix() {
     }
 }
 
+// TODO: ver quien crea y destruye a los GameObjects
+void World::addGameObject(GameObject* game_object) {
+    gameObjects.push_back(game_object);
+}
+
+void World::removeGameObject(int id) {
+    for (auto object : gameObjects) {
+        if (object->id == id) {
+            // TODO: eliminar objeto
+        }
+    }
+}
+
+bool World::detectCollision(int pos_x, int pos_y) {
+    for (auto object : gameObjects)
+        if (object->posX == pos_x && object->posY == pos_y) {
+            if (object->isImpenetrable) return true;
+        }
+    return false;
+}
+
 void World::update(int ms) {
     // TODO: ...
 }

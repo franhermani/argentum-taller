@@ -27,6 +27,16 @@ public:
     World(const World& other) = delete;
     World& operator=(const World& other) = delete;
 
+    // Agrega un GameObject al mundo
+    // TODO: ver si es puntero o no
+    void addGameObject(GameObject* game_object);
+
+    // Remueve un GameObject del mundo segun su ID
+    void removeGameObject(int id);
+
+    // Determina si hay algun GameObject impenetrable en la posicion (x,y)
+    bool detectCollision(int pos_x, int pos_y);
+
     // Actualiza el mundo segun los milisegundos recibidos
     // Simula el paso del tiempo llamando al metodo update()
     // de todos los objetos dentro de 'gameObjects'
