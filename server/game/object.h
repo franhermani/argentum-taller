@@ -8,6 +8,10 @@ protected:
     bool isImpenetrable;
 
     friend class World;
+public:
+    // Ejecuta las acciones basadas en el tiempo
+    // Metodo a definir por las clases derivadas
+    virtual void update(int ms) = 0;
 };
 
 #endif // GAME_OBJECT_H

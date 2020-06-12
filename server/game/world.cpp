@@ -43,5 +43,5 @@ bool World::detectCollision(int pos_x, int pos_y) {
 }
 
 void World::update(int ms) {
-    // TODO: ...
+    for (auto object : gameObjects) object->update(ms);
 }
