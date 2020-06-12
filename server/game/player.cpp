@@ -1,26 +1,36 @@
 #include "player.h"
 #include "../commands/defines.h"
 
-Player::Player(const std::string &username) : username(username) {}
+Player::Player(World& world, const std::string& username) :
+world(world), username(username){
+    isImpenetrable = true;
+}
 
 void Player::moveTo(int direction) {
+    int new_x = posX, new_y = posY;
     switch (direction) {
-        // TODO: en todos chequear que no me fui del mapa
         case LEFT:
-            // TODO: moverme hacia la izq en la matriz
-            posX -= 1;
+            new_x -= 1;
             break;
         case RIGHT:
-            // TODO: moverme hacia la der en la matriz
-            posX += 1;
-            break;
-        case UP:
-            // TODO: moverme hacia arriba en la matriz
-            posY += 1;
+            new_x += 1;
             break;
         case DOWN:
-            // TODO: moverme hacia abajo en la matriz
-            posY -= 1;
+            new_y -= 1;
+            break;
+        case UP:
+            new_y += 1;
+            break;
+        default:
             break;
     }
+    if ((world.inMapBoundaries(new_x, new_y)) &&
+        (! world.inCollision(new_x, new_y))) {
+        posX = new_x;
+        posY = new_y;
+    }
+}
+
+void Player::update(int ms) {
+    // TODO: ...
 }
