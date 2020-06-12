@@ -23,10 +23,12 @@ void World::loadMatrix() {
 
 // TODO: ver quien crea y destruye a los GameObjects
 void World::addGameObject(GameObject* game_object) {
+    std::unique_lock<std::mutex> lk(m);
     gameObjects.push_back(game_object);
 }
 
 void World::removeGameObject(int id) {
+    std::unique_lock<std::mutex> lk(m);
     for (auto object : gameObjects) {
         if (object->id == id) {
             // TODO: eliminar objeto
@@ -34,7 +36,15 @@ void World::removeGameObject(int id) {
     }
 }
 
-bool World::detectCollision(int pos_x, int pos_y) {
+bool World::inMapBoundaries(int pos_x, int pos_y) {
+    bool x_in_boundaries = (pos_x >= 0) && (pos_x < WIDTH),
+         y_in_boundaries = (pos_y >= 0) && (pos_y < HEIGHT);
+
+    return x_in_boundaries && y_in_boundaries;
+}
+
+bool World::inCollision(int pos_x, int pos_y) {
+    std::unique_lock<std::mutex> lk(m);
     for (auto object : gameObjects)
         if (object->posX == pos_x && object->posY == pos_y) {
             if (object->isImpenetrable) return true;
@@ -43,5 +53,6 @@ bool World::detectCollision(int pos_x, int pos_y) {
 }
 
 void World::update(int ms) {
+    std::unique_lock<std::mutex> lk(m);
     for (auto object : gameObjects) object->update(ms);
 }

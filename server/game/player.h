@@ -3,13 +3,15 @@
 
 #include <string>
 #include "object.h"
+#include "world.h"
 
 class Player : public GameObject {
+    World& world;
     std::string username;
 
 public:
     // Constructor
-    explicit Player(const std::string& username);
+    explicit Player(const World& world, const std::string& username);
 
     // Constructor y asignacion por copia deshabilitados
     Player(const Player& other) = delete;
@@ -17,6 +19,9 @@ public:
 
     // Mueve el personaje segun la direccion dada
     void moveTo(int direction);
+
+    // TODO: ...
+    void update(int ms) override;
 };
 
 #endif // GAME_PLAYER_H
