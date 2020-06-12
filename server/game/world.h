@@ -4,11 +4,20 @@
 #include <vector>
 #include "params.h"
 #include "object.h"
+#include "../../common/terrain.h"
+
+#define WIDTH 100
+#define HEIGHT 100
 
 class World {
     GameParams& params;
     // TODO: ver si es puntero o no
     std::vector<GameObject*> gameObjects;
+    // TODO: tomar estos valores del json
+    Terrain matrix[WIDTH][HEIGHT]{};
+
+    // Llena la matriz (mapa) segun el json generado por Tiled
+    void loadMatrix();
 
 public:
     // Constructor
@@ -19,6 +28,8 @@ public:
     World& operator=(const World& other) = delete;
 
     // Actualiza el mundo segun los milisegundos recibidos
+    // Simula el paso del tiempo llamando al metodo update()
+    // de todos los objetos dentro de 'gameObjects'
     void update(int ms);
 };
 
