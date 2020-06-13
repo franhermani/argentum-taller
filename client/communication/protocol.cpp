@@ -11,45 +11,44 @@ ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 
 // TODO: tendria que recibir el ID del NPC, Player u Objeto
 const char* ClientProtocol::encodeMessage(const std::string& message) {
-    std::string type = message.substr(0,1);
     std::vector<char> v;
 
-    // Comando
-    if (type == "/") {
-        // Copio los primeros 4 caracteres
-        std::string command = message.substr(1,4);
-        memcpy(&v[v.size()], command.c_str(), command.length());
+    // Copio la abreviatura (primeros 4 caracteres)
+//    std::string abbr = message.substr(0,3);
+//    memcpy(&v[v.size()], abbr.c_str(), abbr.length());
 
-        // Copio la longitud
-        // TODO: modularizar esto
-        /*
-        uint16_t length;
-        if (command == "medi") {
-            length = 0;
-        } else if (command == "resu") {
-            bool id_sacerdote = false;
-            length = id_sacerdote ? 4 : 0;
-        } else if (command == "cura") {
-            length = 4;
-        } else if (command == "depo") {
-            length = 10;
-        } else if (command == "reti") {
-            length = 10;
-        } else if (command == "list") {
-            length = 4;
-        } else if (command == "comp") {
-            length = 8;
-        } else if (command == "vend") {
-            length = 8;
-        } else if (command == "toma") {
-            length = 4;
-        } else if (command == "tira") {
-            length = 4;
-        }
-        */
-        // Copio el contenido del mensaje
-        // TODO: ...
+    // Copio la longitud
+    // TODO: modularizar esto
+    /*
+    uint16_t length;
+    if (abbr == "user") {
+        length = length(username);
+    } else if (abbr == "medi") {
+        length = 0;
+    } else if (abbr == "resu") {
+        bool id_sacerdote = false;
+        length = id_sacerdote ? 4 : 0;
+    } else if (abbr == "cura") {
+        length = 4;
+    } else if (abbr == "depo") {
+        length = 10;
+    } else if (abbr == "reti") {
+        length = 10;
+    } else if (abbr == "list") {
+        length = 4;
+    } else if (abbr == "comp") {
+        length = 8;
+    } else if (abbr == "vend") {
+        length = 8;
+    } else if (abbr == "toma") {
+        length = 4;
+    } else if (abbr == "tira") {
+        length = 4;
     }
+    */
+    // Copio el contenido del mensaje
+    // TODO: ...
+
     return v.data();
 }
 
@@ -60,7 +59,7 @@ const std::string ClientProtocol::decodeMessage(const char* message) {
 
 void ClientProtocol::sendMessage(const std::string& message) {
     // TODO: ...
-    encodeMessage(message);
+//    encodeMessage(message);
     socket.sendBytes(message.c_str(), message.length());
 }
 

@@ -1,6 +1,7 @@
 #ifndef CLIENT_HANDLER_H
 #define CLIENT_HANDLER_H
 
+#include <string>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "client_sender.h"
@@ -8,6 +9,7 @@
 
 class ClientHandler : public Thread {
     Socket socket;
+    std::string username{};
     ClientSender* clientSender;
     ClientReceiver* clientReceiver;
 

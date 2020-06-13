@@ -14,12 +14,10 @@ ConnectionHandler::~ConnectionHandler() {
 }
 
 void ConnectionHandler::run() {
+    // TODO: username leerlo por terminal, pasarselo a client y luego aca
+    connectionSender->sendUsername("franhermani");
     connectionSender->start();
     connectionReceiver->start();
-
-    while (keepRunning) {
-        // TODO: ver que va aca
-    }
     isRunning = false;
 }
 

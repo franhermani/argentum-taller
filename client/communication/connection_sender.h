@@ -1,6 +1,7 @@
 #ifndef CONNECTION_SENDER_H
 #define CONNECTION_SENDER_H
 
+#include <string>
 #include "../../common/thread.h"
 #include "protocol.h"
 
@@ -24,6 +25,10 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
+
+    // Envia el username del cliente para que el server lo identifique
+    // Este metodo se llama antes de run()
+    void sendUsername(const std::string& username);
 };
 
 #endif // CONNECTION_SENDER_H

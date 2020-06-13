@@ -8,15 +8,18 @@ ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket) {
 }
 
 void ClientReceiver::run() {
+    /*
     std::string message;
 
     while (keepRunning) {
         try {
+            // TODO: recibir un comando del client y actualizar el mapa
             message = protocol.receiveMessage();
         } catch(SocketError&) {
             break;
         }
     }
+     */
     isRunning = false;
 }
 
@@ -26,4 +29,8 @@ void ClientReceiver::stop() {
 
 bool ClientReceiver::isDead() {
     return (! isRunning);
+}
+
+const std::string ClientReceiver::receiveUsername() {
+    return protocol.receiveMessage();
 }

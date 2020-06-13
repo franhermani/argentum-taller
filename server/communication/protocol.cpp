@@ -24,8 +24,8 @@ void ServerProtocol::sendMessage(const std::string& message) {
 const std::string ServerProtocol::receiveMessage() {
     // TODO: ...
     char buffer[BUF_MAX_SIZE];
-    socket.receiveBytes(buffer, 10);
-    buffer[10] = '\0';
+    socket.receiveBytes(buffer, 11);
+    buffer[11] = '\0';
     std::string str(buffer);
     std::cout << buffer << "\n";
     // TODO: decodeMessage(str);
