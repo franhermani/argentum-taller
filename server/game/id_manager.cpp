@@ -18,7 +18,7 @@ const int IdManager::addPlayerByUsername(const std::string &username) {
     if (actual_player_id == LAST_PLAYER_ID)
         throw NoMoreAvailableIdsException();
 
-    username_ids[username] = ++actual_player_id;
+    username_ids[username] = actual_player_id ++;
     return username_ids[username];
 }
 
