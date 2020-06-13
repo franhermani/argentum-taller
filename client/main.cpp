@@ -24,6 +24,7 @@ int main(int argc, char *argv[]) {
         std::string command;
         while (getline(std::cin, command))
             if (command == EXIT_CHAR) break;
+        client.disconnectFromServer();
     } catch(SocketError& e) {
         std::cerr << e.what() << "\n";
     } catch(...) {
