@@ -17,7 +17,7 @@ class ClientHandler : public Thread {
 
 public:
     // Constructor
-    explicit ClientHandler(Socket socket, GameManager& game_manager);
+    ClientHandler(Socket socket, GameManager& game_manager);
 
     // Constructor y asignacion por copia deshabilitados
     ClientHandler(const ClientHandler&) = delete;
