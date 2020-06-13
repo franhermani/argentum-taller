@@ -2,7 +2,7 @@
 #include "../commands/defines.h"
 
 Player::Player(World& world, const std::string& username) :
-world(world), username(username){
+world(world), username(username), orientation(DOWN) {
     isImpenetrable = true;
 }
 
@@ -29,6 +29,7 @@ void Player::moveTo(int direction) {
         posX = new_x;
         posY = new_y;
     }
+    orientation = direction;
 }
 
 void Player::update(int ms) {

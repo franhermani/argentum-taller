@@ -8,6 +8,7 @@
 class Player : public GameObject {
     World& world;
     std::string username;
+    int orientation;
 
 public:
     // Constructor
