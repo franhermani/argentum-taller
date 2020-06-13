@@ -4,8 +4,9 @@
 #include <vector>
 #include "../../common/thread.h"
 #include "../utilities/json_parser.h"
-#include "world.h"
 #include "params.h"
+#include "world.h"
+#include "id_manager.h"
 #include "../../common/blocking_queue.h"
 #include "../../common/user_event.h"
 
@@ -13,6 +14,7 @@ class GameManager : public Thread {
     JsonParser jsonParser;
     GameParams* params;
     World* world;
+    IdManager idManager;
     BlockingQueue<UserEvent> usersEvents;
 
 public:

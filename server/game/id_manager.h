@@ -32,14 +32,14 @@ public:
     // Constructor
     IdManager();
 
-    // Agrega un Player por username
-    void addPlayerByUsername(const std::string& username);
+    // Agrega un Player por username y devuelve su ID
+    const int addPlayerByUsername(const std::string& username);
 
-    // Agrega un NPC por ID
-    void addNPCById();
+    // Agrega un NPC por ID y lo devuelve
+    const int addNPCById();
 
-    // Agrega un Item por ID
-    void addItemById();
+    // Agrega un Item por ID y lo devuelve
+    const int addItemById();
 
     // Obtiene el ID de un Player por username
     const int getPlayerId(const std::string& username);
