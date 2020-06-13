@@ -61,5 +61,5 @@ void GameManager::addPlayer(const std::string &username) {
 }
 
 void GameManager::handleEvent(UserEvent &user_event) {
-    // TODO: ...
+    // TODO: estos eventos modifican efectivamente los GameObjects
 }

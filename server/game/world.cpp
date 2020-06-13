@@ -56,3 +56,11 @@ void World::update(int ms) {
     std::unique_lock<std::mutex> lk(m);
     for (auto object : gameObjects) object->update(ms);
 }
+
+const int World::getWidth() const {
+    return WIDTH;
+}
+
+const int World::getHeight() const {
+    return HEIGHT;
+}

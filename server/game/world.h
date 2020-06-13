@@ -4,7 +4,7 @@
 #include <mutex>
 #include <vector>
 #include "params.h"
-#include "object.h"
+#include "game_object.h"
 #include "../../common/terrain.h"
 
 #define WIDTH 100
@@ -46,6 +46,12 @@ public:
     // Simula el paso del tiempo llamando al metodo update()
     // de todos los objetos dentro de 'gameObjects'
     void update(int ms);
+
+    // Devuelve la base del mapa
+    const int getWidth() const;
+
+    // Devuelve la altura del mapa
+    const int getHeight() const;
 };
 
 #endif // GAME_WORLD_H
