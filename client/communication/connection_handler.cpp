@@ -2,7 +2,6 @@
 
 ConnectionHandler::ConnectionHandler(const char *host, const char *port) :
 socket(host, port, false) {
-    keepRunning = true;
     isRunning = true;
     connectionSender = new ConnectionSender(socket);
     connectionReceiver = new ConnectionReceiver(socket);
@@ -14,12 +13,10 @@ ConnectionHandler::~ConnectionHandler() {
 }
 
 void ConnectionHandler::run() {
+    // TODO: username leerlo por terminal, pasarselo a client y luego aca
+    connectionSender->sendUsername("franhermani");
     connectionSender->start();
     connectionReceiver->start();
-
-    while (keepRunning) {
-        // TODO: ver que va aca
-    }
     isRunning = false;
 }
 
@@ -28,7 +25,6 @@ void ConnectionHandler::stop() {
     connectionSender->join();
     connectionReceiver->stop();
     connectionReceiver->join();
-    keepRunning = false;
 }
 
 bool ConnectionHandler::isDead() {

@@ -8,15 +8,18 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket) : protocol(socket) {
 }
 
 void ConnectionReceiver::run() {
+    /*
     std::string message;
 
     while (keepRunning) {
         try {
+            // TODO: recibo el mapa y actualizo el modelo local
             message = protocol.receiveMessage();
         } catch(SocketError&) {
             break;
         }
     }
+     */
     isRunning = false;
 }
 
