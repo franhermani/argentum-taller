@@ -3,7 +3,7 @@
 
 #include "game_object.h"
 
-class LivingObject : GameObject {
+class LivingObject : public GameObject {
 protected:
     int actualLife, maxLife;
     int posX, posY;
