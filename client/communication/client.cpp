@@ -166,18 +166,27 @@ void render_background(SDL_Surface* ScreenSurface) {
             stretchRect.w = x_blocks_size;
             stretchRect.h = y_blocks_size;
             SDL_BlitScaled(gStretchedSurface, NULL, ScreenSurface, &stretchRect);
-            //SDL_BlitScaled(gStretchedSurface, NULL, gScreenSurface, &stretchRect);
             x += x_blocks_size;
             std::cout << "itero x= " << x << "y= " << y << "\n";
         }
         y += y_blocks_size;
     }
+    //esto esta demas para ver que onda, sacarlo
     SDL_Rect stretchRect;
     stretchRect.x = 0;
     stretchRect.y = 0;
     stretchRect.w = 40;
     stretchRect.h = 40;
     SDL_BlitScaled(gStretchedSurface_2, NULL, ScreenSurface, &stretchRect);
+
+}
+/*
+void character_arround_in_circles(SDL_Surface* ScreenSurface) {
+    for
+}
+ */
+
+void render_received_map() {
 
 }
 
