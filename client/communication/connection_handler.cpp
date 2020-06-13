@@ -2,7 +2,6 @@
 
 ConnectionHandler::ConnectionHandler(const char *host, const char *port) :
 socket(host, port, false) {
-    keepRunning = true;
     isRunning = true;
     connectionSender = new ConnectionSender(socket);
     connectionReceiver = new ConnectionReceiver(socket);
@@ -26,7 +25,6 @@ void ConnectionHandler::stop() {
     connectionSender->join();
     connectionReceiver->stop();
     connectionReceiver->join();
-    keepRunning = false;
 }
 
 bool ConnectionHandler::isDead() {
