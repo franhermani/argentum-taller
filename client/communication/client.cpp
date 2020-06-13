@@ -52,8 +52,10 @@ SDL_Surface* gScreenSurface = NULL;
 //Current displayed image
 SDL_Surface* gStretchedSurface = NULL;
 SDL_Surface* gStretchedSurface_2 = NULL;
-SDL_Surface* guerrero = NULL;
-
+SDL_Surface* guerrero_sube = NULL;
+SDL_Surface* guerrero_baja = NULL;
+SDL_Surface* guerrero_der = NULL;
+SDL_Surface* guerrero_izq = NULL;
 
 //gHelloWorld = SDL_LoadBMP( "/home/martinrosas/taller/taller-tp4/resources/images/hello_world.bmp" );
 bool init()
@@ -94,7 +96,10 @@ bool loadMedia()
     //Load stretching surface
     gStretchedSurface = loadSurface( "/home/martinrosas/taller/taller-tp4/resources/images/24083.png" );
     gStretchedSurface_2 = loadSurface( "/home/martinrosas/taller/taller-tp4/resources/images/24082.png" );
-    guerrero = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito.png");
+    guerrero_sube = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png");
+    guerrero_baja = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png");
+    guerrero_izq = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png");
+    guerrero_der = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png");
 
     if( gStretchedSurface == NULL )
     {
@@ -144,6 +149,10 @@ SDL_Surface* loadSurface( std::string path )
     }
 
     return optimizedSurface;
+}
+
+void render_background() {
+    
 }
 
 void Client::render_map() {
@@ -203,17 +212,24 @@ void Client::render_map() {
             bool running = true;
             int x = 100;
             int y = 150;
+            SDL_Rect stretchRect;
+            stretchRect.x = x;
+            stretchRect.y = y;
+            stretchRect.w = 22;
+            stretchRect.h = 47;
+            SDL_BlitScaled(guerrero_baja, NULL, ScreenSurface, &stretchRect);
+            SDL_Surface* current_warrior;
+            current_warrior = guerrero_baja;
             while (running) {
                 SDL_Event event;
                 //Area destArea(x, y, 300, 300);
                 //window.fill();
                 //im.render(srcArea, destArea);
-                SDL_Rect stretchRect;
                 stretchRect.x = x;
                 stretchRect.y = y;
                 stretchRect.w = 22;
                 stretchRect.h = 47;
-                SDL_BlitScaled(guerrero, NULL, ScreenSurface, &stretchRect);
+                SDL_BlitScaled(current_warrior, NULL, ScreenSurface, &stretchRect);
                 SDL_WaitEvent(&event);
                 switch (event.type) {
                     case SDL_KEYDOWN: {
@@ -221,15 +237,19 @@ void Client::render_map() {
                         switch (keyEvent.keysym.sym) {
                             case SDLK_LEFT:
                                 x -= 10;
+                                current_warrior = guerrero_izq;
                                 break;
                             case SDLK_RIGHT:
                                 x += 10;
+                                current_warrior = guerrero_der;
                                 break;
                             case SDLK_UP:
                                 y -= 10;
+                                current_warrior = guerrero_sube;
                                 break;
                             case SDLK_DOWN:
                                 y += 10;
+                                current_warrior = guerrero_baja;
                                 break;
                         }
                     } // Fin KEY_DOWN
