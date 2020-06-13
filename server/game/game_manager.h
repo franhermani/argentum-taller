@@ -1,11 +1,13 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
+#include <string>
 #include <vector>
 #include "../../common/thread.h"
 #include "../utilities/json_parser.h"
-#include "world.h"
 #include "params.h"
+#include "world.h"
+#include "id_manager.h"
 #include "../../common/blocking_queue.h"
 #include "../../common/user_event.h"
 
@@ -13,6 +15,7 @@ class GameManager : public Thread {
     JsonParser jsonParser;
     GameParams* params;
     World* world;
+    IdManager idManager;
     BlockingQueue<UserEvent> usersEvents;
 
 public:
@@ -36,6 +39,9 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
+
+    // Agrega el Player al juego segun su username
+    void addPlayer(const std::string& username);
 
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);

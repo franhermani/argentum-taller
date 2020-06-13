@@ -4,8 +4,9 @@
 #include "client_receiver.h"
 #include "../../common/socket_accept_error.h"
 
-ClientsAcceptor::ClientsAcceptor(const char *host, const char *port) :
-socket(host, port, true) {
+ClientsAcceptor::ClientsAcceptor(const char *host, const char *port,
+        GameManager& game_manager) : socket(host, port, true),
+        gameManager(game_manager) {
     keepRunning = true;
     isRunning = true;
 }
@@ -36,7 +37,8 @@ bool ClientsAcceptor::isDead() {
 
 void ClientsAcceptor::createClientHandler() {
     Socket socket_client = socket.acceptClients();
-    clients.push_back(new ClientHandler(std::move(socket_client)));
+    clients.push_back(new ClientHandler(std::move(socket_client),
+            gameManager));
 }
 
 void ClientsAcceptor::startClientHandler() {
@@ -48,6 +50,7 @@ void ClientsAcceptor::cleanDeadClientHandlers() {
     auto iter = clients.begin();
     for (; iter != clients.end(); ++iter) {
         if ((*iter)->isDead()) {
+            (*iter)->stop();
             (*iter)->join();
             delete (*iter);
         } else {

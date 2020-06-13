@@ -6,7 +6,7 @@ Server::Server(File& file) {
     port = jsonParser.getPort(file);
     if (port.empty()) throw std::runtime_error("No se especificó el puerto\n");
     gameManager = new GameManager(file);
-    clientsAcceptor = new ClientsAcceptor(0, port.c_str());
+    clientsAcceptor = new ClientsAcceptor(0, port.c_str(), *gameManager);
 }
 
 Server::~Server() {

@@ -1,6 +1,8 @@
+#include <iostream>
+#include <string>
 #include <thread>
 #include <chrono>
-#include "manager.h"
+#include "game_manager.h"
 
 GameManager::GameManager(File& config_file) {
     File world_file("../server/config/world.json");
@@ -50,6 +52,12 @@ void GameManager::stop() {
 
 bool GameManager::isDead() {
     return (! isRunning);
+}
+
+void GameManager::addPlayer(const std::string &username) {
+    // TODO: crear Player aca o con world.createPlayer()
+    int id = idManager.addPlayerByUsername(username);
+    std::cout << id << "\n";
 }
 
 void GameManager::handleEvent(UserEvent &user_event) {

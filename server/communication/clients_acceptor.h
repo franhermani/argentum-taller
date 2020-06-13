@@ -5,10 +5,12 @@
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "client_handler.h"
+#include "../game/game_manager.h"
 
 class ClientsAcceptor : public Thread {
     Socket socket;
     std::vector<ClientHandler*> clients;
+    GameManager& gameManager;
 
     // Crea el thread del cliente
     void createClientHandler();
@@ -26,7 +28,8 @@ class ClientsAcceptor : public Thread {
 
 public:
     // Constructor
-    ClientsAcceptor(const char *host, const char *port);
+    ClientsAcceptor(const char *host, const char *port,
+            GameManager& game_manager);
 
     // Constructor y asignacion por copia deshabilitados
     ClientsAcceptor(const ClientsAcceptor&) = delete;

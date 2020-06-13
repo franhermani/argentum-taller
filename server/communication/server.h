@@ -4,7 +4,7 @@
 #include <string>
 #include "../utilities/json_parser.h"
 #include "../utilities/file.h"
-#include "../game/manager.h"
+#include "../game/game_manager.h"
 #include "clients_acceptor.h"
 
 class Server {
