@@ -18,7 +18,6 @@ int main(int argc, char *argv[]) {
     try {
         Client client(host, port);
         client.connectToServer();
-//        client.disconnectFromServer();
 //        client.play();
         // TODO: este loop en realidad no va, pero si lo saco se cuelga
         std::string command;
