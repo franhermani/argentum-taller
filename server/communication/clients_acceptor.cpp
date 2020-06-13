@@ -17,8 +17,7 @@ void ClientsAcceptor::run() {
             socket.listenToClients();
             createClientHandler();
             startClientHandler();
-            // TODO: esta funcion esta rompiendo
-//            cleanDeadClientHandlers();
+            cleanDeadClientHandlers();
         } catch(SocketAcceptError&) {
             break;
         }
@@ -51,6 +50,7 @@ void ClientsAcceptor::cleanDeadClientHandlers() {
     auto iter = clients.begin();
     for (; iter != clients.end(); ++iter) {
         if ((*iter)->isDead()) {
+            (*iter)->stop();
             (*iter)->join();
             delete (*iter);
         } else {
