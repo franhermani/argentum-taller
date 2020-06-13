@@ -151,8 +151,34 @@ SDL_Surface* loadSurface( std::string path )
     return optimizedSurface;
 }
 
-void render_background() {
-    
+void render_background(SDL_Surface* ScreenSurface) {
+    int x = 0;
+    int y = 0;
+    int blocks = 20;
+    int x_blocks_size = SCREEN_WIDTH / blocks;
+    int y_blocks_size = SCREEN_HEIGHT / blocks;
+    for (int i = 0; i < blocks; i++) {
+        x = 0;
+        for (int j = 0; j < blocks; j++) {
+            SDL_Rect stretchRect;
+            stretchRect.x = x;
+            stretchRect.y = y;
+            stretchRect.w = x_blocks_size;
+            stretchRect.h = y_blocks_size;
+            SDL_BlitScaled(gStretchedSurface, NULL, ScreenSurface, &stretchRect);
+            //SDL_BlitScaled(gStretchedSurface, NULL, gScreenSurface, &stretchRect);
+            x += x_blocks_size;
+            std::cout << "itero x= " << x << "y= " << y << "\n";
+        }
+        y += y_blocks_size;
+    }
+    SDL_Rect stretchRect;
+    stretchRect.x = 0;
+    stretchRect.y = 0;
+    stretchRect.w = 40;
+    stretchRect.h = 40;
+    SDL_BlitScaled(gStretchedSurface_2, NULL, ScreenSurface, &stretchRect);
+
 }
 
 void Client::render_map() {
@@ -172,43 +198,11 @@ void Client::render_map() {
             } else {
                 //Main loop flag
 
-
-                //Apply the image stretched
-                int x = 0;
-                int y = 0;
-                int blocks = 20;
-                int x_blocks_size = SCREEN_WIDTH / blocks;
-                int y_blocks_size = SCREEN_HEIGHT / blocks;
-                for (int i = 0; i < blocks; i++) {
-                    x = 0;
-                    for (int j = 0; j < blocks; j++) {
-                        SDL_Rect stretchRect;
-                        stretchRect.x = x;
-                        stretchRect.y = y;
-                        stretchRect.w = x_blocks_size;
-                        stretchRect.h = y_blocks_size;
-                        SDL_BlitScaled(gStretchedSurface, NULL, ScreenSurface, &stretchRect);
-                        SDL_BlitScaled(gStretchedSurface, NULL, gScreenSurface, &stretchRect);
-                        x += x_blocks_size;
-                        std::cout << "itero x= " << x << "y= " << y << "\n";
-                    }
-                    y += y_blocks_size;
-                }
-                SDL_Rect stretchRect;
-                stretchRect.x = 0;
-                stretchRect.y = 0;
-                stretchRect.w = 40;
-                stretchRect.h = 40;
-                SDL_BlitScaled(gStretchedSurface_2, NULL, ScreenSurface, &stretchRect);
-
+                render_background(ScreenSurface);
                 //Update the surface
                 SDL_UpdateWindowSurface(gWindow);
                 window.UpdateWindowSurface();
             }
-
-            //SDLTexture im("/home/martinrosas/taller/taller-tp4/resources/images/guerrero.jpg", window);
-
-            Area srcArea(0, 0, 300, 300);
             bool running = true;
             int x = 100;
             int y = 150;
@@ -222,13 +216,11 @@ void Client::render_map() {
             current_warrior = guerrero_baja;
             while (running) {
                 SDL_Event event;
-                //Area destArea(x, y, 300, 300);
-                //window.fill();
-                //im.render(srcArea, destArea);
                 stretchRect.x = x;
                 stretchRect.y = y;
                 stretchRect.w = 22;
                 stretchRect.h = 47;
+                render_background(ScreenSurface);
                 SDL_BlitScaled(current_warrior, NULL, ScreenSurface, &stretchRect);
                 SDL_WaitEvent(&event);
                 switch (event.type) {
