@@ -5,7 +5,7 @@
 #include "../sdl/window.h"
 #include "../sdl/texture.h"
 #include "vector"
-#include <SDL2/SDL_image.h>
+#include "map"
 
 
 Client::Client(const char *host, const char *port) :
@@ -56,6 +56,35 @@ SDL_Surface* guerrero_sube = NULL;
 SDL_Surface* guerrero_baja = NULL;
 SDL_Surface* guerrero_der = NULL;
 SDL_Surface* guerrero_izq = NULL;
+SDL_Surface* skeleton_sube = NULL;
+SDL_Surface* skeleton_baja = NULL;
+SDL_Surface* skeleton_der = NULL;
+SDL_Surface* skeleton_izq = NULL;
+std::map<int, SDL_Surface*> terrains_map;
+std::map<int, SDL_Surface*> warriors_map;
+std::map<int, SDL_Surface*> skeleton_map;
+
+enum Terrain {
+    TERRAIN_GRASS,
+    TERRAIN_LAND,
+    TERRAIN_SAND,
+    TERRAIN_STONE,
+    TERRAIN_WALL,
+    TERRAIN_WATER,
+};
+enum Warrior {
+    WARRIOR_UP,
+    WARRIOR_DOWN,
+    WARRIOR_RIGHT,
+    WARRIOR_LEFT
+};
+enum Skeleton {
+        SKELETON_UP,
+        SKELETON_DOWN,
+        SKELETON_RIGHT,
+        SKELETON_LEFT
+};
+
 
 //gHelloWorld = SDL_LoadBMP( "/home/martinrosas/taller/taller-tp4/resources/images/hello_world.bmp" );
 bool init()
@@ -101,6 +130,28 @@ bool loadMedia()
     guerrero_izq = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png");
     guerrero_der = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png");
 
+    skeleton_sube = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_sube.png");
+    skeleton_baja = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png");
+    skeleton_izq = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png");
+    skeleton_der = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png");
+
+
+    terrains_map[TERRAIN_WATER] = gStretchedSurface_2;
+    terrains_map[TERRAIN_LAND] = gStretchedSurface;
+
+    warriors_map[WARRIOR_UP] = guerrero_sube;
+    warriors_map[WARRIOR_DOWN] = guerrero_baja;
+    warriors_map[WARRIOR_LEFT] = guerrero_izq;
+    warriors_map[WARRIOR_RIGHT] = guerrero_der;
+
+
+    skeleton_map[SKELETON_UP] = skeleton_sube;
+    skeleton_map[SKELETON_DOWN] = skeleton_baja;
+    skeleton_map[SKELETON_LEFT] = skeleton_izq;
+    skeleton_map[SKELETON_RIGHT] = skeleton_der;
+
+
+    warriors_map[0] = guerrero_sube;
     if( gStretchedSurface == NULL )
     {
         printf( "Failed to load stretching image!\n" );
@@ -151,44 +202,50 @@ SDL_Surface* loadSurface( std::string path )
     return optimizedSurface;
 }
 
-void render_background(SDL_Surface* ScreenSurface) {
+
+
+
+void Client::render_terrain(SDL_Surface* ScreenSurface) {
+
+    //supongamos que es cuadrada, sino hay que dividir en blocks de width y height
+    const int blocks = 20;
+    Terrain matrix[blocks][blocks]{};
+    for (int i=0; i < blocks; i++) {
+        for (int j=0; j < blocks; j++) {
+            matrix[i][j] = TERRAIN_LAND;
+        }
+    }
+    matrix[0][0] = TERRAIN_WATER;
+    matrix[19][19] = TERRAIN_WATER;
+    matrix[10][10] = TERRAIN_WATER;
+
     int x = 0;
     int y = 0;
-    int blocks = 20;
     int x_blocks_size = SCREEN_WIDTH / blocks;
     int y_blocks_size = SCREEN_HEIGHT / blocks;
-    for (int i = 0; i < blocks; i++) {
+
+    for (int i=0; i < x_blocks_size; i++) {
         x = 0;
-        for (int j = 0; j < blocks; j++) {
+        for (int j=0; j<y_blocks_size; j++) {
             SDL_Rect stretchRect;
             stretchRect.x = x;
             stretchRect.y = y;
             stretchRect.w = x_blocks_size;
             stretchRect.h = y_blocks_size;
-            SDL_BlitScaled(gStretchedSurface, NULL, ScreenSurface, &stretchRect);
+
+            if (matrix[i][j] == TERRAIN_WATER) {
+                SDL_BlitScaled(terrains_map[TERRAIN_WATER], NULL, ScreenSurface, &stretchRect);
+            }
+            if (matrix[i][j] == TERRAIN_LAND) {
+                SDL_BlitScaled(terrains_map[TERRAIN_LAND], NULL, ScreenSurface, &stretchRect);
+            }
             x += x_blocks_size;
-            std::cout << "itero x= " << x << "y= " << y << "\n";
         }
         y += y_blocks_size;
     }
-    //esto esta demas para ver que onda, sacarlo
-    SDL_Rect stretchRect;
-    stretchRect.x = 0;
-    stretchRect.y = 0;
-    stretchRect.w = 40;
-    stretchRect.h = 40;
-    SDL_BlitScaled(gStretchedSurface_2, NULL, ScreenSurface, &stretchRect);
 
 }
-/*
-void character_arround_in_circles(SDL_Surface* ScreenSurface) {
-    for
-}
- */
 
-void render_received_map() {
-
-}
 
 void Client::render_map() {
 
@@ -207,7 +264,7 @@ void Client::render_map() {
             } else {
                 //Main loop flag
 
-                render_background(ScreenSurface);
+                render_terrain(ScreenSurface);
                 //Update the surface
                 SDL_UpdateWindowSurface(gWindow);
                 window.UpdateWindowSurface();
@@ -229,7 +286,7 @@ void Client::render_map() {
                 stretchRect.y = y;
                 stretchRect.w = 22;
                 stretchRect.h = 47;
-                render_background(ScreenSurface);
+                render_terrain(ScreenSurface);
                 SDL_BlitScaled(current_warrior, NULL, ScreenSurface, &stretchRect);
                 SDL_WaitEvent(&event);
                 switch (event.type) {

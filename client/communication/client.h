@@ -4,6 +4,8 @@
 #include <string>
 #include "connection_handler.h"
 
+#include <SDL2/SDL_image.h>
+
 class Client {
     ConnectionHandler* connectionHandler;
     bool keepPlaying;
@@ -31,6 +33,8 @@ public:
     void play();
 
     void render_map();
+
+    void render_terrain(SDL_Surface* ScreenSurface);
 };
 
 #endif // CLIENT_H
