@@ -11,12 +11,20 @@
 IdManager::IdManager() : actual_player_id(FIRST_PLAYER_ID),
 actual_npc_id(FIRST_NPC_ID), actual_item_id(FIRST_ITEM_ID) {}
 
-const int IdManager::getPlayerByUsername(const std::string &username) {
-    if (username_ids.find(username) == username_ids.end()) {
-        if (actual_player_id == LAST_PLAYER_ID)
-            throw NoMoreAvailableIdsException();
-        username_ids[username] = ++actual_player_id;
-    }
+void IdManager::addPlayerByUsername(const std::string &username) {
+    if (username_ids.find(username) != username_ids.end())
+        throw DuplicatedUsernameException();
+
+    if (actual_player_id == LAST_PLAYER_ID)
+        throw NoMoreAvailableIdsException();
+
+    username_ids[username] = ++actual_player_id;
+}
+
+const int IdManager::getPlayerId(const std::string& username) {
+    if (username_ids.find(username) == username_ids.end())
+        throw UnexistentUsernameException();
+
     return username_ids[username];
 }
 
