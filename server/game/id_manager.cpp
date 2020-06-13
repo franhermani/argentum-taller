@@ -12,8 +12,9 @@ IdManager::IdManager() : actual_player_id(FIRST_PLAYER_ID),
 actual_npc_id(FIRST_NPC_ID), actual_item_id(FIRST_ITEM_ID) {}
 
 const int IdManager::addPlayerByUsername(const std::string &username) {
-    if (username_ids.find(username) != username_ids.end())
-        throw DuplicatedUsernameException();
+    // TODO: descomentar esto cuando se haga el issue 35
+//    if (username_ids.find(username) != username_ids.end())
+//        throw DuplicatedUsernameException();
 
     if (actual_player_id == LAST_PLAYER_ID)
         throw NoMoreAvailableIdsException();

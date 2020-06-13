@@ -17,7 +17,8 @@ void ClientsAcceptor::run() {
             socket.listenToClients();
             createClientHandler();
             startClientHandler();
-            cleanDeadClientHandlers();
+            // TODO: esta funcion esta rompiendo
+//            cleanDeadClientHandlers();
         } catch(SocketAcceptError&) {
             break;
         }

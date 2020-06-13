@@ -25,8 +25,8 @@ void ClientHandler::run() {
 
 void ClientHandler::stop() {
     clientSender->stop();
-    clientSender->join();
     clientReceiver->stop();
+    clientSender->join();
     clientReceiver->join();
 }
 
