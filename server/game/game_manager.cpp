@@ -1,3 +1,4 @@
+#include <string>
 #include <thread>
 #include <chrono>
 #include "game_manager.h"
@@ -50,6 +51,11 @@ void GameManager::stop() {
 
 bool GameManager::isDead() {
     return (! isRunning);
+}
+
+void GameManager::addPlayer(const std::string &username) {
+    // TODO: crear Player aca o con world.createPlayer()
+    idManager.addPlayerByUsername(username);
 }
 
 void GameManager::handleEvent(UserEvent &user_event) {

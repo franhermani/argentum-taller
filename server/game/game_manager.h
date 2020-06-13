@@ -1,6 +1,7 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
+#include <string>
 #include <vector>
 #include "../../common/thread.h"
 #include "../utilities/json_parser.h"
@@ -38,6 +39,9 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
+
+    // Agrega el Player al juego segun su username
+    void addPlayer(const std::string& username);
 
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);

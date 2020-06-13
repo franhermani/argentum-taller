@@ -2,8 +2,9 @@
 #include <iostream>
 #include "client_handler.h"
 
-ClientHandler::ClientHandler(Socket socket_received) :
-socket(std::move(socket_received)) {
+ClientHandler::ClientHandler(Socket socket_received,
+        GameManager& game_manager) : socket(std::move(socket_received)),
+        gameManager(game_manager) {
     isRunning = true;
     clientSender = new ClientSender(socket);
     clientReceiver = new ClientReceiver(socket);
@@ -16,6 +17,7 @@ ClientHandler::~ClientHandler() {
 
 void ClientHandler::run() {
     username = clientReceiver->receiveUsername();
+    gameManager.addPlayer(username);
     clientSender->start();
     clientReceiver->start();
     isRunning = false;
