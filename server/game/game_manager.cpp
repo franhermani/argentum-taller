@@ -1,6 +1,6 @@
 #include <thread>
 #include <chrono>
-#include "manager.h"
+#include "game_manager.h"
 
 GameManager::GameManager(File& config_file) {
     File world_file("../server/config/world.json");
