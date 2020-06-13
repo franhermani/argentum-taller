@@ -5,8 +5,8 @@
 
 Player::Player(World& world, const int id) :
 world(world), id(id), orientation(DOWN) {
-    // TODO: esto sale de una ecuacion
     loadInitialPosition();
+    // TODO: esto sale de una ecuacion
     maxLife = 100;
     actualLife = maxLife;
     isImpenetrable = true;
@@ -18,11 +18,13 @@ void Player::loadInitialPosition() {
     std::uniform_int_distribution<int> dist_x(0, world.getWidth());
     std::uniform_int_distribution<int> dist_y(0, world.getHeight());
 
-    posX = dist_x(mt);
-    posY = dist_y(mt);
-
-//    std::cout << "Pos X: " << posX << "\n";
-//    std::cout << "Pos Y: " << posY << "\n";
+    int new_x = dist_x(mt), new_y = dist_y(mt);
+    while (world.inCollision(new_x, new_y)) {
+        new_x = dist_x(mt);
+        new_y = dist_y(mt);
+    }
+    posX = new_x;
+    posY = new_y;
 }
 
 void Player::moveTo(int direction) {
