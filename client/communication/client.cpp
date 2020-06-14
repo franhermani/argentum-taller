@@ -63,30 +63,10 @@ SDL_Surface* skeleton_izq = NULL;
 std::map<int, SDL_Surface*> terrains_map;
 std::map<int, SDL_Surface*> warriors_map;
 std::map<int, SDL_Surface*> skeleton_map;
-
-enum Terrain {
-    TERRAIN_GRASS,
-    TERRAIN_LAND,
-    TERRAIN_SAND,
-    TERRAIN_STONE,
-    TERRAIN_WALL,
-    TERRAIN_WATER,
-};
-enum Warrior {
-    WARRIOR_UP,
-    WARRIOR_DOWN,
-    WARRIOR_RIGHT,
-    WARRIOR_LEFT
-};
-enum Skeleton {
-        SKELETON_UP,
-        SKELETON_DOWN,
-        SKELETON_RIGHT,
-        SKELETON_LEFT
-};
+const int blocks_width = 20;
+const int blocks_height = 30;
 
 
-//gHelloWorld = SDL_LoadBMP( "/home/martinrosas/taller/taller-tp4/resources/images/hello_world.bmp" );
 bool init()
 {
     //Initialization flag
@@ -202,31 +182,31 @@ SDL_Surface* loadSurface( std::string path )
     return optimizedSurface;
 }
 
+/*
+void Client::render_characters(SDL_Surface* ScreenSurface, std::vector<std::vector<Terrain>> matrix) {
+
+}*/
 
 
-
-void Client::render_terrain(SDL_Surface* ScreenSurface) {
-
-    //supongamos que es cuadrada, sino hay que dividir en blocks de width y height
-    const int blocks = 20;
+void Client::render_terrain(SDL_Surface* ScreenSurface, std::vector<std::vector<Terrain>> matrix) {
+    /*
     Terrain matrix[blocks][blocks]{};
     for (int i=0; i < blocks; i++) {
         for (int j=0; j < blocks; j++) {
             matrix[i][j] = TERRAIN_LAND;
         }
-    }
-    matrix[0][0] = TERRAIN_WATER;
-    matrix[19][19] = TERRAIN_WATER;
-    matrix[10][10] = TERRAIN_WATER;
+    }*/
+    //supongamos que es cuadrada, sino hay que dividir en blocks de width y height
+
 
     int x = 0;
     int y = 0;
-    int x_blocks_size = SCREEN_WIDTH / blocks;
-    int y_blocks_size = SCREEN_HEIGHT / blocks;
+    int x_blocks_size = SCREEN_WIDTH / blocks_width;
+    int y_blocks_size = SCREEN_HEIGHT / blocks_height;
 
-    for (int i=0; i < x_blocks_size; i++) {
+    for (int i=0; i < blocks_height; i++) {
         x = 0;
-        for (int j=0; j<y_blocks_size; j++) {
+        for (int j=0; j < blocks_width; j++) {
             SDL_Rect stretchRect;
             stretchRect.x = x;
             stretchRect.y = y;
@@ -252,6 +232,20 @@ void Client::render_map() {
     try {
         SDLWindow window(SCREEN_WIDTH, SCREEN_HEIGHT);
         SDL_Surface* ScreenSurface = window.getSurface();
+        
+        std::vector<std::vector<Terrain>> matrix;
+        matrix.resize(blocks_height);
+        for (int i=0; i < blocks_height; i++) {
+            std::vector<Terrain> row;
+            row.resize(blocks_width);
+            matrix.push_back(row);
+            for (int j=0; j < blocks_width; j++) {
+                matrix[i].push_back(TERRAIN_LAND);
+            }
+        }
+        matrix[0][0] = TERRAIN_WATER;
+        matrix[19][19] = TERRAIN_WATER;
+        matrix[10][10] = TERRAIN_WATER;
         //Start up SDL and create window
         if( !init() )
         {
@@ -264,7 +258,7 @@ void Client::render_map() {
             } else {
                 //Main loop flag
 
-                render_terrain(ScreenSurface);
+                render_terrain(ScreenSurface, matrix);
                 //Update the surface
                 SDL_UpdateWindowSurface(gWindow);
                 window.UpdateWindowSurface();
@@ -286,7 +280,7 @@ void Client::render_map() {
                 stretchRect.y = y;
                 stretchRect.w = 22;
                 stretchRect.h = 47;
-                render_terrain(ScreenSurface);
+                render_terrain(ScreenSurface, matrix);
                 SDL_BlitScaled(current_warrior, NULL, ScreenSurface, &stretchRect);
                 SDL_WaitEvent(&event);
                 switch (event.type) {
