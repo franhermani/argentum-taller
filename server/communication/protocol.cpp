@@ -1,8 +1,10 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include "protocol.h"
 #include "../../common/commands/defines.h"
 #include "../../common/commands/move_command.h"
+#include "../../common/commands/username_command.h"
 
 #define BYTE_SIZE 1
 
@@ -31,6 +33,13 @@ Command* ServerProtocol::receiveCommand() {
         std::cout << direction << "\n";
 
         return new MoveCommand(direction);
+    } else if (type == CMD_USERNAME) {
+        std::string username(arguments.begin(), arguments.end());
+
+        // DEBUG
+        std::cout << username << "\n";
+
+        return new UsernameCommand(username);
     } else {
         return nullptr;
     }

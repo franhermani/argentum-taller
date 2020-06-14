@@ -16,7 +16,7 @@ public:
 
     // Ejecuta el comando
     // Metodo a definir por las clases derivadas
-    virtual void execute(Player& player) = 0;
+    virtual void execute(Player& player);
 };
 
 #endif // COMMAND_H

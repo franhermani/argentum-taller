@@ -2,6 +2,7 @@
 #include "connection_sender.h"
 #include "../../common/socket_error.h"
 #include "../../common/commands/move_command.h"
+#include "../../common/commands/username_command.h"
 
 ConnectionSender::ConnectionSender(Socket& socket) : protocol(socket) {
     keepRunning = true;
@@ -38,6 +39,6 @@ bool ConnectionSender::isDead() {
 }
 
 void ConnectionSender::sendUsername(const std::string& username) {
-//    protocol.sendMessage(username);
-//    std::cout << username << "\n";
+    UsernameCommand usernameCommand(username);
+    protocol.sendCommand(usernameCommand);
 }

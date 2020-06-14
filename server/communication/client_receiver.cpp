@@ -1,6 +1,7 @@
 #include <string>
 #include "client_receiver.h"
 #include "../../common/socket_error.h"
+#include "../../common/commands/username_command.h"
 
 ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket) {
     keepRunning = true;
@@ -36,7 +37,8 @@ bool ClientReceiver::isDead() {
 }
 
 const std::string ClientReceiver::receiveUsername() {
-    // TODO: usar receiveCommand()
-//    return protocol.receiveMessage();
-    return "hola mundo";
+    auto* command = dynamic_cast<UsernameCommand*>(protocol.receiveCommand());
+    std::string username = command->getUsername();
+    delete command;
+    return username;
 }
