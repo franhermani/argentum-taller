@@ -21,19 +21,17 @@ void World::loadMatrix() {
     }
 }
 
-// TODO: ver quien crea y destruye a los GameObjects
-void World::addPlayer(Player *player) {
+void World::addPlayer(Player* player) {
     std::unique_lock<std::mutex> lk(m);
     players.push_back(player);
 }
 
 void World::removePlayer(int id) {
     std::unique_lock<std::mutex> lk(m);
-    for (auto player : players) {
-        if (player->id == id) {
-            // TODO: eliminar objeto de players
-        }
-    }
+    size_t i;
+    for (i = 0; i < players.size(); i ++)
+        if (players[i]->id == id)
+            players.erase(players.begin() + i);
 }
 
 bool World::inMapBoundaries(int pos_x, int pos_y) {

@@ -15,6 +15,7 @@ class GameManager : public Thread {
     JsonParser jsonParser;
     GameParams* params;
     World* world;
+    std::vector<Player*> players;
     IdManager idManager;
     BlockingQueue<UserEvent> usersEvents;
 
@@ -27,7 +28,7 @@ public:
     GameManager& operator=(const GameManager& other) = delete;
 
     // Destructor
-    // Libera la memoria reservada para 'params' y 'world'
+    // Libera la memoria reservada para 'params', 'world' y para cada player
     ~GameManager();
 
     // Game loop

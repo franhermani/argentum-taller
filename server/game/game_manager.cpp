@@ -2,7 +2,7 @@
 #include <thread>
 #include <chrono>
 #include "game_manager.h"
-//#include "player.h"
+#include "player.h"
 
 GameManager::GameManager(File& config_file) {
     File world_file("../server/config/world.json");
@@ -14,6 +14,7 @@ GameManager::GameManager(File& config_file) {
 }
 
 GameManager::~GameManager() {
+    for (auto player : players) delete player;
     delete world;
     delete params;
 }
@@ -55,9 +56,10 @@ bool GameManager::isDead() {
 }
 
 void GameManager::addPlayer(const std::string &username) {
-    // TODO: crear Player aca o con world.createPlayer()
-//    int id = idManager.addPlayerByUsername(username);
-//    world->addPlayer(new Player(*world, id));
+    int id = idManager.addPlayerByUsername(username);
+    auto *player = new Player(*world, id);
+    players.push_back(player);
+    world->addPlayer(player);
 }
 
 void GameManager::handleEvent(UserEvent &user_event) {

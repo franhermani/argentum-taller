@@ -32,7 +32,7 @@ public:
     void addPlayer(Player* player);
 
     // Remueve un Player del mundo segun su ID
-    void removePlayer(int id);
+    void removePlayer(const int id);
 
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     bool inMapBoundaries(int pos_x, int pos_y);

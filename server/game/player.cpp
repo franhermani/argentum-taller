@@ -3,13 +3,10 @@
 #include "world.h"
 #include "../commands/defines.h"
 
-Player::Player(World& world, const int id) :
-world(world), id(id), orientation(DOWN) {
+Player::Player(World& world, const int id) : world(world), id(id),
+maxLife(100), actualLife(maxLife), orientation(DOWN), isImpenetrable(true) {
     loadInitialPosition();
-    // TODO: esto sale de una ecuacion
-    maxLife = 100;
-    actualLife = maxLife;
-    isImpenetrable = true;
+    // TODO: maxLife sale de una ecuacion
 }
 
 void Player::loadInitialPosition() {
