@@ -1,7 +1,11 @@
 #ifndef SDL_WINDOW_H
 #define SDL_WINDOW_H
+#include "surface.h"
+#include "area.h"
+
 
 class SDL_Window;
+class SDL_Surface;
 class SDL_Renderer;
 
 class SDLWindow {
@@ -33,6 +37,12 @@ public:
 
     // Devuelve la surface de toda la ventana
     SDL_Surface* getSurface() const;
+
+    // estampa en la ventana una surface con tamaño y posicion dado en area
+    void stampSurface(Surface& surface, Area& area);
+
+    // Devuelve el formato de la surface de la ventana
+    SDL_PixelFormat* getSurfaceFormat() const;
 
     //Actualiza la ventana mostrada
     void UpdateWindowSurface();

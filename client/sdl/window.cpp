@@ -42,6 +42,20 @@ SDL_Renderer* SDLWindow::getRenderer() const {
 SDL_Surface* SDLWindow::getSurface() const {
     return SDL_GetWindowSurface(window);
 }
+SDL_PixelFormat* SDLWindow::getSurfaceFormat() const {
+    return SDL_GetWindowSurface(window)->format;
+}
+
+void SDLWindow::stampSurface(Surface& surface, Area& area) {
+    SDL_Rect rect;
+    rect.x = area.getX();
+    rect.y = area.getY();
+    rect.w = area.getWidth();
+    rect.h = area.getHeight();
+    SDL_BlitScaled(surface.get_renderable_surface(), NULL, getSurface(), &rect);
+}
+
+
 
 void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);

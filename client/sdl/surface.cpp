@@ -1,15 +1,20 @@
-//
-// Created by martinrosas on 14/6/20.
-//
 
 #include "surface.h"
+#include "exception.h"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include "window.h"
 
 
-Surface::Surface(const std::string filename, const SDLWindow &window) {
-    surface = loadSurface(filename);
-    if (! surface)
+Surface::Surface(const std::string filename, const SDLWindow& window) {
+    SDL_Surface* basic_surface = IMG_Load(filename.c_str());
+    if (!basic_surface)
         throw SDLException("Error al cargar la surface", SDL_GetError());
+    SDL_Surface* optimized_surface = SDL_ConvertSurface( basic_surface, window.getSurfaceFormat(), 0 );
+    SDL_FreeSurface(basic_surface);
+    if(!optimized_surface)
+        throw SDLException("Error al optimizar la surface", SDL_GetError());
+    surface = optimized_surface;
 }
 
 Surface::~Surface() {

@@ -1,21 +1,21 @@
-//
-// Created by martinrosas on 14/6/20.
-//
 
 #ifndef ARGENTUM_SURFACE_H
 #define ARGENTUM_SURFACE_H
+#include <string>
 
+class SDLWindow;
 class SDL_Surface;
-class Surface {
-    SDL_Surface surface;
 
+class Surface {
+    SDL_Surface* surface;
 public:
     // Constructor
-    SDLSurface(const std::string filename);
+    Surface(const std::string filename, const SDLWindow& window);
 
     // Destructor
-    ~SDLSurface();
+    ~Surface();
 
+    // Devuelve SDL_Surface para poder ser estampado
     SDL_Surface* get_renderable_surface();
 };
 
