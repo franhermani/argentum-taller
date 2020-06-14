@@ -3,8 +3,9 @@
 #include <vector>
 #include "protocol.h"
 #include "../../common/commands/defines.h"
-#include "../../common/commands/move_command.h"
 #include "../../common/commands/username_command.h"
+#include "../../common/commands/meditate_command.h"
+#include "../../common/commands/move_command.h"
 
 #define BYTE_SIZE 1
 
@@ -23,16 +24,16 @@ Command* ServerProtocol::receiveCommand() {
     std::cout << length << "\n";
 
     std::vector<char> arguments;
-    arguments.resize(length);
-    socket.receiveBytes(arguments.data(), arguments.size());
 
+    if (length > 0) {
+        arguments.resize(length);
+        socket.receiveBytes(arguments.data(), arguments.size());
+    }
     if (type == CMD_USERNAME) {
         std::string username(arguments.begin(), arguments.end());
-        // DEBUG
-        std::cout << username << "\n";
         return new UsernameCommand(username);
     } else if (type == CMD_MEDITATE) {
-        // TODO:...
+        return new MeditateCommand();
     } else if (type == CMD_REVIVE) {
         // TODO:...
     } else if (type == CMD_HEAL) {

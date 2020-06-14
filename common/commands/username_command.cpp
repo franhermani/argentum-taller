@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cstring>
 #include <vector>
 #include "username_command.h"
@@ -15,8 +14,6 @@ const std::vector<char> UsernameCommand::serialize() const {
 
     // Longitud total
     size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
-
-    std::cout << username << "\n";
 
     // Vector serializado
     std::vector<char> byte_msg;

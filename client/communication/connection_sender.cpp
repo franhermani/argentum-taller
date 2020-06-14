@@ -1,8 +1,9 @@
 #include <string>
 #include "connection_sender.h"
 #include "../../common/socket_error.h"
-#include "../../common/commands/move_command.h"
 #include "../../common/commands/username_command.h"
+#include "../../common/commands/meditate_command.h"
+#include "../../common/commands/move_command.h"
 
 ConnectionSender::ConnectionSender(Socket& socket) : protocol(socket) {
     keepRunning = true;
@@ -24,8 +25,8 @@ void ConnectionSender::run() {
     }
      */
 
-    MoveCommand moveCommand(1);
-    protocol.sendCommand(moveCommand);
+    MeditateCommand meditateCommand;
+    protocol.sendCommand(meditateCommand);
 
     isRunning = false;
 }

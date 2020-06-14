@@ -1,5 +1,5 @@
 #include "command.h"
 
-Command::~Command() {}
+Command::~Command() = default;
 
 void Command::execute(Player &player) {}

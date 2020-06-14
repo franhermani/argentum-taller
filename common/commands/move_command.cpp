@@ -4,7 +4,7 @@
 
 MoveCommand::MoveCommand(const int direction) : direction(direction) {}
 
-MoveCommand::~MoveCommand() {}
+MoveCommand::~MoveCommand() = default;
 
 const std::vector<char> MoveCommand::serialize() const {
     // Longitud de los argumentos
