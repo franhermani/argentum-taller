@@ -50,19 +50,18 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 
 //Current displayed image
-SDL_Surface* gStretchedSurface = NULL;
-SDL_Surface* gStretchedSurface_2 = NULL;
-SDL_Surface* guerrero_sube = NULL;
-SDL_Surface* guerrero_baja = NULL;
-SDL_Surface* guerrero_der = NULL;
-SDL_Surface* guerrero_izq = NULL;
-SDL_Surface* skeleton_sube = NULL;
-SDL_Surface* skeleton_baja = NULL;
-SDL_Surface* skeleton_der = NULL;
-SDL_Surface* skeleton_izq = NULL;
+SDL_Surface* land = NULL;
+SDL_Surface* water = NULL;
+SDL_Surface* warrior_up = NULL;
+SDL_Surface* warrior_down = NULL;
+SDL_Surface* warrior_right = NULL;
+SDL_Surface* warrior_left = NULL;
+SDL_Surface* skeleton_up = NULL;
+SDL_Surface* skeleton_down = NULL;
+SDL_Surface* skeleton_right = NULL;
+SDL_Surface* skeleton_left = NULL;
 std::map<int, SDL_Surface*> terrains_map;
-std::map<int, SDL_Surface*> warriors_map;
-std::map<int, SDL_Surface*> skeleton_map;
+std::map<int, SDL_Surface*> npcs_map;
 const int blocks_width = 20;
 const int blocks_height = 30;
 
@@ -103,36 +102,28 @@ bool loadMedia()
     bool success = true;
 
     //Load stretching surface
-    gStretchedSurface = loadSurface( "/home/martinrosas/taller/taller-tp4/resources/images/24083.png" );
-    gStretchedSurface_2 = loadSurface( "/home/martinrosas/taller/taller-tp4/resources/images/24082.png" );
-    guerrero_sube = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png");
-    guerrero_baja = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png");
-    guerrero_izq = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png");
-    guerrero_der = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png");
-
-    skeleton_sube = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_sube.png");
-    skeleton_baja = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png");
-    skeleton_izq = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png");
-    skeleton_der = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png");
-
-
-    terrains_map[TERRAIN_WATER] = gStretchedSurface_2;
-    terrains_map[TERRAIN_LAND] = gStretchedSurface;
-
-    warriors_map[WARRIOR_UP] = guerrero_sube;
-    warriors_map[WARRIOR_DOWN] = guerrero_baja;
-    warriors_map[WARRIOR_LEFT] = guerrero_izq;
-    warriors_map[WARRIOR_RIGHT] = guerrero_der;
-
-
-    skeleton_map[SKELETON_UP] = skeleton_sube;
-    skeleton_map[SKELETON_DOWN] = skeleton_baja;
-    skeleton_map[SKELETON_LEFT] = skeleton_izq;
-    skeleton_map[SKELETON_RIGHT] = skeleton_der;
-
-
-    warriors_map[0] = guerrero_sube;
-    if( gStretchedSurface == NULL )
+    land = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png" );
+    water = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png" );
+    warrior_up = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png");
+    warrior_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png");
+    warrior_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png");
+    warrior_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png");
+    skeleton_up = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_sube.png");
+    skeleton_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png");
+    skeleton_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png");
+    skeleton_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png");
+    terrains_map[TERRAIN_WATER] = water;
+    terrains_map[TERRAIN_LAND] = land;
+    npcs_map[WARRIOR_UP] = warrior_up;
+    npcs_map[WARRIOR_DOWN] = warrior_down;
+    npcs_map[WARRIOR_LEFT] = warrior_left;
+    npcs_map[WARRIOR_RIGHT] = warrior_right;
+    npcs_map[SKELETON_UP] = skeleton_up;
+    npcs_map[SKELETON_DOWN] = skeleton_down;
+    npcs_map[SKELETON_LEFT] = skeleton_left;
+    npcs_map[SKELETON_RIGHT] = skeleton_right;
+    npcs_map[0] = warrior_up;
+    if(land == NULL )
     {
         printf( "Failed to load stretching image!\n" );
         success = false;
@@ -144,8 +135,8 @@ bool loadMedia()
 void close()
 {
     //Free loaded image
-    SDL_FreeSurface( gStretchedSurface );
-    gStretchedSurface = NULL;
+    SDL_FreeSurface(land );
+    land = NULL;
 
     //Destroy window
     SDL_DestroyWindow( gWindow );
@@ -189,15 +180,6 @@ void Client::render_characters(SDL_Surface* ScreenSurface, std::vector<std::vect
 
 
 void Client::render_terrain(SDL_Surface* ScreenSurface, std::vector<std::vector<Terrain>> matrix) {
-    /*
-    Terrain matrix[blocks][blocks]{};
-    for (int i=0; i < blocks; i++) {
-        for (int j=0; j < blocks; j++) {
-            matrix[i][j] = TERRAIN_LAND;
-        }
-    }*/
-    //supongamos que es cuadrada, sino hay que dividir en blocks de width y height
-
 
     int x = 0;
     int y = 0;
@@ -271,9 +253,9 @@ void Client::render_map() {
             stretchRect.y = y;
             stretchRect.w = 22;
             stretchRect.h = 47;
-            SDL_BlitScaled(guerrero_baja, NULL, ScreenSurface, &stretchRect);
+            SDL_BlitScaled(warrior_down, NULL, ScreenSurface, &stretchRect);
             SDL_Surface* current_warrior;
-            current_warrior = guerrero_baja;
+            current_warrior = warrior_down;
             while (running) {
                 SDL_Event event;
                 stretchRect.x = x;
@@ -289,19 +271,19 @@ void Client::render_map() {
                         switch (keyEvent.keysym.sym) {
                             case SDLK_LEFT:
                                 x -= 10;
-                                current_warrior = guerrero_izq;
+                                current_warrior = warrior_left;
                                 break;
                             case SDLK_RIGHT:
                                 x += 10;
-                                current_warrior = guerrero_der;
+                                current_warrior = warrior_right;
                                 break;
                             case SDLK_UP:
                                 y -= 10;
-                                current_warrior = guerrero_sube;
+                                current_warrior = warrior_up;
                                 break;
                             case SDLK_DOWN:
                                 y += 10;
-                                current_warrior = guerrero_baja;
+                                current_warrior = warrior_down;
                                 break;
                         }
                     } // Fin KEY_DOWN

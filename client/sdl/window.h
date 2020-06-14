@@ -31,8 +31,10 @@ public:
     // Devuelve el renderer
     SDL_Renderer* getRenderer() const;
 
+    // Devuelve la surface de toda la ventana
     SDL_Surface* getSurface() const;
 
+    //Actualiza la ventana mostrada
     void UpdateWindowSurface();
 };
 
