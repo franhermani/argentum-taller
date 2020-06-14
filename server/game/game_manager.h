@@ -44,6 +44,9 @@ public:
     // Agrega el Player al juego segun su username
     void addPlayer(const std::string& username);
 
+    // Elimina el Player del juego segun su username
+    void removePlayer(const std::string& username);
+
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);
 };

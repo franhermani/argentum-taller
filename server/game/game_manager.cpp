@@ -62,6 +62,18 @@ void GameManager::addPlayer(const std::string &username) {
     world->addPlayer(player);
 }
 
+void GameManager::removePlayer(const std::string &username) {
+    int id = idManager.getPlayerId(username);
+    size_t i;
+    for (i = 0; i < players.size(); i ++) {
+        if (players[i]->id == id) {
+            world->removePlayer(id);
+            players.erase(players.begin() + i);
+            delete players[i];
+        }
+    }
+}
+
 void GameManager::handleEvent(UserEvent &user_event) {
     // TODO: estos eventos modifican efectivamente los GameObjects
 }
