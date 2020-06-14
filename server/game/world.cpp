@@ -5,18 +5,22 @@ World::World(GameParams& params) : params(params) {
 }
 
 void World::loadMatrix() {
-    json world_params = params.getWorldParams();
-//    int width = world_params["layers"][0]["width"];
-//    int height = world_params["layers"][0]["height"];
-    auto terrains = world_params["layers"][0]["data"];
+    json matrix_params = params.getWorldParams()["layers"][0];
+    width = matrix_params["width"],
+    height = matrix_params["height"];
+    auto terrains = matrix_params["data"];
 
+    matrix.resize(height);
     int i, j;
-    for (i = 0; i < HEIGHT; i ++) {
-        for (j = 0; j < WIDTH; j ++) {
-            int pos = (WIDTH * i) + j;
+    for (i = 0; i < height; i ++) {
+        std::vector<Terrain> row;
+        row.resize(width);
+        matrix.push_back(row);
+        for (j = 0; j < width; j ++) {
+            int pos = (width * i) + j;
             int terrain_type = terrains[pos];
-            auto t = static_cast<Terrain>(terrain_type);
-            matrix[j][i] = t;
+            auto terrain = static_cast<Terrain>(terrain_type);
+            matrix[i].push_back(terrain);
         }
     }
 }
@@ -35,8 +39,8 @@ void World::removePlayer(int id) {
 }
 
 bool World::inMapBoundaries(int pos_x, int pos_y) {
-    bool x_in_boundaries = (pos_x >= 0) && (pos_x < WIDTH),
-         y_in_boundaries = (pos_y >= 0) && (pos_y < HEIGHT);
+    bool x_in_boundaries = (pos_x >= 0) && (pos_x < width),
+         y_in_boundaries = (pos_y >= 0) && (pos_y < height);
 
     return x_in_boundaries && y_in_boundaries;
 }
@@ -55,9 +59,9 @@ void World::update(int ms) {
 }
 
 const int World::getWidth() const {
-    return WIDTH;
+    return width;
 }
 
 const int World::getHeight() const {
-    return HEIGHT;
+    return height;
 }

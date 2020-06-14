@@ -7,15 +7,12 @@
 #include "player.h"
 #include "../../common/terrain.h"
 
-#define WIDTH 100
-#define HEIGHT 100
-
 class World {
     std::mutex m;
     GameParams& params;
     std::vector<Player*> players;
-    // TODO: tomar estos valores del json
-    Terrain matrix[WIDTH][HEIGHT]{};
+    std::vector<std::vector<Terrain>> matrix;
+    int width{}, height{};
 
     // Llena la matriz (mapa) segun el json generado por Tiled
     void loadMatrix();
