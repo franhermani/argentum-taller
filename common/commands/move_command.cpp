@@ -1,8 +1,13 @@
+#include <iostream>
 #include <vector>
 #include "move_command.h"
 #include "defines.h"
 
-MoveCommand::MoveCommand(const int direction) : direction(direction) {}
+MoveCommand::MoveCommand(const int direction) : direction(direction) {
+    std::cout << direction << "\n";
+}
+
+MoveCommand::~MoveCommand() {}
 
 const std::vector<char> MoveCommand::serialize() const {
     // Longitud de los argumentos

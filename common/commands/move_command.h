@@ -15,6 +15,9 @@ public:
     MoveCommand(const MoveCommand&) = delete;
     MoveCommand& operator=(const MoveCommand&) = delete;
 
+    // Destructor
+    ~MoveCommand() override;
+
     // Devuelve la serializacion en bytes del comando
     const std::vector<char> serialize() const override;
 

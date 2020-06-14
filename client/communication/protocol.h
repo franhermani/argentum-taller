@@ -4,6 +4,7 @@
 #include <string>
 #include "../../common/protocol.h"
 #include "../../common/socket.h"
+#include "../../common/commands/command.h"
 
 class ClientProtocol : public Protocol {
     Socket& socket;
@@ -27,6 +28,9 @@ public:
 
     // Envia un mensaje a traves del socket
     void sendMessage(const std::string& message) override;
+
+    // Envia un comando a traves del socket
+    void sendCommand(Command& command);
 };
 
 #endif // CLIENT_PROTOCOL_H

@@ -20,6 +20,10 @@ void ClientReceiver::run() {
         }
     }
      */
+    Command* command = protocol.receiveCommand();
+//    command->execute(player);
+    delete command;
+
     isRunning = false;
 }
 

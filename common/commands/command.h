@@ -7,6 +7,9 @@
 
 class Command {
 public:
+    // Destructor
+    virtual ~Command();
+
     // Devuelve la serializacion en bytes del comando
     // Metodo a definir por las clases derivadas
     virtual const std::vector<char> serialize() const = 0;
