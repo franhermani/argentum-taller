@@ -28,6 +28,7 @@ void ClientHandler::stop() {
     clientReceiver->stop();
     clientSender->join();
     clientReceiver->join();
+    gameManager.removePlayer(username);
 }
 
 bool ClientHandler::isDead() {

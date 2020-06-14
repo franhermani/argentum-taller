@@ -21,19 +21,17 @@ void World::loadMatrix() {
     }
 }
 
-// TODO: ver quien crea y destruye a los GameObjects
-void World::addGameObject(GameObject* game_object) {
+void World::addPlayer(Player* player) {
     std::unique_lock<std::mutex> lk(m);
-    gameObjects.push_back(game_object);
+    players.push_back(player);
 }
 
-void World::removeGameObject(int id) {
+void World::removePlayer(int id) {
     std::unique_lock<std::mutex> lk(m);
-    for (auto object : gameObjects) {
-        if (object->id == id) {
-            // TODO: eliminar objeto
-        }
-    }
+    size_t i;
+    for (i = 0; i < players.size(); i ++)
+        if (players[i]->id == id)
+            players.erase(players.begin() + i);
 }
 
 bool World::inMapBoundaries(int pos_x, int pos_y) {
@@ -45,16 +43,15 @@ bool World::inMapBoundaries(int pos_x, int pos_y) {
 
 bool World::inCollision(int pos_x, int pos_y) {
     std::unique_lock<std::mutex> lk(m);
-    for (auto object : gameObjects)
-        if (object->posX == pos_x && object->posY == pos_y) {
-            if (object->isImpenetrable) return true;
-        }
+    for (auto player : players)
+        if (player->posX == pos_x && player->posY == pos_y)
+            return true;
     return false;
 }
 
 void World::update(int ms) {
     std::unique_lock<std::mutex> lk(m);
-    for (auto object : gameObjects) object->update(ms);
+    for (auto player : players) player->update(ms);
 }
 
 const int World::getWidth() const {
