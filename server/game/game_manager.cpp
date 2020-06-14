@@ -2,6 +2,7 @@
 #include <thread>
 #include <chrono>
 #include "game_manager.h"
+//#include "player.h"
 
 GameManager::GameManager(File& config_file) {
     File world_file("../server/config/world.json");
@@ -56,6 +57,7 @@ bool GameManager::isDead() {
 void GameManager::addPlayer(const std::string &username) {
     // TODO: crear Player aca o con world.createPlayer()
 //    int id = idManager.addPlayerByUsername(username);
+//    world->addPlayer(new Player(*world, id));
 }
 
 void GameManager::handleEvent(UserEvent &user_event) {

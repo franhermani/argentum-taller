@@ -4,7 +4,7 @@
 #include <mutex>
 #include <vector>
 #include "params.h"
-#include "game_object.h"
+#include "player.h"
 #include "../../common/terrain.h"
 
 #define WIDTH 100
@@ -13,8 +13,7 @@
 class World {
     std::mutex m;
     GameParams& params;
-    // TODO: ver si es puntero o no
-    std::vector<GameObject*> gameObjects;
+    std::vector<Player*> players;
     // TODO: tomar estos valores del json
     Terrain matrix[WIDTH][HEIGHT]{};
 
@@ -29,12 +28,11 @@ public:
     World(const World& other) = delete;
     World& operator=(const World& other) = delete;
 
-    // Agrega un GameObject al mundo
-    // TODO: ver si es puntero o no
-    void addGameObject(GameObject* game_object);
+    // Agrega un Player al mundo
+    void addPlayer(Player* player);
 
-    // Remueve un GameObject del mundo segun su ID
-    void removeGameObject(int id);
+    // Remueve un Player del mundo segun su ID
+    void removePlayer(int id);
 
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     bool inMapBoundaries(int pos_x, int pos_y);

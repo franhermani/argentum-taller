@@ -1,6 +1,6 @@
-#include <iostream>
 #include <random>
 #include "player.h"
+#include "world.h"
 #include "../commands/defines.h"
 
 Player::Player(World& world, const int id) :
