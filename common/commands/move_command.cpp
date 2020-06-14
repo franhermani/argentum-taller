@@ -1,5 +1,4 @@
 #include <vector>
-#include <netinet/in.h>
 #include "move_command.h"
 #include "defines.h"
 
@@ -10,7 +9,7 @@ const std::vector<char> MoveCommand::serialize() const {
     uint8_t arguments_size = sizeof(uint8_t);
 
     // Longitud total
-    int total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
+    size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
 
     // Vector serializado
     std::vector<char> byte_msg;
