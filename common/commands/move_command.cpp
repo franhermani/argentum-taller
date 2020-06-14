@@ -3,5 +3,6 @@
 MoveCommand::MoveCommand(const int direction) : direction(direction) {}
 
 void MoveCommand::execute(Player& player) {
-    player.moveTo(direction);
+    // TODO: se queja el linkeo aca...
+//    player.moveTo(direction);
 }

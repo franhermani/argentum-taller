@@ -1,9 +1,8 @@
 #ifndef INPUT_HANDLER_H
 #define INPUT_HANDLER_H
 
-#include "commands/command.h"
-#include "commands/move_command.h"
-
+#include "../common/commands/command.h"
+#include "../common/commands/move_command.h"
 
 class InputHandler {
     Command* moveComand;

@@ -1,4 +1,5 @@
-enum commandTypes {
+// All Commands
+enum commandType {
     CMD_USERNAME,
     CMD_MEDITATE,
     CMD_REVIVE,
@@ -15,4 +16,12 @@ enum commandTypes {
     CMD_ATTACK,
     CMD_EQUIP,
     CMD_TRICK
+};
+
+// Move Command
+enum moveDirection {
+    LEFT,
+    RIGHT,
+    DOWN,
+    UP,
 };
