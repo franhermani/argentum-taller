@@ -26,21 +26,42 @@ Command* ServerProtocol::receiveCommand() {
     arguments.resize(length);
     socket.receiveBytes(arguments.data(), arguments.size());
 
-    if (type == CMD_MOVE) {
-        int direction = arguments[0];
-
-        // DEBUG
-        std::cout << direction << "\n";
-
-        return new MoveCommand(direction);
-    } else if (type == CMD_USERNAME) {
+    if (type == CMD_USERNAME) {
         std::string username(arguments.begin(), arguments.end());
-
         // DEBUG
         std::cout << username << "\n";
-
         return new UsernameCommand(username);
-    } else {
-        return nullptr;
+    } else if (type == CMD_MEDITATE) {
+        // TODO:...
+    } else if (type == CMD_REVIVE) {
+        // TODO:...
+    } else if (type == CMD_HEAL) {
+        // TODO:...
+    } else if (type == CMD_DEPOSIT) {
+        // TODO:...
+    } else if (type == CMD_WITHDRAW) {
+        // TODO:...
+    } else if (type == CMD_LIST) {
+        // TODO:...
+    } else if (type == CMD_BUY) {
+        // TODO:...
+    } else if (type == CMD_SELL) {
+        // TODO:...
+    } else if (type == CMD_TAKE) {
+        // TODO:...
+    } else if (type == CMD_THROW) {
+        // TODO:...
+    } else if (type == CMD_MESSAGE) {
+        // TODO:...
+    } else if (type == CMD_MOVE) {
+        int direction = arguments[0];
+        return new MoveCommand(direction);
+    } else if (type == CMD_ATTACK) {
+        // TODO:...
+    } else if (type == CMD_EQUIP) {
+        // TODO:...
+    } else if (type == CMD_TRICK) {
+        // TODO:...
     }
+    return nullptr;
 }
