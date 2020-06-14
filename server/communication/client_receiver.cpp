@@ -36,5 +36,7 @@ bool ClientReceiver::isDead() {
 }
 
 const std::string ClientReceiver::receiveUsername() {
-    return protocol.receiveMessage();
+    // TODO: usar receiveCommand()
+//    return protocol.receiveMessage();
+    return "hola mundo";
 }
