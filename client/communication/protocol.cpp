@@ -8,5 +8,7 @@ void ClientProtocol::sendCommand(Command& command) {
     std::vector<char> byte_msg = command.serialize();
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
-    std::cout << byte_msg.data() << "\n";
+    // DEBUG
+    for (char i : byte_msg) printf("%02X ", (unsigned) (unsigned char) i);
+    printf("\n");
 }

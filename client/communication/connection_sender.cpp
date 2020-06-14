@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include "connection_sender.h"
 #include "../../common/socket_error.h"

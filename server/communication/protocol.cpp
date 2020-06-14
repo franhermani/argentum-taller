@@ -16,6 +16,7 @@ Command* ServerProtocol::receiveCommand() {
     int type = buffer1[0];
     int length = buffer2[0];
 
+    // DEBUG
     std::cout << type << "\n";
     std::cout << length << "\n";
 
@@ -24,7 +25,12 @@ Command* ServerProtocol::receiveCommand() {
     socket.receiveBytes(arguments.data(), arguments.size());
 
     if (type == CMD_MOVE) {
-        return new MoveCommand(arguments[0]);
+        int direction = arguments[0];
+
+        // DEBUG
+        std::cout << direction << "\n";
+
+        return new MoveCommand(direction);
     } else {
         return nullptr;
     }
