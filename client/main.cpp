@@ -1,5 +1,6 @@
 #include <iostream>
 #include "communication/client.h"
+#include "communication/game_render.h"
 #include "../common/socket_error.h"
 #include "../server/defines.h"
 
@@ -17,10 +18,13 @@ int main(int argc, char *argv[]) {
 
     try {
         Client client(host, port);
+        GameRender GameRender(640*2, 480*2, 20,30);
+        GameRender.play();
+
         //client.connectToServer();
 //        client.disconnectFromServer();
 //        client.play();
-        client.render_map();
+//        client.render_map();
         // TODO: este loop en realidad no va, pero si lo saco se cuelga
         std::string command;
         while (getline(std::cin, command))
