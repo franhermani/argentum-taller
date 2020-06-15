@@ -83,5 +83,6 @@ Command* ServerProtocol::receiveCommand() {
 }
 
 void ServerProtocol::sendMap(World& world, Player& player) {
+    std::vector<std::vector<Terrain>> sub_matrix = world.getSubMatrix(player);
     // TODO: ...
 }
