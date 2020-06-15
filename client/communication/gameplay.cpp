@@ -6,7 +6,6 @@
 
 void Gameplay::play() {
     try {
-
         bool running = true;
         int x = 100;
         int y = 150;
@@ -50,7 +49,6 @@ void Gameplay::play() {
 Gameplay::Gameplay() {}
 
 Gameplay::~Gameplay() {}
-
 
 
 void Gameplay::run() {

@@ -3,13 +3,20 @@
 
 #include "../../common/thread.h"
 #include "../../common/socket.h"
+#include "../../common/blocking_queue.h"
 #include "connection_sender.h"
 #include "connection_receiver.h"
+#include "game_render.h"
+#include "gameplay.h"
+
 
 class ConnectionHandler : public Thread {
     Socket socket;
     ConnectionSender* connectionSender;
     ConnectionReceiver* connectionReceiver;
+    //Gameplay gameplay;
+    //GameRender gameRender;
+    //BlockingQueue<Command>
 
 public:
     // Constructor
