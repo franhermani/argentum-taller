@@ -1,12 +1,11 @@
 #ifndef SERVER_PROTOCOL_H
 #define SERVER_PROTOCOL_H
 
-#include "../../common/protocol.h"
 #include "../../common/socket.h"
 #include "../../common/commands/command.h"
 #include "../game/world.h"
 
-class ServerProtocol : public Protocol {
+class ServerProtocol {
     Socket& socket;
 
 public:
@@ -19,7 +18,7 @@ public:
 
     // Recibe un comando a traves del socket
     // Devuelve una clase derivada de Command
-    Command* receiveCommand() override;
+    Command* receiveCommand();
 
     // Envia el mapa a traves del socket
     // Recibe a Player para enviarle solo el mapa que lo rodea
