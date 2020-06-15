@@ -12,10 +12,14 @@ class World {
     GameParams& params;
     std::vector<Player*> players;
     std::vector<std::vector<Terrain>> matrix;
-    int width{}, height{};
+    int world_width, world_height;
+    int player_width, player_height;
 
     // Llena la matriz (mapa) segun el json generado por Tiled
     void loadMatrix();
+
+    // Determina si una posicion (x,y) esta dentro de los limites de 'player'
+    bool inPlayerBoundaries(Player& player, int pos_x, int pos_y);
 
 public:
     // Constructor
@@ -49,7 +53,17 @@ public:
     const int getHeight() const;
 
     // Devuelve una sub-matriz del mapa segun la posicion del Player recibido
-    std::vector<std::vector<Terrain>> getSubMatrix(Player& player);
+    std::vector<std::vector<Terrain>> getMatrixAround(Player& player);
+
+    // Devuelve un vector de todos los players en la sub-matriz de 'player'
+    // Incluye al mismo 'player' recibido por parametro
+    std::vector<Player*> getPlayersAround(Player& player);
+
+    // Devuelve un vector de todos los npc en la sub-matriz de 'player'
+//    std::vector<NPC*> getNPCsAround(Player& player);
+
+    // Devuelve un vector de todos los items en la sub-matriz de 'player'
+//    std::vector<Item*> getItemsAround(Player& player);
 };
 
 #endif // GAME_WORLD_H
