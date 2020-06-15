@@ -16,7 +16,7 @@ width(width), height(height) {
 
     //TODO sacar esto de aca, recibir como parametro
     blocks_width = 20;
-    blocks_height = 30;
+    blocks_height = 20;
 }
 
 SDLWindow::~SDLWindow() {
@@ -63,8 +63,8 @@ void SDLWindow::render_character(int x, int y, SDL_Surface* character_surface) {
     int x_blocks_size = width / blocks_width;
     int y_blocks_size = height / blocks_height;
     SDL_Rect stretchRect;
-    stretchRect.x = x;
-    stretchRect.y = y;
+    stretchRect.x = x*x_blocks_size;
+    stretchRect.y = y*y_blocks_size;
     stretchRect.w = x_blocks_size;
     stretchRect.h = y_blocks_size;
     SDL_BlitScaled(character_surface, NULL, getSurface(), &stretchRect);

@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <exception>
+#include <unistd.h>
 #include "client.h"
 #include "../sdl/window.h"
 #include "../sdl/texture.h"
@@ -28,8 +29,8 @@ void Client::disconnectFromServer() {
 
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 640*2;
+const int SCREEN_HEIGHT = 480*2;
 //
 //Starts up SDL and creates window
 bool init();
@@ -139,11 +140,6 @@ SDL_Surface* loadSurface( std::string path )
     return optimizedSurface;
 }
 
-/*
-void Client::render_characters(SDL_Surface* ScreenSurface, std::vector<std::vector<terrain>> matrix) {
-
-}*/
-
 
 
 
@@ -159,13 +155,10 @@ void Client::render_map() {
     received_terrain[10] = TERRAIN_WATER;
 
 
-
-
-
     try {
         //CREO VENTANA Y PIDO SU SUPERFICIE
         SDLWindow window(SCREEN_WIDTH, SCREEN_HEIGHT);
-        SDL_Surface* ScreenSurface = window.getSurface();
+        //SDL_Surface* ScreenSurface = window.getSurface();
 
 
         //INCIIALIZO MATRIZ DE PISOS CON EL VECTOR RECIBIDO
@@ -199,6 +192,7 @@ void Client::render_map() {
             skeleton_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png");
             skeleton_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png");
             skeleton_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png");
+
             terrain_surfaces_map[TERRAIN_WATER] = water;
             terrain_surfaces_map[TERRAIN_LAND] = land;
             npc_surfaces_map[WARRIOR_UP] = warrior_up;
@@ -217,27 +211,44 @@ void Client::render_map() {
             window.render_terrain(matrix, terrain_surfaces_map);
 
             //VECTOR DE CHARACTERS QUE RECIBIRIAMOS POR SOCKET
-
             struct npc_pos {
                 int x;
                 int y;
                 npc npc_name;
             };
-
-            //std::vector<npc_pos> npc_positions;
-            //npc_pos npc_1 = {0, 0, WARRIOR_RIGHT};
-            //npc_pos npc_2 = {0, 10, SKELETON_DOWN};
-
-
-
+            std::vector<npc_pos> npc_positions;
+            npc_pos npc_1 = {0, 0, WARRIOR_RIGHT};
+            npc_pos npc_2 = {0, 10, SKELETON_DOWN};
+            npc_positions.push_back(npc_1);
+            npc_positions.push_back(npc_2);
+            for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
+                window.render_character(it->x, it->y, npc_surfaces_map[it->npc_name]);
+            }
             window.UpdateWindowSurface();
 
-            while(true) {
-                
+
+
+            //dan 10 pasos a la derecha y se va renderizando
+            for (int i=0; i<10; i++) {
+                window.render_terrain(matrix, terrain_surfaces_map);
+                for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
+                    window.render_character(it->x+i, it->y, npc_surfaces_map[it->npc_name]);
+                }                window.UpdateWindowSurface();
+                usleep(500000);
             }
 
 
 
+            //espero el quit
+            SDL_Event event;
+            while (true) {
+                SDL_WaitEvent(&event);
+                if (event.type == SDL_QUIT) {
+                    break;
+                }
+            }
+
+            /*
             bool running = true;
             int x = 100;
             int y = 150;
@@ -293,6 +304,7 @@ void Client::render_map() {
                 //window.render();
                 window.UpdateWindowSurface();
             }
+             */
 
 
         }
