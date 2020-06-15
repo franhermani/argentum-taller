@@ -8,6 +8,7 @@
 #include "../../common/commands/username_command.h"
 #include "../../common/commands/meditate_command.h"
 #include "../../common/commands/revive_command.h"
+#include "../../common/commands/heal_command.h"
 #include "../../common/commands/move_command.h"
 
 #define BYTE_SIZE 1
@@ -15,24 +16,20 @@
 ServerProtocol::ServerProtocol(Socket& socket) : socket(socket) {}
 
 Command* ServerProtocol::receiveCommand() {
+    std::vector<char> arguments;
     char buffer1[BYTE_SIZE], buffer2[BYTE_SIZE];
+
     socket.receiveBytes(buffer1, BYTE_SIZE);
     socket.receiveBytes(buffer2, BYTE_SIZE);
 
     int type = buffer1[0];
     int length = buffer2[0];
 
-    // DEBUG
-    std::cout << type << "\n";
-    std::cout << length << "\n";
-
-    // TODO: aca tengo un conditional jump
-    std::vector<char> arguments;
-
     if (length > 0) {
         arguments.resize(length);
         socket.receiveBytes(arguments.data(), arguments.size());
     }
+
     if (type == CMD_USERNAME) {
         std::string username(arguments.begin(), arguments.end());
         return new UsernameCommand(username);
@@ -47,7 +44,9 @@ Command* ServerProtocol::receiveCommand() {
             return new ReviveCommand();
         }
     } else if (type == CMD_HEAL) {
-        // TODO:...
+        uint16_t priest_id;
+        memcpy(&priest_id, arguments.data(), arguments.size());
+        return new HealCommand(ntohs(priest_id));
     } else if (type == CMD_DEPOSIT) {
         // TODO:...
     } else if (type == CMD_WITHDRAW) {

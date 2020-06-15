@@ -2,9 +2,7 @@
 #include "connection_sender.h"
 #include "../../common/socket_error.h"
 #include "../../common/commands/username_command.h"
-#include "../../common/commands/meditate_command.h"
-#include "../../common/commands/revive_command.h"
-#include "../../common/commands/move_command.h"
+#include "../../common/commands/heal_command.h"
 
 ConnectionSender::ConnectionSender(Socket& socket) : protocol(socket) {
     keepRunning = true;
@@ -26,7 +24,7 @@ void ConnectionSender::run() {
     }
      */
 
-    ReviveCommand command(1234);
+    HealCommand command(1234);
     protocol.sendCommand(command);
 
     isRunning = false;
