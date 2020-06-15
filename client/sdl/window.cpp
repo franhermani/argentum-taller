@@ -59,7 +59,7 @@ void SDLWindow::stampSurface(Surface& surface, Area& area) {
     SDL_BlitScaled(surface.get_renderable_surface(), NULL, getSurface(), &rect);
 }
 
-void SDLWindow::render_character(int x, int y, SDL_Surface* character_surface) {
+void SDLWindow::render_character(int x, int y, Surface character_surface) {
     int x_blocks_size = width / blocks_width;
     int y_blocks_size = height / blocks_height;
     SDL_Rect stretchRect;
@@ -67,12 +67,12 @@ void SDLWindow::render_character(int x, int y, SDL_Surface* character_surface) {
     stretchRect.y = y*y_blocks_size;
     stretchRect.w = x_blocks_size;
     stretchRect.h = y_blocks_size;
-    SDL_BlitScaled(character_surface, NULL, getSurface(), &stretchRect);
+    SDL_BlitScaled(character_surface.get_renderable_surface(), NULL, getSurface(), &stretchRect);
 }
 
 
-void SDLWindow::render_terrain(std::vector<std::vector<terrain>> matrix,
-        std::map<int, SDL_Surface*>& surfaces_map) {
+void SDLWindow::render_terrain(std::vector<std::vector<terrain>>& matrix,
+        std::map<terrain, Surface&>& surfaces_map) {
     int x = 0;
     int y = 0;
     int x_blocks_size = width / blocks_width;
@@ -88,10 +88,11 @@ void SDLWindow::render_terrain(std::vector<std::vector<terrain>> matrix,
             stretchRect.h = y_blocks_size;
 
             if (matrix[i][j] == TERRAIN_WATER) {
-                SDL_BlitScaled(surfaces_map[TERRAIN_WATER], NULL, getSurface(), &stretchRect);
+
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER).get_renderable_surface(), NULL, getSurface(), &stretchRect);
             }
             if (matrix[i][j] == TERRAIN_LAND) {
-                SDL_BlitScaled(surfaces_map[TERRAIN_LAND], NULL, getSurface(), &stretchRect);
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_LAND).get_renderable_surface(), NULL, getSurface(), &stretchRect);
             }
             x += x_blocks_size;
         }
@@ -99,8 +100,6 @@ void SDLWindow::render_terrain(std::vector<std::vector<terrain>> matrix,
     }
 
 }
-
-
 
 void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);

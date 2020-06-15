@@ -73,8 +73,8 @@ public:
     //Actualiza la ventana mostrada
     void UpdateWindowSurface();
 
-    void render_terrain(std::vector<std::vector<terrain>> matrix, std::map<int, SDL_Surface*>& surfaces_map);
-    void render_character(int x, int y, SDL_Surface* character_surface);
+    void render_terrain(std::vector<std::vector<terrain>>& matrix, std::map<terrain, Surface&>& surfaces_map);
+    void render_character(int x, int y, Surface character_surface);
 
 };
 

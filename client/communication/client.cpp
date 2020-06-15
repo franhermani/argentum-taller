@@ -35,9 +35,6 @@ const int SCREEN_HEIGHT = 480*2;
 //Starts up SDL and creates window
 bool init();
 
-//Loads media
-bool loadMedia();
-
 //Frees media and shuts down SDL
 void close();
 
@@ -51,18 +48,7 @@ SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
 
 //Current displayed image
-SDL_Surface* land = NULL;
-SDL_Surface* water = NULL;
-SDL_Surface* warrior_up = NULL;
-SDL_Surface* warrior_down = NULL;
-SDL_Surface* warrior_right = NULL;
-SDL_Surface* warrior_left = NULL;
-SDL_Surface* skeleton_up = NULL;
-SDL_Surface* skeleton_down = NULL;
-SDL_Surface* skeleton_right = NULL;
-SDL_Surface* skeleton_left = NULL;
-std::map<int, SDL_Surface*> terrain_surfaces_map;
-std::map<int, SDL_Surface*> npc_surfaces_map;
+
 const int blocks_width = 20;
 const int blocks_height = 30;
 
@@ -101,9 +87,6 @@ bool init()
 
 void close()
 {
-    //Free loaded image
-    SDL_FreeSurface(land );
-    land = NULL;
 
     //Destroy window
     SDL_DestroyWindow( gWindow );
@@ -136,7 +119,6 @@ SDL_Surface* loadSurface( std::string path )
         //Get rid of old loaded surface
         SDL_FreeSurface( loadedSurface );
     }
-
     return optimizedSurface;
 }
 
@@ -157,7 +139,6 @@ void Client::render_map() {
 
     try {
         //CREO VENTANA Y PIDO SU SUPERFICIE
-        SDLWindow window(SCREEN_WIDTH, SCREEN_HEIGHT);
         //SDL_Surface* ScreenSurface = window.getSurface();
 
 
@@ -182,34 +163,58 @@ void Client::render_map() {
             printf( "Failed to initialize!\n" );
         }
         else {
-            land = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png" );
-            water = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png" );
-            warrior_up = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png");
-            warrior_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png");
-            warrior_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png");
-            warrior_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png");
-            skeleton_up = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_sube.png");
-            skeleton_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png");
-            skeleton_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png");
-            skeleton_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png");
+            SDLWindow window(SCREEN_WIDTH, SCREEN_HEIGHT);
 
-            terrain_surfaces_map[TERRAIN_WATER] = water;
-            terrain_surfaces_map[TERRAIN_LAND] = land;
-            npc_surfaces_map[WARRIOR_UP] = warrior_up;
-            npc_surfaces_map[WARRIOR_DOWN] = warrior_down;
-            npc_surfaces_map[WARRIOR_LEFT] = warrior_left;
-            npc_surfaces_map[WARRIOR_RIGHT] = warrior_right;
-            npc_surfaces_map[SKELETON_UP] = skeleton_up;
-            npc_surfaces_map[SKELETON_DOWN] = skeleton_down;
-            npc_surfaces_map[SKELETON_LEFT] = skeleton_left;
-            npc_surfaces_map[SKELETON_RIGHT] = skeleton_right;
-            npc_surfaces_map[0] = warrior_up;
-            if(land == NULL )
+            //SDL_Surface* ScreenSurface = window.getSurface();
+            
+            SDL_Rect stretchRect;
+            stretchRect.x = 0;
+            stretchRect.y = 0;
+            stretchRect.w = 30;
+            stretchRect.h = 30;
+
+            Surface land = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png", window);
+            Surface water = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png", window);
+            Surface warrior_up = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png", window);
+            Surface warrior_down = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png", window);
+            Surface warrior_left = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png", window);
+            Surface warrior_right = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png", window);
+            Surface skeleton_up = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_sube.png", window);
+            Surface skeleton_down = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png", window);
+            Surface skeleton_left = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png", window);
+            Surface skeleton_right = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png", window);
+
+            SDL_Surface* land2 = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png");
+            SDL_BlitScaled(land2, NULL, window.getSurface(), &stretchRect);
+            window.UpdateWindowSurface();
+            SDL_UpdateWindowSurface(gWindow);
+
+/*
+
+            std::map<terrain, Surface&> terrain_surfaces_map;
+            std::map<npc, Surface&> npc_surfaces_map;
+
+            terrain_surfaces_map.insert({TERRAIN_WATER, water});
+            terrain_surfaces_map.insert({TERRAIN_LAND, land});
+            npc_surfaces_map.insert({WARRIOR_UP, warrior_up});
+            npc_surfaces_map.insert({WARRIOR_DOWN, warrior_down});
+            npc_surfaces_map.insert({WARRIOR_LEFT, warrior_left});
+            npc_surfaces_map.insert({WARRIOR_RIGHT, warrior_right});
+            npc_surfaces_map.insert({SKELETON_UP, skeleton_up});
+            npc_surfaces_map.insert({SKELETON_DOWN, skeleton_down});
+            npc_surfaces_map.insert({SKELETON_LEFT, skeleton_left});
+            npc_surfaces_map.insert({SKELETON_RIGHT, skeleton_right});
+
+            if (false)
             {
                 //TODO ERROR SI NO PUEDE CARGAR UNA IMAGEN
             }
             window.render_terrain(matrix, terrain_surfaces_map);
+            window.UpdateWindowSurface();
+*/
 
+
+            /*
             //VECTOR DE CHARACTERS QUE RECIBIRIAMOS POR SOCKET
             struct npc_pos {
                 int x;
@@ -222,20 +227,20 @@ void Client::render_map() {
             npc_positions.push_back(npc_1);
             npc_positions.push_back(npc_2);
             for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
-                window.render_character(it->x, it->y, npc_surfaces_map[it->npc_name]);
+                window.render_character(it->x, it->y, npc_surfaces_map.at(it->npc_name));
             }
-            window.UpdateWindowSurface();
+             */
 
-
+            /*
 
             //dan 10 pasos a la derecha y se va renderizando
             for (int i=0; i<10; i++) {
                 window.render_terrain(matrix, terrain_surfaces_map);
                 for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
-                    window.render_character(it->x+i, it->y, npc_surfaces_map[it->npc_name]);
+                    window.render_character(it->x+i, it->y, npc_surfaces_map.at(it->npc_name));
                 }                window.UpdateWindowSurface();
                 usleep(500000);
-            }
+            }*/
 
 
 
@@ -247,6 +252,17 @@ void Client::render_map() {
                     break;
                 }
             }
+
+
+
+
+
+
+
+
+
+
+
 
             /*
             bool running = true;
@@ -311,6 +327,7 @@ void Client::render_map() {
         //SDL_Delay(10000);
         //Free resources and close SDL
         close();
+        SDL_Quit();
 
 
 
