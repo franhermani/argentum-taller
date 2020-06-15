@@ -24,7 +24,7 @@ public:
     // Devuelve la serializacion en bytes del comando
     const std::vector<char> serialize() const override;
 
-    // Mueve al personaje segun la direccion dada
+    // Revive al jugador
     void execute(Player& player) override;
 };
 

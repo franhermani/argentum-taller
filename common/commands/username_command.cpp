@@ -6,7 +6,7 @@
 UsernameCommand::UsernameCommand(const std::string& username) :
 username(username) {}
 
-UsernameCommand::~UsernameCommand() {}
+UsernameCommand::~UsernameCommand() = default;
 
 const std::vector<char> UsernameCommand::serialize() const {
     // Longitud de los argumentos
