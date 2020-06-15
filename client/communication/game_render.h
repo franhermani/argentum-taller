@@ -7,6 +7,11 @@
 #include "../sdl/window.h"
 #include <SDL2/SDL_image.h>
 
+struct npc_pos {
+    int x;
+    int y;
+    npc npc_name;
+};
 
 class GameRender {
 private:
@@ -20,6 +25,8 @@ private:
 public:
     GameRender(const int screenWidth, const int screenHeight, const int blocksWidth, const int blocksHeight);
     ~GameRender();
+    void render_terrain(std::vector<std::vector<terrain>>& matrix);
+    void render_npcs(std::vector<npc_pos>& npc_positions);
     int init();
     void play();
 };
