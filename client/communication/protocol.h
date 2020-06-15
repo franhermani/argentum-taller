@@ -1,18 +1,12 @@
 #ifndef CLIENT_PROTOCOL_H
 #define CLIENT_PROTOCOL_H
 
-#include <string>
 #include "../../common/protocol.h"
 #include "../../common/socket.h"
+#include "../../common/commands/command.h"
 
 class ClientProtocol : public Protocol {
     Socket& socket;
-
-    // Codifica un mensaje segun el protocolo
-    const char* encodeMessage(const std::string& message) override;
-
-    // Decodifica un mensaje segun el protocolo
-    const std::string decodeMessage(const char* message) override;
 
 public:
     // Constructor
@@ -22,11 +16,8 @@ public:
     ClientProtocol(const ClientProtocol&) = delete;
     ClientProtocol& operator=(const ClientProtocol&) = delete;
 
-    // Recibe un mensaje a traves del socket
-    const std::string receiveMessage() override;
-
-    // Envia un mensaje a traves del socket
-    void sendMessage(const std::string& message) override;
+    // Envia un comando a traves del socket
+    void sendCommand(Command& command);
 };
 
 #endif // CLIENT_PROTOCOL_H

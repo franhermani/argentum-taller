@@ -1,7 +1,8 @@
-#include <iostream>
 #include <string>
 #include "connection_sender.h"
 #include "../../common/socket_error.h"
+#include "../../common/commands/username_command.h"
+#include "../../common/commands/heal_command.h"
 
 ConnectionSender::ConnectionSender(Socket& socket) : protocol(socket) {
     keepRunning = true;
@@ -22,6 +23,10 @@ void ConnectionSender::run() {
         }
     }
      */
+
+    HealCommand command(1234);
+    protocol.sendCommand(command);
+
     isRunning = false;
 }
 
@@ -34,6 +39,6 @@ bool ConnectionSender::isDead() {
 }
 
 void ConnectionSender::sendUsername(const std::string& username) {
-    protocol.sendMessage(username);
-    std::cout << username << "\n";
+    UsernameCommand usernameCommand(username);
+    protocol.sendCommand(usernameCommand);
 }

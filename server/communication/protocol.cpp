@@ -1,33 +1,77 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <arpa/inet.h>
+#include <cstring>
 #include "protocol.h"
+#include "../../common/commands/defines.h"
+#include "../../common/commands/username_command.h"
+#include "../../common/commands/meditate_command.h"
+#include "../../common/commands/revive_command.h"
+#include "../../common/commands/heal_command.h"
+#include "../../common/commands/move_command.h"
 
-#define BUF_MAX_SIZE 1024
+#define BYTE_SIZE 1
 
 ServerProtocol::ServerProtocol(Socket& socket) : socket(socket) {}
 
-const char* ServerProtocol::encodeMessage(const std::string& message) {
-    // TODO: ...
-    return "Hola mundo";
-}
+Command* ServerProtocol::receiveCommand() {
+    std::vector<char> arguments;
+    char buffer1[BYTE_SIZE], buffer2[BYTE_SIZE];
 
-const std::string ServerProtocol::decodeMessage(const char* message) {
-    // TODO: ...
-    return "Hola mundo";
-}
+    socket.receiveBytes(buffer1, BYTE_SIZE);
+    socket.receiveBytes(buffer2, BYTE_SIZE);
 
-void ServerProtocol::sendMessage(const std::string& message) {
-    // TODO: ...
-    socket.sendBytes(message.c_str(), message.length());
-}
+    int type = buffer1[0];
+    int length = buffer2[0];
 
-const std::string ServerProtocol::receiveMessage() {
-    // TODO: ...
-    char buffer[BUF_MAX_SIZE];
-    socket.receiveBytes(buffer, 11);
-    buffer[11] = '\0';
-    std::string str(buffer);
-    std::cout << buffer << "\n";
-    // TODO: decodeMessage(str);
-    return buffer;
+    if (length > 0) {
+        arguments.resize(length);
+        socket.receiveBytes(arguments.data(), arguments.size());
+    }
+
+    if (type == CMD_USERNAME) {
+        std::string username(arguments.begin(), arguments.end());
+        return new UsernameCommand(username);
+    } else if (type == CMD_MEDITATE) {
+        return new MeditateCommand();
+    } else if (type == CMD_REVIVE) {
+        if (length > 0) {
+            uint16_t priest_id;
+            memcpy(&priest_id, arguments.data(), arguments.size());
+            return new ReviveCommand(ntohs(priest_id));
+        } else {
+            return new ReviveCommand();
+        }
+    } else if (type == CMD_HEAL) {
+        uint16_t priest_id;
+        memcpy(&priest_id, arguments.data(), arguments.size());
+        return new HealCommand(ntohs(priest_id));
+    } else if (type == CMD_DEPOSIT) {
+        // TODO:...
+    } else if (type == CMD_WITHDRAW) {
+        // TODO:...
+    } else if (type == CMD_LIST) {
+        // TODO:...
+    } else if (type == CMD_BUY) {
+        // TODO:...
+    } else if (type == CMD_SELL) {
+        // TODO:...
+    } else if (type == CMD_TAKE) {
+        // TODO:...
+    } else if (type == CMD_THROW) {
+        // TODO:...
+    } else if (type == CMD_MESSAGE) {
+        // TODO:...
+    } else if (type == CMD_MOVE) {
+        int direction = arguments[0];
+        return new MoveCommand(direction);
+    } else if (type == CMD_ATTACK) {
+        // TODO:...
+    } else if (type == CMD_EQUIP) {
+        // TODO:...
+    } else if (type == CMD_TRICK) {
+        // TODO:...
+    }
+    return nullptr;
 }
