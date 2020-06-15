@@ -3,6 +3,7 @@
 #include "../../common/socket_error.h"
 #include "../../common/commands/username_command.h"
 #include "../../common/commands/meditate_command.h"
+#include "../../common/commands/revive_command.h"
 #include "../../common/commands/move_command.h"
 
 ConnectionSender::ConnectionSender(Socket& socket) : protocol(socket) {
@@ -25,8 +26,8 @@ void ConnectionSender::run() {
     }
      */
 
-    MeditateCommand meditateCommand;
-    protocol.sendCommand(meditateCommand);
+    ReviveCommand command;
+    protocol.sendCommand(command);
 
     isRunning = false;
 }

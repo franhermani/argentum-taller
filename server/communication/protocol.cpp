@@ -1,10 +1,13 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <arpa/inet.h>
+#include <cstring>
 #include "protocol.h"
 #include "../../common/commands/defines.h"
 #include "../../common/commands/username_command.h"
 #include "../../common/commands/meditate_command.h"
+#include "../../common/commands/revive_command.h"
 #include "../../common/commands/move_command.h"
 
 #define BYTE_SIZE 1
@@ -23,6 +26,7 @@ Command* ServerProtocol::receiveCommand() {
     std::cout << type << "\n";
     std::cout << length << "\n";
 
+    // TODO: aca tengo un conditional jump
     std::vector<char> arguments;
 
     if (length > 0) {
@@ -35,7 +39,13 @@ Command* ServerProtocol::receiveCommand() {
     } else if (type == CMD_MEDITATE) {
         return new MeditateCommand();
     } else if (type == CMD_REVIVE) {
-        // TODO:...
+        if (length > 0) {
+            uint16_t priest_id;
+            memcpy(&priest_id, arguments.data(), arguments.size());
+            return new ReviveCommand(ntohs(priest_id));
+        } else {
+            return new ReviveCommand();
+        }
     } else if (type == CMD_HEAL) {
         // TODO:...
     } else if (type == CMD_DEPOSIT) {
