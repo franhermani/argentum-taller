@@ -28,7 +28,7 @@ public:
     void render_terrain(std::vector<std::vector<terrain>>& matrix);
     void render_npcs(std::vector<npc_pos>& npc_positions);
     int init();
-    void play();
+    void play(std::vector<terrain>& received_terrain, std::vector<npc_pos>& npc_positions);
 };
 
 

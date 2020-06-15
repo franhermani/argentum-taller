@@ -11,7 +11,6 @@
 #include "../sdl/window.h"
 
 
-SDL_Surface* surface;
 
 int GameRender::init() {
     //Initialization flag
@@ -21,9 +20,6 @@ int GameRender::init() {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         success = false;
-    } else {
-        //CREO VENTANA
-        //window = SDLWindow(screen_width, screen_height);
     }
     return success;
 }
@@ -38,7 +34,6 @@ void GameRender::render_terrain(std::vector<std::vector<terrain>>& matrix) {
     terrain_surfaces_map.insert({TERRAIN_LAND, land});
 
     window.render_terrain(matrix, terrain_surfaces_map);
-    window.UpdateWindowSurface();
 }
 
 void GameRender::render_npcs(std::vector<npc_pos>& npc_positions) {
@@ -60,30 +55,17 @@ void GameRender::render_npcs(std::vector<npc_pos>& npc_positions) {
     npc_surfaces_map.insert({SKELETON_DOWN, skeleton_down});
     npc_surfaces_map.insert({SKELETON_LEFT, skeleton_left});
     npc_surfaces_map.insert({SKELETON_RIGHT, skeleton_right});
-    //window.render_character(0, 0, npc_surfaces_map.at(WARRIOR_RIGHT));
-    //window.render_character(5, 5, npc_surfaces_map.at(SKELETON_UP));
 
+    //recorro vector y renderizo con su surface correspondiente en el mapa
     for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
         window.render_character(it->x, it->y, npc_surfaces_map.at(it->npc_name));
     }
 
-    window.UpdateWindowSurface();
 
 }
 
 
-void GameRender::play() {
-    init();
-    surface = window.getSurface();
-    window.UpdateWindowSurface();
-
-    //ESTO ME LO
-    //VECTOR DE TERRENOS QUE RECIBIRIAMOS POR SOCKET
-    std::vector<terrain> received_terrain;
-    for (int i=0; i<blocksHeight*blocksWidth; i++) {
-        received_terrain.push_back(TERRAIN_LAND);
-    }
-    received_terrain[10] = TERRAIN_WATER;
+void GameRender::play(std::vector<terrain>& received_terrain, std::vector<npc_pos>& npc_positions) {
 
     //INCIIALIZO MATRIZ DE PISOS CON EL VECTOR RECIBIDO
     std::vector<std::vector<terrain>> matrix;
@@ -98,41 +80,11 @@ void GameRender::play() {
             ++current_vec_index;
         }
     }
+    //renderizo piso y npcs
     render_terrain(matrix);
+    render_npcs(npc_positions);
+    window.UpdateWindowSurface();
 
-
-    //VECTOR DE CHARACTERS QUE RECIBIRIAMOS POR SOCKET
-
-    std::vector<npc_pos> npc_positions;
-
-    npc_pos npc_1 = {0, 0, WARRIOR_RIGHT};
-    npc_pos npc_2 = {0, 10, SKELETON_DOWN};
-    npc_positions.push_back(npc_1);
-    npc_positions.push_back(npc_2);
-
-
-    //dan 10 pasos a la derecha y se va renderizando
-    for (int i=0; i<10; i++) {
-        render_terrain(matrix);
-        for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
-            it->x = it->x+1;
-        }
-        render_npcs(npc_positions);
-        usleep(500000);
-    }
-
-
-
-
-
-    //espero el quit
-    SDL_Event event;
-    while (true) {
-        SDL_WaitEvent(&event);
-        if (event.type == SDL_QUIT) {
-            break;
-        }
-    }
 }
 
 
