@@ -10,13 +10,15 @@
 
 class GameRender {
 private:
-    const int screen_width;
-    const int screen_height;
-    const int blocks_width;
-    const int blocks_height;
+    const int screenWidth;
+    const int screenHeight;
+    const int blocksWidth;
+    const int blocksHeight;
     SDLWindow window;
+    //std::map<terrain, Surface> terrain_surfaces_map;
+    //std::map<npc, Surface> npc_surfaces_map;
 public:
-    GameRender(const int screen_width, const int screen_height, const int blocks_width, const int blocks_height);
+    GameRender(const int screenWidth, const int screenHeight, const int blocksWidth, const int blocksHeight);
     ~GameRender();
     int init();
     void play();

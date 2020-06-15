@@ -60,7 +60,7 @@ void SDLWindow::stampSurface(Surface& surface, Area& area) {
     SDL_BlitScaled(surface.get_renderable_surface(), NULL, getSurface(), &rect);
 }
 
-void SDLWindow::render_character(int x, int y, Surface character_surface) {
+void SDLWindow::render_character(int x, int y, Surface& character_surface) {
     int x_blocks_size = width / blocks_width;
     int y_blocks_size = height / blocks_height;
     SDL_Rect stretchRect;

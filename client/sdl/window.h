@@ -76,7 +76,7 @@ public:
     void UpdateWindowSurface();
 
     void render_terrain(std::vector<std::vector<terrain>>& matrix, std::map<terrain, Surface&>& surfaces_map);
-    void render_character(int x, int y, Surface character_surface);
+    void render_character(int x, int y, Surface& character_surface);
 
 };
 
