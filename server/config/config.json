@@ -4,9 +4,9 @@
   },
   "game_params": {
     "ms_per_update": 60,
-    "screen": {
-      "width": 1200,
-      "height": 800
+    "blocks_around_player": {
+      "width": 21,
+      "height": 21
     },
     "player": {
       "gold": {

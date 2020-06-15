@@ -47,6 +47,9 @@ public:
 
     // Devuelve la altura del mapa
     const int getHeight() const;
+
+    // Devuelve una sub-matriz del mapa segun la posicion del Player recibido
+    std::vector<std::vector<Terrain>> getSubMatrix(Player& player);
 };
 
 #endif // GAME_WORLD_H

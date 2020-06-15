@@ -81,3 +81,7 @@ Command* ServerProtocol::receiveCommand() {
     }
     return nullptr;
 }
+
+void ServerProtocol::sendMap(World& world, Player& player) {
+    // TODO: ...
+}
