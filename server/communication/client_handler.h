@@ -1,19 +1,23 @@
 #ifndef CLIENT_HANDLER_H
 #define CLIENT_HANDLER_H
 
+#include <string>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "client_sender.h"
 #include "client_receiver.h"
+#include "../game/game_manager.h"
 
 class ClientHandler : public Thread {
     Socket socket;
+    std::string username{};
     ClientSender* clientSender;
     ClientReceiver* clientReceiver;
+    GameManager& gameManager;
 
 public:
     // Constructor
-    explicit ClientHandler(Socket socket);
+    ClientHandler(Socket socket, GameManager& game_manager);
 
     // Constructor y asignacion por copia deshabilitados
     ClientHandler(const ClientHandler&) = delete;

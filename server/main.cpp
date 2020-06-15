@@ -1,30 +1,26 @@
 #include <iostream>
 #include <exception>
-#include "defines.h"
 #include "utilities/file.h"
 #include "communication/server.h"
 
-#define OK 0
-#define ERROR 1
-#define NUM_PARAMS 2
+#define OK          0
+#define ERROR       1
+#define NUM_PARAMS  2
+#define EXIT_CHAR   "q"
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
         std::cerr << "Uso: ./server <archivo_de_configuracion>\n";
         return ERROR;
     }
-    std::string path = argv[1];
-
+    std::string path = argv[1], command;
     try {
         File file(path);
         Server server(file);
-        server.startClientsAcceptor();
-        std::string command;
+        server.startGame();
         while (getline(std::cin, command))
             if (command == EXIT_CHAR) break;
-
-        server.stopClientsAcceptor();
-        server.joinClientsAcceptor();
+        server.endGame();
     } catch (const std::exception &e) {
         std::cerr << e.what();
         return ERROR;

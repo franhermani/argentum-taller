@@ -1,6 +1,7 @@
 #ifndef MOVE_COMMAND_H
 #define MOVE_COMMAND_H
 
+#include <vector>
 #include "command.h"
 
 class MoveCommand : public Command {
@@ -14,8 +15,14 @@ public:
     MoveCommand(const MoveCommand&) = delete;
     MoveCommand& operator=(const MoveCommand&) = delete;
 
-    // Mueve al personaje segun la direccion dada
-    virtual void execute(Player& player) override;
+    // Destructor
+    ~MoveCommand() override;
+
+    // Devuelve la serializacion en bytes del comando
+    const std::vector<char> serialize() const override;
+
+    // Mueve al personaje segun 'direction'
+    void execute(Player& player) override;
 };
 
 #endif // MOVE_COMMAND_H

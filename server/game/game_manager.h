@@ -1,30 +1,34 @@
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H
 
+#include <string>
 #include <vector>
 #include "../../common/thread.h"
 #include "../utilities/json_parser.h"
-#include "world.h"
 #include "params.h"
+#include "world.h"
+#include "id_manager.h"
 #include "../../common/blocking_queue.h"
 #include "../../common/user_event.h"
 
 class GameManager : public Thread {
-    JsonParser& jsonParser;
+    JsonParser jsonParser;
+    GameParams* params;
     World* world;
-    GameParams params;
+    std::vector<Player*> players;
+    IdManager idManager;
     BlockingQueue<UserEvent> usersEvents;
 
 public:
     // Constructor
-    explicit GameManager(JsonParser& json_parser);
+    explicit GameManager(File& config_file);
 
     // Constructor y asignacion por copia deshabilitados
     GameManager(const GameManager& other) = delete;
     GameManager& operator=(const GameManager& other) = delete;
 
     // Destructor
-    // Libera la memoria reservada para el world
+    // Libera la memoria reservada para 'params', 'world' y para cada player
     ~GameManager();
 
     // Game loop
@@ -36,6 +40,12 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
+
+    // Agrega el Player al juego segun su username
+    void addPlayer(const std::string& username);
+
+    // Elimina el Player del juego segun su username
+    void removePlayer(const std::string& username);
 
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);

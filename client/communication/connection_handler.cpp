@@ -2,10 +2,18 @@
 
 ConnectionHandler::ConnectionHandler(const char *host, const char *port) :
 socket(host, port, false) {
-    keepRunning = true;
     isRunning = true;
+
+
+
+    //send related classes
     connectionSender = new ConnectionSender(socket);
+    gameplay = new Gameplay();
+
+
+    //receive related classes
     connectionReceiver = new ConnectionReceiver(socket);
+    GameRender gameRender(640*2, 480*2, 20,30);
 }
 
 ConnectionHandler::~ConnectionHandler() {
@@ -16,16 +24,11 @@ ConnectionHandler::~ConnectionHandler() {
 
 
 void ConnectionHandler::run() {
-    //ACA VAMOS A LEVNATAR TODO
 
-
-
-    connectionSender->start();
-    connectionReceiver->start();
-
-    while (keepRunning) {
-        // TODO: ver que va aca
-    }
+    // TODO: username leerlo por terminal, pasarselo a client y luego aca
+    connectionSender->sendUsername("franhermani");
+    /*connectionSender->start();
+    connectionReceiver->start();*/
     isRunning = false;
 }
 
@@ -34,7 +37,6 @@ void ConnectionHandler::stop() {
     connectionSender->join();
     connectionReceiver->stop();
     connectionReceiver->join();
-    keepRunning = false;
 }
 
 bool ConnectionHandler::isDead() {

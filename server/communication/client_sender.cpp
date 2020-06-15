@@ -8,16 +8,19 @@ ClientSender::ClientSender(Socket& socket) : protocol(socket) {
 }
 
 void ClientSender::run() {
+    /*
     std::string message;
 
     while (keepRunning) {
         try {
+            // TODO: enviar mapa actualizado al cliente
             message = "Chau mundo";
             protocol.sendMessage(message);
         } catch(SocketError&) {
             break;
         }
     }
+     */
     isRunning = false;
 }
 

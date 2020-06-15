@@ -7,15 +7,22 @@
 using json = nlohmann::json;
 
 class GameParams {
-    json jsonParams;
+    json configParams;
+    json worldParams;
 
 public:
     // Constructor
-    explicit GameParams(const json& json_params);
+    GameParams(const json& config_params, const json& world_params);
 
     // Constructor y asignacion por copia deshabilitados
     GameParams(const GameParams& other) = delete;
     GameParams& operator=(const GameParams& other) = delete;
+
+    // Devuelve los parametros de configuracion del juego en formato Json
+    const json getConfigParams() const;
+
+    // Devuelve los parametros del mapa del juego en formato Json
+    const json getWorldParams() const;
 };
 
 #endif // GAME_PARAMS_H

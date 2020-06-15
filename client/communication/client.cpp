@@ -25,6 +25,7 @@ void Client::connectToServer() {
 // TODO: ver cuando llamar a este metodo
 void Client::disconnectFromServer() {
     connectionHandler->stop();
+    connectionHandler->join();
 }
 
 
