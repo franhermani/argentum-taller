@@ -8,27 +8,6 @@
 #include <SDL2/SDL_image.h>
 
 
-enum Terrain {
-    TERRAIN_GRASS,
-    TERRAIN_LAND,
-    TERRAIN_SAND,
-    TERRAIN_STONE,
-    TERRAIN_WALL,
-    TERRAIN_WATER,
-};
-enum Warrior {
-    WARRIOR_UP,
-    WARRIOR_DOWN,
-    WARRIOR_RIGHT,
-    WARRIOR_LEFT
-};
-enum Skeleton {
-    SKELETON_UP,
-    SKELETON_DOWN,
-    SKELETON_RIGHT,
-    SKELETON_LEFT
-};
-
 class Client {
     ConnectionHandler* connectionHandler;
     bool keepPlaying;

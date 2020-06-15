@@ -214,7 +214,6 @@ void Client::render_map() {
     try {
         SDLWindow window(SCREEN_WIDTH, SCREEN_HEIGHT);
         SDL_Surface* ScreenSurface = window.getSurface();
-        
         std::vector<std::vector<Terrain>> matrix;
         matrix.resize(blocks_height);
         for (int i=0; i < blocks_height; i++) {
@@ -240,7 +239,7 @@ void Client::render_map() {
             } else {
                 //Main loop flag
 
-                render_terrain(ScreenSurface, matrix);
+                    render_terrain(ScreenSurface, matrix);
                 //Update the surface
                 SDL_UpdateWindowSurface(gWindow);
                 window.UpdateWindowSurface();
