@@ -19,10 +19,12 @@ int main(int argc, char *argv[]) {
 
     try {
         Client client(host, port);
+        client.connectToServer();
+
         int blocks_width = 20;
         int blocks_height = 30;
         GameRender GameRender(640*2, 480*2, blocks_width,blocks_height);
-        GameRender.init();
+
         //VECTOR DE TERRENOS QUE RECIBIRIAMOS POR SOCKET
         std::vector<terrain> received_terrain;
         for (int i=0; i<blocks_width*blocks_height; i++) {
@@ -58,7 +60,6 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        //client.connectToServer();
 //        client.disconnectFromServer();
 //        client.play();
 //        client.render_map();

@@ -44,6 +44,7 @@ SDL_Surface* loadSurface( std::string path );
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
+
 //The surface contained by the window
 SDL_Surface* gScreenSurface = NULL;
 
@@ -59,17 +60,13 @@ bool init()
     bool success = true;
 
     //Initialize SDL
-    if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
-    {
+    if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
         printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
         success = false;
-    }
-    else
-    {
+    } else {
         //Create window
         gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-        if( gWindow == NULL )
-        {
+        if(gWindow == NULL) {
             printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
             success = false;
         }
@@ -163,10 +160,11 @@ void Client::render_map() {
             printf( "Failed to initialize!\n" );
         }
         else {
+            /*
             SDLWindow window(SCREEN_WIDTH, SCREEN_HEIGHT);
 
             //SDL_Surface* ScreenSurface = window.getSurface();
-            
+
             SDL_Rect stretchRect;
             stretchRect.x = 0;
             stretchRect.y = 0;
@@ -188,6 +186,7 @@ void Client::render_map() {
             SDL_BlitScaled(land2, NULL, window.getSurface(), &stretchRect);
             window.UpdateWindowSurface();
             SDL_UpdateWindowSurface(gWindow);
+             */
 
 /*
 
@@ -233,14 +232,14 @@ void Client::render_map() {
 
             /*
 
-            //dan 10 pasos a la derecha y se va renderizando
-            for (int i=0; i<10; i++) {
-                window.render_terrain(matrix, terrain_surfaces_map);
-                for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
-                    window.render_character(it->x+i, it->y, npc_surfaces_map.at(it->npc_name));
-                }                window.UpdateWindowSurface();
-                usleep(500000);
-            }*/
+                //dan 10 pasos a la derecha y se va renderizando
+                for (int i=0; i<10; i++) {
+                    window.render_terrain(matrix, terrain_surfaces_map);
+                    for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
+                        window.render_character(it->x+i, it->y, npc_surfaces_map.at(it->npc_name));
+                    }                window.UpdateWindowSurface();
+                    usleep(500000);
+                }*/
 
 
 

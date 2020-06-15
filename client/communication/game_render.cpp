@@ -66,8 +66,7 @@ void GameRender::render_npcs(std::vector<npc_pos>& npc_positions) {
 
 
 void GameRender::play(std::vector<terrain>& received_terrain, std::vector<npc_pos>& npc_positions) {
-
-    //INCIIALIZO MATRIZ DE PISOS CON EL VECTOR RECIBIDO
+    //inicializamos matriz de pisos a patir del vector recibido
     std::vector<std::vector<terrain>> matrix;
     matrix.resize(blocksHeight);
     int current_vec_index = 0;
@@ -80,7 +79,7 @@ void GameRender::play(std::vector<terrain>& received_terrain, std::vector<npc_po
             ++current_vec_index;
         }
     }
-    //renderizo piso y npcs
+    //renderizamos piso y npcs
     render_terrain(matrix);
     render_npcs(npc_positions);
     window.UpdateWindowSurface();
@@ -88,20 +87,12 @@ void GameRender::play(std::vector<terrain>& received_terrain, std::vector<npc_po
 }
 
 
-
-
-
-
-//TODO RESULUCION SE PUEDE CONSEGIUR DESDE ACA ADENTRO EN VEZ DE PASAR NUMERO MAGICO
-//EMPROLIJARRRRRRRRRRRRRRRRRRRRRRRRRR antes de hacer pr
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         const int blocksWidth, const int blocksHeight)
         : screenWidth(screenWidth), screenHeight(screenHeight),
         blocksWidth(blocksWidth), blocksHeight(blocksHeight), window(screenWidth, screenHeight) {
-    //Surface land = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png", window);
-    //Surface water = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png", window);
-    //terrain_surfaces_map.insert({TERRAIN_WATER, std::move(water)});
-    //terrain_surfaces_map.insert({TERRAIN_LAND, std::move(land)});
-    //cheqeuar aca tema copias std move
+    init();
 }
-GameRender::~GameRender() {}
+GameRender::~GameRender() {
+    SDL_Quit();
+}

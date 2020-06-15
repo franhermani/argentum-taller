@@ -13,7 +13,13 @@ ConnectionHandler::~ConnectionHandler() {
     delete connectionReceiver;
 }
 
+
+
 void ConnectionHandler::run() {
+    //ACA VAMOS A LEVNATAR TODO
+
+
+
     connectionSender->start();
     connectionReceiver->start();
 
