@@ -1,12 +1,12 @@
 #include <iostream>
 #include <exception>
-#include "defines.h"
 #include "utilities/file.h"
 #include "communication/server.h"
 
-#define OK 0
-#define ERROR 1
-#define NUM_PARAMS 2
+#define OK          0
+#define ERROR       1
+#define NUM_PARAMS  2
+#define EXIT_CHAR   "q"
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {

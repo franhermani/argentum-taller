@@ -9,6 +9,7 @@
 #include "../../common/commands/meditate_command.h"
 #include "../../common/commands/revive_command.h"
 #include "../../common/commands/heal_command.h"
+#include "../../common/commands/list_command.h"
 #include "../../common/commands/move_command.h"
 
 #define BYTE_SIZE 1
@@ -52,7 +53,9 @@ Command* ServerProtocol::receiveCommand() {
     } else if (type == CMD_WITHDRAW) {
         // TODO:...
     } else if (type == CMD_LIST) {
-        // TODO:...
+        uint16_t npc_id;
+        memcpy(&npc_id, arguments.data(), arguments.size());
+        return new ListCommand(ntohs(npc_id));
     } else if (type == CMD_BUY) {
         // TODO:...
     } else if (type == CMD_SELL) {
