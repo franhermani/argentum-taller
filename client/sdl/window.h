@@ -7,8 +7,7 @@
 #include "area.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE
-
-enum Terrain {
+enum terrain {
     TERRAIN_GRASS,
     TERRAIN_LAND,
     TERRAIN_SAND,
@@ -16,13 +15,11 @@ enum Terrain {
     TERRAIN_WALL,
     TERRAIN_WATER,
 };
-enum Warrior {
+enum npc {
     WARRIOR_UP,
     WARRIOR_DOWN,
     WARRIOR_RIGHT,
-    WARRIOR_LEFT
-};
-enum Skeleton {
+    WARRIOR_LEFT,
     SKELETON_UP,
     SKELETON_DOWN,
     SKELETON_RIGHT,
@@ -39,7 +36,6 @@ class SDLWindow {
     int height;
     int blocks_width;
     int blocks_height;
-    std::vector<std::vector<Terrain>> matrix;
     SDL_Window *window;
     SDL_Renderer *renderer;
 
@@ -77,7 +73,9 @@ public:
     //Actualiza la ventana mostrada
     void UpdateWindowSurface();
 
-    void render_terrain(std::map<int, SDL_Surface*> terrains_map);
+    void render_terrain(std::vector<std::vector<terrain>> matrix, std::map<int, SDL_Surface*>& surfaces_map);
+    void render_character(int x, int y, SDL_Surface* character_surface);
+
 };
 
 #endif // SDL_WINDOW_H

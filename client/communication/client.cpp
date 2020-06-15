@@ -60,8 +60,8 @@ SDL_Surface* skeleton_up = NULL;
 SDL_Surface* skeleton_down = NULL;
 SDL_Surface* skeleton_right = NULL;
 SDL_Surface* skeleton_left = NULL;
-std::map<int, SDL_Surface*> terrains_map;
-std::map<int, SDL_Surface*> npcs_map;
+std::map<int, SDL_Surface*> terrain_surfaces_map;
+std::map<int, SDL_Surface*> npc_surfaces_map;
 const int blocks_width = 20;
 const int blocks_height = 30;
 
@@ -96,41 +96,7 @@ bool init()
     return success;
 }
 
-bool loadMedia()
-{
-    //Loading success flag
-    bool success = true;
 
-    //Load stretching surface
-    land = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png" );
-    water = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png" );
-    warrior_up = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png");
-    warrior_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png");
-    warrior_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png");
-    warrior_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png");
-    skeleton_up = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_sube.png");
-    skeleton_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png");
-    skeleton_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png");
-    skeleton_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png");
-    terrains_map[TERRAIN_WATER] = water;
-    terrains_map[TERRAIN_LAND] = land;
-    npcs_map[WARRIOR_UP] = warrior_up;
-    npcs_map[WARRIOR_DOWN] = warrior_down;
-    npcs_map[WARRIOR_LEFT] = warrior_left;
-    npcs_map[WARRIOR_RIGHT] = warrior_right;
-    npcs_map[SKELETON_UP] = skeleton_up;
-    npcs_map[SKELETON_DOWN] = skeleton_down;
-    npcs_map[SKELETON_LEFT] = skeleton_left;
-    npcs_map[SKELETON_RIGHT] = skeleton_right;
-    npcs_map[0] = warrior_up;
-    if(land == NULL )
-    {
-        printf( "Failed to load stretching image!\n" );
-        success = false;
-    }
-
-    return success;
-}
 
 void close()
 {
@@ -174,76 +140,104 @@ SDL_Surface* loadSurface( std::string path )
 }
 
 /*
-void Client::render_characters(SDL_Surface* ScreenSurface, std::vector<std::vector<Terrain>> matrix) {
+void Client::render_characters(SDL_Surface* ScreenSurface, std::vector<std::vector<terrain>> matrix) {
 
 }*/
 
 
-void Client::render_terrain(SDL_Surface* ScreenSurface, std::vector<std::vector<Terrain>> matrix) {
 
-    int x = 0;
-    int y = 0;
-    int x_blocks_size = SCREEN_WIDTH / blocks_width;
-    int y_blocks_size = SCREEN_HEIGHT / blocks_height;
 
-    for (int i=0; i < blocks_height; i++) {
-        x = 0;
-        for (int j=0; j < blocks_width; j++) {
-            SDL_Rect stretchRect;
-            stretchRect.x = x;
-            stretchRect.y = y;
-            stretchRect.w = x_blocks_size;
-            stretchRect.h = y_blocks_size;
-
-            if (matrix[i][j] == TERRAIN_WATER) {
-                SDL_BlitScaled(terrains_map[TERRAIN_WATER], NULL, ScreenSurface, &stretchRect);
-            }
-            if (matrix[i][j] == TERRAIN_LAND) {
-                SDL_BlitScaled(terrains_map[TERRAIN_LAND], NULL, ScreenSurface, &stretchRect);
-            }
-            x += x_blocks_size;
-        }
-        y += y_blocks_size;
-    }
-
-}
 
 
 void Client::render_map() {
 
+    //VECTOR DE TERRENOS QUE RECIBIRIAMOS POR SOCKET
+    std::vector<terrain> received_terrain;
+    for (int i=0; i<blocks_height*blocks_width; i++) {
+        received_terrain.push_back(TERRAIN_LAND);
+    }
+    received_terrain[10] = TERRAIN_WATER;
+
+
+
+
+
     try {
+        //CREO VENTANA Y PIDO SU SUPERFICIE
         SDLWindow window(SCREEN_WIDTH, SCREEN_HEIGHT);
         SDL_Surface* ScreenSurface = window.getSurface();
-        std::vector<std::vector<Terrain>> matrix;
+
+
+        //INCIIALIZO MATRIZ DE PISOS CON EL VECTOR RECIBIDO
+        std::vector<std::vector<terrain>> matrix;
         matrix.resize(blocks_height);
+        int current_vec_index = 0;
         for (int i=0; i < blocks_height; i++) {
-            std::vector<Terrain> row;
+            std::vector<terrain> row;
             row.resize(blocks_width);
             matrix.push_back(row);
             for (int j=0; j < blocks_width; j++) {
-                matrix[i].push_back(TERRAIN_LAND);
+                matrix[i].push_back(received_terrain[current_vec_index]);
+                ++current_vec_index;
             }
         }
-        matrix[0][0] = TERRAIN_WATER;
-        matrix[19][19] = TERRAIN_WATER;
-        matrix[10][10] = TERRAIN_WATER;
-        //Start up SDL and create window
+
+
+                //Start up SDL and create window
         if( !init() )
         {
             printf( "Failed to initialize!\n" );
         }
         else {
-            //Load media
-            if (!loadMedia()) {
-                printf("Failed to load media!\n");
-            } else {
-                //Main loop flag
-
-                    render_terrain(ScreenSurface, matrix);
-                //Update the surface
-                SDL_UpdateWindowSurface(gWindow);
-                window.UpdateWindowSurface();
+            land = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png" );
+            water = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png" );
+            warrior_up = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png");
+            warrior_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png");
+            warrior_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png");
+            warrior_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png");
+            skeleton_up = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_sube.png");
+            skeleton_down = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png");
+            skeleton_left = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png");
+            skeleton_right = loadSurface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png");
+            terrain_surfaces_map[TERRAIN_WATER] = water;
+            terrain_surfaces_map[TERRAIN_LAND] = land;
+            npc_surfaces_map[WARRIOR_UP] = warrior_up;
+            npc_surfaces_map[WARRIOR_DOWN] = warrior_down;
+            npc_surfaces_map[WARRIOR_LEFT] = warrior_left;
+            npc_surfaces_map[WARRIOR_RIGHT] = warrior_right;
+            npc_surfaces_map[SKELETON_UP] = skeleton_up;
+            npc_surfaces_map[SKELETON_DOWN] = skeleton_down;
+            npc_surfaces_map[SKELETON_LEFT] = skeleton_left;
+            npc_surfaces_map[SKELETON_RIGHT] = skeleton_right;
+            npc_surfaces_map[0] = warrior_up;
+            if(land == NULL )
+            {
+                //TODO ERROR SI NO PUEDE CARGAR UNA IMAGEN
             }
+            window.render_terrain(matrix, terrain_surfaces_map);
+
+            //VECTOR DE CHARACTERS QUE RECIBIRIAMOS POR SOCKET
+
+            struct npc_pos {
+                int x;
+                int y;
+                npc npc_name;
+            };
+
+            //std::vector<npc_pos> npc_positions;
+            //npc_pos npc_1 = {0, 0, WARRIOR_RIGHT};
+            //npc_pos npc_2 = {0, 10, SKELETON_DOWN};
+
+
+
+            window.UpdateWindowSurface();
+
+            while(true) {
+                
+            }
+
+
+
             bool running = true;
             int x = 100;
             int y = 150;
@@ -261,7 +255,7 @@ void Client::render_map() {
                 stretchRect.y = y;
                 stretchRect.w = 22;
                 stretchRect.h = 47;
-                render_terrain(ScreenSurface, matrix);
+                window.render_terrain(matrix, terrain_surfaces_map);
                 SDL_BlitScaled(current_warrior, NULL, ScreenSurface, &stretchRect);
                 SDL_WaitEvent(&event);
                 switch (event.type) {
@@ -298,8 +292,8 @@ void Client::render_map() {
 
                 //window.render();
                 window.UpdateWindowSurface();
-
             }
+
 
         }
         //SDL_Delay(10000);
@@ -308,50 +302,7 @@ void Client::render_map() {
 
 
 
-        /*
-        //The window we'll be rendering to
-        SDL_Window* window = NULL;
-        //The surface contained by the window
-        SDL_Surface* screenSurface = NULL;
-        window = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
-        //Get window surface
-        screenSurface = SDL_GetWindowSurface( window );
 
-        //Fill the surface white
-        SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF, 0xFF, 0xFF ) );
-
-        //Update the surface
-        SDL_UpdateWindowSurface( window );
-
-        //Wait two seconds
-        SDL_Delay( 2000 );
-        //Destroy window
-        SDL_DestroyWindow( window );
-
-        //Quit SDL subsystems
-        SDL_Quit();
-        */
-
-
-
-        /*SDLWindow window(100, 100);
-        window.render();
-        while(true) {
-            window.fill();
-
-
-
-            SDL_Event event;
-            SDL_WaitEvent(&event);
-            if (event.type == SDL_QUIT) {
-                    std::cout << "Quit :(" << std::endl;
-                    break;
-            }
-        }
-         */
-
-        //window.fill();
-        //SDLTexture im("../resources/images/24083.jpg", window);
 
     } catch (std::exception &e) {
         std::cout << e.what() << std::endl;

@@ -36,7 +36,6 @@ public:
 
     void render_map();
 
-    void render_terrain(SDL_Surface* ScreenSurface, std::vector<std::vector<Terrain>> matrix);
 };
 
 #endif // CLIENT_H

@@ -17,20 +17,6 @@ width(width), height(height) {
     //TODO sacar esto de aca, recibir como parametro
     blocks_width = 20;
     blocks_height = 30;
-
-    //inicializo la matriz, llamar a otra funcion
-    matrix.resize(blocks_height);
-    for (int i=0; i < blocks_height; i++) {
-        std::vector<Terrain> row;
-        row.resize(blocks_width);
-        matrix.push_back(row);
-        for (int j=0; j < blocks_width; j++) {
-            matrix[i].push_back(TERRAIN_LAND);
-        }
-    }
-    matrix[0][0] = TERRAIN_WATER;
-    matrix[19][19] = TERRAIN_WATER;
-    matrix[10][10] = TERRAIN_WATER;
 }
 
 SDLWindow::~SDLWindow() {
@@ -73,8 +59,20 @@ void SDLWindow::stampSurface(Surface& surface, Area& area) {
     SDL_BlitScaled(surface.get_renderable_surface(), NULL, getSurface(), &rect);
 }
 
+void SDLWindow::render_character(int x, int y, SDL_Surface* character_surface) {
+    int x_blocks_size = width / blocks_width;
+    int y_blocks_size = height / blocks_height;
+    SDL_Rect stretchRect;
+    stretchRect.x = x;
+    stretchRect.y = y;
+    stretchRect.w = x_blocks_size;
+    stretchRect.h = y_blocks_size;
+    SDL_BlitScaled(character_surface, NULL, getSurface(), &stretchRect);
+}
 
-void SDLWindow::render_terrain(std::map<int, SDL_Surface*> terrains_map) {
+
+void SDLWindow::render_terrain(std::vector<std::vector<terrain>> matrix,
+        std::map<int, SDL_Surface*>& surfaces_map) {
     int x = 0;
     int y = 0;
     int x_blocks_size = width / blocks_width;
@@ -90,10 +88,10 @@ void SDLWindow::render_terrain(std::map<int, SDL_Surface*> terrains_map) {
             stretchRect.h = y_blocks_size;
 
             if (matrix[i][j] == TERRAIN_WATER) {
-                SDL_BlitScaled(terrains_map[TERRAIN_WATER], NULL, getSurface(), &stretchRect);
+                SDL_BlitScaled(surfaces_map[TERRAIN_WATER], NULL, getSurface(), &stretchRect);
             }
             if (matrix[i][j] == TERRAIN_LAND) {
-                SDL_BlitScaled(terrains_map[TERRAIN_LAND], NULL, getSurface(), &stretchRect);
+                SDL_BlitScaled(surfaces_map[TERRAIN_LAND], NULL, getSurface(), &stretchRect);
             }
             x += x_blocks_size;
         }
