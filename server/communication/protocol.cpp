@@ -11,6 +11,7 @@
 #include "../../common/commands/heal_command.h"
 #include "../../common/commands/list_command.h"
 #include "../../common/commands/move_command.h"
+#include "../../common/commands/attack_command.h"
 
 #define BYTE_SIZE 1
 
@@ -70,7 +71,9 @@ Command* ServerProtocol::receiveCommand() {
         int direction = arguments[0];
         return new MoveCommand(direction);
     } else if (type == CMD_ATTACK) {
-        // TODO:...
+        uint16_t enemy_id;
+        memcpy(&enemy_id, arguments.data(), arguments.size());
+        return new AttackCommand(ntohs(enemy_id));
     } else if (type == CMD_EQUIP) {
         // TODO:...
     } else if (type == CMD_TRICK) {
