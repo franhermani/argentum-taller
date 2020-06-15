@@ -26,7 +26,7 @@ void ConnectionSender::run() {
     }
      */
 
-    ReviveCommand command;
+    ReviveCommand command(1234);
     protocol.sendCommand(command);
 
     isRunning = false;
