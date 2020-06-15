@@ -49,6 +49,9 @@ public:
 
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);
+
+    // Devuelve un puntero a 'world'
+    World* getWorld() const;
 };
 
 #endif // GAME_MANAGER_H

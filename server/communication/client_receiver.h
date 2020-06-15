@@ -7,10 +7,11 @@
 
 class ClientReceiver : public Thread {
     ServerProtocol protocol;
+    World& world;
 
 public:
     // Constructor
-    explicit ClientReceiver(Socket& socket);
+    ClientReceiver(Socket& socket, World& world);
 
     // Constructor y asignacion por copia deshabilitados
     ClientReceiver(const ClientReceiver&) = delete;

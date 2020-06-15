@@ -20,9 +20,8 @@ public:
     // Devuelve una clase derivada de Command
     Command* receiveCommand();
 
-    // Envia el mapa a traves del socket
-    // Recibe a Player para enviarle solo el mapa que lo rodea
-    void sendMap(World& world, Player& player);
+    // Envia el mundo alrededor del player a traves del socket
+    void sendWorldAround(World& world, Player& player);
 };
 
 #endif // SERVER_PROTOCOL_H

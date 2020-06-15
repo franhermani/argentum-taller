@@ -77,3 +77,7 @@ void GameManager::removePlayer(const std::string &username) {
 void GameManager::handleEvent(UserEvent &user_event) {
     // TODO: estos eventos modifican efectivamente los GameObjects
 }
+
+World* GameManager::getWorld() const {
+    return world;
+}

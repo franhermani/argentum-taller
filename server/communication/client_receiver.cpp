@@ -3,7 +3,8 @@
 #include "../../common/socket_error.h"
 #include "../../common/commands/username_command.h"
 
-ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket) {
+ClientReceiver::ClientReceiver(Socket& socket, World& world) :
+protocol(socket), world(world) {
     keepRunning = true;
     isRunning = true;
 }
@@ -15,7 +16,8 @@ void ClientReceiver::run() {
     while (keepRunning) {
         try {
             // TODO: recibir un comando del client y actualizar el mapa
-            message = protocol.receiveMessage();
+            message = protocol.receiveCommand();
+            world.update()
         } catch(SocketError&) {
             break;
         }

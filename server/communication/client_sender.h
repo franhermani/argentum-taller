@@ -6,10 +6,11 @@
 
 class ClientSender : public Thread {
     ServerProtocol protocol;
+    World& world;
 
 public:
     // Constructor
-    explicit ClientSender(Socket& socket);
+    ClientSender(Socket& socket, World& world);
 
     // Constructor y asignacion por copia deshabilitados
     ClientSender(const ClientSender&) = delete;
