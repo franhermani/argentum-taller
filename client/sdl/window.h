@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 #include "surface.h"
+#include <SDL2/SDL_image.h>
+
 #include "area.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE

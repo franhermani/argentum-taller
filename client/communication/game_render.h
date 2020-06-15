@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 #include "connection_handler.h"
+#include "../sdl/window.h"
 #include <SDL2/SDL_image.h>
 
-class SDLWindow;
 
 class GameRender {
 private:
@@ -14,7 +14,7 @@ private:
     const int screen_height;
     const int blocks_width;
     const int blocks_height;
-    
+    SDLWindow window;
 public:
     GameRender(const int screen_width, const int screen_height, const int blocks_width, const int blocks_height);
     ~GameRender();

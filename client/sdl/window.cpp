@@ -46,6 +46,7 @@ SDL_Renderer* SDLWindow::getRenderer() const {
 SDL_Surface* SDLWindow::getSurface() const {
     return SDL_GetWindowSurface(window);
 }
+
 SDL_PixelFormat* SDLWindow::getSurfaceFormat() const {
     return SDL_GetWindowSurface(window)->format;
 }

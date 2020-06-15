@@ -31,7 +31,6 @@ int GameRender::init() {
 
 void GameRender::play() {
     init();
-    SDLWindow window(screen_width, screen_height);
     surface = window.getSurface();
     window.UpdateWindowSurface();
 
@@ -91,6 +90,6 @@ void GameRender::play() {
 GameRender::GameRender(const int screen_width, const int screen_height,
         const int blocks_width, const int blocks_height)
         : screen_width(screen_width), screen_height(screen_height),
-        blocks_width(blocks_width), blocks_height(blocks_height) {
+        blocks_width(blocks_width), blocks_height(blocks_height), window(screen_width, screen_height) {
 }
 GameRender::~GameRender() {}
