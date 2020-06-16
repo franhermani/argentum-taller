@@ -65,6 +65,10 @@ void GameManager::addPlayer(Player* player) {
     world->addPlayer(player);
 }
 
+void GameManager::removePlayer(const int id) {
+    world->removePlayer(id);
+}
+
 void GameManager::handleEvent(UserEvent &user_event) {
     // TODO: estos eventos modifican efectivamente los GameObjects
 }

@@ -13,8 +13,7 @@ ClientHandler::ClientHandler(Socket socket_received,
 ClientHandler::~ClientHandler() {
     delete clientSender;
     delete clientReceiver;
-
-    gameManager.getWorld()->removePlayer(player->id);
+    gameManager.removePlayer(player->id);
     delete player;
 }
 

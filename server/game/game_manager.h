@@ -47,6 +47,9 @@ public:
     // Agrega 'player' a 'world'
     void addPlayer(Player* player);
 
+    // Elimina 'player' de 'world'
+    void removePlayer(const int id);
+
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);
 
