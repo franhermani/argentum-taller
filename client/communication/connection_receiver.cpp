@@ -32,3 +32,5 @@ void ConnectionReceiver::stop() {
 bool ConnectionReceiver::isDead() {
     return (! isRunning);
 }
+
+

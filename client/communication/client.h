@@ -15,7 +15,7 @@ class Client {
 public:
     // Constructor
     // Asocia al cliente al 'host' y 'port' recibidos
-    Client(const char *host, const char *port);
+    Client(const char *host, const char *port, const char *username);
 
     // Constructor y asignacion por copia deshabilitados
     Client(const Client& other) = delete;

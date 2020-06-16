@@ -24,7 +24,7 @@ class ConnectionHandler : public Thread {
 
 public:
     // Constructor
-    explicit ConnectionHandler(const char *host, const char *port);
+    explicit ConnectionHandler(const char *host, const char *port, const char *username);
 
     // Constructor y asignacion por copia deshabilitados
     ConnectionHandler(const ConnectionHandler&) = delete;

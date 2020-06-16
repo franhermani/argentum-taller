@@ -16,16 +16,20 @@ void Gameplay::play() {
                     auto& keyEvent = (SDL_KeyboardEvent&) event;
                     switch (keyEvent.keysym.sym) {
                         case SDLK_LEFT:
+                            std::cout << "IZQ!!!\n";
                             command = new MoveCommand(LEFT);
                         case SDLK_RIGHT:
+                            std::cout << "der!!!\n";
                             command = new MoveCommand(RIGHT);
                         case SDLK_UP:
+                            std::cout << "arr!!!\n";
                             command = new MoveCommand(UP);
                         case SDLK_DOWN:
+                            std::cout << "abaj!!!!!!\n";
                             command = new MoveCommand(DOWN);
                     }
                     commandQueue.push(command);
-                } // Fin KEY_DOWN
+                }
                 case SDL_QUIT:
                     std::cout << "Quit :(" << std::endl;
                     running = false;

@@ -1,6 +1,6 @@
 #include "connection_handler.h"
 
-ConnectionHandler::ConnectionHandler(const char *host, const char *port) :
+ConnectionHandler::ConnectionHandler(const char *host, const char *port, const char *username) :
 socket(host, port, false), gameRender(640*2, 480*2, 20,30){
     isRunning = true;
 
@@ -8,10 +8,12 @@ socket(host, port, false), gameRender(640*2, 480*2, 20,30){
 
     //send related classes
     connectionSender = new ConnectionSender(socket, commandQueue);
-    gameplay = new Gameplay(commandQueue);
+    connectionSender->sendUsername(username);
 
+    gameplay = new Gameplay(commandQueue);
     //receive related classes
     connectionReceiver = new ConnectionReceiver(socket, gameRender);
+
 }
 
 ConnectionHandler::~ConnectionHandler() {

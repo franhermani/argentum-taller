@@ -7,7 +7,7 @@
 
 #define OK 0
 #define ERROR 1
-#define NUM_PARAMS 1
+#define NUM_PARAMS 4
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
@@ -15,10 +15,10 @@ int main(int argc, char *argv[]) {
         return ERROR;
     }
     // TODO: esto se lee de una pantalla de login
-    const char *host = "localhost", *port = "8080";
+    const char *host = argv[1], *port = argv[2], *username = argv[3];
 
     try {
-        Client client(host, port);
+        Client client(host, port, username);
         client.connectToServer();
 
         int blocks_width = 20;

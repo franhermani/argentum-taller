@@ -9,9 +9,9 @@
 #include "map"
 
 
-Client::Client(const char *host, const char *port) :
+Client::Client(const char *host, const char *port, const char *username) :
 keepPlaying(true) {
-    connectionHandler = new ConnectionHandler(host, port);
+    connectionHandler = new ConnectionHandler(host, port, username);
 }
 
 Client::~Client() {
