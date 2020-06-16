@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "connection_handler.h"
+#include "game_handler.h"
 
 #include <SDL2/SDL_image.h>
 

@@ -12,7 +12,7 @@ class ConnectionSender : public Thread {
 
 public:
     // Constructor
-    explicit ConnectionSender(Socket& socket, BlockingQueue<Command*>& commandQueue);
+    ConnectionSender(Socket& socket, BlockingQueue<Command*>& commandQueue);
 
     // Constructor y asignacion por copia deshabilitados
     ConnectionSender(const ConnectionSender&) = delete;

@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
-        std::cerr << "Uso: ./client\n";
+        std::cerr << "Uso: ./client hostname port username\n";
         return ERROR;
     }
     // TODO: esto se lee de una pantalla de login
@@ -20,8 +20,6 @@ int main(int argc, char *argv[]) {
     try {
         Client client(host, port, username);
         client.connectToServer();
-//        client.render();
-//        client.render_map();
         // TODO: este loop en realidad no va, pero si lo saco se cuelga
         std::string command;
         client.disconnectFromServer();

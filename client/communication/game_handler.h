@@ -24,7 +24,7 @@ class GameHandler {
 
 public:
     // Constructor
-    explicit GameHandler(const char *host, const char *port, const char *username);
+    GameHandler(const char *host, const char *port, const char *username);
 
     // Constructor y asignacion por copia deshabilitados
     GameHandler(const GameHandler&) = delete;

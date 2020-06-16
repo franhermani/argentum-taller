@@ -1,4 +1,4 @@
-#include "connection_handler.h"
+#include "game_handler.h"
 #include <iostream>
 
 GameHandler::GameHandler(const char *host, const char *port, const char *username) :
