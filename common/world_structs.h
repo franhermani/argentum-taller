@@ -55,7 +55,8 @@ typedef struct {
     uint16_t max_life;          // Vida maxima
     uint16_t actual_mana;       // Mana actual
     uint16_t max_mana;          // Mana maxima
-    uint16_t gold;              // Oro
+    uint16_t actual_gold;       // Oro actual
+    uint16_t max_gold;          // Oro maximo
     uint16_t experience;        // Experiencia
     uint16_t level;             // Nivel
     inventory_t inventory;      // Inventario
@@ -63,7 +64,7 @@ typedef struct {
 
 typedef struct {
     uint32_t length;            // Longitud total del mensaje
-    player_info_t player_info;  // Info del player del cliente
+    player_info_t player_info;  // Info particular del player del cliente
     matrix_t matrix;            // Matriz del mapa
     uint16_t num_players;       // Cantidad de players en 'players'
     player_t* players;          // Lista de structs 'player_t'
