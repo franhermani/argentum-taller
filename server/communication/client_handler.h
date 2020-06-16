@@ -10,10 +10,10 @@
 
 class ClientHandler : public Thread {
     Socket socket;
-    Player* player;
-    ClientSender* clientSender;
-    ClientReceiver* clientReceiver;
     GameManager& gameManager;
+    ClientReceiver* clientReceiver;
+    ClientSender* clientSender;
+    Player* player{};
 
 public:
     // Constructor
