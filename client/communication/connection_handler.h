@@ -12,11 +12,15 @@
 
 class ConnectionHandler : public Thread {
     Socket socket;
+
+    //send related classes
     ConnectionSender* connectionSender;
+    Gameplay* gameplay;
+    BlockingQueue<Command*> commandQueue;
+
+    //receive related classes
     ConnectionReceiver* connectionReceiver;
-    //Gameplay gameplay;
-    //GameRender gameRender;
-    //BlockingQueue<Command>
+    GameRender gameRender;
 
 public:
     // Constructor

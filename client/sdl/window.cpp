@@ -72,8 +72,8 @@ void SDLWindow::render_character(int x, int y, Surface& character_surface) {
 }
 
 
-void SDLWindow::render_terrain(std::vector<std::vector<terrain>>& matrix,
-        std::map<terrain, Surface&>& surfaces_map) {
+void SDLWindow::render_terrain(std::vector<std::vector<Terrain>>& matrix,
+        std::map<Terrain, Surface&>& surfaces_map) {
     int x = 0;
     int y = 0;
     int x_blocks_size = width / blocks_width;

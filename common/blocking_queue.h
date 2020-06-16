@@ -6,6 +6,7 @@
 #include <queue>
 #include <condition_variable>
 #include "user_event.h"
+#include "commands/command.h"
 
 struct ClosedQueueException : public std::exception {
     const char* what() const throw() {
@@ -43,5 +44,6 @@ public:
 
 // Definir aca los tipos T que usemos a lo largo del TP
 template class BlockingQueue<UserEvent>;
+template class BlockingQueue<Command*>;
 
 #endif //TP2_BLOCKING_QUEUE_H

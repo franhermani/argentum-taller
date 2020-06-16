@@ -5,28 +5,13 @@
 #include <map>
 #include "surface.h"
 #include <SDL2/SDL_image.h>
-
+#include "../../common/terrain.h"
+#include "../../common/npc.h"
 #include "area.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE
-enum terrain {
-    TERRAIN_GRASS,
-    TERRAIN_LAND,
-    TERRAIN_SAND,
-    TERRAIN_STONE,
-    TERRAIN_WALL,
-    TERRAIN_WATER,
-};
-enum npc {
-    WARRIOR_UP,
-    WARRIOR_DOWN,
-    WARRIOR_RIGHT,
-    WARRIOR_LEFT,
-    SKELETON_UP,
-    SKELETON_DOWN,
-    SKELETON_RIGHT,
-    SKELETON_LEFT
-};
+
+
 
 
 class SDL_Window;
@@ -75,7 +60,7 @@ public:
     //Actualiza la ventana mostrada
     void UpdateWindowSurface();
 
-    void render_terrain(std::vector<std::vector<terrain>>& matrix, std::map<terrain, Surface&>& surfaces_map);
+    void render_terrain(std::vector<std::vector<Terrain>>& matrix, std::map<Terrain, Surface&>& surfaces_map);
     void render_character(int x, int y, Surface& character_surface);
 
 };

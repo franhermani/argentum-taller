@@ -3,13 +3,18 @@
 #define ARGENTUM_GAMEPLAY_H
 #include <SDL2/SDL.h>
 #include "../../common/thread.h"
+#include "../../common/blocking_queue.h"
+#include "../../common/commands/command.h"
+#include "../../common/commands/move_command.h"
+#include "../../common/commands/defines.h"
 
 
 class Gameplay : public Thread {
 public:
+    BlockingQueue<Command*>& commandQueue;
 
     // Constructor
-    Gameplay();
+    Gameplay(BlockingQueue<Command*>& commandQueue);
 
     // Destructor
     ~Gameplay();

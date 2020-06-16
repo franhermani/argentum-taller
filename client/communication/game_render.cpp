@@ -25,11 +25,11 @@ int GameRender::init() {
 }
 
 
-void GameRender::render_terrain(std::vector<std::vector<terrain>>& matrix) {
+void GameRender::render_terrain(std::vector<std::vector<Terrain>>& matrix) {
     //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
     Surface land = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png", window);
     Surface water = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png", window);
-    std::map<terrain, Surface&> terrain_surfaces_map;
+    std::map<Terrain, Surface&> terrain_surfaces_map;
     terrain_surfaces_map.insert({TERRAIN_WATER, water});
     terrain_surfaces_map.insert({TERRAIN_LAND, land});
 
@@ -46,7 +46,7 @@ void GameRender::render_npcs(std::vector<npc_pos>& npc_positions) {
     Surface skeleton_down = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png", window);
     Surface skeleton_left = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png", window);
     Surface skeleton_right = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png", window);
-    std::map<npc, Surface&> npc_surfaces_map;
+    std::map<Npc, Surface&> npc_surfaces_map;
     npc_surfaces_map.insert({WARRIOR_UP, warrior_up});
     npc_surfaces_map.insert({WARRIOR_DOWN, warrior_down});
     npc_surfaces_map.insert({WARRIOR_LEFT, warrior_left});
@@ -65,13 +65,13 @@ void GameRender::render_npcs(std::vector<npc_pos>& npc_positions) {
 }
 
 
-void GameRender::play(std::vector<terrain>& received_terrain, std::vector<npc_pos>& npc_positions) {
+void GameRender::play(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions) {
     //inicializamos matriz de pisos a patir del vector recibido
-    std::vector<std::vector<terrain>> matrix;
+    std::vector<std::vector<Terrain>> matrix;
     matrix.resize(blocksHeight);
     int current_vec_index = 0;
     for (int i=0; i < blocksHeight; i++) {
-        std::vector<terrain> row;
+        std::vector<Terrain> row;
         row.resize(blocksWidth);
         matrix.push_back(row);
         for (int j=0; j < blocksWidth; j++) {

@@ -128,7 +128,7 @@ SDL_Surface* loadSurface( std::string path )
 void Client::render_map() {
 
     //VECTOR DE TERRENOS QUE RECIBIRIAMOS POR SOCKET
-    std::vector<terrain> received_terrain;
+    std::vector<Terrain> received_terrain;
     for (int i=0; i<blocks_height*blocks_width; i++) {
         received_terrain.push_back(TERRAIN_LAND);
     }
@@ -141,11 +141,11 @@ void Client::render_map() {
 
 
         //INCIIALIZO MATRIZ DE PISOS CON EL VECTOR RECIBIDO
-        std::vector<std::vector<terrain>> matrix;
+        std::vector<std::vector<Terrain>> matrix;
         matrix.resize(blocks_height);
         int current_vec_index = 0;
         for (int i=0; i < blocks_height; i++) {
-            std::vector<terrain> row;
+            std::vector<Terrain> row;
             row.resize(blocks_width);
             matrix.push_back(row);
             for (int j=0; j < blocks_width; j++) {

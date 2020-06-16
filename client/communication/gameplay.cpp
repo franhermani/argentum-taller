@@ -7,33 +7,25 @@
 void Gameplay::play() {
     try {
         bool running = true;
-        int x = 100;
-        int y = 150;
         while (running) {
             SDL_Event event;
             SDL_WaitEvent(&event);
+            Command* command;
             switch (event.type) {
                 case SDL_KEYDOWN: {
                     auto& keyEvent = (SDL_KeyboardEvent&) event;
                     switch (keyEvent.keysym.sym) {
                         case SDLK_LEFT:
-                            x -= 10;
-                            break;
+                            command = new MoveCommand(LEFT);
                         case SDLK_RIGHT:
-                            x += 10;
-                            break;
+                            command = new MoveCommand(RIGHT);
                         case SDLK_UP:
-                            y -= 10;
-                            break;
+                            command = new MoveCommand(UP);
                         case SDLK_DOWN:
-                            y += 10;
-                            break;
+                            command = new MoveCommand(DOWN);
                     }
+                    commandQueue.push(command);
                 } // Fin KEY_DOWN
-                    break;
-                case SDL_MOUSEMOTION:
-                    std::cout << "Oh! Mouse" << std::endl;
-                    break;
                 case SDL_QUIT:
                     std::cout << "Quit :(" << std::endl;
                     running = false;
@@ -46,10 +38,6 @@ void Gameplay::play() {
 }
 
 
-Gameplay::Gameplay() {}
-
-Gameplay::~Gameplay() {}
-
 
 void Gameplay::run() {
     play();
@@ -61,5 +49,7 @@ void Gameplay::stop() {
 
 bool Gameplay::isDead() {
     return (! isRunning);
-
 }
+
+Gameplay::Gameplay(BlockingQueue<Command*>& commandQueue): commandQueue(commandQueue){}
+Gameplay::~Gameplay() {}

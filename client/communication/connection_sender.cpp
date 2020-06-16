@@ -4,7 +4,8 @@
 #include "../../common/commands/username_command.h"
 #include "../../common/commands/attack_command.h"
 
-ConnectionSender::ConnectionSender(Socket& socket) : protocol(socket) {
+ConnectionSender::ConnectionSender(Socket& socket,
+        BlockingQueue<Command*>& commandQueue) : protocol(socket), commandQueue(commandQueue) {
     keepRunning = true;
     isRunning = true;
 }

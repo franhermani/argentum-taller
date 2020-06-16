@@ -2,7 +2,8 @@
 #include "connection_receiver.h"
 #include "../../common/socket_error.h"
 
-ConnectionReceiver::ConnectionReceiver(Socket& socket) : protocol(socket) {
+ConnectionReceiver::ConnectionReceiver(Socket& socket, GameRender& gameRender) :
+                protocol(socket), gameRender(gameRender) {
     keepRunning = true;
     isRunning = true;
 }
@@ -15,6 +16,7 @@ void ConnectionReceiver::run() {
         try {
             // TODO: recibo el mapa y actualizo el modelo local
             message = protocol.receiveMessage();
+
         } catch(SocketError&) {
             break;
         }

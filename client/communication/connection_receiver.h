@@ -3,13 +3,15 @@
 
 #include "../../common/thread.h"
 #include "protocol.h"
+#include "game_render.h"
 
 class ConnectionReceiver : public Thread {
     ClientProtocol protocol;
+    GameRender& gameRender;
 
 public:
     // Constructor
-    explicit ConnectionReceiver(Socket& socket);
+    explicit ConnectionReceiver(Socket& socket, GameRender& gameRender);
 
     // Constructor y asignacion por copia deshabilitados
     ConnectionReceiver(const ConnectionReceiver&) = delete;

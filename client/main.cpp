@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
         GameRender GameRender(640*2, 480*2, blocks_width,blocks_height);
 
         //VECTOR DE TERRENOS QUE RECIBIRIAMOS POR SOCKET
-        std::vector<terrain> received_terrain;
+        std::vector<Terrain> received_terrain;
         for (int i=0; i<blocks_width*blocks_height; i++) {
             received_terrain.push_back(TERRAIN_LAND);
         }
