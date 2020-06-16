@@ -12,7 +12,6 @@ class Player {
     int maxLife, actualLife;
     int posX, posY;
     int orientation;
-    bool isImpenetrable;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
