@@ -18,7 +18,7 @@ void ConnectionReceiver::run() {
             // TODO: recibo el mapa y actualizo el modelo local
             //std::vector<Terrain> terrains = protocol.receiveTerrains();
             //std::vector<npc_pos> npcs = protocol.receiveNpcs();
-            //gameRender.play(terrains, npcs);
+            //gameRender.render(terrains, npcs);
         } catch(SocketError&) {
             break;
         }

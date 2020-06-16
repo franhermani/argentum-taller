@@ -65,7 +65,7 @@ void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
 }
 
 
-void GameRender::play(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions) {
+void GameRender::render(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions) {
     //inicializamos matriz de pisos a patir del vector recibido
     std::vector<std::vector<Terrain>> matrix;
     matrix.resize(blocksHeight);

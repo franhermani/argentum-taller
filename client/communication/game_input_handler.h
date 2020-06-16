@@ -1,6 +1,6 @@
 
-#ifndef ARGENTUM_GAMEPLAY_H
-#define ARGENTUM_GAMEPLAY_H
+#ifndef ARGENTUM_GAME_INPUT_HANDLER_H
+#define ARGENTUM_GAME_INPUT_HANDLER_H
 #include <SDL2/SDL.h>
 #include "../../common/thread.h"
 #include "../../common/blocking_queue.h"
@@ -9,19 +9,19 @@
 #include "../../common/commands/defines.h"
 
 
-class Gameplay : public Thread {
+class GameInputHandler : public Thread {
 public:
     BlockingQueue<Command*>& commandQueue;
 
     // Constructor
-    Gameplay(BlockingQueue<Command*>& commandQueue);
+    GameInputHandler(BlockingQueue<Command*>& commandQueue);
 
     // Destructor
-    ~Gameplay();
+    ~GameInputHandler();
 
     // Constructor y asignacion por copia deshabilitados
-    Gameplay(const Gameplay &) = delete;
-    Gameplay &operator=(const Gameplay &) = delete;
+    GameInputHandler(const GameInputHandler &) = delete;
+    GameInputHandler &operator=(const GameInputHandler &) = delete;
 
     //ciclo de interaccion con teclado
     void play();
@@ -38,4 +38,4 @@ public:
 };
 
 
-#endif //ARGENTUM_GAMEPLAY_H
+#endif //ARGENTUM_GAME_INPUT_HANDLER_H

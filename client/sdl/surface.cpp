@@ -21,6 +21,6 @@ Surface::~Surface() {
     SDL_FreeSurface(surface);
 }
 
-SDL_Surface* Surface::get_renderable_surface() {
+SDL_Surface* Surface::getRenderableSurface() {
     return surface;
 }

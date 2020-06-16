@@ -20,6 +20,7 @@ Client::~Client() {
 
 void Client::connectToServer() {
     gameHandler->start();
+    //render_test_window();
 }
 
 // TODO: ver cuando llamar a este metodo
@@ -101,14 +102,14 @@ void render_test_window() {
     npc_positions.push_back(npc_2);
 
 
-    GameRender.play(received_terrain, npc_positions);
+    GameRender.render(received_terrain, npc_positions);
 
     //SIMULO QUE ME VAN LLEGANDO POR SOCKET+
     for (int i=0; i<10; i++) {
         for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
             it->x = it->x+1;
         }
-        GameRender.play(received_terrain, npc_positions);
+        GameRender.render(received_terrain, npc_positions);
         usleep(500000);
     }
 

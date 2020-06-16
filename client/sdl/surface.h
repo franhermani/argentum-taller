@@ -16,7 +16,7 @@ public:
     ~Surface();
 
     // Devuelve SDL_Surface para poder ser estampado
-    SDL_Surface* get_renderable_surface();
+    SDL_Surface* getRenderableSurface();
 };
 
 

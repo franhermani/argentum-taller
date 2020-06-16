@@ -41,7 +41,7 @@ public:
     int init();
 
     //Renderizador de jugada completa
-    void play(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions);
+    void render(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions);
 };
 
 

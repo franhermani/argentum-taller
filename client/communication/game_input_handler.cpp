@@ -1,10 +1,10 @@
 
-#include "gameplay.h"
+#include "game_input_handler.h"
 #include <iostream>
 #include <string>
 
 
-void Gameplay::play() {
+void GameInputHandler::play() {
     try {
         bool running = true;
         while (running) {
@@ -43,17 +43,17 @@ void Gameplay::play() {
 
 
 
-void Gameplay::run() {
+void GameInputHandler::run() {
     play();
 }
 
-void Gameplay::stop() {
+void GameInputHandler::stop() {
     keepRunning = false;
 }
 
-bool Gameplay::isDead() {
+bool GameInputHandler::isDead() {
     return (! isRunning);
 }
 
-Gameplay::Gameplay(BlockingQueue<Command*>& commandQueue): commandQueue(commandQueue){}
-Gameplay::~Gameplay() {}
+GameInputHandler::GameInputHandler(BlockingQueue<Command*>& commandQueue): commandQueue(commandQueue){}
+GameInputHandler::~GameInputHandler() {}

@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
 
 
 //        client.disconnectFromServer();
-//        client.play();
+//        client.render();
 //        client.render_map();
         // TODO: este loop en realidad no va, pero si lo saco se cuelga
         std::string command;

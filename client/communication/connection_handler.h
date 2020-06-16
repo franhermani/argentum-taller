@@ -7,7 +7,7 @@
 #include "connection_sender.h"
 #include "connection_receiver.h"
 #include "game_render.h"
-#include "gameplay.h"
+#include "game_input_handler.h"
 
 
 class GameHandler : public Thread {
@@ -15,7 +15,7 @@ class GameHandler : public Thread {
 
     //send related classes
     ConnectionSender* connectionSender;
-    Gameplay* gameplay;
+    GameInputHandler* inputHandler;
     BlockingQueue<Command*> commandQueue;
 
     //receive related classes
