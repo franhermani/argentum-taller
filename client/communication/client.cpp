@@ -19,7 +19,7 @@ Client::~Client() {
 }
 
 void Client::connectToServer() {
-    gameHandler->start();
+    gameHandler->run();
     //render_test_window();
 }
 

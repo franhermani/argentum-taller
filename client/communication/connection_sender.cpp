@@ -1,4 +1,5 @@
 #include <string>
+#include <iostream>
 #include "connection_sender.h"
 #include "../../common/socket_error.h"
 #include "../../common/commands/username_command.h"
@@ -21,6 +22,9 @@ void ConnectionSender::run() {
             delete command;
 
         } catch(SocketError&) {
+            break;
+        }
+        catch (ClosedQueueException&) {
             break;
         }
     }

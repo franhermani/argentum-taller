@@ -20,20 +20,13 @@ int main(int argc, char *argv[]) {
     try {
         Client client(host, port, username);
         client.connectToServer();
-
-
-//        client.disconnectFromServer();
 //        client.render();
 //        client.render_map();
         // TODO: este loop en realidad no va, pero si lo saco se cuelga
         std::string command;
-        while (getline(std::cin, command))
-            if (command == EXIT_CHAR) break;
         client.disconnectFromServer();
     } catch(SocketError& e) {
         std::cerr << e.what() << "\n";
-    } catch(...) {
-        std::cerr << "Error desconocido\n";
     }
     return OK;
 }

@@ -23,7 +23,6 @@ void ConnectionReceiver::run() {
             break;
         }
     }
-
     isRunning = false;
 }
 

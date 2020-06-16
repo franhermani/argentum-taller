@@ -10,30 +10,25 @@ void GameInputHandler::play() {
         while (running) {
             SDL_Event event;
             SDL_WaitEvent(&event);
-            Command* command;
-            switch (event.type) {
-                case SDL_KEYDOWN: {
-                    auto& keyEvent = (SDL_KeyboardEvent&) event;
-                    switch (keyEvent.keysym.sym) {
-                        case SDLK_LEFT:
-                            std::cout << "IZQ!!!\n";
-                            command = new MoveCommand(LEFT);
-                        case SDLK_RIGHT:
-                            std::cout << "der!!!\n";
-                            command = new MoveCommand(RIGHT);
-                        case SDLK_UP:
-                            std::cout << "arr!!!\n";
-                            command = new MoveCommand(UP);
-                        case SDLK_DOWN:
-                            std::cout << "abaj!!!!!!\n";
-                            command = new MoveCommand(DOWN);
-                    }
-                    commandQueue.push(command);
-                }
-                case SDL_QUIT:
-                    std::cout << "Quit :(" << std::endl;
+            Command *command;
+            if (event.type == SDL_KEYDOWN) {
+                auto &keyEvent = (SDL_KeyboardEvent &) event;
+                if (keyEvent.keysym.sym == SDLK_LEFT) command = new MoveCommand(LEFT);
+                else if (keyEvent.keysym.sym == SDLK_RIGHT) command = new MoveCommand(RIGHT);
+                else if (keyEvent.keysym.sym == SDLK_UP) command = new MoveCommand(UP);
+                else if (keyEvent.keysym.sym == SDLK_DOWN) command = new MoveCommand(DOWN);
+                else if (keyEvent.keysym.sym == SDLK_ESCAPE) {
+                    //aca en realidad se va a mandar le comando de salir
                     running = false;
-                    break;
+                    continue;
+                }
+                else continue;
+                commandQueue.push(command);
+            } else if(event.type == SDL_QUIT) {
+                running = false;
+            } else if(event.type == SDL_KEYUP) continue;
+            else {
+                continue;
             }
         }
     } catch (std::exception& e) {

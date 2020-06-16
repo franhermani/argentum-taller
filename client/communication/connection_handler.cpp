@@ -1,4 +1,5 @@
 #include "connection_handler.h"
+#include <iostream>
 
 GameHandler::GameHandler(const char *host, const char *port, const char *username) :
 socket(host, port, false), gameRender(640*2, 480*2, 20,30){
@@ -21,21 +22,20 @@ GameHandler::~GameHandler() {
 
 void GameHandler::run() {
 
-    // TODO: username leerlo por terminal, pasarselo a client y luego aca
     connectionSender->start();
     connectionReceiver->start();
-    inputHandler->start();
-
+    inputHandler->run();
+    stop();
     isRunning = false;
 }
 
 void GameHandler::stop() {
+    commandQueue.close();
     connectionSender->stop();
     connectionSender->join();
     connectionReceiver->stop();
     connectionReceiver->join();
-    inputHandler->stop();
-    inputHandler->join();
+
 }
 
 bool GameHandler::isDead() {
