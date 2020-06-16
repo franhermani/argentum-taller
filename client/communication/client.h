@@ -2,16 +2,20 @@
 #define CLIENT_H
 
 #include <string>
-#include "connection_handler.h"
+#include <vector>
+#include "game_handler.h"
+
+#include <SDL2/SDL_image.h>
+
 
 class Client {
-    ConnectionHandler* connectionHandler;
+    GameHandler* gameHandler;
     bool keepPlaying;
 
 public:
     // Constructor
     // Asocia al cliente al 'host' y 'port' recibidos
-    Client(const char *host, const char *port);
+    Client(const char *host, const char *port, const char *username);
 
     // Constructor y asignacion por copia deshabilitados
     Client(const Client& other) = delete;
@@ -29,6 +33,9 @@ public:
 
     // Comienza el juego
     void play();
+
+    void render_map();
+
 };
 
 #endif // CLIENT_H
