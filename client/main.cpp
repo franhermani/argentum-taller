@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[]) {
     if (argc != NUM_PARAMS) {
-        std::cerr << "Uso: ./client hostname port username\n";
+        std::cerr << "Uso: ./client <hostname> <port> <username>\n";
         return ERROR;
     }
     // TODO: esto se lee de una pantalla de login
