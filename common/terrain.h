@@ -1,3 +1,6 @@
+#ifndef TERRAIN_H
+#define TERRAIN_H
+
 enum Terrain {
     TERRAIN_GRASS,
     TERRAIN_LAND,
@@ -7,3 +10,5 @@ enum Terrain {
     TERRAIN_WATER,
     TERRAIN_OUT_OF_BOUNDARIES
 };
+
+#endif // TERRAIN_H
