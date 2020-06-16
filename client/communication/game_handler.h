@@ -3,35 +3,43 @@
 
 #include "../../common/thread.h"
 #include "../../common/socket.h"
+#include "../../common/blocking_queue.h"
 #include "connection_sender.h"
 #include "connection_receiver.h"
+#include "game_render.h"
+#include "game_input_handler.h"
 
-class ConnectionHandler : public Thread {
+
+class GameHandler {
     Socket socket;
+
+    //send related classes
     ConnectionSender* connectionSender;
+    GameInputHandler* inputHandler;
+    BlockingQueue<Command*> commandQueue;
+
+    //receive related classes
     ConnectionReceiver* connectionReceiver;
+    GameRender gameRender;
 
 public:
     // Constructor
-    explicit ConnectionHandler(const char *host, const char *port);
+    GameHandler(const char *host, const char *port, const char *username);
 
     // Constructor y asignacion por copia deshabilitados
-    ConnectionHandler(const ConnectionHandler&) = delete;
-    ConnectionHandler& operator=(const ConnectionHandler&) = delete;
+    GameHandler(const GameHandler&) = delete;
+    GameHandler& operator=(const GameHandler&) = delete;
 
     // Destructor
     // Elimina la memoria reservada para los thread sender y receiver
-    ~ConnectionHandler();
+    ~GameHandler();
 
     // Inicializa los thread sender y receiver
-    void run() override;
+    void run();
 
     // Setea la variable booleana 'keepRunning' en false
-    void stop() override;
+    void stop();
 
-    // Devuelve true si el thread no esta corriendo o
-    // false en caso contrario
-    bool isDead() override;
 };
 
 #endif // CONNECTION_HANDLER_H

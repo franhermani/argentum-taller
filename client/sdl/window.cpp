@@ -13,6 +13,10 @@ width(width), height(height) {
     if ((s = SDL_CreateWindowAndRenderer(width, height,
             SDL_RENDERER_ACCELERATED, &window, &renderer)))
         throw SDLException("Error al crear la ventana", SDL_GetError());
+
+    //TODO sacar esto de aca, recibir como parametro
+    blocks_width = 20;
+    blocks_height = 20;
 }
 
 SDLWindow::~SDLWindow() {
@@ -38,4 +42,66 @@ void SDLWindow::render() {
 
 SDL_Renderer* SDLWindow::getRenderer() const {
     return renderer;
+}
+SDL_Surface* SDLWindow::getSurface() const {
+    return SDL_GetWindowSurface(window);
+}
+
+SDL_PixelFormat* SDLWindow::getSurfaceFormat() const {
+    return SDL_GetWindowSurface(window)->format;
+}
+
+void SDLWindow::stampSurface(Surface& surface, Area& area) {
+    SDL_Rect rect;
+    rect.x = area.getX();
+    rect.y = area.getY();
+    rect.w = area.getWidth();
+    rect.h = area.getHeight();
+    SDL_BlitScaled(surface.getRenderableSurface(), NULL, getSurface(), &rect);
+}
+
+void SDLWindow::renderNpc(int x, int y, Surface& character_surface) {
+    int x_blocks_size = width / blocks_width;
+    int y_blocks_size = height / blocks_height;
+    SDL_Rect stretchRect;
+    stretchRect.x = x*x_blocks_size;
+    stretchRect.y = y*y_blocks_size;
+    stretchRect.w = x_blocks_size;
+    stretchRect.h = y_blocks_size;
+    SDL_BlitScaled(character_surface.getRenderableSurface(), NULL, getSurface(), &stretchRect);
+}
+
+
+void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
+                              std::map<Terrain, Surface&>& surfaces_map) {
+    int x = 0;
+    int y = 0;
+    int x_blocks_size = width / blocks_width;
+    int y_blocks_size = height / blocks_height;
+
+    for (int i=0; i < blocks_height; i++) {
+        x = 0;
+        for (int j=0; j < blocks_width; j++) {
+            SDL_Rect stretchRect;
+            stretchRect.x = x;
+            stretchRect.y = y;
+            stretchRect.w = x_blocks_size;
+            stretchRect.h = y_blocks_size;
+
+            if (matrix[i][j] == TERRAIN_WATER) {
+
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER).getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            }
+            if (matrix[i][j] == TERRAIN_LAND) {
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_LAND).getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            }
+            x += x_blocks_size;
+        }
+        y += y_blocks_size;
+    }
+
+}
+
+void SDLWindow::UpdateWindowSurface() {
+    SDL_UpdateWindowSurface(window);
 }
