@@ -13,7 +13,7 @@ ClientHandler::ClientHandler(Socket socket_received,
 ClientHandler::~ClientHandler() {
     delete clientSender;
     delete clientReceiver;
-    gameManager.removePlayer(player->id);
+    gameManager.removePlayerFromWorld(player->id);
     delete player;
 }
 
@@ -21,7 +21,7 @@ void ClientHandler::run() {
     std::string username = clientReceiver->receiveUsername();
     int id = gameManager.addIdByUsername(username);
     player = new Player(*gameManager.getWorld(), id);
-    gameManager.addPlayer(player);
+    gameManager.addPlayerToWorld(player);
 
     clientReceiver->addPlayer(player);
     clientSender->addPlayer(player);

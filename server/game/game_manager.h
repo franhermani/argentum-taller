@@ -45,10 +45,10 @@ public:
     const int addIdByUsername(const std::string& username);
 
     // Agrega 'player' a 'world'
-    void addPlayer(Player* player);
+    void addPlayerToWorld(Player* player);
 
     // Elimina 'player' de 'world'
-    void removePlayer(const int id);
+    void removePlayerFromWorld(const int id);
 
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);

@@ -61,11 +61,11 @@ const int GameManager::addIdByUsername(const std::string &username) {
     return idManager.addPlayerByUsername(username);
 }
 
-void GameManager::addPlayer(Player* player) {
+void GameManager::addPlayerToWorld(Player* player) {
     world->addPlayer(player);
 }
 
-void GameManager::removePlayer(const int id) {
+void GameManager::removePlayerFromWorld(const int id) {
     world->removePlayer(id);
 }
 
