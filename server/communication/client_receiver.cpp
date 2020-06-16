@@ -24,7 +24,7 @@ void ClientReceiver::run() {
     }
      */
     Command* command = protocol.receiveCommand();
-//    command->execute(player);
+//    command->execute(*player);
     delete command;
 
     isRunning = false;
@@ -43,4 +43,8 @@ const std::string ClientReceiver::receiveUsername() {
     std::string username = command->getUsername();
     delete command;
     return username;
+}
+
+void ClientReceiver::addPlayer(Player* new_player) {
+    player = new_player;
 }

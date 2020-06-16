@@ -7,6 +7,7 @@
 class ClientSender : public Thread {
     ServerProtocol protocol;
     World& world;
+    Player* player;
 
 public:
     // Constructor
@@ -25,6 +26,9 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
+
+    // Carga su atributo player
+    void addPlayer(Player* new_player);
 };
 
 #endif // CLIENT_SENDER_H

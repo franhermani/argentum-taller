@@ -18,6 +18,8 @@ void ClientSender::run() {
         }
     }
     */
+//    protocol.sendWorldAround(world, *player);
+
     isRunning = false;
 }
 
@@ -27,4 +29,8 @@ void ClientSender::stop() {
 
 bool ClientSender::isDead() {
     return (! isRunning);
+}
+
+void ClientSender::addPlayer(Player* new_player) {
+    player = new_player;
 }
