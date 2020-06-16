@@ -3,28 +3,24 @@
 #include "../../common/socket_error.h"
 #include "../../common/commands/username_command.h"
 
-ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket) {
+ClientReceiver::ClientReceiver(Socket& socket, World& world) :
+protocol(socket), world(world) {
     keepRunning = true;
     isRunning = true;
 }
 
 void ClientReceiver::run() {
-    /*
-    std::string message;
-
     while (keepRunning) {
         try {
-            // TODO: recibir un comando del client y actualizar el mapa
-            message = protocol.receiveMessage();
+            // TODO: creo el command tiene que encolarse y luego
+            // gameManager lo desencola y lo ejecuta
+//            Command* command = protocol.receiveCommand();
+//            command->execute(*player);
+//            delete command;
         } catch(SocketError&) {
             break;
         }
     }
-     */
-    Command* command = protocol.receiveCommand();
-//    command->execute(player);
-    delete command;
-
     isRunning = false;
 }
 
@@ -41,4 +37,8 @@ const std::string ClientReceiver::receiveUsername() {
     std::string username = command->getUsername();
     delete command;
     return username;
+}
+
+void ClientReceiver::addPlayer(Player* new_player) {
+    player = new_player;
 }

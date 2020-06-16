@@ -15,7 +15,6 @@ class GameManager : public Thread {
     JsonParser jsonParser;
     GameParams* params;
     World* world;
-    std::vector<Player*> players;
     IdManager idManager;
     BlockingQueue<UserEvent> usersEvents;
 
@@ -41,14 +40,21 @@ public:
     // false en caso contrario
     bool isDead() override;
 
-    // Agrega el Player al juego segun su username
-    void addPlayer(const std::string& username);
+    // Agrega y devuelve el ID asociado al 'username' recibido
+    // Agrega el ID al idManager
+    const int addIdByUsername(const std::string& username);
 
-    // Elimina el Player del juego segun su username
-    void removePlayer(const std::string& username);
+    // Agrega 'player' a 'world'
+    void addPlayerToWorld(Player* player);
+
+    // Elimina 'player' de 'world'
+    void removePlayerFromWorld(const int id);
 
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);
+
+    // Devuelve un puntero a 'world'
+    World* getWorld() const;
 };
 
 #endif // GAME_MANAGER_H

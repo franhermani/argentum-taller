@@ -9,6 +9,6 @@ void ClientProtocol::sendCommand(Command& command) {
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
     // DEBUG
-    for (char i : byte_msg) printf("%02X ", (unsigned) (unsigned char) i);
-    printf("\n");
+//    for (char i : byte_msg) printf("%02X ", (unsigned) (unsigned char) i);
+//    printf("\n");
 }

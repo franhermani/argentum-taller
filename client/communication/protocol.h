@@ -1,11 +1,10 @@
 #ifndef CLIENT_PROTOCOL_H
 #define CLIENT_PROTOCOL_H
 
-#include "../../common/protocol.h"
 #include "../../common/socket.h"
 #include "../../common/commands/command.h"
 
-class ClientProtocol : public Protocol {
+class ClientProtocol {
     Socket& socket;
 
 public:

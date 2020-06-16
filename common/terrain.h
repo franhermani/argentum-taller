@@ -8,6 +8,7 @@ enum Terrain {
     TERRAIN_STONE,
     TERRAIN_WALL,
     TERRAIN_WATER,
+    TERRAIN_OUT_OF_BOUNDARIES
 };
 
 #endif // TERRAIN_H

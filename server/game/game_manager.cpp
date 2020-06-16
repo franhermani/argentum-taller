@@ -14,7 +14,6 @@ GameManager::GameManager(File& config_file) {
 }
 
 GameManager::~GameManager() {
-    for (auto player : players) delete player;
     delete world;
     delete params;
 }
@@ -31,6 +30,9 @@ void GameManager::run() {
         /*
         while (true) {
             try {
+                // TODO: aca deberia desencolar los comandos recibidos
+                // por el ClientReceiver
+                // En ese caso eliminar la clase userEvent
                 UserEvent user_event = usersEvents.pop();
                 handleEvent(user_event);
                 world->update(ms_per_update);
@@ -55,25 +57,22 @@ bool GameManager::isDead() {
     return (! isRunning);
 }
 
-void GameManager::addPlayer(const std::string &username) {
-    int id = idManager.addPlayerByUsername(username);
-    auto *player = new Player(*world, id);
-    players.push_back(player);
+const int GameManager::addIdByUsername(const std::string &username) {
+    return idManager.addPlayerByUsername(username);
+}
+
+void GameManager::addPlayerToWorld(Player* player) {
     world->addPlayer(player);
 }
 
-void GameManager::removePlayer(const std::string &username) {
-    int id = idManager.getPlayerId(username);
-    size_t i;
-    for (i = 0; i < players.size(); i ++) {
-        if (players[i]->id == id) {
-            world->removePlayer(id);
-            players.erase(players.begin() + i);
-            delete players[i];
-        }
-    }
+void GameManager::removePlayerFromWorld(const int id) {
+    world->removePlayer(id);
 }
 
 void GameManager::handleEvent(UserEvent &user_event) {
     // TODO: estos eventos modifican efectivamente los GameObjects
+}
+
+World* GameManager::getWorld() const {
+    return world;
 }

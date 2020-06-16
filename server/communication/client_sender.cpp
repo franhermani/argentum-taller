@@ -1,26 +1,21 @@
-#include <string>
 #include "client_sender.h"
 #include "../../common/socket_error.h"
 
-ClientSender::ClientSender(Socket& socket) : protocol(socket) {
+ClientSender::ClientSender(Socket& socket, World& world) :
+protocol(socket), world(world) {
     keepRunning = true;
     isRunning = true;
 }
 
 void ClientSender::run() {
-    /*
-    std::string message;
-
     while (keepRunning) {
         try {
-            // TODO: enviar mapa actualizado al cliente
-            message = "Chau mundo";
-            protocol.sendMessage(message);
+            // TODO: ver si se envia constantemente o hay alguna cv
+//            protocol.sendWorldAround(world, *player);
         } catch(SocketError&) {
             break;
         }
     }
-     */
     isRunning = false;
 }
 
@@ -30,4 +25,8 @@ void ClientSender::stop() {
 
 bool ClientSender::isDead() {
     return (! isRunning);
+}
+
+void ClientSender::addPlayer(Player* new_player) {
+    player = new_player;
 }

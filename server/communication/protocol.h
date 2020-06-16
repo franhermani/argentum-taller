@@ -1,11 +1,11 @@
 #ifndef SERVER_PROTOCOL_H
 #define SERVER_PROTOCOL_H
 
-#include "../../common/protocol.h"
 #include "../../common/socket.h"
 #include "../../common/commands/command.h"
+#include "../game/world.h"
 
-class ServerProtocol : public Protocol {
+class ServerProtocol {
     Socket& socket;
 
 public:
@@ -16,8 +16,12 @@ public:
     ServerProtocol(const ServerProtocol&) = delete;
     ServerProtocol& operator=(const ServerProtocol&) = delete;
 
-    // Recibe un comando a traves del socket y devuelve un nuevo comando
-    Command* receiveCommand() override;
+    // Recibe un comando a traves del socket
+    // Devuelve una clase derivada de Command
+    Command* receiveCommand();
+
+    // Envia el mundo alrededor del player a traves del socket
+    void sendWorldAround(World& world, Player& player);
 };
 
 #endif // SERVER_PROTOCOL_H
