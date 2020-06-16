@@ -13,13 +13,22 @@ ClientHandler::ClientHandler(Socket socket_received,
 ClientHandler::~ClientHandler() {
     delete clientSender;
     delete clientReceiver;
+
+    gameManager.getWorld()->removePlayer(player->id);
+    delete player;
 }
 
 void ClientHandler::run() {
-    username = clientReceiver->receiveUsername();
-    gameManager.addPlayer(username);
+    std::string username = clientReceiver->receiveUsername();
+    int id = gameManager.addIdByUsername(username);
+    player = new Player(*gameManager.getWorld(), id);
+
+    clientSender->addPlayer(player);
+    clientReceiver->addPlayer(player);
+
     clientSender->start();
     clientReceiver->start();
+
     isRunning = false;
 }
 
@@ -28,7 +37,6 @@ void ClientHandler::stop() {
     clientReceiver->stop();
     clientSender->join();
     clientReceiver->join();
-    gameManager.removePlayer(username);
 }
 
 bool ClientHandler::isDead() {

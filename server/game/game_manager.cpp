@@ -14,7 +14,6 @@ GameManager::GameManager(File& config_file) {
 }
 
 GameManager::~GameManager() {
-    for (auto player : players) delete player;
     delete world;
     delete params;
 }
@@ -55,23 +54,8 @@ bool GameManager::isDead() {
     return (! isRunning);
 }
 
-void GameManager::addPlayer(const std::string &username) {
-    int id = idManager.addPlayerByUsername(username);
-    auto *player = new Player(*world, id);
-    players.push_back(player);
-    world->addPlayer(player);
-}
-
-void GameManager::removePlayer(const std::string &username) {
-    int id = idManager.getPlayerId(username);
-    size_t i;
-    for (i = 0; i < players.size(); i ++) {
-        if (players[i]->id == id) {
-            world->removePlayer(id);
-            players.erase(players.begin() + i);
-            delete players[i];
-        }
-    }
+const int GameManager::addIdByUsername(const std::string &username) {
+    return idManager.addPlayerByUsername(username);
 }
 
 void GameManager::handleEvent(UserEvent &user_event) {

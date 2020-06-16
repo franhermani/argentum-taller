@@ -10,7 +10,7 @@
 
 class ClientHandler : public Thread {
     Socket socket;
-    std::string username{};
+    Player* player;
     ClientSender* clientSender;
     ClientReceiver* clientReceiver;
     GameManager& gameManager;

@@ -4,7 +4,7 @@
 #include <string>
 
 class World;
-class GameManager;
+class ClientHandler;
 
 class Player {
     World& world;
@@ -18,7 +18,7 @@ class Player {
     void loadInitialPosition();
 
     friend class World;
-    friend class GameManager;
+    friend class ClientHandler;
 
 public:
     // Constructor
