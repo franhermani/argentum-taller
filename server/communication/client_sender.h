@@ -7,7 +7,7 @@
 class ClientSender : public Thread {
     ServerProtocol protocol;
     World& world;
-    Player* player;
+    Player* player{};
 
 public:
     // Constructor

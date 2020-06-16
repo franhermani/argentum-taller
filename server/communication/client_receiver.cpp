@@ -10,23 +10,17 @@ protocol(socket), world(world) {
 }
 
 void ClientReceiver::run() {
-    /*
-    std::string message;
-
     while (keepRunning) {
         try {
-            // TODO: recibir un comando del client y actualizar el mapa
-            message = protocol.receiveCommand();
-            world.update()
+            // TODO: creo el command tiene que encolarse y luego
+            // gameManager lo desencola y lo ejecuta
+//            Command* command = protocol.receiveCommand();
+//            command->execute(*player);
+//            delete command;
         } catch(SocketError&) {
             break;
         }
     }
-     */
-    Command* command = protocol.receiveCommand();
-//    command->execute(*player);
-    delete command;
-
     isRunning = false;
 }
 

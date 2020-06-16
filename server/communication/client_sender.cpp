@@ -8,18 +8,14 @@ protocol(socket), world(world) {
 }
 
 void ClientSender::run() {
-    /*
     while (keepRunning) {
         try {
-            // TODO: enviar mapa actualizado al cliente
-            protocol.sendWorldAround(world, player)
+            // TODO: ver si se envia constantemente o hay alguna cv
+//            protocol.sendWorldAround(world, *player);
         } catch(SocketError&) {
             break;
         }
     }
-    */
-//    protocol.sendWorldAround(world, *player);
-
     isRunning = false;
 }
 

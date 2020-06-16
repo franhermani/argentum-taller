@@ -30,6 +30,9 @@ void GameManager::run() {
         /*
         while (true) {
             try {
+                // TODO: aca deberia desencolar los comandos recibidos
+                // por el ClientReceiver
+                // En ese caso eliminar la clase userEvent
                 UserEvent user_event = usersEvents.pop();
                 handleEvent(user_event);
                 world->update(ms_per_update);
