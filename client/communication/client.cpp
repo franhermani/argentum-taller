@@ -26,7 +26,6 @@ void Client::connectToServer() {
 // TODO: ver cuando llamar a este metodo
 void Client::disconnectFromServer() {
     gameHandler->stop();
-    gameHandler->join();
 }
 
 

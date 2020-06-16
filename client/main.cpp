@@ -27,6 +27,8 @@ int main(int argc, char *argv[]) {
         client.disconnectFromServer();
     } catch(SocketError& e) {
         std::cerr << e.what() << "\n";
+    } catch(...) {
+        std::cerr << "Error desconocido\n";
     }
     return OK;
 }

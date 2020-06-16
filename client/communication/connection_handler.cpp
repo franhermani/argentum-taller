@@ -3,7 +3,6 @@
 
 GameHandler::GameHandler(const char *host, const char *port, const char *username) :
 socket(host, port, false), gameRender(640*2, 480*2, 20,30){
-    isRunning = true;
 
     connectionSender = new ConnectionSender(socket, commandQueue);
     connectionSender->sendUsername(username);
@@ -25,8 +24,6 @@ void GameHandler::run() {
     connectionSender->start();
     connectionReceiver->start();
     inputHandler->run();
-    stop();
-    isRunning = false;
 }
 
 void GameHandler::stop() {
@@ -38,6 +35,3 @@ void GameHandler::stop() {
 
 }
 
-bool GameHandler::isDead() {
-    return (! isRunning);
-}

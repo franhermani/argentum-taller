@@ -10,7 +10,7 @@
 #include "game_input_handler.h"
 
 
-class GameHandler : public Thread {
+class GameHandler {
     Socket socket;
 
     //send related classes
@@ -35,14 +35,11 @@ public:
     ~GameHandler();
 
     // Inicializa los thread sender y receiver
-    void run() override;
+    void run();
 
     // Setea la variable booleana 'keepRunning' en false
-    void stop() override;
+    void stop();
 
-    // Devuelve true si el thread no esta corriendo o
-    // false en caso contrario
-    bool isDead() override;
 };
 
 #endif // CONNECTION_HANDLER_H
