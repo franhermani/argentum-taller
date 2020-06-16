@@ -61,6 +61,10 @@ const int GameManager::addIdByUsername(const std::string &username) {
     return idManager.addPlayerByUsername(username);
 }
 
+void GameManager::addPlayer(Player* player) {
+    world->addPlayer(player);
+}
+
 void GameManager::handleEvent(UserEvent &user_event) {
     // TODO: estos eventos modifican efectivamente los GameObjects
 }

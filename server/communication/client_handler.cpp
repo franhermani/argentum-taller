@@ -22,6 +22,7 @@ void ClientHandler::run() {
     std::string username = clientReceiver->receiveUsername();
     int id = gameManager.addIdByUsername(username);
     player = new Player(*gameManager.getWorld(), id);
+    gameManager.addPlayer(player);
 
     clientSender->addPlayer(player);
     clientReceiver->addPlayer(player);

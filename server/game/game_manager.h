@@ -44,6 +44,9 @@ public:
     // Agrega el ID al idManager
     const int addIdByUsername(const std::string& username);
 
+    // Agrega 'player' a 'world'
+    void addPlayer(Player* player);
+
     // Handler de los eventos de los usuarios
     void handleEvent(UserEvent& user_event);
 
