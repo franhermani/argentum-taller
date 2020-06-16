@@ -6,8 +6,8 @@ ClientHandler::ClientHandler(Socket socket_received,
         GameManager& game_manager) : socket(std::move(socket_received)),
         gameManager(game_manager) {
     isRunning = true;
-    clientSender = new ClientSender(socket, *gameManager.getWorld());
     clientReceiver = new ClientReceiver(socket, *gameManager.getWorld());
+    clientSender = new ClientSender(socket, *gameManager.getWorld());
 }
 
 ClientHandler::~ClientHandler() {
@@ -23,20 +23,20 @@ void ClientHandler::run() {
     player = new Player(*gameManager.getWorld(), id);
     gameManager.addPlayer(player);
 
-    clientSender->addPlayer(player);
     clientReceiver->addPlayer(player);
+    clientSender->addPlayer(player);
 
-    clientSender->start();
     clientReceiver->start();
+    clientSender->start();
 
     isRunning = false;
 }
 
 void ClientHandler::stop() {
-    clientSender->stop();
     clientReceiver->stop();
-    clientSender->join();
+    clientSender->stop();
     clientReceiver->join();
+    clientSender->join();
 }
 
 bool ClientHandler::isDead() {
