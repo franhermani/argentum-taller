@@ -25,7 +25,7 @@ int GameRender::init() {
 }
 
 
-void GameRender::render_terrain(std::vector<std::vector<Terrain>>& matrix) {
+void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
     //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
     Surface land = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png", window);
     Surface water = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png", window);
@@ -33,10 +33,10 @@ void GameRender::render_terrain(std::vector<std::vector<Terrain>>& matrix) {
     terrain_surfaces_map.insert({TERRAIN_WATER, water});
     terrain_surfaces_map.insert({TERRAIN_LAND, land});
 
-    window.render_terrain(matrix, terrain_surfaces_map);
+    window.renderTerrain(matrix, terrain_surfaces_map);
 }
 
-void GameRender::render_npcs(std::vector<npc_pos>& npc_positions) {
+void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
     //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
     Surface warrior_up = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png", window);
     Surface warrior_down = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png", window);
@@ -58,7 +58,7 @@ void GameRender::render_npcs(std::vector<npc_pos>& npc_positions) {
 
     //recorro vector y renderizo con su surface correspondiente en el mapa
     for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
-        window.render_character(it->x, it->y, npc_surfaces_map.at(it->npc_name));
+        window.renderNpc(it->x, it->y, npc_surfaces_map.at(it->npc_name));
     }
 
 
@@ -80,8 +80,8 @@ void GameRender::play(std::vector<Terrain>& received_terrain, std::vector<npc_po
         }
     }
     //renderizamos piso y npcs
-    render_terrain(matrix);
-    render_npcs(npc_positions);
+    renderTerrain(matrix);
+    renderNpcs(npc_positions);
     window.UpdateWindowSurface();
 
 }

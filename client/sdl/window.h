@@ -60,8 +60,8 @@ public:
     //Actualiza la ventana mostrada
     void UpdateWindowSurface();
 
-    void render_terrain(std::vector<std::vector<Terrain>>& matrix, std::map<Terrain, Surface&>& surfaces_map);
-    void render_character(int x, int y, Surface& character_surface);
+    void renderTerrain(std::vector<std::vector<Terrain>>& matrix, std::map<Terrain, Surface&>& surfaces_map);
+    void renderNpc(int x, int y, Surface& character_surface);
 
 };
 

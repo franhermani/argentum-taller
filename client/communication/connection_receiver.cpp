@@ -9,19 +9,21 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, GameRender& gameRender) :
 }
 
 void ConnectionReceiver::run() {
-    /*
+
+
     std::string message;
 
     while (keepRunning) {
         try {
             // TODO: recibo el mapa y actualizo el modelo local
-            message = protocol.receiveMessage();
-
+            //std::vector<Terrain> terrains = protocol.receiveTerrains();
+            //std::vector<npc_pos> npcs = protocol.receiveNpcs();
+            //gameRender.play(terrains, npcs);
         } catch(SocketError&) {
             break;
         }
     }
-     */
+
     isRunning = false;
 }
 

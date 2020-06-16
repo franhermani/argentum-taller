@@ -60,7 +60,7 @@ void SDLWindow::stampSurface(Surface& surface, Area& area) {
     SDL_BlitScaled(surface.get_renderable_surface(), NULL, getSurface(), &rect);
 }
 
-void SDLWindow::render_character(int x, int y, Surface& character_surface) {
+void SDLWindow::renderNpc(int x, int y, Surface& character_surface) {
     int x_blocks_size = width / blocks_width;
     int y_blocks_size = height / blocks_height;
     SDL_Rect stretchRect;
@@ -72,8 +72,8 @@ void SDLWindow::render_character(int x, int y, Surface& character_surface) {
 }
 
 
-void SDLWindow::render_terrain(std::vector<std::vector<Terrain>>& matrix,
-        std::map<Terrain, Surface&>& surfaces_map) {
+void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
+                              std::map<Terrain, Surface&>& surfaces_map) {
     int x = 0;
     int y = 0;
     int x_blocks_size = width / blocks_width;

@@ -9,7 +9,7 @@
 
 
 class Client {
-    ConnectionHandler* connectionHandler;
+    GameHandler* gameHandler;
     bool keepPlaying;
 
 public:

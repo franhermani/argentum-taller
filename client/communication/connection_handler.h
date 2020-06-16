@@ -10,7 +10,7 @@
 #include "gameplay.h"
 
 
-class ConnectionHandler : public Thread {
+class GameHandler : public Thread {
     Socket socket;
 
     //send related classes
@@ -24,15 +24,15 @@ class ConnectionHandler : public Thread {
 
 public:
     // Constructor
-    explicit ConnectionHandler(const char *host, const char *port, const char *username);
+    explicit GameHandler(const char *host, const char *port, const char *username);
 
     // Constructor y asignacion por copia deshabilitados
-    ConnectionHandler(const ConnectionHandler&) = delete;
-    ConnectionHandler& operator=(const ConnectionHandler&) = delete;
+    GameHandler(const GameHandler&) = delete;
+    GameHandler& operator=(const GameHandler&) = delete;
 
     // Destructor
     // Elimina la memoria reservada para los thread sender y receiver
-    ~ConnectionHandler();
+    ~GameHandler();
 
     // Inicializa los thread sender y receiver
     void run() override;

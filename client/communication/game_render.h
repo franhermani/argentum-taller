@@ -32,10 +32,10 @@ public:
     ~GameRender();
 
     //Renderizador de pisos
-    void render_terrain(std::vector<std::vector<Terrain>>& matrix);
+    void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
 
     //Renderizador de npcs
-    void render_npcs(std::vector<npc_pos>& npc_positions);
+    void renderNpcs(std::vector<npc_pos>& npc_positions);
 
     //Inicializador de SDL
     int init();

@@ -1,22 +1,17 @@
 #include "connection_handler.h"
 
-ConnectionHandler::ConnectionHandler(const char *host, const char *port, const char *username) :
+GameHandler::GameHandler(const char *host, const char *port, const char *username) :
 socket(host, port, false), gameRender(640*2, 480*2, 20,30){
     isRunning = true;
 
-
-
-    //send related classes
     connectionSender = new ConnectionSender(socket, commandQueue);
     connectionSender->sendUsername(username);
-
     gameplay = new Gameplay(commandQueue);
-    //receive related classes
     connectionReceiver = new ConnectionReceiver(socket, gameRender);
 
 }
 
-ConnectionHandler::~ConnectionHandler() {
+GameHandler::~GameHandler() {
     delete connectionSender;
     delete connectionReceiver;
     delete gameplay;
@@ -24,18 +19,17 @@ ConnectionHandler::~ConnectionHandler() {
 
 
 
-void ConnectionHandler::run() {
+void GameHandler::run() {
 
     // TODO: username leerlo por terminal, pasarselo a client y luego aca
-    connectionSender->sendUsername("franhermani");
-    /*connectionSender->start();
+    connectionSender->start();
     connectionReceiver->start();
     gameplay->start();
-     */
+
     isRunning = false;
 }
 
-void ConnectionHandler::stop() {
+void GameHandler::stop() {
     connectionSender->stop();
     connectionSender->join();
     connectionReceiver->stop();
@@ -44,6 +38,6 @@ void ConnectionHandler::stop() {
     gameplay->join();
 }
 
-bool ConnectionHandler::isDead() {
+bool GameHandler::isDead() {
     return (! isRunning);
 }
