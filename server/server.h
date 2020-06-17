@@ -2,10 +2,10 @@
 #define SERVER_H
 
 #include <string>
-#include "../utilities/json_parser.h"
-#include "../utilities/file.h"
-#include "../game/game_manager.h"
-#include "clients_acceptor.h"
+#include "utilities/json_parser.h"
+#include "utilities/file.h"
+#include "game/game_manager.h"
+#include "communication/clients_acceptor.h"
 
 class Server {
     std::string port;

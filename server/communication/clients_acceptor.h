@@ -4,7 +4,7 @@
 #include <vector>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
-#include "client_handler.h"
+#include "../client_handler.h"
 #include "../game/game_manager.h"
 
 class ClientsAcceptor : public Thread {

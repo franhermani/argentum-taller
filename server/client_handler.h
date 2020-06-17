@@ -2,11 +2,11 @@
 #define CLIENT_HANDLER_H
 
 #include <string>
-#include "../../common/thread.h"
-#include "../../common/socket.h"
-#include "client_sender.h"
-#include "client_receiver.h"
-#include "../game/game_manager.h"
+#include "../common/thread.h"
+#include "../common/socket.h"
+#include "communication/client_sender.h"
+#include "communication/client_receiver.h"
+#include "game/game_manager.h"
 
 class ClientHandler : public Thread {
     Socket socket;
