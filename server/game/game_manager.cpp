@@ -30,11 +30,12 @@ void GameManager::run() {
         /*
         while (true) {
             try {
-                // TODO: aca deberia desencolar los comandos recibidos
-                // por el ClientReceiver
-                // En ese caso eliminar la clase userEvent
-                UserEvent user_event = usersEvents.pop();
-                handleEvent(user_event);
+                // TODO: implementar BlockingQueue<Command*>
+                // es la cola compartida entre GameManager y ClientReceiver
+                // Cerrar la cola de algun lado para que no se cuelgue aca!!!
+                Command* command = commandQueue.pop();
+                command->execute(player);
+                delete command;
                 world->update(ms_per_update);
             } catch(ClosedQueueException&) {
                 break;
@@ -67,10 +68,6 @@ void GameManager::addPlayerToWorld(Player* player) {
 
 void GameManager::removePlayerFromWorld(const int id) {
     world->removePlayer(id);
-}
-
-void GameManager::handleEvent(UserEvent &user_event) {
-    // TODO: estos eventos modifican efectivamente los GameObjects
 }
 
 World* GameManager::getWorld() const {

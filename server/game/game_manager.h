@@ -9,14 +9,13 @@
 #include "world.h"
 #include "id_manager.h"
 #include "../../common/blocking_queue.h"
-#include "../../common/user_event.h"
 
 class GameManager : public Thread {
     JsonParser jsonParser;
     GameParams* params;
     World* world;
     IdManager idManager;
-    BlockingQueue<UserEvent> usersEvents;
+//    BlockingQueue<Command*> usersCommands;
 
 public:
     // Constructor
@@ -49,9 +48,6 @@ public:
 
     // Elimina 'player' de 'world'
     void removePlayerFromWorld(const int id);
-
-    // Handler de los eventos de los usuarios
-    void handleEvent(UserEvent& user_event);
 
     // Devuelve un puntero a 'world'
     World* getWorld() const;
