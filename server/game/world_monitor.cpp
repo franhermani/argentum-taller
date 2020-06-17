@@ -24,7 +24,7 @@ std::vector<std::vector<Terrain>> WorldMonitor::getMatrixAround(
     return world.getMatrixAround(player);
 }
 
-std::vector<Player *> WorldMonitor::getPlayersAround(Player &player) {
+std::vector<Player*> WorldMonitor::getPlayersAround(Player &player) {
     std::unique_lock<std::mutex> lk(m);
     return world.getPlayersAround(player);
 }
