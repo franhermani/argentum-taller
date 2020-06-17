@@ -5,8 +5,8 @@
 #include <map>
 #include "surface.h"
 #include <SDL2/SDL_image.h>
-#include "../../common/terrain.h"
-#include "../../common/npc.h"
+#include "../../common/defines/terrain.h"
+#include "../../common/defines/npc.h"
 #include "area.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE

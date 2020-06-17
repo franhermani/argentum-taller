@@ -5,7 +5,7 @@
 #include <vector>
 #include "params.h"
 #include "player.h"
-#include "../../common/terrain.h"
+#include "../../common/defines/terrain.h"
 
 class World {
     std::mutex m;

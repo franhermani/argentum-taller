@@ -5,8 +5,8 @@
 #include <vector>
 #include <SDL2/SDL_image.h>
 #include "../sdl/window.h"
-#include "../../common/terrain.h"
-#include "../../common/npc.h"
+#include "../../common/defines/terrain.h"
+#include "../../common/defines/npc.h"
 
 struct npc_pos {
     int x;
