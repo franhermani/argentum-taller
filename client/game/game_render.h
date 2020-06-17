@@ -21,8 +21,9 @@ class GameRender {
     const int blocksHeight;
     SDLWindow window;
     //TODO
-    //std::map<Terrain, Surface> terrainSurfacesMap;
-    //std::map<Tpc, Surface> npcSurfacesMap;
+    std::map<Terrain, Surface*> terrainSurfacesMap;
+    std::map<Npc, Surface*> npcSurfacesMap;
+    std::map<Terrain, std::string> terrainSurfacesPaths;
 
 public:
     //Constructor

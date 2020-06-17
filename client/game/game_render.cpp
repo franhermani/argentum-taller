@@ -15,6 +15,39 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
                        blocksWidth(blocksWidth), blocksHeight(blocksHeight),
                        window(screenWidth, screenHeight) {
     init();
+
+
+    Surface* land = new Surface("../client/resources/images/24083.png", window);
+    Surface* water = new Surface("../client/resources/images/24082.png", window);
+    terrainSurfacesMap.insert({TERRAIN_WATER, water});
+    terrainSurfacesMap.insert({TERRAIN_LAND, land});
+
+    //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
+    Surface* warrior_up = new Surface(
+            "../client/resources/images/tipito_sube.png", window);
+    Surface* warrior_down = new Surface(
+            "../client/resources/images/tipito_baja.png", window);
+    Surface* warrior_left = new Surface(
+            "../client/resources/images/tipito_izq.png", window);
+    Surface* warrior_right = new Surface(
+            "../client/resources/images/tipito_der.png", window);
+    Surface* skeleton_up = new Surface(
+            "../client/resources/images/esqueleto_sube.png", window);
+    Surface* skeleton_down = new Surface(
+            "../client/resources/images/esqueleto_baja.png", window);
+    Surface* skeleton_left = new Surface(
+            "../client/resources/images/esqueleto_izq.png", window);
+    Surface* skeleton_right = new Surface(
+            "../client/resources/images/esqueleto_der.png", window);
+    npcSurfacesMap.insert({WARRIOR_UP, warrior_up});
+    npcSurfacesMap.insert({WARRIOR_DOWN, warrior_down});
+    npcSurfacesMap.insert({WARRIOR_LEFT, warrior_left});
+    npcSurfacesMap.insert({WARRIOR_RIGHT, warrior_right});
+    npcSurfacesMap.insert({SKELETON_UP, skeleton_up});
+    npcSurfacesMap.insert({SKELETON_DOWN, skeleton_down});
+    npcSurfacesMap.insert({SKELETON_LEFT, skeleton_left});
+    npcSurfacesMap.insert({SKELETON_RIGHT, skeleton_right});
+
 }
 
 GameRender::~GameRender() {
@@ -34,48 +67,14 @@ int GameRender::init() {
 }
 
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
-    //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
-    Surface land = Surface("../client/resources/images/24083.png", window);
-    Surface water = Surface("../client/resources/images/24082.png", window);
-    std::map<Terrain, Surface&> terrain_surfaces_map;
-    terrain_surfaces_map.insert({TERRAIN_WATER, water});
-    terrain_surfaces_map.insert({TERRAIN_LAND, land});
-
-    window.renderTerrain(matrix, terrain_surfaces_map);
+    window.renderTerrain(matrix, terrainSurfacesMap);
 }
 
 void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
-    //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
-    Surface warrior_up = Surface(
-            "../client/resources/images/tipito_sube.png", window);
-    Surface warrior_down = Surface(
-            "../client/resources/images/tipito_baja.png", window);
-    Surface warrior_left = Surface(
-            "../client/resources/images/tipito_izq.png", window);
-    Surface warrior_right = Surface(
-            "../client/resources/images/tipito_der.png", window);
-    Surface skeleton_up = Surface(
-            "../client/resources/images/esqueleto_sube.png", window);
-    Surface skeleton_down = Surface(
-            "../client/resources/images/esqueleto_baja.png", window);
-    Surface skeleton_left = Surface(
-            "../client/resources/images/esqueleto_izq.png", window);
-    Surface skeleton_right = Surface(
-            "../client/resources/images/esqueleto_der.png", window);
-    std::map<Npc, Surface&> npc_surfaces_map;
-    npc_surfaces_map.insert({WARRIOR_UP, warrior_up});
-    npc_surfaces_map.insert({WARRIOR_DOWN, warrior_down});
-    npc_surfaces_map.insert({WARRIOR_LEFT, warrior_left});
-    npc_surfaces_map.insert({WARRIOR_RIGHT, warrior_right});
-    npc_surfaces_map.insert({SKELETON_UP, skeleton_up});
-    npc_surfaces_map.insert({SKELETON_DOWN, skeleton_down});
-    npc_surfaces_map.insert({SKELETON_LEFT, skeleton_left});
-    npc_surfaces_map.insert({SKELETON_RIGHT, skeleton_right});
-
     // recorro vector y renderizo con su surface correspondiente en el mapa
     for (auto it = std::begin(npc_positions);
     it != std::end(npc_positions); ++it) {
-        window.renderNpc(it->x, it->y, npc_surfaces_map.at(it->npc_name));
+        window.renderNpc(it->x, it->y, npcSurfacesMap.at(it->npc_name));
     }
 }
 
