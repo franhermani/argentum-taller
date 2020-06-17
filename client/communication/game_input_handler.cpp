@@ -16,26 +16,27 @@ void GameInputHandler::play() {
             Command *command;
             if (event.type == SDL_KEYDOWN) {
                 auto &keyEvent = (SDL_KeyboardEvent &) event;
-                if (keyEvent.keysym.sym == SDLK_LEFT)
+                if (keyEvent.keysym.sym == SDLK_LEFT) {
                     command = new MoveCommand(LEFT);
-                else if (keyEvent.keysym.sym == SDLK_RIGHT)
+                } else if (keyEvent.keysym.sym == SDLK_RIGHT) {
                     command = new MoveCommand(RIGHT);
-                else if (keyEvent.keysym.sym == SDLK_UP)
+                } else if (keyEvent.keysym.sym == SDLK_UP) {
                     command = new MoveCommand(UP);
-                else if (keyEvent.keysym.sym == SDLK_DOWN)
+                } else if (keyEvent.keysym.sym == SDLK_DOWN) {
                     command = new MoveCommand(DOWN);
-                else if (keyEvent.keysym.sym == SDLK_ESCAPE) {
-                    //aca en realidad se va a mandar el comando de salir
+                } else if (keyEvent.keysym.sym == SDLK_ESCAPE) {
+                    // TODO: aca en realidad se va a mandar el comando de salir
                     running = false;
                     continue;
+                } else {
+                    continue;
                 }
-                else continue;
                 commandQueue.push(command);
-            } else if(event.type == SDL_QUIT) {
+            } else if (event.type == SDL_QUIT) {
                 running = false;
-            } else if(event.type == SDL_KEYUP)
+            } else if (event.type == SDL_KEYUP) {
                 continue;
-            else {
+            } else {
                 continue;
             }
         }

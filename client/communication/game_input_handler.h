@@ -14,7 +14,7 @@ public:
     BlockingQueue<Command*>& commandQueue;
 
     // Constructor
-    GameInputHandler(BlockingQueue<Command*>& commandQueue);
+    explicit GameInputHandler(BlockingQueue<Command*>& commandQueue);
 
     // Destructor
     ~GameInputHandler();

@@ -17,11 +17,9 @@ void ConnectionSender::run() {
             Command* command = commandQueue.pop();
             protocol.sendCommand(*command);
             delete command;
-
         } catch(SocketError&) {
             break;
-        }
-        catch (ClosedQueueException&) {
+        } catch (ClosedQueueException&) {
             break;
         }
     }

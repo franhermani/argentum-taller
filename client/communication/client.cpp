@@ -78,7 +78,6 @@ void Client::play() {
     }
 }
 
-
 void render_test_window() {
     int blocks_width = 20;
     int blocks_height = 30;
@@ -98,12 +97,12 @@ void render_test_window() {
     npc_positions.push_back(npc_1);
     npc_positions.push_back(npc_2);
 
-
     GameRender.render(received_terrain, npc_positions);
 
     //SIMULO QUE ME VAN LLEGANDO POR SOCKET+
     for (int i=0; i<10; i++) {
-        for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
+        for (auto it = std::begin(npc_positions);
+        it != std::end(npc_positions); ++it) {
             it->x = it->x+1;
         }
         GameRender.render(received_terrain, npc_positions);

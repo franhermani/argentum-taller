@@ -24,7 +24,6 @@ SDLWindow::~SDLWindow() {
         SDL_DestroyRenderer(renderer);
         renderer = nullptr;
     }
-
     if (window) {
         SDL_DestroyWindow(window);
         window = nullptr;
@@ -68,9 +67,9 @@ void SDLWindow::renderNpc(int x, int y, Surface& character_surface) {
     stretchRect.y = y*y_blocks_size;
     stretchRect.w = x_blocks_size;
     stretchRect.h = y_blocks_size;
-    SDL_BlitScaled(character_surface.getRenderableSurface(), NULL, getSurface(), &stretchRect);
+    SDL_BlitScaled(character_surface.getRenderableSurface(), NULL,
+            getSurface(), &stretchRect);
 }
-
 
 void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
                               std::map<Terrain, Surface&>& surfaces_map) {
@@ -89,17 +88,17 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
             stretchRect.h = y_blocks_size;
 
             if (matrix[i][j] == TERRAIN_WATER) {
-
-                SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER).getRenderableSurface(), NULL, getSurface(), &stretchRect);
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER).
+                getRenderableSurface(), NULL, getSurface(), &stretchRect);
             }
             if (matrix[i][j] == TERRAIN_LAND) {
-                SDL_BlitScaled(surfaces_map.at(TERRAIN_LAND).getRenderableSurface(), NULL, getSurface(), &stretchRect);
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_LAND).
+                getRenderableSurface(), NULL, getSurface(), &stretchRect);
             }
             x += x_blocks_size;
         }
         y += y_blocks_size;
     }
-
 }
 
 void SDLWindow::UpdateWindowSurface() {

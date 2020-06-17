@@ -1,18 +1,15 @@
 #ifndef SDL_WINDOW_H
 #define SDL_WINDOW_H
 
+#include <SDL2/SDL_image.h>
 #include <vector>
 #include <map>
 #include "surface.h"
-#include <SDL2/SDL_image.h>
 #include "../../common/defines/terrain.h"
 #include "../../common/defines/npc.h"
 #include "area.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE
-
-
-
 
 class SDL_Window;
 class SDL_Surface;
@@ -60,9 +57,12 @@ public:
     //Actualiza la ventana mostrada
     void UpdateWindowSurface();
 
-    void renderTerrain(std::vector<std::vector<Terrain>>& matrix, std::map<Terrain, Surface&>& surfaces_map);
-    void renderNpc(int x, int y, Surface& character_surface);
+    // ...
+    void renderTerrain(std::vector<std::vector<Terrain>>& matrix,
+            std::map<Terrain, Surface&>& surfaces_map);
 
+    // ...
+    void renderNpc(int x, int y, Surface& character_surface);
 };
 
 #endif // SDL_WINDOW_H

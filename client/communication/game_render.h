@@ -26,7 +26,8 @@ class GameRender {
 
 public:
     //Constructor
-    GameRender(const int screenWidth, const int screenHeight, const int blocksWidth, const int blocksHeight);
+    GameRender(const int screenWidth, const int screenHeight,
+               const int blocksWidth, const int blocksHeight);
 
     //Destructor
     ~GameRender();
@@ -41,7 +42,8 @@ public:
     int init();
 
     //Renderizador de jugada completa
-    void render(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions);
+    void render(std::vector<Terrain>& received_terrain,
+            std::vector<npc_pos>& npc_positions);
 };
 
 #endif //ARGENTUM_GAME_RENDER_H

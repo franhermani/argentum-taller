@@ -72,14 +72,16 @@ void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
     npc_surfaces_map.insert({SKELETON_LEFT, skeleton_left});
     npc_surfaces_map.insert({SKELETON_RIGHT, skeleton_right});
 
-    //recorro vector y renderizo con su surface correspondiente en el mapa
-    for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
+    // recorro vector y renderizo con su surface correspondiente en el mapa
+    for (auto it = std::begin(npc_positions);
+    it != std::end(npc_positions); ++it) {
         window.renderNpc(it->x, it->y, npc_surfaces_map.at(it->npc_name));
     }
 }
 
-void GameRender::render(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions) {
-    //inicializamos matriz de pisos a patir del vector recibido
+void GameRender::render(std::vector<Terrain>& received_terrain,
+        std::vector<npc_pos>& npc_positions) {
+    // inicializamos matriz de pisos a patir del vector recibido
     std::vector<std::vector<Terrain>> matrix;
     matrix.resize(blocksHeight);
     int current_vec_index = 0;

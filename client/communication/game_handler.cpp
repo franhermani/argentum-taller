@@ -1,9 +1,11 @@
 #include <iostream>
+#include <vector>
 #include <zconf.h>
 #include "game_handler.h"
 
-GameHandler::GameHandler(const char *host, const char *port, const char *username) :
-socket(host, port, false), gameRender(640*2, 480*2, 20,30){
+GameHandler::GameHandler(const char *host, const char *port,
+        const char *username) : socket(host, port, false),
+        gameRender(640*2, 480*2, 20,30) {
     connectionSender = new ConnectionSender(socket, commandQueue);
     connectionSender->sendUsername(username);
     inputHandler = new GameInputHandler(commandQueue);
@@ -50,7 +52,8 @@ void GameHandler::render_test_window() {
 
     //SIMULO QUE ME VAN LLEGANDO POR SOCKET+
     for (int i = 0; i < 10; i++) {
-        for (std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
+        for (auto it = std::begin(npc_positions);
+        it != std::end(npc_positions); ++it) {
             it->x = it->x + 1;
         }
         gameRender.render(received_terrain, npc_positions);

@@ -2,10 +2,8 @@
 #define SDL_AREA_H
 
 class Area {
-    int x;
-    int y;
-    int width;
-    int height;
+    int x, y;
+    int width, height;
 
 public:
     // Constructor
