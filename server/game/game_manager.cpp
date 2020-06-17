@@ -5,7 +5,7 @@
 #include "player.h"
 
 GameManager::GameManager(File& config_file) {
-    File world_file("../server/config/world.json");
+    File world_file(jsonParser.getConfigParams(config_file)["world_path"]);
     params = new GameParams(jsonParser.getConfigParams(config_file),
                             jsonParser.getWorldParams(world_file));
     world = new World(*params);
