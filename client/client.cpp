@@ -3,8 +3,8 @@
 #include <exception>
 #include <unistd.h>
 #include "client.h"
-#include "../sdl/window.h"
-#include "../sdl/texture.h"
+#include "sdl/window.h"
+#include "sdl/texture.h"
 #include "vector"
 #include "map"
 

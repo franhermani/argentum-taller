@@ -3,7 +3,7 @@
 
 #include "../../common/thread.h"
 #include "protocol.h"
-#include "game_render.h"
+#include "../game/game_render.h"
 
 class ConnectionReceiver : public Thread {
     ClientProtocol protocol;

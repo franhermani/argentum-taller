@@ -3,7 +3,7 @@
 #include <iostream>
 #include <exception>
 #include <unistd.h>
-#include "client.h"
+#include "../client.h"
 #include "../sdl/texture.h"
 #include "vector"
 #include "map"

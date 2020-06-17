@@ -4,8 +4,8 @@
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "../../common/blocking_queue.h"
-#include "connection_sender.h"
-#include "connection_receiver.h"
+#include "../communication/connection_sender.h"
+#include "../communication/connection_receiver.h"
 #include "game_render.h"
 #include "game_input_handler.h"
 

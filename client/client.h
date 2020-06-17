@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <SDL2/SDL_image.h>
-#include "game_handler.h"
+#include "game/game_handler.h"
 
 class Client {
     GameHandler* gameHandler;

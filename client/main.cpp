@@ -1,6 +1,6 @@
 #include <iostream>
 #include <zconf.h>
-#include "communication/client.h"
+#include "client.h"
 #include "../common/socket_error.h"
 
 #define OK 0
