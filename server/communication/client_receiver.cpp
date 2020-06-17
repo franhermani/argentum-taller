@@ -3,8 +3,7 @@
 #include "../../common/socket_error.h"
 #include "../../common/commands/username_command.h"
 
-ClientReceiver::ClientReceiver(Socket& socket, World& world) :
-protocol(socket), world(world) {
+ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket) {
     keepRunning = true;
     isRunning = true;
 }
@@ -12,7 +11,7 @@ protocol(socket), world(world) {
 void ClientReceiver::run() {
     while (keepRunning) {
         try {
-            // TODO: creo el command tiene que encolarse y luego
+            // TODO: el command tiene que encolarse y luego
             // gameManager lo desencola y lo ejecuta
 //            Command* command = protocol.receiveCommand();
 //            command->execute(*player);
@@ -37,8 +36,4 @@ const std::string ClientReceiver::receiveUsername() {
     std::string username = command->getUsername();
     delete command;
     return username;
-}
-
-void ClientReceiver::addPlayer(Player* new_player) {
-    player = new_player;
 }

@@ -6,8 +6,7 @@ ClientHandler::ClientHandler(Socket socket_received,
         GameManager& game_manager) : socket(std::move(socket_received)),
         gameManager(game_manager) {
     isRunning = true;
-    clientReceiver = new ClientReceiver(socket, *gameManager.getWorld());
-    clientSender = new ClientSender(socket, *gameManager.getWorld());
+    clientReceiver = new ClientReceiver(socket);
 }
 
 ClientHandler::~ClientHandler() {
@@ -18,13 +17,20 @@ ClientHandler::~ClientHandler() {
 }
 
 void ClientHandler::run() {
+    // Recibo el username
     std::string username = clientReceiver->receiveUsername();
+
+    // Agrego el ID del player al manager
     int id = gameManager.addIdByUsername(username);
+
+    // Creo el player
     player = new Player(*gameManager.getWorld(), id);
+
+    // Agrego el player al world
     gameManager.addPlayerToWorld(player);
 
-    clientReceiver->addPlayer(player);
-    clientSender->addPlayer(player);
+    clientSender = new ClientSender(socket, *gameManager.getWorldMonitor(),
+            *player);
 
     clientReceiver->start();
     clientSender->start();

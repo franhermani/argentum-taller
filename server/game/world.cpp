@@ -30,12 +30,10 @@ void World::loadMatrix() {
 }
 
 void World::addPlayer(Player* player) {
-    std::unique_lock<std::mutex> lk(m);
     players.push_back(player);
 }
 
 void World::removePlayer(int id) {
-    std::unique_lock<std::mutex> lk(m);
     size_t i;
     for (i = 0; i < players.size(); i ++)
         if (players[i]->id == id)
@@ -43,7 +41,6 @@ void World::removePlayer(int id) {
 }
 
 bool World::inMapBoundaries(int pos_x, int pos_y) {
-    std::unique_lock<std::mutex> lk(m);
     bool x_in_boundaries = (pos_x >= 0) && (pos_x < world_width),
          y_in_boundaries = (pos_y >= 0) && (pos_y < world_height);
 
@@ -51,7 +48,6 @@ bool World::inMapBoundaries(int pos_x, int pos_y) {
 }
 
 bool World::inCollision(int pos_x, int pos_y) {
-    std::unique_lock<std::mutex> lk(m);
     for (auto player : players)
         if (player->posX == pos_x && player->posY == pos_y)
             return true;
@@ -59,7 +55,6 @@ bool World::inCollision(int pos_x, int pos_y) {
 }
 
 void World::update(int ms) {
-    std::unique_lock<std::mutex> lk(m);
     for (auto player : players) player->update(ms);
 }
 
@@ -72,7 +67,6 @@ const int World::getHeight() const {
 }
 
 std::vector<std::vector<Terrain>> World::getMatrixAround(Player &player) {
-    std::unique_lock<std::mutex> lk(m);
     std::vector<std::vector<Terrain>> sub_matrix;
     int x_player = player.posX, y_player = player.posY;
 
@@ -96,7 +90,6 @@ std::vector<std::vector<Terrain>> World::getMatrixAround(Player &player) {
 }
 
 std::vector<Player*> World::getPlayersAround(Player &player) {
-    std::unique_lock<std::mutex> lk(m);
     std::vector<Player*> players_around;
 
     for (auto& p : players)

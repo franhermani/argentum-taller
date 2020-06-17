@@ -7,6 +7,7 @@
 #include "../utilities/json_parser.h"
 #include "params.h"
 #include "world.h"
+#include "world_monitor.h"
 #include "id_manager.h"
 #include "../../common/blocking_queue.h"
 
@@ -14,6 +15,7 @@ class GameManager : public Thread {
     JsonParser jsonParser;
     GameParams* params;
     World* world;
+    WorldMonitor* worldMonitor;
     IdManager idManager;
 //    BlockingQueue<Command*> usersCommands;
 
@@ -49,8 +51,11 @@ public:
     // Elimina 'player' de 'world'
     void removePlayerFromWorld(const int id);
 
-    // Devuelve un puntero a 'world'
+    // Devuelve un puntero a 'world' para que interactuen los players y npcs
     World* getWorld() const;
+
+    // Devuelve un puntero a 'worldMonitor' para que interactuen los threads
+    WorldMonitor* getWorldMonitor() const;
 };
 
 #endif // GAME_MANAGER_H

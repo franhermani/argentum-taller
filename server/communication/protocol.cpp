@@ -82,9 +82,13 @@ Command* ServerProtocol::receiveCommand() {
     return nullptr;
 }
 
-void ServerProtocol::sendWorldAround(World& world, Player& player) {
-    std::vector<std::vector<Terrain>> matrix = world.getMatrixAround(player);
-    std::vector<Player*> players = world.getPlayersAround(player);
+void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
+        Player& player) {
+    std::vector<std::vector<Terrain>> matrix =
+            world_monitor.getMatrixAround(player);
+    std::vector<Player*> players =
+            world_monitor.getPlayersAround(player);
+
     // TODO: ...
 //    std::vector<NPC*> npc = world.getNPCsAround(player);
 //    std::vector<Item*> items = world.getItemsAround(player);

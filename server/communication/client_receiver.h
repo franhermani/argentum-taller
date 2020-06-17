@@ -4,15 +4,14 @@
 #include <string>
 #include "../../common/thread.h"
 #include "protocol.h"
+#include "../game/world_monitor.h"
 
 class ClientReceiver : public Thread {
     ServerProtocol protocol;
-    World& world;
-    Player* player{};
 
 public:
     // Constructor
-    ClientReceiver(Socket& socket, World& world);
+    explicit ClientReceiver(Socket& socket);
 
     // Constructor y asignacion por copia deshabilitados
     ClientReceiver(const ClientReceiver&) = delete;
@@ -31,9 +30,6 @@ public:
     // Recibe el username del cliente para identificarlo
     // Este metodo se llama antes de run()
     const std::string receiveUsername();
-
-    // Carga su atributo player
-    void addPlayer(Player* new_player);
 };
 
 #endif // CLIENT_RECEIVER_H

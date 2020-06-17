@@ -1,8 +1,9 @@
 #include "client_sender.h"
 #include "../../common/socket_error.h"
 
-ClientSender::ClientSender(Socket& socket, World& world) :
-protocol(socket), world(world) {
+ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
+        Player& player) : protocol(socket), worldMonitor(world_monitor),
+        player(player) {
     keepRunning = true;
     isRunning = true;
 }
@@ -10,8 +11,8 @@ protocol(socket), world(world) {
 void ClientSender::run() {
     while (keepRunning) {
         try {
-            // TODO: ver si se envia constantemente o hay alguna cv
-//            protocol.sendWorldAround(world, *player);
+            // TODO: agregar un loop por tiempo como el del GameManager
+//            protocol.sendWorldAround(worldMonitor, *player);
         } catch(SocketError&) {
             break;
         }
@@ -25,8 +26,4 @@ void ClientSender::stop() {
 
 bool ClientSender::isDead() {
     return (! isRunning);
-}
-
-void ClientSender::addPlayer(Player* new_player) {
-    player = new_player;
 }

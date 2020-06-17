@@ -1,14 +1,12 @@
 #ifndef GAME_WORLD_H
 #define GAME_WORLD_H
 
-#include <mutex>
 #include <vector>
 #include "params.h"
 #include "player.h"
 #include "../../common/defines/terrain.h"
 
 class World {
-    std::mutex m;
     GameParams& params;
     std::vector<Player*> players;
     std::vector<std::vector<Terrain>> matrix;
@@ -43,7 +41,7 @@ public:
 
     // Actualiza el mundo segun los milisegundos recibidos
     // Simula el paso del tiempo llamando al metodo update()
-    // de todos los objetos dentro de 'gameObjects'
+    // de todos los players y npcs
     void update(int ms);
 
     // Devuelve la base del mapa

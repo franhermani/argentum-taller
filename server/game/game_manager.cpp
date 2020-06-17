@@ -9,11 +9,13 @@ GameManager::GameManager(File& config_file) {
     params = new GameParams(jsonParser.getConfigParams(config_file),
                             jsonParser.getWorldParams(world_file));
     world = new World(*params);
+    worldMonitor = new WorldMonitor(*world);
     keepRunning = true;
     isRunning = true;
 }
 
 GameManager::~GameManager() {
+    delete worldMonitor;
     delete world;
     delete params;
 }
@@ -36,7 +38,7 @@ void GameManager::run() {
                 Command* command = commandQueue.pop();
                 command->execute(player);
                 delete command;
-                world->update(ms_per_update);
+                worldMonitor->update(ms_per_update);
             } catch(ClosedQueueException&) {
                 break;
             }
@@ -63,13 +65,17 @@ const int GameManager::addIdByUsername(const std::string &username) {
 }
 
 void GameManager::addPlayerToWorld(Player* player) {
-    world->addPlayer(player);
+    worldMonitor->addPlayer(player);
 }
 
 void GameManager::removePlayerFromWorld(const int id) {
-    world->removePlayer(id);
+    worldMonitor->removePlayer(id);
 }
 
 World* GameManager::getWorld() const {
     return world;
+}
+
+WorldMonitor* GameManager::getWorldMonitor() const {
+    return worldMonitor;
 }
