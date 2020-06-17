@@ -29,6 +29,14 @@ void World::loadMatrix() {
     }
 }
 
+// --------------------------------------------- //
+// Metodos accedidos por WorldMonitor unicamente //
+// --------------------------------------------- //
+
+void World::update(int ms) {
+    for (auto player : players) player->update(ms);
+}
+
 void World::addPlayer(Player* player) {
     players.push_back(player);
 }
@@ -38,32 +46,6 @@ void World::removePlayer(int id) {
     for (i = 0; i < players.size(); i ++)
         if (players[i]->id == id)
             players.erase(players.begin() + i);
-}
-
-bool World::inMapBoundaries(int pos_x, int pos_y) {
-    bool x_in_boundaries = (pos_x >= 0) && (pos_x < world_width),
-         y_in_boundaries = (pos_y >= 0) && (pos_y < world_height);
-
-    return x_in_boundaries && y_in_boundaries;
-}
-
-bool World::inCollision(int pos_x, int pos_y) {
-    for (auto player : players)
-        if (player->posX == pos_x && player->posY == pos_y)
-            return true;
-    return false;
-}
-
-void World::update(int ms) {
-    for (auto player : players) player->update(ms);
-}
-
-const int World::getWidth() const {
-    return world_width;
-}
-
-const int World::getHeight() const {
-    return world_height;
 }
 
 std::vector<std::vector<Terrain>> World::getMatrixAround(Player &player) {
@@ -101,12 +83,39 @@ std::vector<Player*> World::getPlayersAround(Player &player) {
 
 bool World::inPlayerBoundaries(Player &player, int pos_x, int pos_y) {
     int player_xi = player.posX - player_width/2,
-        player_xf = player.posX + player_width/2,
-        player_yi = player.posY - player_height/2,
-        player_yf = player.posY + player_height/2;
+            player_xf = player.posX + player_width/2,
+            player_yi = player.posY - player_height/2,
+            player_yf = player.posY + player_height/2;
 
     bool x_in_boundaries = (pos_x >= player_xi) && (pos_x < player_xf),
-         y_in_boundaries = (pos_y >= player_yi) && (pos_y < player_yf);
+            y_in_boundaries = (pos_y >= player_yi) && (pos_y < player_yf);
 
     return x_in_boundaries && y_in_boundaries;
+}
+
+// --------------------------------------------- //
+// Metodos accedidos por Player y NPC unicamente //
+// --------------------------------------------- //
+
+bool World::inMapBoundaries(int pos_x, int pos_y) {
+    bool x_in_boundaries = (pos_x >= 0) && (pos_x < world_width),
+         y_in_boundaries = (pos_y >= 0) && (pos_y < world_height);
+
+    return x_in_boundaries && y_in_boundaries;
+}
+
+// TODO: chequear tambien la lista de NPCs cuando la agregue
+bool World::inCollision(int pos_x, int pos_y) {
+    for (auto player : players)
+        if (player->posX == pos_x && player->posY == pos_y)
+            return true;
+    return false;
+}
+
+const int World::getWidth() const {
+    return world_width;
+}
+
+const int World::getHeight() const {
+    return world_height;
 }

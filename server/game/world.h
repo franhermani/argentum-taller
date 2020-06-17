@@ -27,28 +27,20 @@ public:
     World(const World& other) = delete;
     World& operator=(const World& other) = delete;
 
-    // Agrega un Player al mundo
-    void addPlayer(Player* player);
-
-    // Remueve un Player del mundo segun su ID
-    void removePlayer(const int id);
-
-    // Determina si la posicion (x,y) esta dentro de los limites del mapa
-    bool inMapBoundaries(int pos_x, int pos_y);
-
-    // Determina si hay algun GameObject impenetrable en la posicion (x,y)
-    bool inCollision(int pos_x, int pos_y);
+    // --------------------------------------------- //
+    // Metodos accedidos por WorldMonitor unicamente //
+    // --------------------------------------------- //
 
     // Actualiza el mundo segun los milisegundos recibidos
     // Simula el paso del tiempo llamando al metodo update()
     // de todos los players y npcs
     void update(int ms);
 
-    // Devuelve la base del mapa
-    const int getWidth() const;
+    // Agrega un Player al mundo
+    void addPlayer(Player* player);
 
-    // Devuelve la altura del mapa
-    const int getHeight() const;
+    // Remueve un Player del mundo segun su ID
+    void removePlayer(const int id);
 
     // Devuelve una sub-matriz del mapa segun la posicion del Player recibido
     std::vector<std::vector<Terrain>> getMatrixAround(Player& player);
@@ -62,6 +54,23 @@ public:
 
     // Devuelve un vector de todos los items en la sub-matriz de 'player'
 //    std::vector<Item*> getItemsAround(Player& player);
+
+
+    // --------------------------------------------- //
+    // Metodos accedidos por Player y NPC unicamente //
+    // --------------------------------------------- //
+
+    // Determina si la posicion (x,y) esta dentro de los limites del mapa
+    bool inMapBoundaries(int pos_x, int pos_y);
+
+    // Determina si hay algun GameObject impenetrable en la posicion (x,y)
+    bool inCollision(int pos_x, int pos_y);
+
+    // Devuelve la base del mapa
+    const int getWidth() const;
+
+    // Devuelve la altura del mapa
+    const int getHeight() const;
 };
 
 #endif // GAME_WORLD_H
