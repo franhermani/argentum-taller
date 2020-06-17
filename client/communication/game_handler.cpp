@@ -1,15 +1,13 @@
-#include "game_handler.h"
 #include <iostream>
 #include <zconf.h>
+#include "game_handler.h"
 
 GameHandler::GameHandler(const char *host, const char *port, const char *username) :
 socket(host, port, false), gameRender(640*2, 480*2, 20,30){
-
     connectionSender = new ConnectionSender(socket, commandQueue);
     connectionSender->sendUsername(username);
     inputHandler = new GameInputHandler(commandQueue);
     connectionReceiver = new ConnectionReceiver(socket, gameRender);
-
 }
 
 GameHandler::~GameHandler() {
@@ -17,8 +15,6 @@ GameHandler::~GameHandler() {
     delete connectionReceiver;
     delete inputHandler;
 }
-
-
 
 void GameHandler::run() {
     render_test_window();
@@ -33,13 +29,9 @@ void GameHandler::stop() {
     connectionSender->join();
     connectionReceiver->stop();
     connectionReceiver->join();
-
 }
 
-
-
 void GameHandler::render_test_window() {
-
     //VECTOR DE TERRENOS QUE RECIBIRIAMOS POR SOCKET
     std::vector<Terrain> received_terrain;
     for (int i = 0; i < 20 * 30; i++) {
@@ -54,7 +46,6 @@ void GameHandler::render_test_window() {
     npc_positions.push_back(npc_1);
     npc_positions.push_back(npc_2);
 
-
     gameRender.render(received_terrain, npc_positions);
 
     //SIMULO QUE ME VAN LLEGANDO POR SOCKET+
@@ -66,4 +57,3 @@ void GameHandler::render_test_window() {
         usleep(100000);
     }
 }
-

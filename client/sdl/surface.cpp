@@ -1,10 +1,8 @@
-
-#include "surface.h"
-#include "exception.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "surface.h"
+#include "exception.h"
 #include "window.h"
-
 
 Surface::Surface(const std::string filename, const SDLWindow& window) {
     SDL_Surface* basic_surface = IMG_Load(filename.c_str());

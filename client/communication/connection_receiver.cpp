@@ -1,4 +1,3 @@
-#include <string>
 #include "connection_receiver.h"
 #include "../../common/socket_error.h"
 
@@ -9,10 +8,6 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, GameRender& gameRender) :
 }
 
 void ConnectionReceiver::run() {
-
-
-    std::string message;
-
     while (keepRunning) {
         try {
             // TODO: recibo el mapa y actualizo el modelo local
@@ -33,5 +28,3 @@ void ConnectionReceiver::stop() {
 bool ConnectionReceiver::isDead() {
     return (! isRunning);
 }
-
-

@@ -1,10 +1,10 @@
+#ifndef GAME_RENDER_H
+#define GAME_RENDER_H
 
-#ifndef ARGENTUM_GAME_RENDER_H
-#define ARGENTUM_GAME_RENDER_H
 #include <string>
 #include <vector>
-#include "../sdl/window.h"
 #include <SDL2/SDL_image.h>
+#include "../sdl/window.h"
 #include "../../common/terrain.h"
 #include "../../common/npc.h"
 
@@ -15,7 +15,6 @@ struct npc_pos {
 };
 
 class GameRender {
-private:
     const int screenWidth;
     const int screenHeight;
     const int blocksWidth;
@@ -24,6 +23,7 @@ private:
     //TODO
     //std::map<Terrain, Surface> terrainSurfacesMap;
     //std::map<Tpc, Surface> npcSurfacesMap;
+
 public:
     //Constructor
     GameRender(const int screenWidth, const int screenHeight, const int blocksWidth, const int blocksHeight);
@@ -43,6 +43,5 @@ public:
     //Renderizador de jugada completa
     void render(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions);
 };
-
 
 #endif //ARGENTUM_GAME_RENDER_H

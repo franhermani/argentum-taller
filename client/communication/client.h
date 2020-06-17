@@ -3,14 +3,11 @@
 
 #include <string>
 #include <vector>
-#include "game_handler.h"
-
 #include <SDL2/SDL_image.h>
-
+#include "game_handler.h"
 
 class Client {
     GameHandler* gameHandler;
-    bool keepPlaying;
 
 public:
     // Constructor
@@ -35,7 +32,6 @@ public:
     void play();
 
     void render_map();
-
 };
 
 #endif // CLIENT_H

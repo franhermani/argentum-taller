@@ -9,8 +9,8 @@
 #include "map"
 
 void render_test_window();
-Client::Client(const char *host, const char *port, const char *username) :
-keepPlaying(true) {
+
+Client::Client(const char *host, const char *port, const char *username) {
     gameHandler = new GameHandler(host, port, username);
 }
 
@@ -23,14 +23,12 @@ void Client::connectToServer() {
     //render_test_window();
 }
 
-// TODO: ver cuando llamar a este metodo
 void Client::disconnectFromServer() {
     gameHandler->stop();
 }
 
-
+// TODO: esto es de prueba
 void Client::play() {
-    // TODO: esto es de prueba
     try {
         SDLWindow window(800, 600);
         window.fill();

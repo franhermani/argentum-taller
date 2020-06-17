@@ -5,16 +5,13 @@
 #include "../../common/commands/username_command.h"
 
 ConnectionSender::ConnectionSender(Socket& socket,
-        BlockingQueue<Command*>& commandQueue) : protocol(socket), commandQueue(commandQueue) {
+        BlockingQueue<Command*>& commandQueue) : protocol(socket),
+        commandQueue(commandQueue) {
     keepRunning = true;
     isRunning = true;
 }
 
 void ConnectionSender::run() {
-
-
-    std::string message;
-
     while (keepRunning) {
         try {
             Command* command = commandQueue.pop();

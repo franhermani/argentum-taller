@@ -1,6 +1,5 @@
-
-#include "game_render.h"
 #include <SDL2/SDL.h>
+#include "game_render.h"
 #include <iostream>
 #include <exception>
 #include <unistd.h>
@@ -10,7 +9,17 @@
 #include "map"
 #include "../sdl/window.h"
 
+GameRender::GameRender(const int screenWidth, const int screenHeight,
+                       const int blocksWidth, const int blocksHeight) :
+                       screenWidth(screenWidth), screenHeight(screenHeight),
+                       blocksWidth(blocksWidth), blocksHeight(blocksHeight),
+                       window(screenWidth, screenHeight) {
+    init();
+}
 
+GameRender::~GameRender() {
+    SDL_Quit();
+}
 
 int GameRender::init() {
     //Initialization flag
@@ -23,7 +32,6 @@ int GameRender::init() {
     }
     return success;
 }
-
 
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
     //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
@@ -60,10 +68,7 @@ void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
     for(std::vector<npc_pos>::iterator it = std::begin(npc_positions); it != std::end(npc_positions); ++it) {
         window.renderNpc(it->x, it->y, npc_surfaces_map.at(it->npc_name));
     }
-
-
 }
-
 
 void GameRender::render(std::vector<Terrain>& received_terrain, std::vector<npc_pos>& npc_positions) {
     //inicializamos matriz de pisos a patir del vector recibido
@@ -83,16 +88,4 @@ void GameRender::render(std::vector<Terrain>& received_terrain, std::vector<npc_
     renderTerrain(matrix);
     renderNpcs(npc_positions);
     window.UpdateWindowSurface();
-
-}
-
-
-GameRender::GameRender(const int screenWidth, const int screenHeight,
-        const int blocksWidth, const int blocksHeight)
-        : screenWidth(screenWidth), screenHeight(screenHeight),
-        blocksWidth(blocksWidth), blocksHeight(blocksHeight), window(screenWidth, screenHeight) {
-    init();
-}
-GameRender::~GameRender() {
-    SDL_Quit();
 }

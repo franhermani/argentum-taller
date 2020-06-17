@@ -9,16 +9,15 @@
 #include "game_render.h"
 #include "game_input_handler.h"
 
-
 class GameHandler {
     Socket socket;
 
-    //send related classes
+    // Send related classes
     ConnectionSender* connectionSender;
     GameInputHandler* inputHandler;
     BlockingQueue<Command*> commandQueue;
 
-    //receive related classes
+    // Receive related classes
     ConnectionReceiver* connectionReceiver;
     GameRender gameRender;
 

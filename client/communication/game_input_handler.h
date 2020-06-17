@@ -1,6 +1,6 @@
+#ifndef GAME_INPUT_HANDLER_H
+#define GAME_INPUT_HANDLER_H
 
-#ifndef ARGENTUM_GAME_INPUT_HANDLER_H
-#define ARGENTUM_GAME_INPUT_HANDLER_H
 #include <SDL2/SDL.h>
 #include "../../common/thread.h"
 #include "../../common/blocking_queue.h"
@@ -8,9 +8,9 @@
 #include "../../common/commands/move_command.h"
 #include "../../common/commands/defines.h"
 
-
 class GameInputHandler : public Thread {
 public:
+    // TODO: pasarlo a privado
     BlockingQueue<Command*>& commandQueue;
 
     // Constructor
@@ -37,5 +37,4 @@ public:
     bool isDead() override;
 };
 
-
-#endif //ARGENTUM_GAME_INPUT_HANDLER_H
+#endif // GAME_INPUT_HANDLER_H
