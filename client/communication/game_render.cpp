@@ -27,8 +27,8 @@ int GameRender::init() {
 
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
     //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
-    Surface land = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24083.png", window);
-    Surface water = Surface("/home/martinrosas/taller/taller-tp4/resources/images/24082.png", window);
+    Surface land = Surface("resources/images/24083.png", window);
+    Surface water = Surface("resources/images/24082.png", window);
     std::map<Terrain, Surface&> terrain_surfaces_map;
     terrain_surfaces_map.insert({TERRAIN_WATER, water});
     terrain_surfaces_map.insert({TERRAIN_LAND, land});
@@ -38,14 +38,14 @@ void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
 
 void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
     //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
-    Surface warrior_up = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_sube.png", window);
-    Surface warrior_down = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_baja.png", window);
-    Surface warrior_left = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_izq.png", window);
-    Surface warrior_right = Surface("/home/martinrosas/taller/taller-tp4/resources/images/tipito_der.png", window);
-    Surface skeleton_up = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_sube.png", window);
-    Surface skeleton_down = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_baja.png", window);
-    Surface skeleton_left = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_izq.png", window);
-    Surface skeleton_right = Surface("/home/martinrosas/taller/taller-tp4/resources/images/esqueleto_der.png", window);
+    Surface warrior_up = Surface("resources/images/tipito_sube.png", window);
+    Surface warrior_down = Surface("resources/images/tipito_baja.png", window);
+    Surface warrior_left = Surface("resources/images/tipito_izq.png", window);
+    Surface warrior_right = Surface("resources/images/tipito_der.png", window);
+    Surface skeleton_up = Surface("resources/images/esqueleto_sube.png", window);
+    Surface skeleton_down = Surface("resources/images/esqueleto_baja.png", window);
+    Surface skeleton_left = Surface("resources/images/esqueleto_izq.png", window);
+    Surface skeleton_right = Surface("resources/images/esqueleto_der.png", window);
     std::map<Npc, Surface&> npc_surfaces_map;
     npc_surfaces_map.insert({WARRIOR_UP, warrior_up});
     npc_surfaces_map.insert({WARRIOR_DOWN, warrior_down});
