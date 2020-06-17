@@ -83,12 +83,12 @@ std::vector<Player*> World::getPlayersAround(Player &player) {
 
 bool World::inPlayerBoundaries(Player &player, int pos_x, int pos_y) {
     int player_xi = player.posX - player_width/2,
-            player_xf = player.posX + player_width/2,
-            player_yi = player.posY - player_height/2,
-            player_yf = player.posY + player_height/2;
+        player_xf = player.posX + player_width/2,
+        player_yi = player.posY - player_height/2,
+        player_yf = player.posY + player_height/2;
 
     bool x_in_boundaries = (pos_x >= player_xi) && (pos_x < player_xf),
-            y_in_boundaries = (pos_y >= player_yi) && (pos_y < player_yf);
+         y_in_boundaries = (pos_y >= player_yi) && (pos_y < player_yf);
 
     return x_in_boundaries && y_in_boundaries;
 }
