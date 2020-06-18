@@ -3,15 +3,16 @@
 
 #include "../../common/thread.h"
 #include "protocol.h"
+#include "../game/world_monitor.h"
 
 class ClientSender : public Thread {
     ServerProtocol protocol;
-    World& world;
-    Player* player{};
+    WorldMonitor& worldMonitor;
+    Player& player;
 
 public:
     // Constructor
-    ClientSender(Socket& socket, World& world);
+    ClientSender(Socket& socket, WorldMonitor& worldMonitor, Player& player);
 
     // Constructor y asignacion por copia deshabilitados
     ClientSender(const ClientSender&) = delete;
@@ -26,9 +27,6 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
-
-    // Carga su atributo player
-    void addPlayer(Player* new_player);
 };
 
 #endif // CLIENT_SENDER_H

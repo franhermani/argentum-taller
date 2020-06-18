@@ -3,7 +3,7 @@
 
 #include "../../common/socket.h"
 #include "../../common/commands/command.h"
-#include "../game/world.h"
+#include "../game/world_monitor.h"
 
 class ServerProtocol {
     Socket& socket;
@@ -21,7 +21,7 @@ public:
     Command* receiveCommand();
 
     // Envia el mundo alrededor del player a traves del socket
-    void sendWorldAround(World& world, Player& player);
+    void sendWorldAround(WorldMonitor& world_monitor, Player& player);
 };
 
 #endif // SERVER_PROTOCOL_H

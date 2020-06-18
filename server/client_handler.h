@@ -12,7 +12,7 @@ class ClientHandler : public Thread {
     Socket socket;
     GameManager& gameManager;
     ClientReceiver* clientReceiver;
-    ClientSender* clientSender;
+    ClientSender* clientSender{};
     Player* player{};
 
 public:
