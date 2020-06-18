@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include "protocol.h"
+#include "../../common/defines/debug.h"
 
 #define BYTE_SIZE 1
 
@@ -16,6 +17,10 @@ const std::string ServerProtocol::receiveUsername() {
     socket.receiveBytes(arguments.data(), arguments.size());
 
     std::string username(arguments.begin(), arguments.end());
+
+    if (debug)
+        std::cout << "Recibido el username " << username << "\n";
+
     return username;
 }
 
