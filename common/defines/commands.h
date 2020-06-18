@@ -13,7 +13,6 @@ enum commandType {
     CMD_SELL,
     CMD_TAKE,
     CMD_THROW,
-    CMD_MESSAGE,
     CMD_MOVE,
     CMD_ATTACK,
     CMD_EQUIP,

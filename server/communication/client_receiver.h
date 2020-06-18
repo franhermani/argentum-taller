@@ -10,7 +10,7 @@
 class ClientReceiver : public Thread {
     ServerProtocol protocol;
     BlockingQueue<Command*>& commandQueue;
-    Player* player;
+    Player* player{};
 
 public:
     // Constructor

@@ -1,7 +1,6 @@
 #include <string>
 #include "client_receiver.h"
 #include "../../common/socket_error.h"
-#include <iostream>
 
 ClientReceiver::ClientReceiver(Socket& socket,
         BlockingQueue<Command*>& command_queue) :
@@ -14,7 +13,6 @@ void ClientReceiver::run() {
     while (keepRunning) {
         try {
             Command* command = protocol.receiveCommand(*player);
-            std::cout << "Comando recibido\n";
             commandQueue.push(command);
         } catch(SocketError&) {
             break;
@@ -32,7 +30,7 @@ bool ClientReceiver::isDead() {
 }
 
 const std::string ClientReceiver::receiveUsername() {
-    return protocol.receiveUsername();;
+    return protocol.receiveUsername();
 }
 
 void ClientReceiver::setPlayer(Player* new_player) {
