@@ -2,7 +2,6 @@
 #include <thread>
 #include <chrono>
 #include "game_manager.h"
-#include "player.h"
 
 GameManager::GameManager(File& config_file) {
     File world_file(jsonParser.getConfigParams(config_file)["world_path"]);
@@ -33,7 +32,7 @@ void GameManager::run() {
         while (true) {
             try {
                 Command* command = commandQueue->pop();
-                // TODO: player podria ser atributo de Command
+                // TODO: player deberia ser atributo de Command, aca no va
                 // command->execute(player);
                 delete command;
                 worldMonitor->update(ms_per_update);
@@ -80,4 +79,8 @@ WorldMonitor* GameManager::getWorldMonitor() const {
 
 BlockingQueue<Command*>* GameManager::getCommandQueue() const {
     return commandQueue;
+}
+
+int GameManager::getMsPerSend() {
+    return params->getConfigParams()["ms_per_send"];
 }

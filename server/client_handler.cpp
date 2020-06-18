@@ -31,7 +31,7 @@ void ClientHandler::run() {
     gameManager.addPlayerToWorld(player);
 
     clientSender = new ClientSender(socket, *gameManager.getWorldMonitor(),
-            *player);
+            *player, gameManager.getMsPerSend());
 
     clientReceiver->start();
     clientSender->start();

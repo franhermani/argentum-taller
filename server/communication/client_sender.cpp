@@ -1,18 +1,21 @@
+#include <chrono>
 #include "client_sender.h"
 #include "../../common/socket_error.h"
 
 ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
-        Player& player) : protocol(socket), worldMonitor(world_monitor),
-        player(player) {
+        Player& player, int ms_per_send) : protocol(socket),
+        worldMonitor(world_monitor), player(player), msPerSend(ms_per_send) {
     keepRunning = true;
     isRunning = true;
 }
 
 void ClientSender::run() {
+    using ms = std::chrono::milliseconds;
+
     while (keepRunning) {
         try {
-            // TODO: agregar un loop por tiempo como el del GameManager
-//            protocol.sendWorldAround(worldMonitor, *player);
+            std::this_thread::sleep_for(ms(msPerSend));
+            protocol.sendWorldAround(worldMonitor, player);
         } catch(SocketError&) {
             break;
         }

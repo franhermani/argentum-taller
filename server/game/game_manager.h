@@ -59,6 +59,9 @@ public:
 
     // Devuelve una puntero a 'commandQueue'
     BlockingQueue<Command*>* getCommandQueue() const;
+
+    // Devuelve el tiempo (ms) que debe dormir el client sender en cada loop
+    int getMsPerSend();
 };
 
 #endif // GAME_MANAGER_H
