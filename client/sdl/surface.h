@@ -16,6 +16,12 @@ public:
     // Destructor
     ~Surface();
 
+    // Constructor y asignacion por copia deshabilitados
+    Surface(const Surface &) = delete;
+
+    Surface &operator=(const Surface &) = delete;
+
+
     // Devuelve SDL_Surface para poder ser estampado
     SDL_Surface* getRenderableSurface();
 };
