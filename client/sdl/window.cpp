@@ -4,8 +4,7 @@
 #include "window.h"
 #include "exception.h"
 
-SDLWindow::SDLWindow(const int width, const int height) :
-width(width), height(height) {
+SDLWindow::SDLWindow(const int width, const int height){
     int s;
     if ((s = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)))
         throw SDLException("Error al inicializar SDL", SDL_GetError());
@@ -14,9 +13,11 @@ width(width), height(height) {
             SDL_RENDERER_ACCELERATED, &window, &renderer)))
         throw SDLException("Error al crear la ventana", SDL_GetError());
 
-    //TODO sacar esto de aca, recibir como parametro
-    blocks_width = 20;
-    blocks_height = 20;
+    //TODO sacar numero magico de aca, recibir como parametro
+    numberOfTilesInWidth = 20;
+    numberOfTilesInHeight = 20;
+    xWidthTileSize = width / numberOfTilesInWidth;
+    yHeightTileSize = height / numberOfTilesInHeight;
 }
 
 SDLWindow::~SDLWindow() {
@@ -60,46 +61,48 @@ void SDLWindow::stampSurface(Surface& surface, Area& area) {
 }
 
 void SDLWindow::renderNpc(int x, int y, Surface* character_surface) {
-    int x_blocks_size = width / blocks_width;
-    int y_blocks_size = height / blocks_height;
     SDL_Rect stretchRect;
-    stretchRect.x = x*x_blocks_size;
-    stretchRect.y = y*y_blocks_size;
-    stretchRect.w = x_blocks_size;
-    stretchRect.h = y_blocks_size;
+    stretchRect.x = getXPixelPos(x);
+    stretchRect.y = getYPixelPos(y);
+    stretchRect.w = xWidthTileSize;
+    stretchRect.h = yHeightTileSize;
     SDL_BlitScaled(character_surface->getRenderableSurface(), NULL,
             getSurface(), &stretchRect);
 }
 
 void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
                               std::map<Terrain, Surface*>& surfaces_map) {
-    int x = 0;
-    int y = 0;
-    int x_blocks_size = width / blocks_width;
-    int y_blocks_size = height / blocks_height;
 
-    for (int i=0; i < blocks_height; i++) {
-        x = 0;
-        for (int j=0; j < blocks_width; j++) {
+
+    for (int y=0; y < numberOfTilesInHeight; y++) {
+        for (int x=0; x < numberOfTilesInWidth; x++) {
             SDL_Rect stretchRect;
-            stretchRect.x = x;
-            stretchRect.y = y;
-            stretchRect.w = x_blocks_size;
-            stretchRect.h = y_blocks_size;
+            stretchRect.x = getXPixelPos(x);
+            stretchRect.y = getYPixelPos(y);
+            stretchRect.w = xWidthTileSize;
+            stretchRect.h = yHeightTileSize;
 
-            if (matrix[i][j] == TERRAIN_WATER) {
+            if (matrix[y][x] == TERRAIN_WATER) {
                 SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER)->
                 getRenderableSurface(), NULL, getSurface(), &stretchRect);
             }
-            if (matrix[i][j] == TERRAIN_LAND) {
+            if (matrix[y][x] == TERRAIN_LAND) {
                 SDL_BlitScaled(surfaces_map.at(TERRAIN_LAND)->
                 getRenderableSurface(), NULL, getSurface(), &stretchRect);
             }
-            x += x_blocks_size;
         }
-        y += y_blocks_size;
     }
 }
+
+int SDLWindow::getXPixelPos(int x_tile_position) {
+    return x_tile_position*xWidthTileSize;
+
+}
+int SDLWindow::getYPixelPos(int y_tile_position) {
+    return y_tile_position*yHeightTileSize;
+
+}
+
 
 void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
