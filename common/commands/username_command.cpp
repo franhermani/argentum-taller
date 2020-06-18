@@ -1,7 +1,7 @@
 #include <cstring>
 #include <vector>
 #include "username_command.h"
-#include "defines.h"
+#include "../defines/commands.h"
 
 UsernameCommand::UsernameCommand(const std::string& username) :
 username(username) {}

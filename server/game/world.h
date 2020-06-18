@@ -4,7 +4,7 @@
 #include <vector>
 #include "params.h"
 #include "player.h"
-#include "../../common/defines/terrain.h"
+#include "../../common/defines/terrains.h"
 
 class World {
     GameParams& params;

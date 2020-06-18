@@ -2,7 +2,7 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "attack_command.h"
-#include "defines.h"
+#include "../defines/commands.h"
 
 AttackCommand::AttackCommand(const uint16_t enemy_id) : enemyId(enemy_id) {}
 

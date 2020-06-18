@@ -1,7 +1,7 @@
 #include <random>
 #include "player.h"
 #include "world.h"
-#include "../../common/commands/defines.h"
+#include "../../common/defines/commands.h"
 
 Player::Player(World& world, const int id) : world(world), id(id),
 maxLife(100), actualLife(maxLife), orientation(DOWN) {

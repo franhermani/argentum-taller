@@ -4,7 +4,7 @@
 #include <arpa/inet.h>
 #include <cstring>
 #include "protocol.h"
-#include "../../common/commands/defines.h"
+#include "../../common/defines/commands.h"
 #include "../../common/commands/username_command.h"
 #include "../../common/commands/meditate_command.h"
 #include "../../common/commands/revive_command.h"

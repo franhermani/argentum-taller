@@ -2,7 +2,7 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "revive_command.h"
-#include "defines.h"
+#include "../defines/commands.h"
 
 ReviveCommand::ReviveCommand() : priestId(0) {}
 

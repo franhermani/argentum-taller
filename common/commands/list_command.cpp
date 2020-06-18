@@ -2,7 +2,7 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "list_command.h"
-#include "defines.h"
+#include "../defines/commands.h"
 
 ListCommand::ListCommand(const uint16_t npc_id) : npcId(npc_id) {}
 

@@ -6,7 +6,7 @@
 #include "../../common/blocking_queue.h"
 #include "../../common/commands/command.h"
 #include "../../common/commands/move_command.h"
-#include "../../common/commands/defines.h"
+#include "../../common/defines/commands.h"
 
 class GameInputHandler : public Thread {
 public:
