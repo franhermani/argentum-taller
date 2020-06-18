@@ -1,15 +1,16 @@
 #ifndef HEAL_COMMAND_H
 #define HEAL_COMMAND_H
 
-#include <vector>
 #include "command.h"
+#include "../player.h"
 
 class HealCommand : public Command {
+    Player& player;
     uint16_t priestId;
 
 public:
     // Constructor
-    explicit HealCommand(const uint16_t priest_id);
+    explicit HealCommand(Player& player, const uint16_t priest_id);
 
     // Constructor y asignacion por copia deshabilitados
     HealCommand(const HealCommand&) = delete;
@@ -18,11 +19,8 @@ public:
     // Destructor
     ~HealCommand() override;
 
-    // Devuelve la serializacion en bytes del comando
-    const std::vector<char> serialize() const override;
-
     // Recupera los puntos de vida y mana
-    void execute(Player& player) override;
+    void execute() override;
 };
 
 #endif // HEAL_COMMAND_H

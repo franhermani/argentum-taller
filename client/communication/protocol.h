@@ -2,7 +2,7 @@
 #define CLIENT_PROTOCOL_H
 
 #include "../../common/socket.h"
-#include "../../common/commands/command.h"
+#include "../../common/data_transfer_objects/command_dto.h"
 
 class ClientProtocol {
     Socket& socket;
@@ -16,7 +16,7 @@ public:
     ClientProtocol& operator=(const ClientProtocol&) = delete;
 
     // Envia un comando a traves del socket
-    void sendCommand(Command& command);
+    void sendCommand(CommandDTO& command);
 };
 
 #endif // CLIENT_PROTOCOL_H

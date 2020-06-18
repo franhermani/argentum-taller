@@ -1,14 +1,14 @@
 #include <cstring>
 #include <vector>
-#include "username_command.h"
+#include "username_command_dto.h"
 #include "../defines/commands.h"
 
-UsernameCommand::UsernameCommand(const std::string& username) :
+UsernameCommandDTO::UsernameCommandDTO(const std::string& username) :
 username(username) {}
 
-UsernameCommand::~UsernameCommand() = default;
+UsernameCommandDTO::~UsernameCommandDTO() = default;
 
-const std::vector<char> UsernameCommand::serialize() const {
+const std::vector<char> UsernameCommandDTO::serialize() const {
     // Longitud de los argumentos
     uint8_t arguments_size = username.length();
 
@@ -29,8 +29,4 @@ const std::vector<char> UsernameCommand::serialize() const {
     memcpy(&byte_msg[2], username.c_str(), arguments_size);
 
     return byte_msg;
-}
-
-const std::string UsernameCommand::getUsername() const {
-    return username;
 }

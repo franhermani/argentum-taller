@@ -1,13 +1,15 @@
 #ifndef MEDITATE_COMMAND_H
 #define MEDITATE_COMMAND_H
 
-#include <vector>
 #include "command.h"
+#include "../player.h"
 
 class MeditateCommand : public Command {
+    Player& player;
+
 public:
     // Constructor
-    MeditateCommand();
+    explicit MeditateCommand(Player& player);
 
     // Constructor y asignacion por copia deshabilitados
     MeditateCommand(const MeditateCommand&) = delete;
@@ -16,11 +18,8 @@ public:
     // Destructor
     ~MeditateCommand() override;
 
-    // Devuelve la serializacion en bytes del comando
-    const std::vector<char> serialize() const override;
-
     // Entra en estado de meditacion y recupera mana
-    void execute(Player& player) override;
+    void execute() override;
 };
 
 #endif // MEDITATE_COMMAND_H

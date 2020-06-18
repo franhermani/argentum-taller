@@ -5,18 +5,19 @@
 #include <cstring>
 #include "protocol.h"
 #include "../../common/defines/commands.h"
-#include "../../common/commands/username_command.h"
-#include "../../common/commands/meditate_command.h"
-#include "../../common/commands/revive_command.h"
-#include "../../common/commands/heal_command.h"
-#include "../../common/commands/list_command.h"
-#include "../../common/commands/move_command.h"
-#include "../../common/commands/attack_command.h"
+//#include "../../common/commands/username_command.h"
+//#include "../../common/commands/meditate_command.h"
+//#include "../../common/commands/revive_command.h"
+//#include "../../common/commands/heal_command.h"
+//#include "../../common/commands/list_command.h"
+//#include "../../common/commands/move_command.h"
+//#include "../../common/commands/attack_command.h"
 
 #define BYTE_SIZE 1
 
 ServerProtocol::ServerProtocol(Socket& socket) : socket(socket) {}
 
+// TODO: llamar a CommandFactory y devolver clase derivada de Command
 Command* ServerProtocol::receiveCommand() {
     std::vector<char> arguments;
     char buffer1[BYTE_SIZE], buffer2[BYTE_SIZE];
@@ -34,21 +35,21 @@ Command* ServerProtocol::receiveCommand() {
 
     if (type == CMD_USERNAME) {
         std::string username(arguments.begin(), arguments.end());
-        return new UsernameCommand(username);
+//        return new UsernameCommand(username);
     } else if (type == CMD_MEDITATE) {
-        return new MeditateCommand();
+//        return new MeditateCommand();
     } else if (type == CMD_REVIVE) {
         if (length > 0) {
             uint16_t priest_id;
             memcpy(&priest_id, arguments.data(), arguments.size());
-            return new ReviveCommand(ntohs(priest_id));
+//            return new ReviveCommand(ntohs(priest_id));
         } else {
-            return new ReviveCommand();
+//            return new ReviveCommand();
         }
     } else if (type == CMD_HEAL) {
         uint16_t priest_id;
         memcpy(&priest_id, arguments.data(), arguments.size());
-        return new HealCommand(ntohs(priest_id));
+//        return new HealCommand(ntohs(priest_id));
     } else if (type == CMD_DEPOSIT) {
         // TODO:...
     } else if (type == CMD_WITHDRAW) {
@@ -56,7 +57,7 @@ Command* ServerProtocol::receiveCommand() {
     } else if (type == CMD_LIST) {
         uint16_t npc_id;
         memcpy(&npc_id, arguments.data(), arguments.size());
-        return new ListCommand(ntohs(npc_id));
+//        return new ListCommand(ntohs(npc_id));
     } else if (type == CMD_BUY) {
         // TODO:...
     } else if (type == CMD_SELL) {
@@ -68,12 +69,12 @@ Command* ServerProtocol::receiveCommand() {
     } else if (type == CMD_MESSAGE) {
         // TODO:...
     } else if (type == CMD_MOVE) {
-        int direction = arguments[0];
-        return new MoveCommand(direction);
+//        int direction = arguments[0];
+//        return new MoveCommand(direction);
     } else if (type == CMD_ATTACK) {
         uint16_t enemy_id;
         memcpy(&enemy_id, arguments.data(), arguments.size());
-        return new AttackCommand(ntohs(enemy_id));
+//        return new AttackCommand(ntohs(enemy_id));
     } else if (type == CMD_EQUIP) {
         // TODO:...
     } else if (type == CMD_TRICK) {

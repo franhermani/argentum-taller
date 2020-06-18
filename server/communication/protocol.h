@@ -2,7 +2,8 @@
 #define SERVER_PROTOCOL_H
 
 #include "../../common/socket.h"
-#include "../../common/commands/command.h"
+#include "../../common/data_transfer_objects/command_dto.h"
+#include "../game/commands/command.h"
 #include "../game/world_monitor.h"
 
 class ServerProtocol {
@@ -16,8 +17,8 @@ public:
     ServerProtocol(const ServerProtocol&) = delete;
     ServerProtocol& operator=(const ServerProtocol&) = delete;
 
-    // Recibe un comando a traves del socket
-    // Devuelve una clase derivada de Command
+    // Recibe un commandDTO a traves del socket
+    // Llama al CommandFactory y devuelve una clase derivada de command
     Command* receiveCommand();
 
     // Envia el mundo alrededor del player a traves del socket

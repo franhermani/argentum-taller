@@ -1,15 +1,16 @@
 #ifndef MOVE_COMMAND_H
 #define MOVE_COMMAND_H
 
-#include <vector>
 #include "command.h"
+#include "../player.h"
 
 class MoveCommand : public Command {
+    Player& player;
     int direction;
 
 public:
     // Constructor
-    explicit MoveCommand(const int direction);
+    MoveCommand(Player& player, const int direction);
 
     // Constructor y asignacion por copia deshabilitados
     MoveCommand(const MoveCommand&) = delete;
@@ -18,11 +19,8 @@ public:
     // Destructor
     ~MoveCommand() override;
 
-    // Devuelve la serializacion en bytes del comando
-    const std::vector<char> serialize() const override;
-
     // Mueve al personaje segun 'direction'
-    void execute(Player& player) override;
+    void execute() override;
 };
 
 #endif // MOVE_COMMAND_H

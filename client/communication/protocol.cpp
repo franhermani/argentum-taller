@@ -4,7 +4,7 @@
 
 ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 
-void ClientProtocol::sendCommand(Command& command) {
+void ClientProtocol::sendCommand(CommandDTO& command) {
     std::vector<char> byte_msg = command.serialize();
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 

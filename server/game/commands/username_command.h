@@ -2,7 +2,6 @@
 #define USERNAME_COMMAND_H
 
 #include <string>
-#include <vector>
 #include "command.h"
 
 class UsernameCommand : public Command {
@@ -18,9 +17,6 @@ public:
 
     // Destructor
     ~UsernameCommand() override;
-
-    // Devuelve la serializacion en bytes del comando
-    const std::vector<char> serialize() const override;
 
     // Devuelve el username
     const std::string getUsername() const;

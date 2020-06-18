@@ -5,7 +5,8 @@
 #include <mutex>
 #include <queue>
 #include <condition_variable>
-#include "commands/command.h"
+#include "data_transfer_objects/command_dto.h"
+#include "../server/game/commands/command.h"
 
 struct ClosedQueueException : public std::exception {
     const char* what() const throw() {
@@ -43,5 +44,6 @@ public:
 
 // Definir aca los tipos T que usemos a lo largo del TP
 template class BlockingQueue<Command*>;
+template class BlockingQueue<CommandDTO*>;
 
 #endif //TP2_BLOCKING_QUEUE_H

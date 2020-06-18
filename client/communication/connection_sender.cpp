@@ -2,10 +2,11 @@
 #include <iostream>
 #include "connection_sender.h"
 #include "../../common/socket_error.h"
-#include "../../common/commands/username_command.h"
+#include "../../common/data_transfer_objects/command_dto.h"
+#include "../../common/data_transfer_objects/username_command_dto.h"
 
 ConnectionSender::ConnectionSender(Socket& socket,
-        BlockingQueue<Command*>& commandQueue) : protocol(socket),
+        BlockingQueue<CommandDTO*>& commandQueue) : protocol(socket),
         commandQueue(commandQueue) {
     keepRunning = true;
     isRunning = true;
@@ -14,7 +15,7 @@ ConnectionSender::ConnectionSender(Socket& socket,
 void ConnectionSender::run() {
     while (keepRunning) {
         try {
-            Command* command = commandQueue.pop();
+            CommandDTO* command = commandQueue.pop();
             protocol.sendCommand(*command);
             delete command;
         } catch(SocketError&) {
@@ -35,6 +36,6 @@ bool ConnectionSender::isDead() {
 }
 
 void ConnectionSender::sendUsername(const std::string& username) {
-    UsernameCommand usernameCommand(username);
+    UsernameCommandDTO usernameCommand(username);
     protocol.sendCommand(usernameCommand);
 }

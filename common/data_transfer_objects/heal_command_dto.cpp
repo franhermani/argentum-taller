@@ -1,14 +1,15 @@
 #include <vector>
 #include <cstring>
 #include <arpa/inet.h>
-#include "heal_command.h"
+#include "heal_command_dto.h"
 #include "../defines/commands.h"
 
-HealCommand::HealCommand(const uint16_t priest_id) : priestId(priest_id) {}
+HealCommandDTO::HealCommandDTO(const uint16_t priest_id) :
+priestId(priest_id) {}
 
-HealCommand::~HealCommand() = default;
+HealCommandDTO::~HealCommandDTO() = default;
 
-const std::vector<char> HealCommand::serialize() const {
+const std::vector<char> HealCommandDTO::serialize() const {
     // Longitud de los argumentos
     uint8_t arguments_size = sizeof(priestId);
 
@@ -30,8 +31,4 @@ const std::vector<char> HealCommand::serialize() const {
     memcpy(&byte_msg[2], &id, arguments_size);
 
     return byte_msg;
-}
-
-void HealCommand::execute(Player& player) {
-    // TODO: ...
 }
