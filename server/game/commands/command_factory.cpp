@@ -18,7 +18,7 @@ Command* CommandFactory::operator()(Player& player, int type,
     if (type == CMD_MEDITATE) {
         return new MeditateCommand(player);
     } else if (type == CMD_REVIVE) {
-        if (arguments.size() > 0) {
+        if (! arguments.empty()) {
             uint16_t priest_id;
             memcpy(&priest_id, arguments.data(), arguments.size());
             return new ReviveCommand(player, ntohs(priest_id));

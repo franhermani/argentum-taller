@@ -32,6 +32,9 @@ public:
 
     // TODO: ...
     void update(int ms);
+
+    // Devuelve el id del player
+    const int getId() const;
 };
 
 #endif // GAME_PLAYER_H

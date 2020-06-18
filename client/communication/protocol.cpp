@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstring>
 #include "protocol.h"
+#include "../../common/defines/debug.h"
 
 ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 
@@ -9,9 +10,12 @@ void ClientProtocol::sendCommand(CommandDTO& command) {
     std::vector<char> byte_msg = command.serialize();
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
-    // DEBUG
-//    for (char i : byte_msg) printf("%02X ", (unsigned) (unsigned char) i);
-//    printf("\n");
+    if (debug) {
+        std::cout << "Comando enviado: ";
+        for (char& i : byte_msg)
+            printf("%02X ", (unsigned) (unsigned char) i);
+        std::cout << "\n";
+    }
 }
 
 void ClientProtocol::sendUsername(const std::string& username) {
