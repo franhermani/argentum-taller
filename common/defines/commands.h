@@ -1,3 +1,6 @@
+#ifndef COMMANDS_H
+#define COMMANDS_H
+
 // All Commands
 enum commandType {
     CMD_USERNAME,
@@ -25,3 +28,5 @@ enum moveDirection {
     DOWN,
     UP,
 };
+
+#endif // COMMANDS_H
