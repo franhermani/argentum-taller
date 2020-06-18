@@ -15,9 +15,16 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
                        blocksWidth(blocksWidth), blocksHeight(blocksHeight),
                        window(screenWidth, screenHeight) {
     init();
+    loadSurfacePaths();
 }
 
 GameRender::~GameRender() {
+    for (auto const& surface : terrainSurfacesMap) {
+        delete surface.second;
+    }
+    for (auto const& surface : npcSurfacesMap) {
+        delete surface.second;
+    }
     SDL_Quit();
 }
 
@@ -33,49 +40,38 @@ int GameRender::init() {
     return success;
 }
 
-void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
-    //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
-    Surface land = Surface("../client/resources/images/24083.png", window);
-    Surface water = Surface("../client/resources/images/24082.png", window);
-    std::map<Terrain, Surface&> terrain_surfaces_map;
-    terrain_surfaces_map.insert({TERRAIN_WATER, water});
-    terrain_surfaces_map.insert({TERRAIN_LAND, land});
+void GameRender::createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix) {
+    for (int i=0; i < blocksHeight; i++) {
+        for(int j=0; j < blocksWidth; j++){
+            if (terrainSurfacesMap.find(matrix[i][j]) == terrainSurfacesMap.end()) {
+                Surface* surface = new Surface(terrainSurfacesPaths[matrix[i][j]], window);
+                terrainSurfacesMap.insert({matrix[i][j],surface});
+            }
+        }
+    }
+}
 
-    window.renderTerrain(matrix, terrain_surfaces_map);
+void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
+    createNecessaryTerrains(matrix);
+    window.renderTerrain(matrix, terrainSurfacesMap);
+}
+
+
+void GameRender::createNecessaryNpcs(std::vector<npc_pos>& npc_positions) {
+    for(auto& elem:npc_positions) {
+        if (npcSurfacesMap.find(elem.npc_name) == npcSurfacesMap.end()) {
+            Surface* surface = new Surface(npcSurfacesPaths[elem.npc_name], window);
+            npcSurfacesMap.insert({elem.npc_name, surface});
+        }
+    }
 }
 
 void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
-    //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
-    Surface warrior_up = Surface(
-            "../client/resources/images/tipito_sube.png", window);
-    Surface warrior_down = Surface(
-            "../client/resources/images/tipito_baja.png", window);
-    Surface warrior_left = Surface(
-            "../client/resources/images/tipito_izq.png", window);
-    Surface warrior_right = Surface(
-            "../client/resources/images/tipito_der.png", window);
-    Surface skeleton_up = Surface(
-            "../client/resources/images/esqueleto_sube.png", window);
-    Surface skeleton_down = Surface(
-            "../client/resources/images/esqueleto_baja.png", window);
-    Surface skeleton_left = Surface(
-            "../client/resources/images/esqueleto_izq.png", window);
-    Surface skeleton_right = Surface(
-            "../client/resources/images/esqueleto_der.png", window);
-    std::map<Npc, Surface&> npc_surfaces_map;
-    npc_surfaces_map.insert({WARRIOR_UP, warrior_up});
-    npc_surfaces_map.insert({WARRIOR_DOWN, warrior_down});
-    npc_surfaces_map.insert({WARRIOR_LEFT, warrior_left});
-    npc_surfaces_map.insert({WARRIOR_RIGHT, warrior_right});
-    npc_surfaces_map.insert({SKELETON_UP, skeleton_up});
-    npc_surfaces_map.insert({SKELETON_DOWN, skeleton_down});
-    npc_surfaces_map.insert({SKELETON_LEFT, skeleton_left});
-    npc_surfaces_map.insert({SKELETON_RIGHT, skeleton_right});
-
     // recorro vector y renderizo con su surface correspondiente en el mapa
+    createNecessaryNpcs(npc_positions);
     for (auto it = std::begin(npc_positions);
     it != std::end(npc_positions); ++it) {
-        window.renderNpc(it->x, it->y, npc_surfaces_map.at(it->npc_name));
+        window.renderNpc(it->x, it->y, npcSurfacesMap.at(it->npc_name));
     }
 }
 
@@ -98,4 +94,18 @@ void GameRender::render(std::vector<Terrain>& received_terrain,
     renderTerrain(matrix);
     renderNpcs(npc_positions);
     window.UpdateWindowSurface();
+}
+
+
+void GameRender::loadSurfacePaths() {
+    terrainSurfacesPaths = {{TERRAIN_WATER, "../client/resources/images/24082.png"},
+                            {TERRAIN_LAND, "../client/resources/images/24083.png"}};
+    npcSurfacesPaths = {{WARRIOR_UP, "../client/resources/images/tipito_sube.png"},
+                        {WARRIOR_DOWN, "../client/resources/images/tipito_baja.png"},
+                        {WARRIOR_LEFT, "../client/resources/images/tipito_izq.png"},
+                        {WARRIOR_RIGHT, "../client/resources/images/tipito_der.png"},
+                        {SKELETON_UP, "../client/resources/images/esqueleto_sube.png"},
+                        {SKELETON_DOWN, "../client/resources/images/esqueleto_baja.png"},
+                        {SKELETON_LEFT, "../client/resources/images/esqueleto_izq.png"},
+                        {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
 }

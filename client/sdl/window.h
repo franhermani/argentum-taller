@@ -59,10 +59,10 @@ public:
 
     // ...
     void renderTerrain(std::vector<std::vector<Terrain>>& matrix,
-            std::map<Terrain, Surface&>& surfaces_map);
+            std::map<Terrain, Surface*>& surfaces_map);
 
     // ...
-    void renderNpc(int x, int y, Surface& character_surface);
+    void renderNpc(int x, int y, Surface* character_surface);
 };
 
 #endif // SDL_WINDOW_H
