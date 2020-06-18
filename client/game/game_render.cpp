@@ -15,42 +15,16 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
                        blocksWidth(blocksWidth), blocksHeight(blocksHeight),
                        window(screenWidth, screenHeight) {
     init();
-
-
-    Surface* land = new Surface("../client/resources/images/24083.png", window);
-    Surface* water = new Surface("../client/resources/images/24082.png", window);
-    terrainSurfacesMap.insert({TERRAIN_WATER, water});
-    terrainSurfacesMap.insert({TERRAIN_LAND, land});
-
-    //ESTO LO VAMOS A SACAR AFUERA Y EL MAPA VA A SER UN ATRIBUTO DE GAME RENDER
-    Surface* warrior_up = new Surface(
-            "../client/resources/images/tipito_sube.png", window);
-    Surface* warrior_down = new Surface(
-            "../client/resources/images/tipito_baja.png", window);
-    Surface* warrior_left = new Surface(
-            "../client/resources/images/tipito_izq.png", window);
-    Surface* warrior_right = new Surface(
-            "../client/resources/images/tipito_der.png", window);
-    Surface* skeleton_up = new Surface(
-            "../client/resources/images/esqueleto_sube.png", window);
-    Surface* skeleton_down = new Surface(
-            "../client/resources/images/esqueleto_baja.png", window);
-    Surface* skeleton_left = new Surface(
-            "../client/resources/images/esqueleto_izq.png", window);
-    Surface* skeleton_right = new Surface(
-            "../client/resources/images/esqueleto_der.png", window);
-    npcSurfacesMap.insert({WARRIOR_UP, warrior_up});
-    npcSurfacesMap.insert({WARRIOR_DOWN, warrior_down});
-    npcSurfacesMap.insert({WARRIOR_LEFT, warrior_left});
-    npcSurfacesMap.insert({WARRIOR_RIGHT, warrior_right});
-    npcSurfacesMap.insert({SKELETON_UP, skeleton_up});
-    npcSurfacesMap.insert({SKELETON_DOWN, skeleton_down});
-    npcSurfacesMap.insert({SKELETON_LEFT, skeleton_left});
-    npcSurfacesMap.insert({SKELETON_RIGHT, skeleton_right});
-
+    loadSurfacePaths();
 }
 
 GameRender::~GameRender() {
+    for (auto const& surface : terrainSurfacesMap) {
+        delete surface.second;
+    }
+    for (auto const& surface : npcSurfacesMap) {
+        delete surface.second;
+    }
     SDL_Quit();
 }
 
@@ -66,12 +40,35 @@ int GameRender::init() {
     return success;
 }
 
+void GameRender::createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix) {
+    for (int i=0; i < blocksHeight; i++) {
+        for(int j=0; j < blocksWidth; j++){
+            if (terrainSurfacesMap.find(matrix[i][j]) == terrainSurfacesMap.end()) {
+                Surface* surface = new Surface(terrainSurfacesPaths[matrix[i][j]], window);
+                terrainSurfacesMap.insert({matrix[i][j],surface});
+            }
+        }
+    }
+}
+
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
+    createNecessaryTerrains(matrix);
     window.renderTerrain(matrix, terrainSurfacesMap);
+}
+
+
+void GameRender::createNecessaryNpcs(std::vector<npc_pos>& npc_positions) {
+    for(auto& elem:npc_positions) {
+        if (npcSurfacesMap.find(elem.npc_name) == npcSurfacesMap.end()) {
+            Surface* surface = new Surface(npcSurfacesPaths[elem.npc_name], window);
+            npcSurfacesMap.insert({elem.npc_name, surface});
+        }
+    }
 }
 
 void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
     // recorro vector y renderizo con su surface correspondiente en el mapa
+    createNecessaryNpcs(npc_positions);
     for (auto it = std::begin(npc_positions);
     it != std::end(npc_positions); ++it) {
         window.renderNpc(it->x, it->y, npcSurfacesMap.at(it->npc_name));
@@ -97,4 +94,18 @@ void GameRender::render(std::vector<Terrain>& received_terrain,
     renderTerrain(matrix);
     renderNpcs(npc_positions);
     window.UpdateWindowSurface();
+}
+
+
+void GameRender::loadSurfacePaths() {
+    terrainSurfacesPaths = {{TERRAIN_WATER, "../client/resources/images/24082.png"},
+                            {TERRAIN_LAND, "../client/resources/images/24083.png"}};
+    npcSurfacesPaths = {{WARRIOR_UP, "../client/resources/images/tipito_sube.png"},
+                        {WARRIOR_DOWN, "../client/resources/images/tipito_baja.png"},
+                        {WARRIOR_LEFT, "../client/resources/images/tipito_izq.png"},
+                        {WARRIOR_RIGHT, "../client/resources/images/tipito_der.png"},
+                        {SKELETON_UP, "../client/resources/images/esqueleto_sube.png"},
+                        {SKELETON_DOWN, "../client/resources/images/esqueleto_baja.png"},
+                        {SKELETON_LEFT, "../client/resources/images/esqueleto_izq.png"},
+                        {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
 }
