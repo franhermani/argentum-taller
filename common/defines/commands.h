@@ -3,7 +3,6 @@
 
 // All Commands
 enum commandType {
-    CMD_USERNAME,
     CMD_MEDITATE,
     CMD_REVIVE,
     CMD_HEAL,

@@ -1,6 +1,7 @@
 #ifndef CLIENT_PROTOCOL_H
 #define CLIENT_PROTOCOL_H
 
+#include <string>
 #include "../../common/socket.h"
 #include "../../common/data_transfer_objects/command_dto.h"
 
@@ -14,6 +15,9 @@ public:
     // Constructor y asignacion por copia deshabilitados
     ClientProtocol(const ClientProtocol&) = delete;
     ClientProtocol& operator=(const ClientProtocol&) = delete;
+
+    // Envia el username a traves del socket
+    void sendUsername(const std::string& username);
 
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);

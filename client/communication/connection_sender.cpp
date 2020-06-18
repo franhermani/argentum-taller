@@ -2,8 +2,6 @@
 #include <iostream>
 #include "connection_sender.h"
 #include "../../common/socket_error.h"
-#include "../../common/data_transfer_objects/command_dto.h"
-#include "../../common/data_transfer_objects/username_command_dto.h"
 
 ConnectionSender::ConnectionSender(Socket& socket,
         BlockingQueue<CommandDTO*>& commandQueue) : protocol(socket),
@@ -36,6 +34,5 @@ bool ConnectionSender::isDead() {
 }
 
 void ConnectionSender::sendUsername(const std::string& username) {
-    UsernameCommandDTO usernameCommand(username);
-    protocol.sendCommand(usernameCommand);
+    protocol.sendUsername(username);
 }

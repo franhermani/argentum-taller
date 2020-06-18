@@ -30,6 +30,9 @@ void ClientHandler::run() {
     // Agrego el player al world
     gameManager.addPlayerToWorld(player);
 
+    // Le paso el player al receiver ya que lo necesita para los commands
+    clientReceiver->setPlayer(player);
+
     clientSender = new ClientSender(socket, *gameManager.getWorldMonitor(),
             *player, gameManager.getMsPerSend());
 
