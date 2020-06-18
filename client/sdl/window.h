@@ -16,10 +16,10 @@ class SDL_Surface;
 class SDL_Renderer;
 
 class SDLWindow {
-    int width;
-    int height;
-    int blocks_width;
-    int blocks_height;
+    int numberOfTilesInWidth;
+    int numberOfTilesInHeight;
+    int xWidthTileSize;
+    int yHeightTileSize;
     SDL_Window *window;
     SDL_Renderer *renderer;
 
@@ -57,12 +57,19 @@ public:
     //Actualiza la ventana mostrada
     void UpdateWindowSurface();
 
-    // ...
+    // Convierte posicion en eje X a pixel de la pantalla
+    int getXPixelPos(int x_tile_position);
+
+    // Converite posicion en eje Y a pixel de la pantalla
+    int getYPixelPos(int y_tile_position);
+
+    // Renderiza los pisos
     void renderTerrain(std::vector<std::vector<Terrain>>& matrix,
             std::map<Terrain, Surface*>& surfaces_map);
 
-    // ...
+    // Renderiza npcs
     void renderNpc(int x, int y, Surface* character_surface);
+
 };
 
 #endif // SDL_WINDOW_H
