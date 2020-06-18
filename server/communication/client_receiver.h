@@ -5,13 +5,15 @@
 #include "../../common/thread.h"
 #include "protocol.h"
 #include "../game/world_monitor.h"
+#include "../../common/blocking_queue.h"
 
 class ClientReceiver : public Thread {
     ServerProtocol protocol;
+    BlockingQueue<Command*>& commandQueue;
 
 public:
     // Constructor
-    explicit ClientReceiver(Socket& socket);
+    ClientReceiver(Socket& socket, BlockingQueue<Command*>& command_queue);
 
     // Constructor y asignacion por copia deshabilitados
     ClientReceiver(const ClientReceiver&) = delete;

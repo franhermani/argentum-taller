@@ -3,7 +3,9 @@
 #include "../../common/socket_error.h"
 #include "../../common/commands/username_command.h"
 
-ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket) {
+ClientReceiver::ClientReceiver(Socket& socket,
+        BlockingQueue<Command*>& command_queue) :
+        protocol(socket), commandQueue(command_queue) {
     keepRunning = true;
     isRunning = true;
 }
@@ -11,11 +13,8 @@ ClientReceiver::ClientReceiver(Socket& socket) : protocol(socket) {
 void ClientReceiver::run() {
     while (keepRunning) {
         try {
-            // TODO: el command tiene que encolarse y luego
-            // gameManager lo desencola y lo ejecuta
-//            Command* command = protocol.receiveCommand();
-//            command->execute(*player);
-//            delete command;
+            Command* command = protocol.receiveCommand();
+            commandQueue.push(command);
         } catch(SocketError&) {
             break;
         }

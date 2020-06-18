@@ -8,16 +8,16 @@
 #include "params.h"
 #include "world.h"
 #include "world_monitor.h"
-#include "id_manager.h"
 #include "../../common/blocking_queue.h"
+#include "id_manager.h"
 
 class GameManager : public Thread {
     JsonParser jsonParser;
     GameParams* params;
     World* world;
     WorldMonitor* worldMonitor;
+    BlockingQueue<Command*>* commandQueue;
     IdManager idManager;
-//    BlockingQueue<Command*> usersCommands;
 
 public:
     // Constructor
@@ -56,6 +56,9 @@ public:
 
     // Devuelve un puntero a 'worldMonitor' para que interactuen los threads
     WorldMonitor* getWorldMonitor() const;
+
+    // Devuelve una puntero a 'commandQueue'
+    BlockingQueue<Command*>* getCommandQueue() const;
 };
 
 #endif // GAME_MANAGER_H
