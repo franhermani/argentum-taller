@@ -2,7 +2,6 @@
 #include <thread>
 #include <chrono>
 #include "game_manager.h"
-#include "player.h"
 
 GameManager::GameManager(File& config_file) {
     File world_file(jsonParser.getConfigParams(config_file)["world_path"]);
@@ -10,11 +9,13 @@ GameManager::GameManager(File& config_file) {
                             jsonParser.getWorldParams(world_file));
     world = new World(*params);
     worldMonitor = new WorldMonitor(*world);
+    commandQueue = new BlockingQueue<Command*>();
     keepRunning = true;
     isRunning = true;
 }
 
 GameManager::~GameManager() {
+    delete commandQueue;
     delete worldMonitor;
     delete world;
     delete params;
@@ -28,22 +29,17 @@ void GameManager::run() {
 
     while (keepRunning) {
         auto start = clock::now();
-
-        /*
         while (true) {
             try {
-                // TODO: implementar BlockingQueue<Command*>
-                // es la cola compartida entre GameManager y ClientReceiver
-                // Cerrar la cola de algun lado para que no se cuelgue aca!!!
-                Command* command = commandQueue.pop();
-                command->execute(player);
+                Command* command = commandQueue->pop();
+                // TODO: player deberia ser atributo de Command, aca no va
+                // command->execute(player);
                 delete command;
                 worldMonitor->update(ms_per_update);
             } catch(ClosedQueueException&) {
                 break;
             }
         }
-         */
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = ms_per_update - elapsed;
@@ -53,6 +49,7 @@ void GameManager::run() {
 }
 
 void GameManager::stop() {
+    commandQueue->close();
     keepRunning = false;
 }
 
@@ -78,4 +75,12 @@ World* GameManager::getWorld() const {
 
 WorldMonitor* GameManager::getWorldMonitor() const {
     return worldMonitor;
+}
+
+BlockingQueue<Command*>* GameManager::getCommandQueue() const {
+    return commandQueue;
+}
+
+int GameManager::getMsPerSend() {
+    return params->getConfigParams()["ms_per_send"];
 }

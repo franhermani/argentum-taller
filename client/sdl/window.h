@@ -5,8 +5,8 @@
 #include <vector>
 #include <map>
 #include "surface.h"
-#include "../../common/defines/terrain.h"
-#include "../../common/defines/npc.h"
+#include "../../common/defines/terrains.h"
+#include "../../common/defines/npcs.h"
 #include "area.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE

@@ -1,10 +1,5 @@
-//
-// Created by martinrosas on 15/6/20.
-//
-
-#ifndef ARGENTUM_NPC_H
-#define ARGENTUM_NPC_H
-
+#ifndef NPCS_H
+#define NPCS_H
 
 enum Npc {
     WARRIOR_UP,
@@ -17,4 +12,4 @@ enum Npc {
     SKELETON_LEFT
 };
 
-#endif //ARGENTUM_NPC_H
+#endif // NPCS_H

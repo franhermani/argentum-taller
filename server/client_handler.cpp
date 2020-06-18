@@ -6,7 +6,8 @@ ClientHandler::ClientHandler(Socket socket_received,
         GameManager& game_manager) : socket(std::move(socket_received)),
         gameManager(game_manager) {
     isRunning = true;
-    clientReceiver = new ClientReceiver(socket);
+    clientReceiver = new ClientReceiver(socket,
+            *gameManager.getCommandQueue());
 }
 
 ClientHandler::~ClientHandler() {
@@ -30,7 +31,7 @@ void ClientHandler::run() {
     gameManager.addPlayerToWorld(player);
 
     clientSender = new ClientSender(socket, *gameManager.getWorldMonitor(),
-            *player);
+            *player, gameManager.getMsPerSend());
 
     clientReceiver->start();
     clientSender->start();

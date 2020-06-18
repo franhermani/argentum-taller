@@ -1,6 +1,6 @@
 #include <vector>
 #include "meditate_command.h"
-#include "defines.h"
+#include "../defines/commands.h"
 
 MeditateCommand::MeditateCommand() = default;
 

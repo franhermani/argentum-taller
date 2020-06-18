@@ -1,6 +1,6 @@
 #include <vector>
 #include "move_command.h"
-#include "defines.h"
+#include "../defines/commands.h"
 
 MoveCommand::MoveCommand(const int direction) : direction(direction) {}
 

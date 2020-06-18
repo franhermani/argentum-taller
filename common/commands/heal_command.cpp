@@ -2,7 +2,7 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "heal_command.h"
-#include "defines.h"
+#include "../defines/commands.h"
 
 HealCommand::HealCommand(const uint16_t priest_id) : priestId(priest_id) {}
 
