@@ -2,7 +2,6 @@
 #include <iostream>
 #include "connection_sender.h"
 #include "../../common/socket_error.h"
-#include "../data_transfer_objects/attack_command_dto.h"
 
 ConnectionSender::ConnectionSender(Socket& socket,
         BlockingQueue<CommandDTO*>& commandQueue) : protocol(socket),
@@ -12,8 +11,6 @@ ConnectionSender::ConnectionSender(Socket& socket,
 }
 
 void ConnectionSender::run() {
-    auto* cmd = new AttackCommandDTO(12345);
-    protocol.sendCommand(*cmd);
     while (keepRunning) {
         try {
             CommandDTO* command = commandQueue.pop();
@@ -25,7 +22,6 @@ void ConnectionSender::run() {
             break;
         }
     }
-
     isRunning = false;
 }
 
