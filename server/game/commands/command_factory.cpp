@@ -51,7 +51,7 @@ Command* CommandFactory::operator()(Player& player, int type,
     } else if (type == CMD_ATTACK) {
         uint8_t enemy_id_type = arguments[0];
         uint16_t enemy_id;
-        memcpy(&enemy_id, arguments.data() + 1, arguments.size());
+        memcpy(&enemy_id, arguments.data() + 1, arguments.size() - 1);
         return new AttackCommand(player, enemy_id_type, ntohs(enemy_id));
     } else if (type == CMD_EQUIP) {
         // TODO:...
