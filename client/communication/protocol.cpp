@@ -34,3 +34,23 @@ void ClientProtocol::sendUsername(const std::string& username) {
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
+
+std::vector<Terrain> ClientProtocol::receiveTerrains() {
+    //devolvemos trucho
+    std::vector<Terrain> received_terrain;
+    for (int i = 0; i < 20 * 30; i++) {
+        received_terrain.push_back(TERRAIN_LAND);
+    }
+    received_terrain[10] = TERRAIN_WATER;
+    return std::move(received_terrain);
+}
+
+std::vector<npc_pos> ClientProtocol::receiveNpcs() {
+    //VECTOR DE CHARACTERS QUE RECIBIRIAMOS POR SOCKET
+    std::vector<npc_pos> npc_positions;
+    npc_pos npc_1 = {0, 0, WARRIOR_RIGHT};
+    npc_pos npc_2 = {3, 10, SKELETON_RIGHT};
+    npc_positions.push_back(npc_1);
+    npc_positions.push_back(npc_2);
+    return std::move(npc_positions);
+}

@@ -4,6 +4,8 @@
 #include <string>
 #include "../../common/socket.h"
 #include "../data_transfer_objects/command_dto.h"
+#include "../../common/defines/terrains.h"
+#include "../game/game_render.h"
 
 class ClientProtocol {
     Socket& socket;
@@ -21,6 +23,12 @@ public:
 
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);
+
+    //recibe desde el servidor un vector de Terrains
+    std::vector<Terrain> receiveTerrains();
+
+    //recibe desde el servidor un vector de Npcs
+    std::vector<npc_pos> receiveNpcs();
 };
 
 #endif // CLIENT_PROTOCOL_H

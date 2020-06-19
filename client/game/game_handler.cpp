@@ -19,7 +19,7 @@ GameHandler::~GameHandler() {
 }
 
 void GameHandler::run() {
-    render_test_window();
+    //render_test_window();
     connectionSender->start();
     connectionReceiver->start();
     inputHandler->run();
