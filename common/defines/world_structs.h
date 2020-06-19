@@ -2,6 +2,8 @@
 #define WORLD_STRUCTS_H
 
 #include <cstdint>
+#include <vector>
+#include "terrains.h"
 
 typedef struct {
     uint16_t pos_x;             // Pos x en la matriz
@@ -32,16 +34,6 @@ typedef struct {
 } player_t;
 
 typedef struct {
-    uint8_t type;               // Enum type del terreno
-} terrain_t;
-
-typedef struct {
-    uint16_t width;             // Ancho de la matriz
-    uint16_t height;            // Alto de la matriz
-    terrain_t* terrains;        // Lista de structs 'terrain_t'
-} matrix_t;
-
-typedef struct {
     uint8_t type;               // Enum type del item
 } inventory_item_t;
 
@@ -63,9 +55,8 @@ typedef struct {
 } player_info_t;
 
 typedef struct {
-    uint32_t length;            // Longitud total del mensaje
+    uint16_t length;            // Longitud total del mensaje
     player_info_t player_info;  // Info particular del player del cliente
-    matrix_t matrix;            // Matriz del mapa
     uint16_t num_players;       // Cantidad de players en 'players'
     player_t* players;          // Lista de structs 'player_t'
     uint16_t num_npcs;          // Cantidad de npcs en 'npcs'
@@ -73,5 +64,12 @@ typedef struct {
     uint16_t num_items;         // Cantidad de items en 'items'
     item_t* items;              // Lista de structs 'item_t'
 } world_t;
+
+typedef struct {
+    uint16_t length;                // Longitud total del mensaje
+    uint16_t width;                 // Ancho de la matriz
+    uint16_t height;                // Alto de la matriz
+    std::vector<Terrain> terrains;  // Lista de structs 'terrain_t'
+} matrix_t;
 
 #endif // WORLD_STRUCTS_H

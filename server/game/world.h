@@ -42,6 +42,9 @@ public:
     // Remueve un Player del mundo segun su ID
     void removePlayer(const int id);
 
+    // Devuelve la matriz del mapa completo
+    std::vector<std::vector<Terrain>> getMatrix() const;
+
     // Devuelve una sub-matriz del mapa segun la posicion del Player recibido
     std::vector<std::vector<Terrain>> getMatrixAround(Player& player);
 
@@ -65,6 +68,11 @@ public:
 
     // Determina si hay algun GameObject impenetrable en la posicion (x,y)
     bool inCollision(int pos_x, int pos_y);
+
+
+    // ------------------------------------------------ //
+    // Metodos accedidos por WorldMonitor, Player y NPC //
+    // ------------------------------------------------ //
 
     // Devuelve la base del mapa
     const int getWidth() const;

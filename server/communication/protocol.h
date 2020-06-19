@@ -26,6 +26,9 @@ public:
     // Llama al CommandFactory y devuelve una clase derivada de command
     Command* receiveCommand(Player& player);
 
+    // Envia la matriz de terrenos a traves del socket
+    void sendMatrix(WorldMonitor& world_monitor);
+
     // Envia el mundo alrededor del player a traves del socket
     void sendWorldAround(WorldMonitor& world_monitor, Player& player);
 };
