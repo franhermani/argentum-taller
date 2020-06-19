@@ -5,7 +5,6 @@
 #include "../../common/thread.h"
 #include "protocol.h"
 #include "../../common/blocking_queue.h"
-#include "../../common/data_transfer_objects/command_dto.h"
 
 class ConnectionSender : public Thread {
     ClientProtocol protocol;

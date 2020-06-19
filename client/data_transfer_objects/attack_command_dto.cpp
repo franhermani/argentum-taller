@@ -2,7 +2,7 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "attack_command_dto.h"
-#include "../defines/commands.h"
+#include "../../common/defines/commands.h"
 
 AttackCommandDTO::AttackCommandDTO(const uint16_t enemy_id) :
 enemyId(enemy_id) {}

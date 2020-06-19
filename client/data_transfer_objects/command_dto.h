@@ -2,7 +2,7 @@
 #define COMMAND_DTO_H
 
 #include <vector>
-#include <string>
+#include <cstdint>
 
 class CommandDTO {
 public:

@@ -2,7 +2,7 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "list_command_dto.h"
-#include "../defines/commands.h"
+#include "../../common/defines/commands.h"
 
 ListCommandDTO::ListCommandDTO(const uint16_t npc_id) : npcId(npc_id) {}
 

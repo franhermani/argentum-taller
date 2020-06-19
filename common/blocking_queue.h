@@ -5,7 +5,7 @@
 #include <mutex>
 #include <queue>
 #include <condition_variable>
-#include "data_transfer_objects/command_dto.h"
+#include "../client/data_transfer_objects/command_dto.h"
 #include "../server/game/commands/command.h"
 
 struct ClosedQueueException : public std::exception {

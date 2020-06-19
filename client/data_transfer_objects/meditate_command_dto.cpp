@@ -1,6 +1,6 @@
 #include <vector>
 #include "meditate_command_dto.h"
-#include "../defines/commands.h"
+#include "../../common/defines/commands.h"
 
 MeditateCommandDTO::MeditateCommandDTO() = default;
 

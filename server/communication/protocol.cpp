@@ -31,8 +31,7 @@ Command* ServerProtocol::receiveCommand(Player& player) {
     socket.receiveBytes(buffer1, BYTE_SIZE);
     socket.receiveBytes(buffer2, BYTE_SIZE);
 
-    int type = buffer1[0];
-    int length = buffer2[0];
+    int type = buffer1[0], length = buffer2[0];
 
     if (debug)
         std::cout << "Recibido el comando tipo " << type <<

@@ -3,7 +3,7 @@
 
 #include <string>
 #include "../../common/socket.h"
-#include "../../common/data_transfer_objects/command_dto.h"
+#include "../data_transfer_objects/command_dto.h"
 
 class ClientProtocol {
     Socket& socket;

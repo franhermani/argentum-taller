@@ -2,7 +2,7 @@
 #include <cstring>
 #include <arpa/inet.h>
 #include "revive_command_dto.h"
-#include "../defines/commands.h"
+#include "../../common/defines/commands.h"
 
 ReviveCommandDTO::ReviveCommandDTO() : priestId(0) {}
 

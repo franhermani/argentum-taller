@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
 #include "game_input_handler.h"
+#include "../data_transfer_objects/move_command_dto.h"
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue):
 commandQueue(commandQueue) {}

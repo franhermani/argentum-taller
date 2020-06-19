@@ -1,6 +1,6 @@
 #include <vector>
 #include "move_command_dto.h"
-#include "../defines/commands.h"
+#include "../../common/defines/commands.h"
 
 MoveCommandDTO::MoveCommandDTO(const int direction) : direction(direction) {}
 

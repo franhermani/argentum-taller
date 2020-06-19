@@ -4,8 +4,6 @@
 #include <SDL2/SDL.h>
 #include "../../common/thread.h"
 #include "../../common/blocking_queue.h"
-#include "../../common/data_transfer_objects/command_dto.h"
-#include "../../common/data_transfer_objects/move_command_dto.h"
 #include "../../common/defines/commands.h"
 
 class GameInputHandler : public Thread {

@@ -3,7 +3,6 @@
 
 #include <string>
 #include "../../common/socket.h"
-#include "../../common/data_transfer_objects/command_dto.h"
 #include "../game/commands/command.h"
 #include "../game/world_monitor.h"
 #include "../game/commands/command_factory.h"
