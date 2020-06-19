@@ -1,12 +1,12 @@
 #include <vector>
-#include "move_command.h"
-#include "../defines/commands.h"
+#include "move_command_dto.h"
+#include "../../common/defines/commands.h"
 
-MoveCommand::MoveCommand(const int direction) : direction(direction) {}
+MoveCommandDTO::MoveCommandDTO(const int direction) : direction(direction) {}
 
-MoveCommand::~MoveCommand() = default;
+MoveCommandDTO::~MoveCommandDTO() = default;
 
-const std::vector<char> MoveCommand::serialize() const {
+const std::vector<char> MoveCommandDTO::serialize() const {
     // Longitud de los argumentos
     uint8_t arguments_size = sizeof(uint8_t);
 
@@ -27,9 +27,4 @@ const std::vector<char> MoveCommand::serialize() const {
     byte_msg[2] = direction;
 
     return byte_msg;
-}
-
-void MoveCommand::execute(Player& player) {
-    // TODO: se queja el linkeo aca...
-//    player.moveTo(direction);
 }

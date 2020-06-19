@@ -54,3 +54,7 @@ void Player::update(int ms) {
     // TODO: ejecutar todas las acciones basadas en el tiempo
     // Por ejemplo, regenerar vida
 }
+
+const int Player::getId() const {
+    return id;
+}

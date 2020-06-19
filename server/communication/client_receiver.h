@@ -10,6 +10,7 @@
 class ClientReceiver : public Thread {
     ServerProtocol protocol;
     BlockingQueue<Command*>& commandQueue;
+    Player* player{};
 
 public:
     // Constructor
@@ -32,6 +33,9 @@ public:
     // Recibe el username del cliente para identificarlo
     // Este metodo se llama antes de run()
     const std::string receiveUsername();
+
+    // Setea el atributo 'player'
+    void setPlayer(Player* player);
 };
 
 #endif // CLIENT_RECEIVER_H

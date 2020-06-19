@@ -15,7 +15,7 @@ class GameHandler {
     // Send related classes
     ConnectionSender* connectionSender;
     GameInputHandler* inputHandler;
-    BlockingQueue<Command*> commandQueue;
+    BlockingQueue<CommandDTO*> commandQueue;
 
     // Receive related classes
     ConnectionReceiver* connectionReceiver;

@@ -1,16 +1,17 @@
 #include <vector>
 #include <cstring>
 #include <arpa/inet.h>
-#include "revive_command.h"
-#include "../defines/commands.h"
+#include "revive_command_dto.h"
+#include "../../common/defines/commands.h"
 
-ReviveCommand::ReviveCommand() : priestId(0) {}
+ReviveCommandDTO::ReviveCommandDTO() : priestId(0) {}
 
-ReviveCommand::ReviveCommand(const uint16_t priest_id) : priestId(priest_id) {}
+ReviveCommandDTO::ReviveCommandDTO(const uint16_t priest_id) :
+priestId(priest_id) {}
 
-ReviveCommand::~ReviveCommand() = default;
+ReviveCommandDTO::~ReviveCommandDTO() = default;
 
-const std::vector<char> ReviveCommand::serialize() const {
+const std::vector<char> ReviveCommandDTO::serialize() const {
     // Longitud de los argumentos
     uint8_t arguments_size = (priestId > 0) ? sizeof(priestId) : 0;
 
@@ -33,8 +34,4 @@ const std::vector<char> ReviveCommand::serialize() const {
         memcpy(&byte_msg[2], &id, arguments_size);
     }
     return byte_msg;
-}
-
-void ReviveCommand::execute(Player& player) {
-    // TODO: ...
 }

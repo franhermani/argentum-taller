@@ -1,12 +1,12 @@
 #include <vector>
-#include "meditate_command.h"
-#include "../defines/commands.h"
+#include "meditate_command_dto.h"
+#include "../../common/defines/commands.h"
 
-MeditateCommand::MeditateCommand() = default;
+MeditateCommandDTO::MeditateCommandDTO() = default;
 
-MeditateCommand::~MeditateCommand() = default;
+MeditateCommandDTO::~MeditateCommandDTO() = default;
 
-const std::vector<char> MeditateCommand::serialize() const {
+const std::vector<char> MeditateCommandDTO::serialize() const {
     // Longitud de los argumentos
     uint8_t arguments_size = 0;
 
@@ -24,8 +24,4 @@ const std::vector<char> MeditateCommand::serialize() const {
     byte_msg[1] = arguments_size;
 
     return byte_msg;
-}
-
-void MeditateCommand::execute(Player& player) {
-    // TODO: ...
 }

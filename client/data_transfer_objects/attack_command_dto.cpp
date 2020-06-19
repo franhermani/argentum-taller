@@ -1,16 +1,17 @@
 #include <vector>
 #include <cstring>
 #include <arpa/inet.h>
-#include "list_command.h"
-#include "../defines/commands.h"
+#include "attack_command_dto.h"
+#include "../../common/defines/commands.h"
 
-ListCommand::ListCommand(const uint16_t npc_id) : npcId(npc_id) {}
+AttackCommandDTO::AttackCommandDTO(const uint16_t enemy_id) :
+enemyId(enemy_id) {}
 
-ListCommand::~ListCommand() = default;
+AttackCommandDTO::~AttackCommandDTO() = default;
 
-const std::vector<char> ListCommand::serialize() const {
+const std::vector<char> AttackCommandDTO::serialize() const {
     // Longitud de los argumentos
-    uint8_t arguments_size = sizeof(npcId);
+    uint8_t arguments_size = sizeof(enemyId);
 
     // Longitud total
     size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
@@ -20,18 +21,14 @@ const std::vector<char> ListCommand::serialize() const {
     byte_msg.resize(total_size);
 
     // Tipo de comando
-    byte_msg[0] = CMD_LIST;
+    byte_msg[0] = CMD_ATTACK;
 
     // Longitud de los argumentos
     byte_msg[1] = arguments_size;
 
     // Argumentos
-    uint16_t id = htons(npcId);
+    uint16_t id = htons(enemyId);
     memcpy(&byte_msg[2], &id, arguments_size);
 
     return byte_msg;
-}
-
-void ListCommand::execute(Player& player) {
-    // TODO: ...
 }

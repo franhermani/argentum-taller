@@ -2,4 +2,4 @@
 
 Command::~Command() = default;
 
-void Command::execute(Player &player) {}
+void Command::execute() {}

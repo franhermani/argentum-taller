@@ -4,17 +4,15 @@
 #include <SDL2/SDL.h>
 #include "../../common/thread.h"
 #include "../../common/blocking_queue.h"
-#include "../../common/commands/command.h"
-#include "../../common/commands/move_command.h"
 #include "../../common/defines/commands.h"
 
 class GameInputHandler : public Thread {
+    BlockingQueue<CommandDTO*>& commandQueue;
+
 public:
-    // TODO: pasarlo a privado
-    BlockingQueue<Command*>& commandQueue;
 
     // Constructor
-    explicit GameInputHandler(BlockingQueue<Command*>& commandQueue);
+    explicit GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue);
 
     // Destructor
     ~GameInputHandler();

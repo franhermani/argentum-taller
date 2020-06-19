@@ -1,18 +1,19 @@
 #ifndef REVIVE_COMMAND_H
 #define REVIVE_COMMAND_H
 
-#include <vector>
 #include "command.h"
+#include "../player.h"
 
 class ReviveCommand : public Command {
+    Player& player;
     uint16_t priestId;
 
 public:
     // Constructor sin sacerdote
-    ReviveCommand();
+    explicit ReviveCommand(Player& player);
 
     // Constructor con sacerdote
-    explicit ReviveCommand(const uint16_t priest_id);
+    ReviveCommand(Player& player, const uint16_t priest_id);
 
     // Constructor y asignacion por copia deshabilitados
     ReviveCommand(const ReviveCommand&) = delete;
@@ -21,11 +22,8 @@ public:
     // Destructor
     ~ReviveCommand() override;
 
-    // Devuelve la serializacion en bytes del comando
-    const std::vector<char> serialize() const override;
-
     // Revive al jugador
-    void execute(Player& player) override;
+    void execute() override;
 };
 
 #endif // REVIVE_COMMAND_H
