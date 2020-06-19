@@ -28,17 +28,15 @@ Command* ServerProtocol::receiveCommand(Player& player) {
     std::vector<char> arguments;
     char buffer1[BYTE_SIZE], buffer2[BYTE_SIZE];
 
-    int s = socket.receiveBytes(buffer1, BYTE_SIZE);
-    std::cout << s << "\n";
-    s = socket.receiveBytes(buffer2, BYTE_SIZE);
-    std::cout << s << "\n";
+    socket.receiveBytes(buffer1, BYTE_SIZE);
+    socket.receiveBytes(buffer2, BYTE_SIZE);
 
     int type = buffer1[0];
     int length = buffer2[0];
 
-//    if (debug)
-//        std::cout << "Recibido el comando tipo " << type <<
-//        " de longitud " << length << "\n";
+    if (debug)
+        std::cout << "Recibido el comando tipo " << type <<
+        " de longitud " << length << "\n";
 
     if (length > 0) {
         arguments.resize(length);
