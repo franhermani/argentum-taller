@@ -146,7 +146,7 @@ const int Socket::receiveBytes(char *buffer, const size_t length) {
             tot_bytes += bytes;
         }
     }
-    if (socket_closed || socket_error)
+    if ((socket_closed && tot_bytes == 0) || socket_error)
         throw SocketError("Error receiving bytes\n");
 
     return tot_bytes;
