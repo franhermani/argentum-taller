@@ -3,10 +3,23 @@
 #include "world.h"
 #include "../../common/defines/commands.h"
 
-Player::Player(World& world, const int id) : world(world), id(id),
-maxLife(100), actualLife(maxLife), orientation(DOWN) {
+// TODO: estas inicializaciones salen de la clase de ecuaciones
+Player::Player(World& world, const int id) :
+world(world),
+id(id),
+isAlive(true),
+orientation(DOWN),
+raceType(2),
+classType(3),
+bodyArmor(4),
+headArmor(5),
+weapon(6),
+actualLife(100), maxLife(actualLife),
+actualMana(200), maxMana(actualMana),
+actualGold(300), maxGold(actualGold),
+experience(400),
+level(10) {
     loadInitialPosition();
-    // TODO: maxLife sale de una ecuacion
 }
 
 void Player::loadInitialPosition() {
@@ -53,8 +66,4 @@ void Player::moveTo(int direction) {
 void Player::update(int ms) {
     // TODO: ejecutar todas las acciones basadas en el tiempo
     // Por ejemplo, regenerar vida
-}
-
-const int Player::getId() const {
-    return id;
 }

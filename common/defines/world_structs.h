@@ -21,9 +21,9 @@ typedef struct {
 } npc_t;
 
 typedef struct {
+    uint16_t id;                // Id
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
-    uint16_t id;                // Id
     uint8_t is_alive;           // 1 si esta vivo, 0 si no (fantasma)
     uint8_t orientation;        // Enum type de la orientacion
     uint8_t race_type;          // Enum type de la raza
@@ -34,12 +34,8 @@ typedef struct {
 } player_t;
 
 typedef struct {
-    uint8_t type;               // Enum type del item
-} inventory_item_t;
-
-typedef struct {
-    uint8_t length;             // Longitud de la lista de items
-    inventory_item_t* items;    // Lista de items
+    uint8_t length;                 // Longitud de la lista de items
+    std::vector<uint8_t> items;     // Lista de items (enum type)
 } inventory_t;
 
 typedef struct {
@@ -55,14 +51,14 @@ typedef struct {
 } player_info_t;
 
 typedef struct {
-    uint16_t length;            // Longitud total del mensaje
-    player_info_t player_info;  // Info particular del player del cliente
-    uint16_t num_players;       // Cantidad de players en 'players'
-    player_t* players;          // Lista de structs 'player_t'
-    uint16_t num_npcs;          // Cantidad de npcs en 'npcs'
-    npc_t* npcs;                // Lista de structs 'npc_t'
-    uint16_t num_items;         // Cantidad de items en 'items'
-    item_t* items;              // Lista de structs 'item_t'
+    uint16_t length;                // Longitud total del mensaje
+    player_info_t player_info;      // Info particular del player del cliente
+    uint16_t num_players;           // Cantidad de players en 'players'
+    std::vector<player_t> players;  // Lista de structs 'player_t'
+    uint16_t num_npcs;              // Cantidad de npcs en 'npcs'
+    std::vector<npc_t> npcs;        // Lista de structs 'npc_t'
+    uint16_t num_items;             // Cantidad de items en 'items'
+    std::vector<item_t> items;      // Lista de structs 'item_t'
 } world_t;
 
 typedef struct {
