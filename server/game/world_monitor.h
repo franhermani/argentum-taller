@@ -28,6 +28,15 @@ public:
     // de todos los players y npcs
     void update(int ms);
 
+    // Devuelve la matriz del mapa completo
+    std::vector<std::vector<Terrain>> getMatrix();
+
+    // Devuelve la base del mapa
+    const int getWidth();
+
+    // Devuelve la altura del mapa
+    const int getHeight();
+
     // Devuelve una sub-matriz del mapa segun la posicion del Player recibido
     std::vector<std::vector<Terrain>> getMatrixAround(Player& player);
 

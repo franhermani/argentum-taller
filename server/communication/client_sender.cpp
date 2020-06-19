@@ -12,6 +12,8 @@ ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
 void ClientSender::run() {
     using ms = std::chrono::milliseconds;
 
+    protocol.sendMatrix(worldMonitor);
+
     while (keepRunning) {
         try {
             std::this_thread::sleep_for(ms(msPerSend));

@@ -1,6 +1,8 @@
 #include <utility>
 #include <iostream>
+#include <chrono>
 #include "client_handler.h"
+#define COMMUNICATION_WAIT_TIME 1000
 
 ClientHandler::ClientHandler(Socket socket_received,
         GameManager& game_manager) : socket(std::move(socket_received)),
@@ -38,8 +40,15 @@ void ClientHandler::run() {
 
     clientReceiver->start();
     clientSender->start();
-
-    isRunning = false;
+    while (true) {
+        //TODO preguntar por sleep
+        using ms = std::chrono::milliseconds;
+        std::this_thread::sleep_for(ms(COMMUNICATION_WAIT_TIME));
+        if (clientReceiver->isDead() || clientSender->isDead()) {
+            isRunning = false;
+            break;
+        }
+    }
 }
 
 void ClientHandler::stop() {

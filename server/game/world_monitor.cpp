@@ -18,6 +18,21 @@ void WorldMonitor::update(int ms) {
     world.update(ms);
 }
 
+std::vector<std::vector<Terrain>> WorldMonitor::getMatrix() {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getMatrix();
+}
+
+const int WorldMonitor::getWidth() {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getWidth();
+}
+
+const int WorldMonitor::getHeight() {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getHeight();
+}
+
 std::vector<std::vector<Terrain>> WorldMonitor::getMatrixAround(
         Player &player) {
     std::unique_lock<std::mutex> lk(m);

@@ -48,6 +48,10 @@ void World::removePlayer(int id) {
             players.erase(players.begin() + i);
 }
 
+std::vector<std::vector<Terrain>> World::getMatrix() const {
+    return matrix;
+}
+
 std::vector<std::vector<Terrain>> World::getMatrixAround(Player &player) {
     std::vector<std::vector<Terrain>> sub_matrix;
     int x_player = player.posX, y_player = player.posY;
