@@ -5,19 +5,32 @@
 
 class World;
 class ClientHandler;
+class ServerProtocol;
 
 class Player {
     World& world;
     int id;
-    int maxLife, actualLife;
     int posX, posY;
-    int orientation;
+    bool isAlive;
+    int orientation;            // TODO: crear enum
+    int raceType;               // TODO: crear enum
+    int classType;              // TODO: crear enum
+    int bodyArmor;              // TODO: crear enum
+    int headArmor;              // TODO: crear enum
+    int weapon;                 // TODO: crear enum
+    int actualLife, maxLife;
+    int actualMana, maxMana;
+    int actualGold, maxGold;
+    int experience;
+    int level;
+//    Inventory inventory;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
 
     friend class World;
     friend class ClientHandler;
+    friend class ServerProtocol;
 
 public:
     // Constructor
@@ -32,9 +45,6 @@ public:
 
     // TODO: ...
     void update(int ms);
-
-    // Devuelve el id del player
-    const int getId() const;
 };
 
 #endif // GAME_PLAYER_H
