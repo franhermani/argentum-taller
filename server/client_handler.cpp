@@ -29,7 +29,7 @@ void ClientHandler::run() {
     int id = gameManager.addIdByUsername(username);
 
     // Creo el player
-    player = new Player(*gameManager.world, id);
+    player = new Player(*gameManager.world, *gameManager.equations, id, 1, 2);
 
     // Agrego el player al world
     gameManager.addPlayerToWorld(player);

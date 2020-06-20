@@ -1,13 +1,16 @@
 #ifndef EQUATIONS_H
 #define EQUATIONS_H
 
+#include <string>
+#include <map>
 #include "player.h"
-#include "../utilities/json_parser.h"
 #include "../utilities/json.hpp"
 
 using json = nlohmann::json;
 
 class Equations {
+    std::map<int, std::string> races_map;
+    std::map<int, std::string> classes_map;
     json configParams;
 
 public:

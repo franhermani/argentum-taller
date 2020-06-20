@@ -1,10 +1,10 @@
 #ifndef RACES_H
 #define RACES_H
 
-#define HUMAN_STRING    "magician"
-#define ELF_STRING      "cleric"
-#define DWARF_STRING    "paladin"
-#define GNOME_STRING    "warrior"
+#define HUMAN_STRING    "human"
+#define ELF_STRING      "elf"
+#define DWARF_STRING    "dwarf"
+#define GNOME_STRING    "gnome"
 
 enum raceType {
     HUMAN,

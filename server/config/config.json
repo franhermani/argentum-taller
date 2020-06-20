@@ -75,7 +75,7 @@
     "races": {
       "human": {
         "life": 5,
-        "manna": 5,
+        "mana": 5,
         "recovery": 5,
         "intelligence": 5,
         "agility": 5,
@@ -86,7 +86,7 @@
       },
       "elf": {
         "life": 5,
-        "manna": 5,
+        "mana": 5,
         "recovery": 3,
         "intelligence": 8,
         "agility": 8,
@@ -97,7 +97,7 @@
       },
       "dwarf": {
         "life": 5,
-        "manna": 5,
+        "mana": 5,
         "recovery": 5,
         "intelligence": 3,
         "agility": 3,
@@ -108,7 +108,7 @@
       },
       "gnome": {
         "life": 5,
-        "manna": 5,
+        "mana": 5,
         "recovery": 5,
         "intelligence": 8,
         "agility": 3,
@@ -121,7 +121,7 @@
     "classes": {
       "magician": {
         "life": 5,
-        "manna": 8,
+        "mana": 8,
         "recovery": 3,
         "intelligence": 8,
         "agility": 3,
@@ -132,7 +132,7 @@
       },
       "cleric": {
         "life": 5,
-        "manna": 7,
+        "mana": 7,
         "recovery": 4,
         "intelligence": 7,
         "agility": 4,
@@ -143,7 +143,7 @@
       },
       "paladin": {
         "life": 5,
-        "manna": 6,
+        "mana": 6,
         "recovery": 5,
         "intelligence": 5,
         "agility": 5,
@@ -154,7 +154,7 @@
       },
       "warrior": {
         "life": 5,
-        "manna": 0,
+        "mana": 0,
         "recovery": 7,
         "intelligence": 3,
         "agility": 8,

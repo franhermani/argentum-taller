@@ -4,26 +4,27 @@
 #include <string>
 
 class World;
+class Equations;
 class ClientHandler;
 class ServerProtocol;
 
 class Player {
     World& world;
+    Equations& equations;
     int id;
+    int raceType, classType;
     int posX{}, posY{};
+    int experience;
+    int level;
     bool isAlive;
     bool isMeditating;
     int orientation;            // TODO: crear enum
-    int raceType;
-    int classType;
     int bodyArmor;              // TODO: crear enum
     int headArmor;              // TODO: crear enum
     int weapon;                 // TODO: crear enum
-    int actualLife, maxLife;
-    int actualMana, maxMana;
-    int actualGold, maxGold;
-    int experience;
-    int level;
+    int maxLife, actualLife;
+    int maxMana, actualMana;
+    int maxGold, actualGold;
 //    Inventory inventory;
 
     // Genera posiciones iniciales aleatorias para el player
@@ -33,12 +34,14 @@ class Player {
     void subtractLife(int life);
 
     friend class World;
+    friend class Equations;
     friend class ClientHandler;
     friend class ServerProtocol;
 
 public:
     // Constructor
-    Player(World& world, const int id);
+    Player(World& world, Equations& equations, const int id,
+            const int race_type, const int class_type);
 
     // Constructor y asignacion por copia deshabilitados
     Player(const Player& other) = delete;

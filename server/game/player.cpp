@@ -1,26 +1,39 @@
+#include <iostream>
 #include <random>
 #include "player.h"
 #include "world.h"
+#include "equations.h"
 #include "../../common/defines/commands.h"
 
-// TODO: estas inicializaciones salen de la clase de ecuaciones
-Player::Player(World& world, const int id) :
+Player::Player(World& world, Equations& equations, const int id,
+        const int race_type, const int class_type) :
 world(world),
+equations(equations),
 id(id),
+raceType(race_type),
+classType(class_type),
+experience(0),
+level(1),
 isAlive(true),
 isMeditating(false),
 orientation(DOWN),
-raceType(2),
-classType(3),
-bodyArmor(4),
-headArmor(5),
-weapon(6),
-actualLife(100), maxLife(actualLife),
-actualMana(200), maxMana(actualMana),
-actualGold(300), maxGold(actualGold),
-experience(400),
-level(10) {
+bodyArmor(0),   // TODO: enum sin armadura
+headArmor(0),   // TODO: enum sin armadura
+weapon(0),      // TODO: enum sin arma
+maxLife(equations.eqMaxLife(*this)), actualLife(maxLife),
+maxMana(equations.eqMaxMana(*this)), actualMana(maxMana),
+maxGold(equations.eqMaxSafeGold(*this)), actualGold(maxGold) {
     loadInitialPosition();
+
+    bool debug = true;
+    if (debug) {
+        std::cout << "Player " << id << " creado!\n" <<
+        "- Raza: " << raceType << "\n" <<
+        "- Clase: " << classType << "\n" <<
+        "- Vida maxima: " << maxLife << "\n" <<
+        "- Mana maxima: " << maxMana << "\n" <<
+        "- Oro maximo: " << maxGold << "\n";
+    }
 }
 
 void Player::loadInitialPosition() {
