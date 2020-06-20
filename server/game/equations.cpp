@@ -29,6 +29,12 @@ const int Equations::eqMaxLife(Player &player) {
     return max_life;
 }
 
+const int Equations::eqInitialLife(Player &player) {
+    double percentage = configParams["player"]["life"]["initial_percentage"];
+    int initial_life = percentage * player.maxLife;
+    return initial_life;
+}
+
 const int Equations::eqLifeRecovery(Player &player, int seconds) {
     return 0;
 }
@@ -36,7 +42,6 @@ const int Equations::eqLifeRecovery(Player &player, int seconds) {
 const int Equations::eqMaxMana(Player &player) {
     std::string race_type = races_map[player.raceType],
                 class_type = classes_map[player.classType];
-
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
@@ -45,8 +50,13 @@ const int Equations::eqMaxMana(Player &player) {
                    (int) race_params["mana"] *
                    (int) class_params["mana"] *
                    player.level;
-
     return max_mana;
+}
+
+const int Equations::eqInitialMana(Player &player) {
+    double percentage = configParams["player"]["mana"]["initial_percentage"];
+    int initial_mana = percentage * player.maxMana;
+    return initial_mana;
 }
 
 const int Equations::eqManaRecovery(Player &player) {
@@ -59,11 +69,15 @@ const int Equations::eqManaMeditation(Player &player) {
 
 const int Equations::eqMaxSafeGold(Player &player) {
     json gold_params = configParams["player"]["gold"]["max_safe_eq"];
-    int c1 = gold_params["c1"], c2 = gold_params["c2"];
-
+    double c1 = gold_params["c1"], c2 = gold_params["c2"];
     int max_gold = c1 * pow(player.level, c2);
-
     return max_gold;
+}
+
+const int Equations::eqInitialGold(Player &player) {
+    double percentage = configParams["player"]["gold"]["initial_percentage"];
+    int initial_gold = percentage * player.maxGold;
+    return initial_gold;
 }
 
 const int Equations::eqExperienceLimit(Player &player) {

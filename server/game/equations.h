@@ -24,11 +24,17 @@ public:
     // Vida maxima
     const int eqMaxLife(Player& player);
 
+    // Vida inicial
+    const int eqInitialLife(Player& player);
+
     // Recuperacion de vida por el paso del tiempo
     const int eqLifeRecovery(Player& player, int seconds);
 
     // Mana maxima
     const int eqMaxMana(Player& player);
+
+    // Mana inicial
+    const int eqInitialMana(Player& player);
 
     // Recuperacion de mana por el paso del tiempo
     const int eqManaRecovery(Player& player);
@@ -36,11 +42,14 @@ public:
     // Recuperacion de mana por meditar
     const int eqManaMeditation(Player& player);
 
-    // Oro que dropea un NPC al morir
-//    const int eqGoldDrop(NPC& npc);
-
     // Oro seguro en mano maximo
     const int eqMaxSafeGold(Player& player);
+
+    // Oro inicial
+    const int eqInitialGold(Player& player);
+
+    // Oro que dropea un NPC al morir
+//    const int eqGoldDrop(NPC& npc);
 
     // Limite de experiencia del nivel actual
     const int eqExperienceLimit(Player& player);

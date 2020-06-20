@@ -20,9 +20,12 @@ orientation(DOWN),
 bodyArmor(0),   // TODO: enum sin armadura
 headArmor(0),   // TODO: enum sin armadura
 weapon(0),      // TODO: enum sin arma
-maxLife(equations.eqMaxLife(*this)), actualLife(maxLife),
-maxMana(equations.eqMaxMana(*this)), actualMana(maxMana),
-maxGold(equations.eqMaxSafeGold(*this)), actualGold(maxGold) {
+maxLife(equations.eqMaxLife(*this)),
+actualLife(equations.eqInitialLife(*this)),
+maxMana(equations.eqMaxMana(*this)),
+actualMana(equations.eqInitialMana(*this)),
+maxGold(equations.eqMaxSafeGold(*this)),
+actualGold(equations.eqInitialGold(*this)) {
     loadInitialPosition();
 
     bool debug = true;
@@ -31,8 +34,11 @@ maxGold(equations.eqMaxSafeGold(*this)), actualGold(maxGold) {
         "- Raza: " << raceType << "\n" <<
         "- Clase: " << classType << "\n" <<
         "- Vida maxima: " << maxLife << "\n" <<
+        "- Vida inicial: " << actualLife << "\n" <<
         "- Mana maxima: " << maxMana << "\n" <<
-        "- Oro maximo: " << maxGold << "\n";
+        "- Mana inicial: " << actualMana << "\n" <<
+        "- Oro maximo: " << maxGold << "\n" <<
+        "- Oro actual: " << actualGold << "\n";
     }
 }
 

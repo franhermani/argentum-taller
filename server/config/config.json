@@ -11,7 +11,14 @@
       "height": 21
     },
     "player": {
+      "life": {
+        "initial_percentage": 0.25
+      },
+      "mana": {
+        "initial_percentage": 0.25
+      },
       "gold": {
+        "initial_percentage": 0.25,
         "additional_percentage": 0.5,
         "drop_eq": {
           "c1": 0,

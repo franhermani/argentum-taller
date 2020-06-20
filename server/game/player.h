@@ -12,7 +12,8 @@ class Player {
     World& world;
     Equations& equations;
     int id;
-    int raceType, classType;
+    int raceType;
+    int classType;
     int posX{}, posY{};
     int experience;
     int level;
@@ -22,9 +23,12 @@ class Player {
     int bodyArmor;              // TODO: crear enum
     int headArmor;              // TODO: crear enum
     int weapon;                 // TODO: crear enum
-    int maxLife, actualLife;
-    int maxMana, actualMana;
-    int maxGold, actualGold;
+    int maxLife;
+    int actualLife;
+    int maxMana;
+    int actualMana;
+    int maxGold;
+    int actualGold;
 //    Inventory inventory;
 
     // Genera posiciones iniciales aleatorias para el player
