@@ -12,12 +12,12 @@ class Player {
     int id;
     int posX, posY;
     bool isAlive;
-    int orientation;    // TODO: crear enum
-    int raceType;      // TODO: crear enum
-    int classType;     // TODO: crear enum
-    int bodyArmor;     // TODO: crear enum
-    int headArmor;     // TODO: crear enum
-    int weapon;         // TODO: crear enum
+    int orientation;            // TODO: crear enum
+    int raceType;               // TODO: crear enum
+    int classType;              // TODO: crear enum
+    int bodyArmor;              // TODO: crear enum
+    int headArmor;              // TODO: crear enum
+    int weapon;                 // TODO: crear enum
     int actualLife, maxLife;
     int actualMana, maxMana;
     int actualGold, maxGold;
