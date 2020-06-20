@@ -20,6 +20,8 @@ class SDLWindow {
     int numberOfTilesInHeight;
     int xWidthTileSize;
     int yHeightTileSize;
+    int width;
+    int height;
     SDL_Window *window;
     SDL_Renderer *renderer;
 
@@ -64,12 +66,13 @@ public:
     int getYPixelPos(int y_tile_position);
 
     // Renderiza los pisos
-    void renderTerrain(std::vector<std::vector<Terrain>>& matrix,
-            std::map<Terrain, Surface*>& surfaces_map);
+    void renderTerrain(std::vector<std::vector<Terrain>> &matrix,
+                       std::map<Terrain, Surface *> &surfaces_map);
 
     // Renderiza npcs
-    void renderNpc(int x, int y, Surface* character_surface);
+    void renderNpc(int x, int y, Surface *character_surface);
 
+    void setTilesSize(int width, int height);
 };
 
 #endif // SDL_WINDOW_H

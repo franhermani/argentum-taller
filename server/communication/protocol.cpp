@@ -69,7 +69,9 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
         }
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
-
+    std::cout << "esto es length" << 2*sizeof(uint16_t) + matrix_length*sizeof(uint8_t);
+    std::cout << "esto es width" << width;
+    std::cout << "esto es height" << height;
     if (debug) {
         std::cout << "Matriz enviada: ";
         for (char& c : byte_msg)

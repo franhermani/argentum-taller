@@ -10,9 +10,9 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, GameRender& gameRender) :
 void ConnectionReceiver::run() {
     while (keepRunning) {
         try {
-            std::vector<Terrain> terrains = protocol.receiveTerrains();
-            std::vector<npc_pos> npcs = protocol.receiveNpcs();
-            gameRender.render(terrains, npcs);
+            protocol.initializeMap(gameRender);
+            //std::vector<npc_pos> npcs = protocol.receiveNpcs();
+            //gameRender.renderNpcs(npcs);
         } catch(SocketError&) {
             break;
         }

@@ -1,10 +1,11 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
+#include <iostream>
 #include "window.h"
 #include "exception.h"
 
-SDLWindow::SDLWindow(const int width, const int height){
+SDLWindow::SDLWindow(const int width, const int height): width(width), height(height){
     int s;
     if ((s = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)))
         throw SDLException("Error al inicializar SDL", SDL_GetError());
@@ -14,10 +15,10 @@ SDLWindow::SDLWindow(const int width, const int height){
         throw SDLException("Error al crear la ventana", SDL_GetError());
 
     //TODO sacar numero magico de aca, recibir como parametro
-    numberOfTilesInWidth = 20;
-    numberOfTilesInHeight = 20;
-    xWidthTileSize = width / numberOfTilesInWidth;
-    yHeightTileSize = height / numberOfTilesInHeight;
+    numberOfTilesInWidth = 10;
+    numberOfTilesInHeight = 10;
+    xWidthTileSize = width/10;
+    yHeightTileSize = height/10;
 }
 
 SDLWindow::~SDLWindow() {
@@ -81,15 +82,44 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
             stretchRect.y = getYPixelPos(y);
             stretchRect.w = xWidthTileSize;
             stretchRect.h = yHeightTileSize;
-
+            std::cout << "estoy intentando estampar este: " <<matrix[y][x]<<"\n";
+            std::cout << "esta? " << (surfaces_map.find(matrix[y][x]) != surfaces_map.end()) << "\n";
+            std::cout << "lo meto en este x" << stretchRect.x << " y este y "<< stretchRect.y << "de este ancho " <<stretchRect.w << "y este alto "<< stretchRect.h << "\n";
+            if (surfaces_map.find(matrix[y][x]) != surfaces_map.end()) {
+                SDL_BlitScaled(surfaces_map.at(matrix[y][x])->
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            } else {
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER)->
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            }
+            /*
+            //TODO SACAR TODOS ESTOS IFS
             if (matrix[y][x] == TERRAIN_WATER) {
                 SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER)->
                 getRenderableSurface(), NULL, getSurface(), &stretchRect);
             }
-            if (matrix[y][x] == TERRAIN_LAND) {
+            else if (matrix[y][x] == TERRAIN_LAND) {
                 SDL_BlitScaled(surfaces_map.at(TERRAIN_LAND)->
-                getRenderableSurface(), NULL, getSurface(), &stretchRect);
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            } else if (matrix[y][x] == TERRAIN_GRASS) {
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_GRASS)->
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            } else if (matrix[y][x] == TERRAIN_SAND) {
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_SAND)->
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
             }
+            else if (matrix[y][x] == TERRAIN_STONE) {
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_STONE)->
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            }
+            else if (matrix[y][x] == TERRAIN_WALL) {
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_WALL)->
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            }
+            else {
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER)->
+                getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            }*/
         }
     }
 }
@@ -106,4 +136,11 @@ int SDLWindow::getYPixelPos(int y_tile_position) {
 
 void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
+}
+
+void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
+    numberOfTilesInWidth = tileWidth;
+    numberOfTilesInHeight = tileHeight;
+    xWidthTileSize = width / numberOfTilesInWidth;
+    yHeightTileSize = height / numberOfTilesInHeight;
 }

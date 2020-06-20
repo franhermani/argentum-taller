@@ -25,7 +25,7 @@ public:
     void sendCommand(CommandDTO& command);
 
     //recibe desde el servidor un vector de Terrains
-    std::vector<Terrain> receiveTerrains();
+    void initializeMap(GameRender& gameRender);
 
     //recibe desde el servidor un vector de Npcs
     std::vector<npc_pos> receiveNpcs();

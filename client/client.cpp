@@ -29,6 +29,7 @@ void Client::disconnectFromServer() {
 
 // TODO: esto es de prueba
 void Client::play() {
+    /*
     try {
         SDLWindow window(800, 600);
         window.fill();
@@ -75,13 +76,14 @@ void Client::play() {
         }
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
-    }
+    }*/
 }
 
 void render_test_window() {
+    /*
     int blocks_width = 20;
     int blocks_height = 30;
-    GameRender GameRender(640*2, 480*2, blocks_width,blocks_height);
+    GameRender GameRender(640*2, 480*2);
 
     //VECTOR DE TERRENOS QUE RECIBIRIAMOS POR SOCKET
     std::vector<Terrain> received_terrain;
@@ -91,7 +93,7 @@ void render_test_window() {
     received_terrain[10] = TERRAIN_WATER;
 
     //VECTOR DE CHARACTERS QUE RECIBIRIAMOS POR SOCKET
-    std::vector<npc_pos> npc_positions;
+    std::vector<npsetTilesSizec_pos> npc_positions;
     npc_pos npc_1 = {0, 0, WARRIOR_RIGHT};
     npc_pos npc_2 = {0, 10, SKELETON_DOWN};
     npc_positions.push_back(npc_1);
@@ -117,4 +119,5 @@ void render_test_window() {
             break;
         }
     }
+     */
 }

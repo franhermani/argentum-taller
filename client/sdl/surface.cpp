@@ -6,8 +6,9 @@
 
 Surface::Surface(const std::string filename, const SDLWindow& window) {
     SDL_Surface* basic_surface = IMG_Load(filename.c_str());
-    if (! basic_surface)
-        throw SDLException("Error al cargar la surface", SDL_GetError());
+    if (! basic_surface) {
+        throw SDLException(filename.c_str(), SDL_GetError());
+    }
 
     SDL_Surface* optimized_surface = SDL_ConvertSurface(
             basic_surface, window.getSurfaceFormat(), 0);

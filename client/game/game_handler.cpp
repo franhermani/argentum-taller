@@ -5,10 +5,12 @@
 
 GameHandler::GameHandler(const char *host, const char *port,
         const char *username) : socket(host, port, false),
-        gameRender(640*2, 480*2, 20,30) {
+        gameRender(640*2, 480*2) {
     connectionSender = new ConnectionSender(socket, commandQueue);
     connectionSender->sendUsername(username);
     inputHandler = new GameInputHandler(commandQueue);
+    //TODO borrar
+    gameRender.setTilesSize(10,10);
     connectionReceiver = new ConnectionReceiver(socket, gameRender);
 }
 
