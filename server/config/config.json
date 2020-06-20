@@ -73,7 +73,7 @@
       }
     },
     "races": {
-      "humano": {
+      "human": {
         "life": 5,
         "manna": 5,
         "recovery": 5,
@@ -84,7 +84,7 @@
         "constitution": 5,
         "meditation": 5
       },
-      "elfo": {
+      "elf": {
         "life": 5,
         "manna": 5,
         "recovery": 3,
@@ -95,7 +95,7 @@
         "constitution": 3,
         "meditation": 5
       },
-      "enano": {
+      "dwarf": {
         "life": 5,
         "manna": 5,
         "recovery": 5,
@@ -106,7 +106,7 @@
         "constitution": 5,
         "meditation": 5
       },
-      "gnomo": {
+      "gnome": {
         "life": 5,
         "manna": 5,
         "recovery": 5,
@@ -119,7 +119,7 @@
       }
     },
     "classes": {
-      "mago": {
+      "magician": {
         "life": 5,
         "manna": 8,
         "recovery": 3,
@@ -130,7 +130,7 @@
         "constitution": 8,
         "meditation": 8
       },
-      "clerigo": {
+      "cleric": {
         "life": 5,
         "manna": 7,
         "recovery": 4,
@@ -152,7 +152,7 @@
         "constitution": 5,
         "meditation": 6
       },
-      "guerrero": {
+      "warrior": {
         "life": 5,
         "manna": 0,
         "recovery": 7,
