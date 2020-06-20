@@ -87,6 +87,11 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     std::vector<Player*> players =
             world_monitor.getPlayersAround(player);
 
+    std::cout << "envio esto: actual life: "<< player.actualLife << " max life "<<player.maxLife
+              << " actual mana " << player.actualMana << " max mana " << player.maxMana
+              << " actual gold " << player.actualGold << " max gold " << player.maxGold
+              << " experience " << player.experience << " level " << player.level << "\n";
+
     int i;
 
     // Longitudes variables
@@ -116,6 +121,9 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     w.player_info.max_gold = htons(player.maxGold);
     w.player_info.experience = htons(player.experience);
     w.player_info.level = htons(player.level);
+
+
+
 
     // Info generica de todos los players (incluido el del cliente)
     w.num_players = num_players;

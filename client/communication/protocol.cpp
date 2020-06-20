@@ -5,7 +5,7 @@
 #include "../../common/defines/debug.h"
 #include "../../common/defines/world_structs.h"
 #define TWO_BYTES_SIZE 2
-#define STATIC_PART_SIZE 6
+#define STATIC_TERRAIN_PART_SIZE 6
 #define HEIGHT_PLUS_WIDTH_SIZE 4
 
 ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
@@ -41,8 +41,8 @@ void ClientProtocol::sendUsername(const std::string& username) {
 
 void ClientProtocol::initializeMap(GameRender& gameRender) {
 
-    std::vector<char> matrix_data_buffer(STATIC_PART_SIZE,0);
-    socket.receiveBytes(matrix_data_buffer.data(), STATIC_PART_SIZE);
+    std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
+    socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
     matrix_t m;
     int bytes_advanced = 0;
 
@@ -80,6 +80,81 @@ void ClientProtocol::initializeMap(GameRender& gameRender) {
         }
     }
     gameRender.renderTerrain(received_terrain);
+
+}
+
+void ClientProtocol::receiveWorld(GameRender& gameRender) {
+
+    world_t w;
+    std::vector<char> length_buffer(TWO_BYTES_SIZE, 0);
+    socket.receiveBytes(length_buffer.data(), TWO_BYTES_SIZE);
+    uint16_t length;
+    memcpy(&length, length_buffer.data(), TWO_BYTES_SIZE);
+    w.length = ntohs(length);
+
+    int bytes_advanced = 0;
+
+    std::vector<char> world_buffer(w.length,0);
+    socket.receiveBytes(world_buffer.data(), w.length);
+
+    player_info_t player_info;
+    w.player_info = player_info;
+
+    uint16_t actual_life;
+    memcpy(&actual_life, world_buffer.data()+bytes_advanced, TWO_BYTES_SIZE);
+    player_info.actual_life = ntohs(actual_life);
+    bytes_advanced += TWO_BYTES_SIZE;
+
+    uint16_t max_life;
+    memcpy(&max_life, world_buffer.data()+bytes_advanced, TWO_BYTES_SIZE);
+    player_info.max_life = ntohs(max_life);
+    bytes_advanced += TWO_BYTES_SIZE;
+
+
+    uint16_t actual_mana;
+    memcpy(&actual_mana, world_buffer.data()+bytes_advanced, TWO_BYTES_SIZE);
+    player_info.actual_mana = ntohs(actual_mana);
+    bytes_advanced += TWO_BYTES_SIZE;
+
+
+    uint16_t max_mana;
+    memcpy(&max_mana, world_buffer.data()+bytes_advanced, TWO_BYTES_SIZE);
+    w.player_info.max_mana = ntohs(max_mana);
+    bytes_advanced += TWO_BYTES_SIZE;
+
+
+    uint16_t actual_gold;
+    memcpy(&actual_gold, world_buffer.data()+bytes_advanced, TWO_BYTES_SIZE);
+    w.player_info.actual_gold = ntohs(actual_gold);
+    bytes_advanced += TWO_BYTES_SIZE;
+
+
+    uint16_t max_gold;
+    memcpy(&max_gold, world_buffer.data()+bytes_advanced, TWO_BYTES_SIZE);
+    w.player_info.max_gold = ntohs(max_gold);
+    bytes_advanced += TWO_BYTES_SIZE;
+
+
+    uint16_t experience;
+    memcpy(&experience, world_buffer.data()+bytes_advanced, TWO_BYTES_SIZE);
+    w.player_info.experience = ntohs(experience);
+    bytes_advanced += TWO_BYTES_SIZE;
+
+
+    uint16_t level;
+    memcpy(&level, world_buffer.data()+bytes_advanced, TWO_BYTES_SIZE);
+    w.player_info.level = ntohs(level);
+    bytes_advanced += TWO_BYTES_SIZE;
+
+    std::cout << "recibi esto: actual life: "<< w.player_info.actual_life << " max life "<<w.player_info.max_life
+    << " actual mana " << w.player_info.actual_mana << " max mana " << w.player_info.max_mana
+    << " actual gold " << w.player_info.actual_gold << " max gold " << w.player_info.max_gold
+    << " experience " << w.player_info.experience << " level " << w.player_info.level << "\n";
+
+    inventory_t inventory;
+
+    
+
 
 }
 

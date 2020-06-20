@@ -8,11 +8,13 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, GameRender& gameRender) :
 }
 
 void ConnectionReceiver::run() {
+    //en realidad esto de inicializar tambien deberia estar en un try
+    protocol.initializeMap(gameRender);
     while (keepRunning) {
         try {
-            protocol.initializeMap(gameRender);
             //std::vector<npc_pos> npcs = protocol.receiveNpcs();
             //gameRender.renderNpcs(npcs);
+            protocol.receiveWorld(gameRender);
         } catch(SocketError&) {
             break;
         }

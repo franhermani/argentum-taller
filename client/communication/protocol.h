@@ -29,6 +29,10 @@ public:
 
     //recibe desde el servidor un vector de Npcs
     std::vector<npc_pos> receiveNpcs();
-};
+
+    //recibe desde el servidor el mundo actual y se lo pasa a gamerender para mostrarlo
+    void receiveWorld(GameRender& gameRender);
+
+    };
 
 #endif // CLIENT_PROTOCOL_H
