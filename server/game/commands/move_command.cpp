@@ -6,5 +6,5 @@ player(player), direction(direction) {}
 MoveCommand::~MoveCommand() = default;
 
 void MoveCommand::execute() {
-//    player.moveTo(direction);
+    player.moveTo(direction);
 }

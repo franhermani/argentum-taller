@@ -10,8 +10,9 @@ class ServerProtocol;
 class Player {
     World& world;
     int id;
-    int posX, posY;
+    int posX{}, posY{};
     bool isAlive;
+    bool isMeditating;
     int orientation;            // TODO: crear enum
     int raceType;               // TODO: crear enum
     int classType;              // TODO: crear enum
@@ -40,11 +41,23 @@ public:
     Player(const Player& other) = delete;
     Player& operator=(const Player& other) = delete;
 
+    // TODO: ...
+    void update(int ms);
+
     // Mueve el player segun la direccion dada
     void moveTo(int direction);
 
-    // TODO: ...
-    void update(int ms);
+    // Resta puntos de vida al player
+    void subtractLife(int life);
+
+    // Recupera todos los puntos de vida y mana del player
+    void heal();
+
+    // Revive al player
+    void revive();
+
+    // El player entra en estado de meditacion
+    void meditate();
 };
 
 #endif // GAME_PLAYER_H

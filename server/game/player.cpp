@@ -8,6 +8,7 @@ Player::Player(World& world, const int id) :
 world(world),
 id(id),
 isAlive(true),
+isMeditating(false),
 orientation(DOWN),
 raceType(3),
 classType(4),
@@ -37,6 +38,11 @@ void Player::loadInitialPosition() {
     posY = new_y;
 }
 
+void Player::update(int ms) {
+    // TODO: ejecutar todas las acciones basadas en el tiempo
+    // Por ejemplo, regenerar vida
+}
+
 void Player::moveTo(int direction) {
     int new_x = posX, new_y = posY;
     switch (direction) {
@@ -63,7 +69,25 @@ void Player::moveTo(int direction) {
     orientation = direction;
 }
 
-void Player::update(int ms) {
-    // TODO: ejecutar todas las acciones basadas en el tiempo
-    // Por ejemplo, regenerar vida
+void Player::subtractLife(int life) {
+    actualLife -= life;
+    if (actualLife < 0) actualLife = 0;
+    if (actualLife == 0) isAlive = false;
+}
+
+void Player::heal() {
+    actualLife = maxLife;
+    actualMana = maxMana;
+}
+
+void Player::revive() {
+    actualLife = maxLife;
+    isAlive = true;
+}
+
+// TODO: poner en false esto en el resto de los metodos
+void Player::meditate() {
+    isMeditating = true;
+
+    // TODO: llamar a la ecuacion que recupera mana
 }
