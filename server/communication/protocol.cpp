@@ -85,6 +85,8 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     std::vector<Player*> players =
             world_monitor.getPlayersAround(player);
 
+    int i;
+
     // Longitudes variables
     int inventory_length = 10;  // TODO: ...
     int num_players = players.size();
@@ -114,7 +116,6 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     // Inventario del player del cliente
     w.player_info.inventory.length = inventory_length;
     w.player_info.inventory.items.resize(inventory_length);
-    int i;
     for (i = 0; i < inventory_length; i ++)
         w.player_info.inventory.items.push_back(1); // TODO: ...
 
@@ -122,8 +123,9 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     w.num_players = num_players;
     w.players.resize(num_players);
     for (i = 0; i < num_players; i ++) {
-        w.players[i].pos_x = players[i]->posX;
-        w.players[i].pos_y = players[i]->posY;
+        w.players[i].id = htons(players[i]->id);
+        w.players[i].pos_x = htons(players[i]->posX);
+        w.players[i].pos_y = htons(players[i]->posY);
         w.players[i].is_alive = players[i]->isAlive ? 1 : 0;
         w.players[i].orientation = players[i]->orientation;
         w.players[i].race_type = players[i]->raceType;
@@ -137,9 +139,21 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
 //    std::vector<NPC*> npc = world.getNPCsAround(player);
 //    std::vector<Item*> items = world.getItemsAround(player);
 
+    int pos = 0;
     std::vector<char> byte_msg;
     byte_msg.resize(SIZE_16 + message_length);
-//    memcpy(&byte_msg[0], &m.length, SIZE_16);
+    memcpy(&byte_msg[0], &w.length, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_life, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_life, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_mana, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_mana, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_gold, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_gold, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.experience, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.level, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_8], &w.player_info.inventory.length, SIZE_8);
+    for (i = 0; i < inventory_length; i ++)
+        byte_msg[pos+=SIZE_8] = w.player_info.inventory.items[i];
 
 //    socket.sendBytes(byte_msg.data(), byte_msg.size());
 
