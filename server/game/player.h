@@ -14,8 +14,8 @@ class Player {
     bool isAlive;
     bool isMeditating;
     int orientation;            // TODO: crear enum
-    int raceType;               // TODO: crear enum
-    int classType;              // TODO: crear enum
+    int raceType;
+    int classType;
     int bodyArmor;              // TODO: crear enum
     int headArmor;              // TODO: crear enum
     int weapon;                 // TODO: crear enum
