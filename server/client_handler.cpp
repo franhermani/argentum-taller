@@ -9,8 +9,7 @@ ClientHandler::ClientHandler(Socket socket_received,
         GameManager& game_manager) : socket(std::move(socket_received)),
         gameManager(game_manager) {
     isRunning = true;
-    clientReceiver = new ClientReceiver(socket,
-            *gameManager.getCommandQueue());
+    clientReceiver = new ClientReceiver(socket,*gameManager.commandQueue);
 }
 
 ClientHandler::~ClientHandler() {
@@ -30,7 +29,7 @@ void ClientHandler::run() {
     int id = gameManager.addIdByUsername(username);
 
     // Creo el player
-    player = new Player(*gameManager.getWorld(), id);
+    player = new Player(*gameManager.world, id);
 
     // Agrego el player al world
     gameManager.addPlayerToWorld(player);
@@ -38,8 +37,8 @@ void ClientHandler::run() {
     // Le paso el player al receiver ya que lo necesita para los commands
     clientReceiver->setPlayer(player);
 
-    clientSender = new ClientSender(socket, *gameManager.getWorldMonitor(),
-            *player, gameManager.getMsPerSend());
+    clientSender = new ClientSender(socket, *gameManager.worldMonitor,
+            *player, gameManager.msPerSend);
 
     clientReceiver->start();
     clientSender->start();
