@@ -41,7 +41,7 @@ public:
     ~GameRender();
 
     //Renderizador de pisos
-    void renderTerrain(std::vector<std::vector<Terrain>> &matrix);
+    void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
 
     //Renderizador de npcs
     void renderNpcs(std::vector<npc_pos> &npc_positions);
@@ -53,8 +53,8 @@ public:
     int init();
 
     //Renderizador de jugada completa
-    void render(std::vector<Terrain> &received_terrain,
-                std::vector<npc_pos> &npc_positions);
+    void render(std::vector<std::vector<Terrain>>& matrix,
+                 std::vector<npc_pos>& npc_positions);
 
     void setTilesSize(int width, int height);
 };

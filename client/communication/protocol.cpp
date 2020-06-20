@@ -40,13 +40,6 @@ void ClientProtocol::sendUsername(const std::string& username) {
 }
 
 void ClientProtocol::initializeMap(GameRender& gameRender) {
-    //devolvemos trucho
-    /*
-    for (int i = 0; i < 20 * 30; i++) {
-        received_terrain.push_back(TERRAIN_LAND);
-    }
-    received_terrain[10] = TERRAIN_WATER;*/
-    //TODO sacar nros magicos
 
     std::vector<char> matrix_data_buffer(STATIC_PART_SIZE,0);
     socket.receiveBytes(matrix_data_buffer.data(), STATIC_PART_SIZE);
@@ -69,24 +62,11 @@ void ClientProtocol::initializeMap(GameRender& gameRender) {
 
     gameRender.setTilesSize(m.width, m.height);
 
-
+    //TODO sacar a otra funcion. esta se hizo larga. una que haga la matriz
     int matrix_length = m.length-HEIGHT_PLUS_WIDTH_SIZE;
-    /*
-
-    std::vector<char> matrix_buffer(matrix_length,0);
-    socket.receiveBytes(matrix_buffer.data(), matrix_length);
-    std::vector<Terrain> received_terrain;
-    for (int i=0; i<matrix_length; i++) {
-        uint8_t terrain_type = (uint8_t) matrix_buffer[i];
-        received_terrain.push_back(static_cast<Terrain>(terrain_type));
-    }
-     */
-
     std::vector<char> matrix_buffer(matrix_length,0);
     socket.receiveBytes(matrix_buffer.data(), matrix_length);
     std::vector<std::vector<Terrain>> received_terrain;
-
-
     received_terrain.resize(m.height);
     int current_index = 0;
     for (int i=0; i<m.height; i++) {

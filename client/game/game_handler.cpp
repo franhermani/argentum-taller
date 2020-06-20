@@ -50,7 +50,7 @@ void GameHandler::render_test_window() {
     npc_positions.push_back(npc_1);
     npc_positions.push_back(npc_2);
 
-    gameRender.render(received_terrain, npc_positions);
+   // gameRender.render(received_terrain, npc_positions);
 
     //SIMULO QUE ME VAN LLEGANDO POR SOCKET+
     for (int i = 0; i < 10; i++) {
@@ -58,7 +58,7 @@ void GameHandler::render_test_window() {
         it != std::end(npc_positions); ++it) {
             it->x = it->x + 1;
         }
-        gameRender.render(received_terrain, npc_positions);
+        //gameRender.render(received_terrain, npc_positions);
         usleep(100000);
     }
 }

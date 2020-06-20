@@ -41,15 +41,12 @@ int GameRender::init() {
 void GameRender::createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix) {
     for (int i=0; i < blocksHeight; i++) {
         for(int j=0; j < blocksWidth; j++){
-            std::cout << "\nintento cargar esto " << matrix[i][j] <<"con value " << terrainSurfacesPaths[matrix[i][j]];
             if (terrainSurfacesMap.find(matrix[i][j]) == terrainSurfacesMap.end()) {
                 if (terrainSurfacesPaths.find(matrix[i][j]) == terrainSurfacesPaths.end()) {
                     continue;
                 }
                 Surface *surface = new Surface(terrainSurfacesPaths[matrix[i][j]], window);
-                std::cout << "\n HICE UNO NUEVOOO\n";
                 terrainSurfacesMap.insert({matrix[i][j], surface});
-
             }
         }
     }
@@ -83,21 +80,8 @@ void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
     }
 }
 
-void GameRender::render(std::vector<Terrain>& received_terrain,
+void GameRender::render(std::vector<std::vector<Terrain>>& matrix,
         std::vector<npc_pos>& npc_positions) {
-    // inicializamos matriz de pisos a patir del vector recibido
-    std::vector<std::vector<Terrain>> matrix;
-    matrix.resize(blocksHeight);
-    int current_vec_index = 0;
-    for (int i=0; i < blocksHeight; i++) {
-        std::vector<Terrain> row;
-        row.resize(blocksWidth);
-        matrix.push_back(row);
-        for (int j=0; j < blocksWidth; j++) {
-            matrix[i].push_back(received_terrain[current_vec_index]);
-            ++current_vec_index;
-        }
-    }
     //renderizamos piso y npcs
     renderTerrain(matrix);
     renderNpcs(npc_positions);
