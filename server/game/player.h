@@ -29,6 +29,9 @@ class Player {
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
 
+    // Resta puntos de vida al player
+    void subtractLife(int life);
+
     friend class World;
     friend class ClientHandler;
     friend class ServerProtocol;
@@ -46,9 +49,6 @@ public:
 
     // Mueve el player segun la direccion dada
     void moveTo(int direction);
-
-    // Resta puntos de vida al player
-    void subtractLife(int life);
 
     // Recupera todos los puntos de vida y mana del player
     void heal();

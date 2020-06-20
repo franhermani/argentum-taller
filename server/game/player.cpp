@@ -39,8 +39,8 @@ void Player::loadInitialPosition() {
 }
 
 void Player::update(int ms) {
-    // TODO: ejecutar todas las acciones basadas en el tiempo
-    // Por ejemplo, regenerar vida
+    // TODO: llamar a la ecuacion que recupera vida
+//    if (isMeditating) TODO: llamar a la ecuacion que recupera mana
 }
 
 void Player::moveTo(int direction) {
@@ -67,27 +67,28 @@ void Player::moveTo(int direction) {
         posY = new_y;
     }
     orientation = direction;
+    isMeditating = false;
 }
 
 void Player::subtractLife(int life) {
     actualLife -= life;
     if (actualLife < 0) actualLife = 0;
     if (actualLife == 0) isAlive = false;
+    isMeditating = false;
 }
 
 void Player::heal() {
     actualLife = maxLife;
     actualMana = maxMana;
+    isMeditating = false;
 }
 
 void Player::revive() {
     actualLife = maxLife;
     isAlive = true;
+    isMeditating = false;
 }
 
-// TODO: poner en false esto en el resto de los metodos
 void Player::meditate() {
     isMeditating = true;
-
-    // TODO: llamar a la ecuacion que recupera mana
 }
