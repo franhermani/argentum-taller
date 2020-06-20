@@ -52,6 +52,7 @@ std::vector<std::vector<Terrain>> World::getMatrix() const {
     return matrix;
 }
 
+// TODO: borrar esta funcion, no creo que la usemos
 std::vector<std::vector<Terrain>> World::getMatrixAround(Player &player) {
     std::vector<std::vector<Terrain>> sub_matrix;
     int x_player = player.posX, y_player = player.posY;
@@ -115,6 +116,10 @@ bool World::inCollision(int pos_x, int pos_y) {
             return true;
     return false;
 }
+
+// ------------------------------------------------ //
+// Metodos accedidos por WorldMonitor, Player y NPC //
+// ------------------------------------------------ //
 
 const int World::getWidth() const {
     return world_width;
