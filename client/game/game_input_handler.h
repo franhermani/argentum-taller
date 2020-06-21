@@ -3,16 +3,16 @@
 
 #include <SDL2/SDL.h>
 #include "../../common/thread.h"
-#include "../../common/protected_queue.h"
+#include "../../common/blocking_queue.h"
 #include "../../common/defines/commands.h"
 
 class GameInputHandler : public Thread {
-    ProtectedQueue<CommandDTO*>& commandQueue;
+    BlockingQueue<CommandDTO*>& commandQueue;
 
 public:
 
     // Constructor
-    explicit GameInputHandler(ProtectedQueue<CommandDTO*>& commandQueue);
+    explicit GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue);
 
     // Destructor
     ~GameInputHandler();

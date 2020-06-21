@@ -42,10 +42,10 @@ const int Equations::eqInitialLife(Player &player) {
     return initial_life;
 }
 
-const int Equations::eqLifeRecovery(Player &player, int seconds) {
+const int Equations::eqLifeRecovery(Player &player, int ms) {
     std::string race_type = races_map[player.raceType];
     int life_recovery = (int) configParams["races"][race_type]["recovery"] *
-                        seconds;
+                        ms;
     return life_recovery;
 }
 
@@ -69,14 +69,14 @@ const int Equations::eqInitialMana(Player &player) {
     return initial_mana;
 }
 
-const int Equations::eqManaRecovery(Player &player, int seconds) {
+const int Equations::eqManaRecovery(Player &player, int ms) {
     std::string race_type = races_map[player.raceType];
     int mana_recovery = (int) configParams["races"][race_type]["recovery"] *
-                        seconds;
+                        ms;
     return mana_recovery;
 }
 
-const int Equations::eqManaMeditation(Player &player, int seconds) {
+const int Equations::eqManaMeditation(Player &player, int ms) {
     std::string race_type = races_map[player.raceType],
             class_type = classes_map[player.classType];
     json race_params = configParams["races"][race_type],
@@ -85,7 +85,7 @@ const int Equations::eqManaMeditation(Player &player, int seconds) {
     int mana_recovery = (int) class_params["meditation"] *
                         (int) race_params["intelligence"] *
                         (int) class_params["intelligence"] *
-                        seconds;
+                        ms;
     return mana_recovery;
 }
 
@@ -102,27 +102,27 @@ const int Equations::eqInitialGold(Player &player) {
     return initial_gold;
 }
 
-const int Equations::eqExperienceLimit(Player &player) {
+const long Equations::eqExperienceLimit(Player &player) {
     json exp_params = configParams["player"]["experience"]["limit_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
-    int experience = c1 * pow(player.level, c2);
+    long experience = c1 * pow(player.level, c2);
     return experience;
 }
 
-const int Equations::eqExperienceAttack(Player &player, Player &other) {
+const long Equations::eqExperienceAttack(Player &player, Player &other) {
     json exp_params = configParams["player"]["experience"]["attack_eq"];
     // TODO: ver de donde sacar 'damage' --> puede venir por parametro
     int damage = 1, c1 = exp_params["c1"];
-    int experience = damage * std::max(other.level - player.level + c1, 0);
+    long experience = damage * std::max(other.level - player.level + c1, 0);
     return experience;
 }
 
-const int Equations::eqExperienceKill(Player &player, Player &other) {
+const long Equations::eqExperienceKill(Player &player, Player &other) {
     json exp_params = configParams["player"]["experience"]["kill_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
     int c3 = exp_params["c3"];
-    int experience = randomNumber(c1, c2) * other.maxLife *
-                     std::max(other.level - player.level + c3, 0);
+    long experience = randomNumber(c1, c2) * other.maxLife *
+                      std::max(other.level - player.level + c3, 0);
     return experience;
 }
 

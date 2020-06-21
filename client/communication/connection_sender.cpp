@@ -4,7 +4,7 @@
 #include "../../common/socket_error.h"
 
 ConnectionSender::ConnectionSender(Socket& socket,
-        ProtectedQueue<CommandDTO*>& commandQueue) : protocol(socket),
+        BlockingQueue<CommandDTO*>& commandQueue) : protocol(socket),
         commandQueue(commandQueue) {
     keepRunning = true;
     isRunning = true;
@@ -12,16 +12,14 @@ ConnectionSender::ConnectionSender(Socket& socket,
 
 void ConnectionSender::run() {
     while (keepRunning) {
-        while (! commandQueue.isEmpty()) {
-            try {
-                CommandDTO *command = commandQueue.pop();
-                protocol.sendCommand(*command);
-                delete command;
-            } catch (SocketError&) {
-                break;
-            } catch (ClosedQueueException&) {
-                break;
-            }
+        try {
+            CommandDTO *command = commandQueue.pop();
+            protocol.sendCommand(*command);
+            delete command;
+        } catch (SocketError&) {
+            break;
+        } catch (ClosedQueueException&) {
+            break;
         }
     }
     isRunning = false;

@@ -31,7 +31,7 @@ public:
     const int eqInitialLife(Player& player);
 
     // Recuperacion de vida por el paso del tiempo
-    const int eqLifeRecovery(Player& player, int seconds);
+    const int eqLifeRecovery(Player& player, int ms);
 
     // Mana maxima
     const int eqMaxMana(Player& player);
@@ -40,10 +40,10 @@ public:
     const int eqInitialMana(Player& player);
 
     // Recuperacion de mana por el paso del tiempo
-    const int eqManaRecovery(Player& player, int seconds);
+    const int eqManaRecovery(Player& player, int ms);
 
     // Recuperacion de mana por meditar
-    const int eqManaMeditation(Player& player, int seconds);
+    const int eqManaMeditation(Player& player, int ms);
 
     // Oro seguro en mano maximo
     const int eqMaxSafeGold(Player& player);
@@ -55,15 +55,15 @@ public:
 //    const int eqGoldDrop(NPC& npc);
 
     // Limite de experiencia del nivel actual
-    const int eqExperienceLimit(Player& player);
+    const long eqExperienceLimit(Player& player);
 
     // Experiencia obtenida por ataque realizado
-    const int eqExperienceAttack(Player& player, Player& other);
-//    const int eqExperienceAttack(Player& player, NPC& npc);
+    const long eqExperienceAttack(Player& player, Player& other);
+//    const long eqExperienceAttack(Player& player, NPC& npc);
 
     // Experiencia obtenida por matar a un enemigo
-    const int eqExperienceKill(Player& player, Player& other);
-//    const int eqExperienceKill(Player& player, NPC& npc);
+    const long eqExperienceKill(Player& player, Player& other);
+//    const long eqExperienceKill(Player& player, NPC& npc);
 
     // Daño producido por ataque realizado
     const int eqAttackDamage(Player& player);

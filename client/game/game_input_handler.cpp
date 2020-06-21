@@ -2,7 +2,7 @@
 #include "game_input_handler.h"
 #include "../data_transfer_objects/move_command_dto.h"
 
-GameInputHandler::GameInputHandler(ProtectedQueue<CommandDTO*>& commandQueue):
+GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue):
 commandQueue(commandQueue) {}
 
 GameInputHandler::~GameInputHandler() = default;

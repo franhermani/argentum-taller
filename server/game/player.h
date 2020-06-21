@@ -15,11 +15,12 @@ class Player {
     int raceType;
     int classType;
     int posX{}, posY{};
-    int experience;
     int level;
+    long maxExperience;
+    long actualExperience;
     bool isAlive;
     bool isMeditating;
-    int orientation;            // TODO: crear enum
+    int orientation;
     int bodyArmor;              // TODO: crear enum
     int headArmor;              // TODO: crear enum
     int weapon;                 // TODO: crear enum

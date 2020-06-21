@@ -45,8 +45,8 @@ typedef struct {
     uint16_t max_mana;          // Mana maxima
     uint16_t actual_gold;       // Oro actual
     uint16_t max_gold;          // Oro maximo
-    uint16_t experience;        // Experiencia
     uint16_t level;             // Nivel
+    uint32_t experience;        // Experiencia
     inventory_t inventory;      // Inventario
 } player_info_t;
 
