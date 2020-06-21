@@ -36,10 +36,8 @@ void GameManager::run() {
 
     while (keepRunning) {
         auto start = clock::now();
-        /*
-        while (true) {
+        while (! commandQueue->isEmpty()) {
             try {
-                // TODO: nunca sale del pop()
                 Command* command = commandQueue->pop();
                 command->execute();
                 delete command;
@@ -47,7 +45,6 @@ void GameManager::run() {
                 break;
             }
         }
-        */
         // TODO: ver si este update va en el while de arriba o no
         worldMonitor->update(ms_per_update);
         auto end = clock::now();

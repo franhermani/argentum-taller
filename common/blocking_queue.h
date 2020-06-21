@@ -1,10 +1,9 @@
-#ifndef TP2_BLOCKING_QUEUE_H
-#define TP2_BLOCKING_QUEUE_H
+#ifndef BLOCKING_QUEUE_H
+#define BLOCKING_QUEUE_H
 
 #include <exception>
 #include <mutex>
 #include <queue>
-#include <condition_variable>
 #include "../client/data_transfer_objects/command_dto.h"
 #include "../server/game/commands/command.h"
 
@@ -18,7 +17,6 @@ template <class T> class BlockingQueue {
 private:
     std::mutex m;
     std::queue<T> queue;
-    std::condition_variable cv;
     bool isClosed;
 
 public:
@@ -40,10 +38,13 @@ public:
 
     // Cierra la cola
     void close();
+
+    // Devuelve true si la cola esta vacia, false en caso contrario
+    bool isEmpty();
 };
 
 // Definir aca los tipos T que usemos a lo largo del TP
 template class BlockingQueue<Command*>;
 template class BlockingQueue<CommandDTO*>;
 
-#endif //TP2_BLOCKING_QUEUE_H
+#endif // BLOCKING_QUEUE_H
