@@ -68,7 +68,16 @@ const int Equations::eqManaRecovery(Player &player, int seconds) {
 }
 
 const int Equations::eqManaMeditation(Player &player, int seconds) {
-    return 0;
+    std::string race_type = races_map[player.raceType],
+            class_type = classes_map[player.classType];
+    json race_params = configParams["races"][race_type],
+            class_params = configParams["classes"][class_type];
+
+    int mana_recovery = (int) class_params["meditation"] *
+                        (int) race_params["intelligence"] *
+                        (int) class_params["intelligence"] *
+                        seconds;
+    return mana_recovery;
 }
 
 const int Equations::eqMaxSafeGold(Player &player) {
