@@ -37,10 +37,10 @@ public:
     const int eqInitialMana(Player& player);
 
     // Recuperacion de mana por el paso del tiempo
-    const int eqManaRecovery(Player& player);
+    const int eqManaRecovery(Player& player, int seconds);
 
     // Recuperacion de mana por meditar
-    const int eqManaMeditation(Player& player);
+    const int eqManaMeditation(Player& player, int seconds);
 
     // Oro seguro en mano maximo
     const int eqMaxSafeGold(Player& player);

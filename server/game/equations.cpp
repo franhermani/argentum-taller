@@ -16,7 +16,6 @@ configParams(config_params) {
 const int Equations::eqMaxLife(Player &player) {
     std::string race_type = races_map[player.raceType],
                 class_type = classes_map[player.classType];
-
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
@@ -25,7 +24,6 @@ const int Equations::eqMaxLife(Player &player) {
                    (int) race_params["life"] *
                    (int) class_params["life"] *
                    player.level;
-
     return max_life;
 }
 
@@ -36,7 +34,10 @@ const int Equations::eqInitialLife(Player &player) {
 }
 
 const int Equations::eqLifeRecovery(Player &player, int seconds) {
-    return 0;
+    std::string race_type = races_map[player.raceType];
+    int life_recovery = (int) configParams["races"][race_type]["recovery"] *
+                        seconds;
+    return life_recovery;
 }
 
 const int Equations::eqMaxMana(Player &player) {
@@ -59,11 +60,14 @@ const int Equations::eqInitialMana(Player &player) {
     return initial_mana;
 }
 
-const int Equations::eqManaRecovery(Player &player) {
-    return 0;
+const int Equations::eqManaRecovery(Player &player, int seconds) {
+    std::string race_type = races_map[player.raceType];
+    int mana_recovery = (int) configParams["races"][race_type]["recovery"] *
+                        seconds;
+    return mana_recovery;
 }
 
-const int Equations::eqManaMeditation(Player &player) {
+const int Equations::eqManaMeditation(Player &player, int seconds) {
     return 0;
 }
 

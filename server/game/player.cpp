@@ -58,8 +58,18 @@ void Player::loadInitialPosition() {
 }
 
 void Player::update(int ms) {
-    // TODO: llamar a la ecuacion que recupera vida
-//    if (isMeditating) TODO: llamar a la ecuacion que recupera mana
+    addLife(equations.eqLifeRecovery(*this, ms/1000));
+    addMana(equations.eqManaRecovery(*this, ms/1000));
+
+    if (isMeditating)
+        addMana(equations.eqManaMeditation(*this, ms/1000));
+
+    bool debug = true;
+    if (debug) {
+        std::cout << "Ms transcurridos: " << ms << "\n" <<
+                     "Vida actual: " << actualLife << "\n" <<
+                     "Mana actual: " << actualMana << "\n";
+    }
 }
 
 void Player::moveTo(int direction) {
@@ -93,7 +103,16 @@ void Player::subtractLife(int life) {
     actualLife -= life;
     if (actualLife < 0) actualLife = 0;
     if (actualLife == 0) isAlive = false;
-    isMeditating = false;
+}
+
+void Player::addLife(int life) {
+    actualLife += life;
+    if (actualLife > maxLife) actualLife = maxLife;
+}
+
+void Player::addMana(int mana) {
+    actualMana += mana;
+    if (actualMana > maxMana) actualMana = maxMana;
 }
 
 void Player::heal() {

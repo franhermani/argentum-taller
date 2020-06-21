@@ -36,16 +36,20 @@ void GameManager::run() {
 
     while (keepRunning) {
         auto start = clock::now();
+        /*
         while (true) {
             try {
+                // TODO: nunca sale del pop()
                 Command* command = commandQueue->pop();
                 command->execute();
                 delete command;
-                worldMonitor->update(ms_per_update);
             } catch(ClosedQueueException&) {
                 break;
             }
         }
+        */
+        // TODO: ver si este update va en el while de arriba o no
+        worldMonitor->update(ms_per_update);
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = ms_per_update - elapsed;

@@ -37,6 +37,12 @@ class Player {
     // Resta puntos de vida al player
     void subtractLife(int life);
 
+    // Suma puntos de vida al player
+    void addLife(int life);
+
+    // Suma puntos de mana al player
+    void addMana(int mana);
+
     friend class World;
     friend class Equations;
     friend class ClientHandler;
