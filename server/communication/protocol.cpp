@@ -91,7 +91,7 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     std::cout << "envio esto: actual life: "<< player.actualLife << " max life "<<player.maxLife
               << " actual mana " << player.actualMana << " max mana " << player.maxMana
               << " actual gold " << player.actualGold << " max gold " << player.maxGold
-              << " experience " << player.experience << " level " << player.level << "\n";
+              << " actual_experience " << player.actualExperience << " level " << player.level << "\n";
 
     int i;
 
@@ -121,7 +121,7 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     w.player_info.actual_gold = htons(player.actualGold);
     w.player_info.max_gold = htons(player.maxGold);
     w.player_info.level = htons(player.level);
-    w.player_info.experience = htonl(player.actualExperience);
+    w.player_info.actual_experience = htonl(player.actualExperience);
 
 
 
@@ -161,7 +161,7 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_gold, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_gold, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.level, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.experience, SIZE_32);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_experience, SIZE_32);
 
     // Inventario
     byte_msg[pos+=SIZE_32] = inventory_length;

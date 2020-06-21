@@ -4,6 +4,7 @@
 #include "protocol.h"
 #include "../../common/defines/debug.h"
 #include "../../common/defines/world_structs.h"
+#define SIZE_32 4
 #define SIZE_16 2
 #define SIZE_8 1
 #define STATIC_TERRAIN_PART_SIZE 6
@@ -140,24 +141,27 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
     bytes_advanced += SIZE_16;
 
 
-    uint16_t experience;
-    memcpy(&experience, world_buffer.data()+bytes_advanced, SIZE_16);
-    w.player_info.experience = ntohs(experience);
-    bytes_advanced += SIZE_16;
-
-
     uint16_t level;
     memcpy(&level, world_buffer.data()+bytes_advanced, SIZE_16);
     w.player_info.level = ntohs(level);
     bytes_advanced += SIZE_16;
 
-    std::cout << "\n\nrecibi esto: actual life: "<< w.player_info.actual_life << " max life "<<w.player_info.max_life
-    << " actual mana " << w.player_info.actual_mana << " max mana " << w.player_info.max_mana
-    << " actual gold " << w.player_info.actual_gold << " max gold " << w.player_info.max_gold
-    << " experience " << w.player_info.experience << " level " << w.player_info.level << "\n\n";
+
+    uint32_t experience;
+    memcpy(&experience, world_buffer.data()+bytes_advanced, SIZE_32);
+    w.player_info.actual_experience = ntohl(experience);
+    bytes_advanced += SIZE_32;
+
+
+
+    std::cout << "\n\nrecibi esto: actual life: " << w.player_info.actual_life << " max life " << w.player_info.max_life
+              << " actual mana " << w.player_info.actual_mana << " max mana " << w.player_info.max_mana
+              << " actual gold " << w.player_info.actual_gold << " max gold " << w.player_info.max_gold
+              << " actual_experience " << w.player_info.actual_experience << " level " << w.player_info.level << "\n\n";
 
     //recibimos inventario
     inventory_t inventory;
+    //simulo que avance el inventario
     bytes_advanced += (SIZE_8 * 9 + SIZE_16);
 
     uint16_t num_players;
