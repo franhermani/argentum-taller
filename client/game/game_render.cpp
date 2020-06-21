@@ -78,6 +78,8 @@ void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
     it != std::end(npc_positions); ++it) {
         window.renderNpc(it->x, it->y, npcSurfacesMap.at(it->npc_name));
     }
+    window.UpdateWindowSurface();
+
 }
 
 void GameRender::render(std::vector<std::vector<Terrain>>& matrix,

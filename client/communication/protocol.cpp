@@ -167,7 +167,8 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
     std::cout << "\n\n numero de players " << w.num_players << "\n\n";
     std::vector<player_t> players;
     players.resize(w.num_players);
-    for (int i = 0; i < 1; i ++) {
+    std::vector<npc_pos> positions;
+    for (int i = 0; i < w.num_players; i ++) {
         player_t player;
 
         uint16_t id;                // Id
@@ -229,8 +230,16 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
          << " is alive " << (int) player.is_alive << " orientation: "<< (int)player.orientation << " race type " <<  (int)player.race_type
          << " class type " <<(int) player.class_type << " body armor " << player.body_armor << " head armor " << player.head_armor
          << " weapong " << player.weapon << "\n\n";
+
+        npc_pos position;
+        position.npc_name = SKELETON_RIGHT;
+        position.x = player.pos_x;
+        position.y = player.pos_y;
+        positions.push_back(position);
     }
     w.players = players;
+    gameRender.renderNpcs(positions);
+
 
 }
 
