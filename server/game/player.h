@@ -43,6 +43,10 @@ class Player {
     // Suma puntos de mana al player
     void addMana(int mana);
 
+    // Suma puntos de experiencia al player
+    // Si llega al limite, sube de nivel
+    void addExperience(int exp);
+
     friend class World;
     friend class Equations;
     friend class ClientHandler;

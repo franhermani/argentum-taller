@@ -45,7 +45,6 @@ void GameManager::run() {
                 break;
             }
         }
-        // TODO: ver si este update va en el while de arriba o no
         worldMonitor->update(ms_per_update);
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();

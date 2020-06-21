@@ -65,6 +65,29 @@ void Player::loadInitialPosition() {
     posY = new_y;
 }
 
+void Player::subtractLife(int life) {
+    actualLife -= life;
+    if (actualLife < 0) actualLife = 0;
+    if (actualLife == 0) isAlive = false;
+}
+
+void Player::addLife(int life) {
+    actualLife += life;
+    if (actualLife > maxLife) actualLife = maxLife;
+}
+
+void Player::addMana(int mana) {
+    actualMana += mana;
+    if (actualMana > maxMana) actualMana = maxMana;
+}
+
+void Player::addExperience(int exp) {
+    experience += exp;
+    // TODO: testear caso de subir mas de un nivel a la vez
+    if (experience >= equations.eqExperienceLimit(*this))
+        level += 1;
+}
+
 void Player::update(int ms) {
     addLife(equations.eqLifeRecovery(*this, ms/1000));
     addMana(equations.eqManaRecovery(*this, ms/1000));
@@ -105,22 +128,6 @@ void Player::moveTo(int direction) {
     }
     orientation = direction;
     isMeditating = false;
-}
-
-void Player::subtractLife(int life) {
-    actualLife -= life;
-    if (actualLife < 0) actualLife = 0;
-    if (actualLife == 0) isAlive = false;
-}
-
-void Player::addLife(int life) {
-    actualLife += life;
-    if (actualLife > maxLife) actualLife = maxLife;
-}
-
-void Player::addMana(int mana) {
-    actualMana += mana;
-    if (actualMana > maxMana) actualMana = maxMana;
 }
 
 void Player::heal() {
