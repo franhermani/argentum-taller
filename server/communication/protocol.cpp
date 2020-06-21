@@ -7,6 +7,7 @@
 #define BYTE_SIZE   1
 #define SIZE_8      sizeof(uint8_t)
 #define SIZE_16     sizeof(uint16_t)
+#define SIZE_32     sizeof(uint32_t)
 
 ServerProtocol::ServerProtocol(Socket& socket) : socket(socket) {}
 
@@ -95,8 +96,8 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
 
     // Longitud total del mensaje
     // TODO: completar con npcs e items
-    int message_length =
-            8 * SIZE_16 +
+    size_t message_length =
+            7 * SIZE_16 + SIZE_32 +
             SIZE_8 + inventory_length * SIZE_8 +
             SIZE_16 + num_players * (3 * SIZE_16 + 7 * SIZE_8);
 
@@ -112,8 +113,8 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     w.player_info.max_mana = htons(player.maxMana);
     w.player_info.actual_gold = htons(player.actualGold);
     w.player_info.max_gold = htons(player.maxGold);
-    w.player_info.experience = htons(player.experience);
     w.player_info.level = htons(player.level);
+    w.player_info.experience = htonl(player.actualExperience);
 
     // Info generica de todos los players (incluido el del cliente)
     w.num_players = num_players;
@@ -149,11 +150,11 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_mana, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_gold, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_gold, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.experience, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.level, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.experience, SIZE_32);
 
     // Inventario
-    byte_msg[pos+=SIZE_16] = inventory_length;
+    byte_msg[pos+=SIZE_32] = inventory_length;
     for (i = 0; i < inventory_length; i ++)
         byte_msg[pos+=SIZE_8] = i + 1;      // TODO: ...
 

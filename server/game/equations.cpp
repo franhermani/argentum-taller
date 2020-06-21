@@ -102,27 +102,27 @@ const int Equations::eqInitialGold(Player &player) {
     return initial_gold;
 }
 
-const int Equations::eqExperienceLimit(Player &player) {
+const long Equations::eqExperienceLimit(Player &player) {
     json exp_params = configParams["player"]["experience"]["limit_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
-    int experience = c1 * pow(player.level, c2);
+    long experience = c1 * pow(player.level, c2);
     return experience;
 }
 
-const int Equations::eqExperienceAttack(Player &player, Player &other) {
+const long Equations::eqExperienceAttack(Player &player, Player &other) {
     json exp_params = configParams["player"]["experience"]["attack_eq"];
     // TODO: ver de donde sacar 'damage' --> puede venir por parametro
     int damage = 1, c1 = exp_params["c1"];
-    int experience = damage * std::max(other.level - player.level + c1, 0);
+    long experience = damage * std::max(other.level - player.level + c1, 0);
     return experience;
 }
 
-const int Equations::eqExperienceKill(Player &player, Player &other) {
+const long Equations::eqExperienceKill(Player &player, Player &other) {
     json exp_params = configParams["player"]["experience"]["kill_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
     int c3 = exp_params["c3"];
-    int experience = randomNumber(c1, c2) * other.maxLife *
-                     std::max(other.level - player.level + c3, 0);
+    long experience = randomNumber(c1, c2) * other.maxLife *
+                      std::max(other.level - player.level + c3, 0);
     return experience;
 }
 

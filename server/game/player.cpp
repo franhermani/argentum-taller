@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <climits>
 #include "player.h"
 #include "world.h"
 #include "equations.h"
@@ -12,8 +13,9 @@ equations(equations),
 id(id),
 raceType(race_type),
 classType(class_type),
-experience(0),
 level(1),
+maxExperience(LONG_MAX),
+actualExperience(0),
 isAlive(true),
 isMeditating(false),
 orientation(DOWN),
@@ -31,6 +33,8 @@ actualGold(equations.eqInitialGold(*this)) {
     bool debug = true;
     if (debug) {
         std::cout << "Player " << id << " creado!\n" <<
+        "- Pos X: " << posX << "\n" <<
+        "- Pos Y: " << posY << "\n" <<
         "- Raza: " << raceType << "\n" <<
         "- Clase: " << classType << "\n" <<
         "- Vida maxima: " << maxLife << "\n" <<
@@ -82,9 +86,10 @@ void Player::addMana(int mana) {
 }
 
 void Player::addExperience(int exp) {
-    experience += exp;
+    actualExperience += exp;
+    if (actualExperience > maxExperience) actualExperience = maxExperience;
     // TODO: testear caso de subir mas de un nivel a la vez
-    if (experience >= equations.eqExperienceLimit(*this))
+    if (actualExperience >= equations.eqExperienceLimit(*this))
         level += 1;
 }
 
@@ -95,7 +100,7 @@ void Player::update(int ms) {
     if (isMeditating)
         addMana(equations.eqManaMeditation(*this, ms));
 
-    bool debug = true;
+    bool debug = false;
     if (debug) {
         std::cout << "Ms transcurridos: " << ms << "\n" <<
                      "Vida actual: " << actualLife << "\n" <<

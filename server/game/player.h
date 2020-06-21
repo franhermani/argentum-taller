@@ -15,8 +15,9 @@ class Player {
     int raceType;
     int classType;
     int posX{}, posY{};
-    int experience;
     int level;
+    long maxExperience;
+    long actualExperience;
     bool isAlive;
     bool isMeditating;
     int orientation;
