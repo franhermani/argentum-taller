@@ -12,16 +12,16 @@ ConnectionSender::ConnectionSender(Socket& socket,
 
 void ConnectionSender::run() {
     while (keepRunning) {
-        try {
-            if (! commandQueue.isEmpty()) {
-                CommandDTO* command = commandQueue.pop();
+        while (! commandQueue.isEmpty()) {
+            try {
+                CommandDTO *command = commandQueue.pop();
                 protocol.sendCommand(*command);
                 delete command;
+            } catch (SocketError&) {
+                break;
+            } catch (ClosedQueueException&) {
+                break;
             }
-        } catch(SocketError&) {
-            break;
-        } catch (ClosedQueueException&) {
-            break;
         }
     }
     isRunning = false;
