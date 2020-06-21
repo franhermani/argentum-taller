@@ -1,23 +1,18 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
+#include <iostream>
 #include "window.h"
 #include "exception.h"
 
-SDLWindow::SDLWindow(const int width, const int height){
+SDLWindow::SDLWindow(const int screenWidth, const int screenHeight): screenHeight(screenHeight), screenWidth(screenWidth){
     int s;
     if ((s = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)))
         throw SDLException("Error al inicializar SDL", SDL_GetError());
 
-    if ((s = SDL_CreateWindowAndRenderer(width, height,
-            SDL_RENDERER_ACCELERATED, &window, &renderer)))
+    if ((s = SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
+                                         SDL_RENDERER_ACCELERATED, &window, &renderer)))
         throw SDLException("Error al crear la ventana", SDL_GetError());
-
-    //TODO sacar numero magico de aca, recibir como parametro
-    numberOfTilesInWidth = 20;
-    numberOfTilesInHeight = 20;
-    xWidthTileSize = width / numberOfTilesInWidth;
-    yHeightTileSize = height / numberOfTilesInHeight;
 }
 
 SDLWindow::~SDLWindow() {
@@ -81,14 +76,25 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
             stretchRect.y = getYPixelPos(y);
             stretchRect.w = xWidthTileSize;
             stretchRect.h = yHeightTileSize;
-
-            if (matrix[y][x] == TERRAIN_WATER) {
+            /*if (debug) {
+                std::cout << "Intento de estampar el terrain con valor: "
+                        << matrix[y][x] << "\n";
+                std::cout << "En los indices y:"
+                        << y << " x:" << x << "\n";
+                std::cout << "Esta en el mapa de superficies? "
+                <<(surfaces_map.find(matrix[y][x]) != surfaces_map.end())
+                << "\n";
+                std::cout << "lo meto en este pixel x" << stretchRect.x
+                            << " y este pixel y " << stretchRect.y
+                            << "de este ancho " << stretchRect.w
+                            << "y este alto " << stretchRect.h << "\n";
+            }*/
+            if (surfaces_map.find(matrix[y][x]) != surfaces_map.end()) {
+                SDL_BlitScaled(surfaces_map.at(matrix[y][x])->
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+            } else {
                 SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER)->
-                getRenderableSurface(), NULL, getSurface(), &stretchRect);
-            }
-            if (matrix[y][x] == TERRAIN_LAND) {
-                SDL_BlitScaled(surfaces_map.at(TERRAIN_LAND)->
-                getRenderableSurface(), NULL, getSurface(), &stretchRect);
+                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
             }
         }
     }
@@ -106,4 +112,11 @@ int SDLWindow::getYPixelPos(int y_tile_position) {
 
 void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
+}
+
+void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
+    numberOfTilesInWidth = tileWidth;
+    numberOfTilesInHeight = tileHeight;
+    xWidthTileSize =  screenWidth/ numberOfTilesInWidth;
+    yHeightTileSize = screenHeight / numberOfTilesInHeight;
 }

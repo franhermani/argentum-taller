@@ -20,12 +20,14 @@ class SDLWindow {
     int numberOfTilesInHeight;
     int xWidthTileSize;
     int yHeightTileSize;
+    int screenHeight;
+    int screenWidth;
     SDL_Window *window;
     SDL_Renderer *renderer;
 
 public:
     // Constructor
-    SDLWindow(const int width, const int height);
+    SDLWindow(const int screenWidth, const int screenHeight);
 
     // Constructor y asignacion por copia deshabilitados
     SDLWindow(const SDLWindow &) = delete;
@@ -64,12 +66,13 @@ public:
     int getYPixelPos(int y_tile_position);
 
     // Renderiza los pisos
-    void renderTerrain(std::vector<std::vector<Terrain>>& matrix,
-            std::map<Terrain, Surface*>& surfaces_map);
+    void renderTerrain(std::vector<std::vector<Terrain>> &matrix,
+                       std::map<Terrain, Surface *> &surfaces_map);
 
     // Renderiza npcs
-    void renderNpc(int x, int y, Surface* character_surface);
+    void renderNpc(int x, int y, Surface *character_surface);
 
+    void setTilesSize(int tileWidth, int tileHeight);
 };
 
 #endif // SDL_WINDOW_H

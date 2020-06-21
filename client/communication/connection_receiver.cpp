@@ -8,12 +8,12 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, GameRender& gameRender) :
 }
 
 void ConnectionReceiver::run() {
+    //en realidad esto de inicializar tambien deberia estar en un try
+    protocol.initializeMap(gameRender);
+
     while (keepRunning) {
         try {
-            // TODO: recibo el mapa y actualizo el modelo local
-            //std::vector<Terrain> terrains = protocol.receiveTerrains();
-            //std::vector<npc_pos> npcs = protocol.receiveNpcs();
-            //gameRender.render(terrains, npcs);
+            protocol.receiveWorld(gameRender);
         } catch(SocketError&) {
             break;
         }

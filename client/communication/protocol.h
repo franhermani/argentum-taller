@@ -4,6 +4,8 @@
 #include <string>
 #include "../../common/socket.h"
 #include "../data_transfer_objects/command_dto.h"
+#include "../../common/defines/terrains.h"
+#include "../game/game_render.h"
 
 class ClientProtocol {
     Socket& socket;
@@ -21,6 +23,13 @@ public:
 
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);
-};
+
+    //recibe desde el servidor un vector de Terrains
+    void initializeMap(GameRender& gameRender);
+
+    //recibe desde el servidor el mundo actual y se lo pasa a gamerender para mostrarlo
+    void receiveWorld(GameRender& gameRender);
+
+    };
 
 #endif // CLIENT_PROTOCOL_H

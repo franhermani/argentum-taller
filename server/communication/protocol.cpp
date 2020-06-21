@@ -72,9 +72,11 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
         }
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
-
     if (debug) {
-        std::cout << "Matriz enviada:\n";
+        std::cout << "esto es length" << 2*sizeof(uint16_t) + matrix_length*sizeof(uint8_t);
+        std::cout << "esto es width" << width;
+        std::cout << "esto es height" << height;
+        std::cout << "Matriz enviada: ";
         for (char& c : byte_msg)
             printf("%02X ", (unsigned) (unsigned char) c);
         std::cout << "\n";
@@ -85,6 +87,11 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
         Player& player) {
     std::vector<Player*> players =
             world_monitor.getPlayersAround(player);
+
+    std::cout << "envio esto: actual life: "<< player.actualLife << " max life "<<player.maxLife
+              << " actual mana " << player.actualMana << " max mana " << player.maxMana
+              << " actual gold " << player.actualGold << " max gold " << player.maxGold
+              << " actual_experience " << player.actualExperience << " level " << player.level << "\n";
 
     int i;
 
@@ -114,7 +121,10 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     w.player_info.actual_gold = htons(player.actualGold);
     w.player_info.max_gold = htons(player.maxGold);
     w.player_info.level = htons(player.level);
-    w.player_info.experience = htonl(player.actualExperience);
+    w.player_info.actual_experience = htonl(player.actualExperience);
+
+
+
 
     // Info generica de todos los players (incluido el del cliente)
     w.num_players = num_players;
@@ -151,7 +161,7 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_gold, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_gold, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.level, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.experience, SIZE_32);
+    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_experience, SIZE_32);
 
     // Inventario
     byte_msg[pos+=SIZE_32] = inventory_length;

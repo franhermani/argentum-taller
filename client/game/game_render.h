@@ -7,6 +7,7 @@
 #include "../sdl/window.h"
 #include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
+#include "../../common/defines/world_structs.h"
 
 struct npc_pos {
     int x;
@@ -17,34 +18,45 @@ struct npc_pos {
 class GameRender {
     const int screenWidth;
     const int screenHeight;
-    const int blocksWidth;
-    const int blocksHeight;
+    int blocksWidth;
+    int blocksHeight;
     SDLWindow window;
     // TODO arreglar private y public
-    std::map<Terrain, Surface*> terrainSurfacesMap;
-    std::map<Npc, Surface*> npcSurfacesMap;
+    std::map<Terrain, Surface *> terrainSurfacesMap;
+    std::map<Npc, Surface *> npcSurfacesMap;
+    std::map<int, std::map<int, Surface *>> playerSurfacesMap;
     std::map<Terrain, std::string> terrainSurfacesPaths;
     std::map<Npc, std::string> npcSurfacesPaths;
+    std::map<int, std::map<int, std::string>> playerSurfacesPaths;
+    std::vector<std::vector<Terrain>> floor;
+
 
 private:
     // inicializa en terrainSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix);
+    void createNecessaryTerrains(std::vector<std::vector<Terrain>> &matrix);
 
     // inicializa en npcSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryNpcs(std::vector<npc_pos>& npc_positions);
+    void createNecessaryNpcs(std::vector<npc_pos> &npc_positions);
+
+    // inicializa en playerSurfacesMap las surfaces necesarias faltantes
+    void createNecessaryPlayers(std::vector<player_t>& players);
+
+
 public:
     //Constructor
-    GameRender(const int screenWidth, const int screenHeight,
-               const int blocksWidth, const int blocksHeight);
+    GameRender(const int screenWidth, const int screenHeight);
 
     //Destructor
     ~GameRender();
 
     //Renderizador de pisos
-    void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
+    void renderTerrain(std::vector<std::vector<Terrain>> matrix);
 
     //Renderizador de npcs
     void renderNpcs(std::vector<npc_pos>& npc_positions);
+
+    //Renderizador de players
+    void renderPlayers(std::vector<player_t>& players);
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();
@@ -52,9 +64,7 @@ public:
     //Inicializador de SDL
     int init();
 
-    //Renderizador de jugada completa
-    void render(std::vector<Terrain>& received_terrain,
-            std::vector<npc_pos>& npc_positions);
+    void setTilesSize(int width, int height);
 };
 
 #endif //ARGENTUM_GAME_RENDER_H
