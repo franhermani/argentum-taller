@@ -238,7 +238,7 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
         positions.push_back(position);
     }
     w.players = players;
-    gameRender.renderNpcs(positions);
+    gameRender.renderPlayers(players);
 
 
 }

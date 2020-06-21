@@ -8,6 +8,9 @@
 #include "vector"
 #include "map"
 #include "../sdl/window.h"
+#include "../../common/defines/world_structs.h"
+#include "../../common/defines/races.h"
+
 
 GameRender::GameRender(const int screenWidth, const int screenHeight) :
                        screenWidth(screenWidth), screenHeight(screenHeight),
@@ -79,7 +82,30 @@ void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
         window.renderNpc(it->x, it->y, npcSurfacesMap.at(it->npc_name));
     }
     window.UpdateWindowSurface();
+}
 
+void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
+    for(auto& player:players) {
+        int race = player.race_type;
+        int orientation = player.orientation;
+        if (playerSurfacesMap[race].find(orientation) == playerSurfacesMap[race].end()) {
+            if (playerSurfacesPaths[race].find(orientation) == playerSurfacesPaths[race].end()) {
+                continue;
+            }
+            Surface* surface = new Surface(playerSurfacesPaths[race][orientation], window);
+            playerSurfacesMap[race].insert({orientation, surface});
+        }
+    }
+}
+
+void GameRender::renderPlayers(std::vector<player_t>& players) {
+    // recorro vector y renderizo con su surface correspondiente en el mapa
+    createNecessaryPlayers(players);
+    for (auto it = std::begin(players);
+         it != std::end(players); ++it) {
+        window.renderNpc(it->pos_x, it->pos_y, playerSurfacesMap[it->race_type][it->orientation]);
+    }
+    window.UpdateWindowSurface();
 }
 
 void GameRender::render(std::vector<std::vector<Terrain>>& matrix,
@@ -107,6 +133,46 @@ void GameRender::loadSurfacePaths() {
                         {SKELETON_DOWN, "../client/resources/images/esqueleto_baja.png"},
                         {SKELETON_LEFT, "../client/resources/images/esqueleto_izq.png"},
                         {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
+
+    std::map<int, std::string> human_orientations = {
+            {UP, "../client/resources/images/human_up.png"},
+            {DOWN, "../client/resources/images/human_down.png"},
+            {LEFT, "../client/resources/images/human_left.png"},
+            {RIGHT, "../client/resources/images/human_right.png"}
+    };
+    std::map<int, std::string> elf_orientations = {
+            {UP, "../client/resources/images/elf_up.png"},
+            {DOWN, "../client/resources/images/elf_down.png"},
+            {LEFT, "../client/resources/images/elf_left.png"},
+            {RIGHT, "../client/resources/images/elf_right.png"}
+    };
+    std::map<int, std::string> dwarf_orientations = {
+            {UP, "../client/resources/images/dwarf_up.png"},
+            {DOWN, "../client/resources/images/dwarf_down.png"},
+            {LEFT, "../client/resources/images/dwarf_left.png"},
+            {RIGHT, "../client/resources/images/dwarf_right.png"}
+    };
+    std::map<int, std::string> gnome_orientations = {
+            {UP, "../client/resources/images/gnome_up.png"},
+            {DOWN, "../client/resources/images/gnome_down.png"},
+            {LEFT, "../client/resources/images/gnome_left.png"},
+            {RIGHT, "../client/resources/images/gnome_right.png"}
+    };
+    playerSurfacesPaths = {
+            {HUMAN, human_orientations},
+            {ELF, elf_orientations},
+            {DWARF, dwarf_orientations},
+            {GNOME, gnome_orientations}
+    };
+    std::map<int, Surface*> human_surfaces;
+    std::map<int, Surface*> elf_surfaces;
+    std::map<int, Surface*> dwarf_surfaces;
+    std::map<int, Surface*> gnome_surfaces;
+    playerSurfacesMap = {{HUMAN, human_surfaces},
+                           {ELF, elf_surfaces},
+                           {DWARF, dwarf_surfaces},
+                           {GNOME, gnome_surfaces}};
+
 }
 
 void GameRender::setTilesSize(int width,int height) {
