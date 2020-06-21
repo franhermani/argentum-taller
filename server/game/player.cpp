@@ -57,8 +57,8 @@ actualGold(equations.eqInitialGold(*this)) {
 void Player::loadInitialPosition() {
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, world.getWidth()-1);
-    std::uniform_int_distribution<int> dist_y(0, world.getHeight()-1);
+    std::uniform_int_distribution<int> dist_x(0, world.getWidth() - 1);
+    std::uniform_int_distribution<int> dist_y(0, world.getHeight() - 1);
 
     int new_x = dist_x(mt), new_y = dist_y(mt);
     while (world.inCollision(new_x, new_y)) {
