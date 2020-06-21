@@ -3,26 +3,32 @@
 World::World(GameParams& params) : params(params) {
     json js;
     js = params.getWorldParams()["layers"][0];
-    world_width = js["width"], world_height = js["height"];
+    worldWidth = js["width"], worldHeight = js["height"];
 
     js = params.getConfigParams()["blocks_around_player"];
-    player_width = js["width"], player_height = js["height"];
+    playerWidth = js["width"], playerHeight = js["height"];
 
+    loadImpenetrableTerrains();
     loadMatrix();
+}
+
+void World::loadImpenetrableTerrains() {
+    impenetrableTerrains.insert(TERRAIN_WALL);
+    impenetrableTerrains.insert(TERRAIN_WATER);
 }
 
 void World::loadMatrix() {
     json js = params.getWorldParams()["layers"][0];
     auto terrains = js["data"];
 
-    matrix.resize(world_height);
+    matrix.resize(worldHeight);
     int i, j, pos, terrain_type;
-    for (i = 0; i < world_height; i ++) {
+    for (i = 0; i < worldHeight; i ++) {
         std::vector<Terrain> row;
-        row.resize(world_width);
+        row.resize(worldWidth);
         matrix.push_back(row);
-        for (j = 0; j < world_width; j ++) {
-            pos = (world_width * i) + j;
+        for (j = 0; j < worldWidth; j ++) {
+            pos = (worldWidth * i) + j;
             terrain_type = terrains[pos];
             matrix[i].push_back(static_cast<Terrain>(terrain_type));
         }
@@ -53,30 +59,6 @@ std::vector<std::vector<Terrain>> World::getMatrix() const {
     return matrix;
 }
 
-// TODO: borrar esta funcion, no creo que la usemos
-std::vector<std::vector<Terrain>> World::getMatrixAround(Player &player) {
-    std::vector<std::vector<Terrain>> sub_matrix;
-    int x_player = player.posX, y_player = player.posY;
-
-    sub_matrix.resize(player_height);
-    int i, j, pos_x, pos_y;
-    for (i = 0; i < player_height; i ++) {
-        std::vector<Terrain> row;
-        row.resize(player_width);
-        sub_matrix.push_back(row);
-        for (j = 0; j < player_width; j ++) {
-            pos_x = x_player - player_width/2 + j;
-            pos_y = y_player - player_height/2 + i;
-            if (! inMapBoundaries(pos_x, pos_y)) {
-                sub_matrix[i].push_back(TERRAIN_OUT_OF_BOUNDARIES);
-            } else {
-                sub_matrix[i].push_back(matrix[pos_y][pos_x]);
-            }
-        }
-    }
-    return sub_matrix;
-}
-
 std::vector<Player*> World::getPlayersAround(Player &player) {
     std::vector<Player*> players_around;
 
@@ -88,10 +70,10 @@ std::vector<Player*> World::getPlayersAround(Player &player) {
 }
 
 bool World::inPlayerBoundaries(Player &player, int pos_x, int pos_y) {
-    int player_xi = player.posX - player_width/2,
-        player_xf = player.posX + player_width/2,
-        player_yi = player.posY - player_height/2,
-        player_yf = player.posY + player_height/2;
+    int player_xi = player.posX - playerWidth/2,
+        player_xf = player.posX + playerWidth/2,
+        player_yi = player.posY - playerHeight/2,
+        player_yf = player.posY + playerHeight/2;
 
     bool x_in_boundaries = (pos_x >= player_xi) && (pos_x < player_xf),
          y_in_boundaries = (pos_y >= player_yi) && (pos_y < player_yf);
@@ -104,17 +86,29 @@ bool World::inPlayerBoundaries(Player &player, int pos_x, int pos_y) {
 // --------------------------------------------- //
 
 bool World::inMapBoundaries(int pos_x, int pos_y) {
-    bool x_in_boundaries = (pos_x >= 0) && (pos_x < world_width),
-         y_in_boundaries = (pos_y >= 0) && (pos_y < world_height);
+    bool x_in_boundaries = (pos_x >= 0) && (pos_x < worldWidth),
+         y_in_boundaries = (pos_y >= 0) && (pos_y < worldHeight);
 
     return x_in_boundaries && y_in_boundaries;
 }
 
-// TODO: chequear tambien la lista de NPCs cuando la agregue
 bool World::inCollision(int pos_x, int pos_y) {
-    for (auto player : players)
+    // Terrenos impenetrables
+    if (impenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
+        return true;
+
+    // Players
+    for (auto& player : players)
         if (player->posX == pos_x && player->posY == pos_y)
             return true;
+
+    // TODO: chequear lista de NPCs
+    /*
+    for (auto& npc : npcs)
+        if (npc->posX == pos_x && npc->posY == pos_y)
+            return true;
+    */
+
     return false;
 }
 
@@ -123,9 +117,9 @@ bool World::inCollision(int pos_x, int pos_y) {
 // ------------------------------------------------ //
 
 const int World::getWidth() const {
-    return world_width;
+    return worldWidth;
 }
 
 const int World::getHeight() const {
-    return world_height;
+    return worldHeight;
 }

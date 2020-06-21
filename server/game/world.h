@@ -2,16 +2,21 @@
 #define GAME_WORLD_H
 
 #include <vector>
+#include <set>
 #include "params.h"
 #include "player.h"
 #include "../../common/defines/terrains.h"
 
 class World {
     GameParams& params;
-    std::vector<Player*> players;
     std::vector<std::vector<Terrain>> matrix;
-    int world_width, world_height;
-    int player_width, player_height;
+    std::set<Terrain> impenetrableTerrains;
+    std::vector<Player*> players;
+    int worldWidth, worldHeight;
+    int playerWidth, playerHeight;
+
+    // Llena el vector de terrenos impenetrables
+    void loadImpenetrableTerrains();
 
     // Llena la matriz (mapa) segun el json generado por Tiled
     void loadMatrix();
@@ -44,9 +49,6 @@ public:
 
     // Devuelve la matriz del mapa completo
     std::vector<std::vector<Terrain>> getMatrix() const;
-
-    // Devuelve una sub-matriz del mapa segun la posicion del Player recibido
-    std::vector<std::vector<Terrain>> getMatrixAround(Player& player);
 
     // Devuelve un vector de todos los players en la sub-matriz de 'player'
     // Incluye al mismo 'player' recibido por parametro
