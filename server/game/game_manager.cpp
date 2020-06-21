@@ -5,11 +5,17 @@
 
 GameManager::GameManager(File& config_file) {
     File world_file(jsonParser.getConfigParams(config_file)["world_path"]);
+
     params = new GameParams(jsonParser.getConfigParams(config_file),
                             jsonParser.getWorldParams(world_file));
+
+    equations = new Equations(params->getConfigParams());
     world = new World(*params);
     worldMonitor = new WorldMonitor(*world);
-    commandQueue = new BlockingQueue<Command*>();
+    commandQueue = new ProtectedQueue<Command*>();
+
+    msPerSend = params->getConfigParams()["ms_per_send"];
+
     keepRunning = true;
     isRunning = true;
 }
@@ -18,6 +24,7 @@ GameManager::~GameManager() {
     delete commandQueue;
     delete worldMonitor;
     delete world;
+    delete equations;
     delete params;
 }
 
@@ -29,17 +36,16 @@ void GameManager::run() {
 
     while (keepRunning) {
         auto start = clock::now();
-        while (true) {
+        while (! commandQueue->isEmpty()) {
             try {
                 Command* command = commandQueue->pop();
-                // TODO: player deberia ser atributo de Command, aca no va
-                // command->execute(player);
+                command->execute();
                 delete command;
-                worldMonitor->update(ms_per_update);
             } catch(ClosedQueueException&) {
                 break;
             }
         }
+        worldMonitor->update(ms_per_update);
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = ms_per_update - elapsed;
@@ -67,20 +73,4 @@ void GameManager::addPlayerToWorld(Player* player) {
 
 void GameManager::removePlayerFromWorld(const int id) {
     worldMonitor->removePlayer(id);
-}
-
-World* GameManager::getWorld() const {
-    return world;
-}
-
-WorldMonitor* GameManager::getWorldMonitor() const {
-    return worldMonitor;
-}
-
-BlockingQueue<Command*>* GameManager::getCommandQueue() const {
-    return commandQueue;
-}
-
-int GameManager::getMsPerSend() {
-    return params->getConfigParams()["ms_per_send"];
 }

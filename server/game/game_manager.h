@@ -6,18 +6,25 @@
 #include "../../common/thread.h"
 #include "../utilities/json_parser.h"
 #include "params.h"
+#include "equations.h"
 #include "world.h"
 #include "world_monitor.h"
-#include "../../common/blocking_queue.h"
+#include "../../common/protected_queue.h"
 #include "id_manager.h"
+
+class ClientHandler;
 
 class GameManager : public Thread {
     JsonParser jsonParser;
     GameParams* params;
+    Equations* equations;
     World* world;
     WorldMonitor* worldMonitor;
-    BlockingQueue<Command*>* commandQueue;
+    ProtectedQueue<Command*>* commandQueue;
     IdManager idManager;
+    int msPerSend;
+
+    friend class ClientHandler;
 
 public:
     // Constructor
@@ -50,18 +57,6 @@ public:
 
     // Elimina 'player' de 'world'
     void removePlayerFromWorld(const int id);
-
-    // Devuelve un puntero a 'world' para que interactuen los players y npcs
-    World* getWorld() const;
-
-    // Devuelve un puntero a 'worldMonitor' para que interactuen los threads
-    WorldMonitor* getWorldMonitor() const;
-
-    // Devuelve una puntero a 'commandQueue'
-    BlockingQueue<Command*>* getCommandQueue() const;
-
-    // Devuelve el tiempo (ms) que debe dormir el client sender en cada loop
-    int getMsPerSend();
 };
 
 #endif // GAME_MANAGER_H

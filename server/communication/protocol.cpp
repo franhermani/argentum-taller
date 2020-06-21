@@ -186,7 +186,7 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
     if (debug) {
-        std::cout << "Mundo enviado: ";
+        std::cout << "Mundo enviado al player " << player.id << ":\n";
         for (char& c : byte_msg)
             printf("%02X ", (unsigned) (unsigned char) c);
         std::cout << "\n";

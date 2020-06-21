@@ -6,5 +6,5 @@ player(player), priestId(priest_id) {}
 HealCommand::~HealCommand() = default;
 
 void HealCommand::execute() {
-    // TODO: ...
+    player.heal();
 }

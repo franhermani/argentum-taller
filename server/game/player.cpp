@@ -1,25 +1,53 @@
+#include <iostream>
 #include <random>
 #include "player.h"
 #include "world.h"
+#include "equations.h"
 #include "../../common/defines/commands.h"
 
-// TODO: estas inicializaciones salen de la clase de ecuaciones
-Player::Player(World& world, const int id) :
+Player::Player(World& world, Equations& equations, const int id,
+        const int race_type, const int class_type) :
 world(world),
+equations(equations),
 id(id),
+raceType(race_type),
+classType(class_type),
+experience(0),
+level(1),
 isAlive(true),
+isMeditating(false),
 orientation(DOWN),
-raceType(3),
-classType(4),
-bodyArmor(5),
-headArmor(6),
-weapon(7),
-actualLife(100), maxLife(actualLife),
-actualMana(200), maxMana(actualMana),
-actualGold(300), maxGold(actualGold),
-experience(400),
-level(10) {
+bodyArmor(0),   // TODO: enum sin armadura
+headArmor(0),   // TODO: enum sin armadura
+weapon(0),      // TODO: enum sin arma
+maxLife(equations.eqMaxLife(*this)),
+actualLife(equations.eqInitialLife(*this)),
+maxMana(equations.eqMaxMana(*this)),
+actualMana(equations.eqInitialMana(*this)),
+maxGold(equations.eqMaxSafeGold(*this)),
+actualGold(equations.eqInitialGold(*this)) {
     loadInitialPosition();
+
+    bool debug = true;
+    if (debug) {
+        std::cout << "Player " << id << " creado!\n" <<
+        "- Raza: " << raceType << "\n" <<
+        "- Clase: " << classType << "\n" <<
+        "- Vida maxima: " << maxLife << "\n" <<
+        "- Vida inicial: " << actualLife << "\n" <<
+        "- Mana maxima: " << maxMana << "\n" <<
+        "- Mana inicial: " << actualMana << "\n" <<
+        "- Oro maximo: " << maxGold << "\n" <<
+        "- Oro actual: " << actualGold << "\n";
+
+        int exp1 = equations.eqExperienceLimit(*this);
+        int exp2 = equations.eqExperienceAttack(*this, *this);
+        int exp3 = equations.eqExperienceKill(*this, *this);
+
+        std::cout << "Limite de experiencia: " << exp1 << "\n" <<
+                  "Experiencia por ataque: " << exp2 << "\n" <<
+                  "Experiencia por matar: " << exp3 << "\n";
+    }
 }
 
 void Player::loadInitialPosition() {
@@ -35,6 +63,44 @@ void Player::loadInitialPosition() {
     }
     posX = new_x;
     posY = new_y;
+}
+
+void Player::subtractLife(int life) {
+    actualLife -= life;
+    if (actualLife < 0) actualLife = 0;
+    if (actualLife == 0) isAlive = false;
+}
+
+void Player::addLife(int life) {
+    actualLife += life;
+    if (actualLife > maxLife) actualLife = maxLife;
+}
+
+void Player::addMana(int mana) {
+    actualMana += mana;
+    if (actualMana > maxMana) actualMana = maxMana;
+}
+
+void Player::addExperience(int exp) {
+    experience += exp;
+    // TODO: testear caso de subir mas de un nivel a la vez
+    if (experience >= equations.eqExperienceLimit(*this))
+        level += 1;
+}
+
+void Player::update(int ms) {
+    addLife(equations.eqLifeRecovery(*this, ms/1000));
+    addMana(equations.eqManaRecovery(*this, ms/1000));
+
+    if (isMeditating)
+        addMana(equations.eqManaMeditation(*this, ms/1000));
+
+    bool debug = true;
+    if (debug) {
+        std::cout << "Ms transcurridos: " << ms << "\n" <<
+                     "Vida actual: " << actualLife << "\n" <<
+                     "Mana actual: " << actualMana << "\n";
+    }
 }
 
 void Player::moveTo(int direction) {
@@ -61,9 +127,21 @@ void Player::moveTo(int direction) {
         posY = new_y;
     }
     orientation = direction;
+    isMeditating = false;
 }
 
-void Player::update(int ms) {
-    // TODO: ejecutar todas las acciones basadas en el tiempo
-    // Por ejemplo, regenerar vida
+void Player::heal() {
+    actualLife = maxLife;
+    actualMana = maxMana;
+    isMeditating = false;
+}
+
+void Player::revive() {
+    actualLife = maxLife;
+    isAlive = true;
+    isMeditating = false;
+}
+
+void Player::meditate() {
+    isMeditating = true;
 }
