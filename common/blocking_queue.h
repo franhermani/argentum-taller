@@ -1,10 +1,11 @@
-#ifndef PROTECTED_QUEUE_H
-#define PROTECTED_QUEUE_H
+#ifndef BLOCKING_QUEUE_H
+#define BLOCKING_QUEUE_H
 
 #include <exception>
 #include <mutex>
 #include <queue>
-#include "../server/game/commands/command.h"
+#include <condition_variable>
+#include "../client/data_transfer_objects/command_dto.h"
 
 struct ClosedQueueException : public std::exception {
     const char* what() const throw() {
@@ -12,22 +13,23 @@ struct ClosedQueueException : public std::exception {
     }
 };
 
-template <class T> class ProtectedQueue {
+template <class T> class BlockingQueue {
 private:
     std::mutex m;
     std::queue<T> queue;
+    std::condition_variable cv;
     bool isClosed;
 
 public:
     // Constructor
-    ProtectedQueue();
+    BlockingQueue();
 
     // Constructor y asignacion por copia deshabilitados
-    ProtectedQueue(const ProtectedQueue& other) = delete;
-    ProtectedQueue& operator=(const ProtectedQueue& other) = delete;
+    BlockingQueue(const BlockingQueue& other) = delete;
+    BlockingQueue& operator=(const BlockingQueue& other) = delete;
 
     // Destructor
-    ~ProtectedQueue();
+    ~BlockingQueue();
 
     // Agrega un elemento a la cola
     void push(T t);
@@ -37,12 +39,9 @@ public:
 
     // Cierra la cola
     void close();
-
-    // Devuelve true si la cola esta vacia, false en caso contrario
-    bool isEmpty();
 };
 
 // Definir aca los tipos T que usemos a lo largo del TP
-template class ProtectedQueue<Command*>;
+template class BlockingQueue<CommandDTO*>;
 
-#endif // PROTECTED_QUEUE_H
+#endif // BLOCKING_QUEUE_H

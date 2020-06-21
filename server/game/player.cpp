@@ -89,11 +89,11 @@ void Player::addExperience(int exp) {
 }
 
 void Player::update(int ms) {
-    addLife(equations.eqLifeRecovery(*this, ms/1000));
-    addMana(equations.eqManaRecovery(*this, ms/1000));
+    addLife(equations.eqLifeRecovery(*this, ms));
+    addMana(equations.eqManaRecovery(*this, ms));
 
     if (isMeditating)
-        addMana(equations.eqManaMeditation(*this, ms/1000));
+        addMana(equations.eqManaMeditation(*this, ms));
 
     bool debug = true;
     if (debug) {

@@ -19,7 +19,7 @@ class Player {
     int level;
     bool isAlive;
     bool isMeditating;
-    int orientation;            // TODO: crear enum
+    int orientation;
     int bodyArmor;              // TODO: crear enum
     int headArmor;              // TODO: crear enum
     int weapon;                 // TODO: crear enum

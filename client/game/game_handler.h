@@ -3,7 +3,7 @@
 
 #include "../../common/thread.h"
 #include "../../common/socket.h"
-#include "../../common/protected_queue.h"
+#include "../../common/blocking_queue.h"
 #include "../communication/connection_sender.h"
 #include "../communication/connection_receiver.h"
 #include "game_render.h"
@@ -15,7 +15,7 @@ class GameHandler {
     // Send related classes
     ConnectionSender* connectionSender;
     GameInputHandler* inputHandler;
-    ProtectedQueue<CommandDTO*> commandQueue;
+    BlockingQueue<CommandDTO*> commandQueue;
 
     // Receive related classes
     ConnectionReceiver* connectionReceiver;
