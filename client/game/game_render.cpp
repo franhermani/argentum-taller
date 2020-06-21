@@ -108,14 +108,6 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     window.UpdateWindowSurface();
 }
 
-void GameRender::render(std::vector<std::vector<Terrain>>& matrix,
-        std::vector<npc_pos>& npc_positions) {
-    //renderizamos piso y npcs
-    renderTerrain(matrix);
-    renderNpcs(npc_positions);
-    window.UpdateWindowSurface();
-}
-
 
 void GameRender::loadSurfacePaths() {
     terrainSurfacesPaths = {{TERRAIN_WATER, "../client/resources/images/24082.png"},

@@ -28,10 +28,6 @@ public:
     // Desconecta al cliente del servidor
     void disconnectFromServer();
 
-    // Comienza el juego
-    void play();
-
-    void render_map();
 };
 
 #endif // CLIENT_H

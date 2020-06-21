@@ -63,10 +63,6 @@ public:
     //Inicializador de SDL
     int init();
 
-    //Renderizador de jugada completa
-    void render(std::vector<std::vector<Terrain>>& matrix,
-                 std::vector<npc_pos>& npc_positions);
-
     void setTilesSize(int width, int height);
 };
 
