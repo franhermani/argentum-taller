@@ -12,7 +12,7 @@ GameManager::GameManager(File& config_file) {
     equations = new Equations(params->getConfigParams());
     world = new World(*params);
     worldMonitor = new WorldMonitor(*world);
-    commandQueue = new BlockingQueue<Command*>();
+    commandQueue = new ProtectedQueue<Command*>();
 
     msPerSend = params->getConfigParams()["ms_per_send"];
 

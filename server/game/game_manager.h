@@ -9,7 +9,7 @@
 #include "equations.h"
 #include "world.h"
 #include "world_monitor.h"
-#include "../../common/blocking_queue.h"
+#include "../../common/protected_queue.h"
 #include "id_manager.h"
 
 class ClientHandler;
@@ -20,7 +20,7 @@ class GameManager : public Thread {
     Equations* equations;
     World* world;
     WorldMonitor* worldMonitor;
-    BlockingQueue<Command*>* commandQueue;
+    ProtectedQueue<Command*>* commandQueue;
     IdManager idManager;
     int msPerSend;
 

@@ -4,7 +4,7 @@
 #include "../../common/socket_error.h"
 
 ConnectionSender::ConnectionSender(Socket& socket,
-        BlockingQueue<CommandDTO*>& commandQueue) : protocol(socket),
+        ProtectedQueue<CommandDTO*>& commandQueue) : protocol(socket),
         commandQueue(commandQueue) {
     keepRunning = true;
     isRunning = true;

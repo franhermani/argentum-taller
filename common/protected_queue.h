@@ -1,5 +1,5 @@
-#ifndef BLOCKING_QUEUE_H
-#define BLOCKING_QUEUE_H
+#ifndef PROTECTED_QUEUE_H
+#define PROTECTED_QUEUE_H
 
 #include <exception>
 #include <mutex>
@@ -13,7 +13,7 @@ struct ClosedQueueException : public std::exception {
     }
 };
 
-template <class T> class BlockingQueue {
+template <class T> class ProtectedQueue {
 private:
     std::mutex m;
     std::queue<T> queue;
@@ -21,14 +21,14 @@ private:
 
 public:
     // Constructor
-    BlockingQueue();
+    ProtectedQueue();
 
     // Constructor y asignacion por copia deshabilitados
-    BlockingQueue(const BlockingQueue& other) = delete;
-    BlockingQueue& operator=(const BlockingQueue& other) = delete;
+    ProtectedQueue(const ProtectedQueue& other) = delete;
+    ProtectedQueue& operator=(const ProtectedQueue& other) = delete;
 
     // Destructor
-    ~BlockingQueue();
+    ~ProtectedQueue();
 
     // Agrega un elemento a la cola
     void push(T t);
@@ -44,7 +44,7 @@ public:
 };
 
 // Definir aca los tipos T que usemos a lo largo del TP
-template class BlockingQueue<Command*>;
-template class BlockingQueue<CommandDTO*>;
+template class ProtectedQueue<Command*>;
+template class ProtectedQueue<CommandDTO*>;
 
-#endif // BLOCKING_QUEUE_H
+#endif // PROTECTED_QUEUE_H
