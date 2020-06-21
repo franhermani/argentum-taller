@@ -167,7 +167,6 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
     std::cout << "\n\n numero de players " << w.num_players << "\n\n";
     std::vector<player_t> players;
     players.resize(w.num_players);
-    std::vector<npc_pos> positions;
     for (int i = 0; i < w.num_players; i ++) {
         player_t player;
 
@@ -231,24 +230,8 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
          << " class type " <<(int) player.class_type << " body armor " << player.body_armor << " head armor " << player.head_armor
          << " weapong " << player.weapon << "\n\n";
 
-        npc_pos position;
-        position.npc_name = SKELETON_RIGHT;
-        position.x = player.pos_x;
-        position.y = player.pos_y;
-        positions.push_back(position);
+
     }
     w.players = players;
     gameRender.renderPlayers(players);
-
-
-}
-
-std::vector<npc_pos> ClientProtocol::receiveNpcs() {
-    //VECTOR DE CHARACTERS QUE RECIBIRIAMOS POR SOCKET
-    std::vector<npc_pos> npc_positions;
-    npc_pos npc_1 = {0, 0, WARRIOR_RIGHT};
-    npc_pos npc_2 = {3, 10, SKELETON_RIGHT};
-    npc_positions.push_back(npc_1);
-    npc_positions.push_back(npc_2);
-    return std::move(npc_positions);
 }
