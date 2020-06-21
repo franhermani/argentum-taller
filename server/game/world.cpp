@@ -34,6 +34,7 @@ void World::loadMatrix() {
 // --------------------------------------------- //
 
 void World::update(int ms) {
+    // TODO: update tmb a los npcs
     for (auto player : players) player->update(ms);
 }
 

@@ -3,7 +3,7 @@
 #include "../../common/socket_error.h"
 
 ClientReceiver::ClientReceiver(Socket& socket,
-        BlockingQueue<Command*>& command_queue) :
+        ProtectedQueue<Command*>& command_queue) :
         protocol(socket), commandQueue(command_queue) {
     keepRunning = true;
     isRunning = true;

@@ -37,9 +37,6 @@ public:
     // Devuelve la altura del mapa
     const int getHeight();
 
-    // Devuelve una sub-matriz del mapa segun la posicion del Player recibido
-    std::vector<std::vector<Terrain>> getMatrixAround(Player& player);
-
     // Devuelve un vector de todos los players en la sub-matriz de 'player'
     // Incluye al mismo 'player' recibido por parametro
     std::vector<Player*> getPlayersAround(Player& player);

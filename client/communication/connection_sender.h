@@ -4,15 +4,15 @@
 #include <string>
 #include "../../common/thread.h"
 #include "protocol.h"
-#include "../../common/blocking_queue.h"
+#include "../../common/protected_queue.h"
 
 class ConnectionSender : public Thread {
     ClientProtocol protocol;
-    BlockingQueue<CommandDTO*>& commandQueue;
+    ProtectedQueue<CommandDTO*>& commandQueue;
 
 public:
     // Constructor
-    ConnectionSender(Socket& socket, BlockingQueue<CommandDTO*>& commandQueue);
+    ConnectionSender(Socket& socket, ProtectedQueue<CommandDTO*>& commandQueue);
 
     // Constructor y asignacion por copia deshabilitados
     ConnectionSender(const ConnectionSender&) = delete;

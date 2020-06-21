@@ -9,5 +9,5 @@ player(player), priestId(priest_id) {}
 ReviveCommand::~ReviveCommand() = default;
 
 void ReviveCommand::execute() {
-    // TODO: ...
+    player.revive();
 }

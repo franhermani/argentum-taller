@@ -2,14 +2,14 @@
 #include <iostream>
 #include <chrono>
 #include "client_handler.h"
+
 #define COMMUNICATION_WAIT_TIME 1000
 
 ClientHandler::ClientHandler(Socket socket_received,
         GameManager& game_manager) : socket(std::move(socket_received)),
         gameManager(game_manager) {
     isRunning = true;
-    clientReceiver = new ClientReceiver(socket,
-            *gameManager.getCommandQueue());
+    clientReceiver = new ClientReceiver(socket,*gameManager.commandQueue);
 }
 
 ClientHandler::~ClientHandler() {
@@ -20,6 +20,8 @@ ClientHandler::~ClientHandler() {
 }
 
 void ClientHandler::run() {
+    using ms = std::chrono::milliseconds;
+
     // Recibo el username
     std::string username = clientReceiver->receiveUsername();
 
@@ -27,7 +29,7 @@ void ClientHandler::run() {
     int id = gameManager.addIdByUsername(username);
 
     // Creo el player
-    player = new Player(*gameManager.getWorld(), id);
+    player = new Player(*gameManager.world, *gameManager.equations, id, 1, 2);
 
     // Agrego el player al world
     gameManager.addPlayerToWorld(player);
@@ -35,15 +37,16 @@ void ClientHandler::run() {
     // Le paso el player al receiver ya que lo necesita para los commands
     clientReceiver->setPlayer(player);
 
-    clientSender = new ClientSender(socket, *gameManager.getWorldMonitor(),
-            *player, gameManager.getMsPerSend());
+    clientSender = new ClientSender(socket, *gameManager.worldMonitor,
+            *player, gameManager.msPerSend);
 
     clientReceiver->start();
     clientSender->start();
+
     while (true) {
-        //TODO preguntar por sleep
-        using ms = std::chrono::milliseconds;
+        // TODO: preguntar si esta bien este sleep
         std::this_thread::sleep_for(ms(COMMUNICATION_WAIT_TIME));
+
         if (clientReceiver->isDead() || clientSender->isDead()) {
             isRunning = false;
             break;
