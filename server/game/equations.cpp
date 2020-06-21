@@ -1,5 +1,7 @@
 #include <string>
 #include <cmath>
+#include <algorithm>
+#include <random>
 #include "equations.h"
 #include "../../common/defines/races.h"
 #include "../../common/defines/classes.h"
@@ -11,6 +13,13 @@ configParams(config_params) {
 
     classes_map = {{MAGICIAN, MAGICIAN_STRING}, {CLERIC, CLERIC_STRING},
                    {PALADIN, PALADIN_STRING}, {WARRIOR, WARRIOR_STRING}};
+}
+
+double Equations::randomNumber(double a, double b) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_real_distribution<double> dist(a, b);
+    return dist(mt);
 }
 
 const int Equations::eqMaxLife(Player &player) {
@@ -94,15 +103,27 @@ const int Equations::eqInitialGold(Player &player) {
 }
 
 const int Equations::eqExperienceLimit(Player &player) {
-    return 0;
+    json exp_params = configParams["player"]["experience"]["limit_eq"];
+    double c1 = exp_params["c1"], c2 = exp_params["c2"];
+    int experience = c1 * pow(player.level, c2);
+    return experience;
 }
 
-const int Equations::eqExperienceAttack(Player &player, Player &other_player) {
-    return 0;
+const int Equations::eqExperienceAttack(Player &player, Player &other) {
+    json exp_params = configParams["player"]["experience"]["attack_eq"];
+    // TODO: ver de donde sacar 'damage' --> puede venir por parametro
+    int damage = 1, c1 = exp_params["c1"];
+    int experience = damage * std::max(other.level - player.level + c1, 0);
+    return experience;
 }
 
-const int Equations::eqExperienceKill(Player &player, Player &other_player) {
-    return 0;
+const int Equations::eqExperienceKill(Player &player, Player &other) {
+    json exp_params = configParams["player"]["experience"]["kill_eq"];
+    double c1 = exp_params["c1"], c2 = exp_params["c2"];
+    int c3 = exp_params["c3"];
+    int experience = randomNumber(c1, c2) * other.maxLife *
+                     std::max(other.level - player.level + c3, 0);
+    return experience;
 }
 
 const int Equations::eqAttackDamage(Player &player) {

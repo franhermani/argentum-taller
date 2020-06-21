@@ -13,6 +13,9 @@ class Equations {
     std::map<int, std::string> classes_map;
     json configParams;
 
+    // Devuelve un numero aleatorio entre 'a' y 'b'
+    double randomNumber(double a, double b);
+
 public:
     // Constructor
     explicit Equations(const json& config_params);
@@ -55,11 +58,11 @@ public:
     const int eqExperienceLimit(Player& player);
 
     // Experiencia obtenida por ataque realizado
-    const int eqExperienceAttack(Player& player, Player& other_player);
+    const int eqExperienceAttack(Player& player, Player& other);
 //    const int eqExperienceAttack(Player& player, NPC& npc);
 
     // Experiencia obtenida por matar a un enemigo
-    const int eqExperienceKill(Player& player, Player& other_player);
+    const int eqExperienceKill(Player& player, Player& other);
 //    const int eqExperienceKill(Player& player, NPC& npc);
 
     // Daño producido por ataque realizado

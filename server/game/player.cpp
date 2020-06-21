@@ -39,6 +39,14 @@ actualGold(equations.eqInitialGold(*this)) {
         "- Mana inicial: " << actualMana << "\n" <<
         "- Oro maximo: " << maxGold << "\n" <<
         "- Oro actual: " << actualGold << "\n";
+
+        int exp1 = equations.eqExperienceLimit(*this);
+        int exp2 = equations.eqExperienceAttack(*this, *this);
+        int exp3 = equations.eqExperienceKill(*this, *this);
+
+        std::cout << "Limite de experiencia: " << exp1 << "\n" <<
+                  "Experiencia por ataque: " << exp2 << "\n" <<
+                  "Experiencia por matar: " << exp3 << "\n";
     }
 }
 
