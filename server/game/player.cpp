@@ -118,10 +118,10 @@ void Player::moveTo(int direction) {
             new_x += 1;
             break;
         case DOWN:
-            new_y -= 1;
+            new_y += 1;
             break;
         case UP:
-            new_y += 1;
+            new_y -= 1;
             break;
         default:
             break;

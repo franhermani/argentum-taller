@@ -55,7 +55,8 @@ void GameRender::createNecessaryTerrains(std::vector<std::vector<Terrain>>& matr
     }
 }
 
-void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
+void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
+    floor = matrix;
     createNecessaryTerrains(matrix);
     window.renderTerrain(matrix, terrainSurfacesMap);
     window.UpdateWindowSurface();
@@ -75,6 +76,8 @@ void GameRender::createNecessaryNpcs(std::vector<npc_pos>& npc_positions) {
 }
 
 void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
+    //re renderizo piso
+    window.renderTerrain(floor, terrainSurfacesMap);
     // recorro vector y renderizo con su surface correspondiente en el mapa
     createNecessaryNpcs(npc_positions);
     for (auto it = std::begin(npc_positions);
@@ -99,7 +102,9 @@ void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
 }
 
 void GameRender::renderPlayers(std::vector<player_t>& players) {
+    window.renderTerrain(floor, terrainSurfacesMap);
     // recorro vector y renderizo con su surface correspondiente en el mapa
+
     createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {

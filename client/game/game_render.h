@@ -28,6 +28,7 @@ class GameRender {
     std::map<Terrain, std::string> terrainSurfacesPaths;
     std::map<Npc, std::string> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
+    std::vector<std::vector<Terrain>> floor;
 
 
 private:
@@ -49,7 +50,7 @@ public:
     ~GameRender();
 
     //Renderizador de pisos
-    void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
+    void renderTerrain(std::vector<std::vector<Terrain>> matrix);
 
     //Renderizador de npcs
     void renderNpcs(std::vector<npc_pos>& npc_positions);

@@ -14,8 +14,6 @@ void ConnectionReceiver::run() {
     while (keepRunning) {
         try {
             protocol.receiveWorld(gameRender);
-            //std::vector<npc_pos> npcs = protocol.receiveNpcs();
-            //gameRender.renderNpcs(npcs);
         } catch(SocketError&) {
             break;
         }

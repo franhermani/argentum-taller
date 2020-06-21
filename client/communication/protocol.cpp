@@ -81,6 +81,7 @@ void ClientProtocol::initializeMap(GameRender& gameRender) {
             ++current_index;
         }
     }
+
     gameRender.renderTerrain(received_terrain);
 
 }
@@ -227,7 +228,7 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
         player.weapon = weapon;
         bytes_advanced += SIZE_8;
 
-        players.push_back(player);
+        players[i] = player;
 
         std::cout << "\n\nrecibi este player: id: " << player.id << " posx: " << player.pos_x << " posy: " << player.pos_y
          << " is alive " << (int) player.is_alive << " orientation: "<< (int)player.orientation << " race type " <<  (int)player.race_type
@@ -237,5 +238,5 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
 
     }
     w.players = players;
-    gameRender.renderPlayers(players);
+    gameRender.renderPlayers(w.players);
 }
