@@ -29,6 +29,9 @@ public:
     // false en caso contrario
     bool isDead() override;
 
+    // Envia un codigo de confirmacion del username al cliente
+    void sendUsernameConfirmation(int code);
+
     // Setea el atributo 'player'
     void setPlayer(Player* player);
 };

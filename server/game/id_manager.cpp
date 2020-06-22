@@ -1,6 +1,7 @@
 #include <string>
 #include <climits>
 #include "id_manager.h"
+#include "../../common/defines/username_confirmation.h"
 
 IdManager::IdManager() : actual_player_id(1), actual_npc_id(1),
 actual_item_id(1) {}
@@ -30,11 +31,4 @@ const int IdManager::addItemById() {
 
     actual_item_id ++;
     return actual_npc_id;
-}
-
-const int IdManager::getPlayerId(const std::string& username) {
-    if (username_ids.find(username) == username_ids.end())
-        throw UnexistentUsernameException();
-
-    return username_ids[username];
 }

@@ -22,6 +22,9 @@ public:
     void sendPlayerInfo(const std::string& username, const uint8_t race_type,
             const uint8_t class_type);
 
+    // Recibe el codigo de confirmacion del server por el username enviado
+    const int receiveUsernameConfirmation();
+
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);
 
@@ -31,6 +34,6 @@ public:
     //recibe desde el servidor el mundo actual y
     // se lo pasa a gamerender para mostrarlo
     void receiveWorld(GameRender& gameRender);
-    };
+};
 
 #endif // CLIENT_PROTOCOL_H

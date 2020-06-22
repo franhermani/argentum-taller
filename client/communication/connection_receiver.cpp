@@ -27,3 +27,7 @@ void ConnectionReceiver::stop() {
 bool ConnectionReceiver::isDead() {
     return (! isRunning);
 }
+
+const int ConnectionReceiver::receiveUsernameConfirmation() {
+    return protocol.receiveUsernameConfirmation();
+}

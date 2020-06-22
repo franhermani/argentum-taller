@@ -46,13 +46,14 @@ void ClientProtocol::sendPlayerInfo(const std::string& username,
     // Username
     memcpy(&byte_msg[3], username.c_str(), username.length());
 
-    if (debug) {
-        std::cout << "Info del player enviada: ";
-        for (char& i : byte_msg)
-            printf("%02X ", (unsigned) (unsigned char) i);
-        std::cout << "\n";
-    }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
+}
+
+const int ClientProtocol::receiveUsernameConfirmation() {
+    std::vector<char> code;
+    code.resize(SIZE_8);
+    socket.receiveBytes(code.data(), SIZE_8);
+    return (int) code[0];
 }
 
 void ClientProtocol::initializeMap(GameRender& gameRender) {

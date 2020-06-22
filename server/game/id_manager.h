@@ -4,24 +4,6 @@
 #include <string>
 #include <map>
 
-struct NoMoreAvailableIdsException : public std::exception {
-    const char* what() const throw() {
-        return "No more available Ids in the game\n";
-    }
-};
-
-struct DuplicatedUsernameException : public std::exception {
-    const char* what() const throw() {
-        return "This username already exists\n";
-    }
-};
-
-struct UnexistentUsernameException : public std::exception {
-    const char* what() const throw() {
-        return "This username has not been registered\n";
-    }
-};
-
 class IdManager {
     int actual_player_id;
     int actual_npc_id;

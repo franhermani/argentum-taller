@@ -26,6 +26,9 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
+
+    // Recibe el codigo de confirmacion del server por el username enviado
+    const int receiveUsernameConfirmation();
 };
 
 #endif // CONNECTION_RECEIVER_H

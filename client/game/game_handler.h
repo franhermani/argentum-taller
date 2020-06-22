@@ -1,6 +1,7 @@
 #ifndef CONNECTION_HANDLER_H
 #define CONNECTION_HANDLER_H
 
+#include <string>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "../../common/blocking_queue.h"
@@ -20,6 +21,9 @@ class GameHandler {
     // Receive related classes
     ConnectionReceiver* connectionReceiver;
     GameRender gameRender;
+
+    // Imprime por pantalla un mensaje indicando que el juego va a comenzar
+    void printStartMessage();
 
 public:
     // Constructor

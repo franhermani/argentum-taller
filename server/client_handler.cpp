@@ -3,6 +3,7 @@
 #include <chrono>
 #include "client_handler.h"
 #include "game/id_manager.h"
+#include "../common/defines/username_confirmation.h"
 
 #define COMMUNICATION_WAIT_TIME 1000
 
@@ -31,6 +32,8 @@ void ClientHandler::run() {
 
     try {
         int id = gameManager.addIdByUsername(username);
+        clientSender->sendUsernameConfirmation(USERNAME_OK);
+
         player = new Player(*gameManager.world, *gameManager.equations,
                             id, race_type, class_type);
 
@@ -49,9 +52,9 @@ void ClientHandler::run() {
             }
         }
     } catch (DuplicatedUsernameException&) {
-        // TODO: enviar mensaje al cliente
+        clientSender->sendUsernameConfirmation(USERNAME_DUPLICATED);
     } catch (NoMoreAvailableIdsException&) {
-        // TODO: enviar mensaje al cliente
+        clientSender->sendUsernameConfirmation(NO_MORE_USERNAME_IDS);
     }
 }
 

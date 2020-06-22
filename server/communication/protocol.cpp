@@ -32,6 +32,13 @@ const std::vector<char> ServerProtocol::receivePlayerInfo() {
     return arguments;
 }
 
+void ServerProtocol::sendUsernameConfirmation(int code) {
+    std::vector<char> byte_msg;
+    byte_msg.resize(SIZE_8);
+    byte_msg[0] = code;
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
+}
+
 Command* ServerProtocol::receiveCommand(Player& player) {
     std::vector<char> arguments;
     char buffer1[BYTE_SIZE], buffer2[BYTE_SIZE];
@@ -93,17 +100,6 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     std::vector<Player*> players =
             world_monitor.getPlayersAround(player);
 
-    std::cout << "envio esto: actual life: "<<
-            player.actualLife << " max life "<<player.maxLife
-              << " actual mana " << player.actualMana <<
-              " max mana " << player.maxMana
-              << " actual gold " << player.actualGold <<
-              " max gold " << player.maxGold
-              << " actual_experience " << player.actualExperience
-              << " level " << player.level << "\n";
-
-    int i;
-
     // Longitudes variables
     int inventory_length = 10;  // TODO: ...
     int num_players = players.size();
@@ -132,12 +128,10 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     w.player_info.level = htons(player.level);
     w.player_info.actual_experience = htonl(player.actualExperience);
 
-
-
-
     // Info generica de todos los players (incluido el del cliente)
     w.num_players = num_players;
     w.players.resize(num_players);
+    int i;
     for (i = 0; i < num_players; i ++) {
         w.players[i].id = htons(players[i]->id);
         w.players[i].pos_x = htons(players[i]->posX);
@@ -160,7 +154,7 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     byte_msg.resize(SIZE_16 + message_length);
 
     // Longitud total mensaje
-    memcpy(&byte_msg[0], &w.length, SIZE_16);
+    memcpy(&byte_msg[pos], &w.length, SIZE_16);
 
     // Info particular del player del cliente
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_life, SIZE_16);

@@ -22,6 +22,9 @@ public:
     // Recibe la info del player del cliente a traves del socket
     const std::vector<char> receivePlayerInfo();
 
+    // Envia un codigo de confirmacion del username al cliente
+    void sendUsernameConfirmation(int code);
+
     // Recibe un commandDTO del cliente a traves del socket
     // Llama al CommandFactory y devuelve una clase derivada de command
     Command* receiveCommand(Player& player);

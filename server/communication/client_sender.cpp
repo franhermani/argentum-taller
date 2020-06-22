@@ -33,6 +33,10 @@ bool ClientSender::isDead() {
     return (! isRunning);
 }
 
+void ClientSender::sendUsernameConfirmation(int code) {
+    protocol.sendUsernameConfirmation(code);
+}
+
 void ClientSender::setPlayer(Player* new_player) {
     player = new_player;
 }

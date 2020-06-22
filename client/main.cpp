@@ -4,6 +4,7 @@
 #include <zconf.h>
 #include "client.h"
 #include "../common/socket_error.h"
+#include "../common/defines/username_confirmation.h"
 
 #define OK 0
 #define ERROR 1
@@ -28,6 +29,10 @@ int main(int argc, char *argv[]) {
         client.connectToServer();
         client.disconnectFromServer();
     } catch(SocketError& e) {
+        std::cerr << e.what() << "\n";
+    } catch(DuplicatedUsernameException& e) {
+        std::cerr << e.what() << "\n";
+    } catch(NoMoreAvailableIdsException& e) {
         std::cerr << e.what() << "\n";
     } catch(...) {
         std::cerr << "Error desconocido\n";
