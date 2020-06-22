@@ -2,8 +2,6 @@
 #define CLIENT_H
 
 #include <string>
-#include <vector>
-#include <SDL2/SDL_image.h>
 #include "game/game_handler.h"
 
 class Client {
