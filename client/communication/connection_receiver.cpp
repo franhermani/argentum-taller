@@ -8,15 +8,14 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, GameRender& gameRender) :
 }
 
 void ConnectionReceiver::run() {
-    //en realidad esto de inicializar tambien deberia estar en un try
-    protocol.initializeMap(gameRender);
+    try {
+        protocol.initializeMap(gameRender);
 
-    while (keepRunning) {
-        try {
-            protocol.receiveWorld(gameRender);
-        } catch(SocketError&) {
-            break;
+        while (keepRunning) {
+                protocol.receiveWorld(gameRender);
         }
+    }catch(SocketError&) {
+        // TODO ver que hacer aca
     }
     isRunning = false;
 }
@@ -27,4 +26,8 @@ void ConnectionReceiver::stop() {
 
 bool ConnectionReceiver::isDead() {
     return (! isRunning);
+}
+
+const int ConnectionReceiver::receiveUsernameConfirmation() {
+    return protocol.receiveUsernameConfirmation();
 }

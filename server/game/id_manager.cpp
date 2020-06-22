@@ -1,14 +1,14 @@
 #include <string>
 #include <climits>
 #include "id_manager.h"
+#include "../../common/defines/username_confirmation.h"
 
 IdManager::IdManager() : actual_player_id(1), actual_npc_id(1),
 actual_item_id(1) {}
 
 const int IdManager::addPlayerByUsername(const std::string &username) {
-    // TODO: descomentar esto cuando se haga el issue 35
-//    if (username_ids.find(username) != username_ids.end())
-//        throw DuplicatedUsernameException();
+    if (username_ids.find(username) != username_ids.end())
+        throw DuplicatedUsernameException();
 
     if (actual_player_id == USHRT_MAX)
         throw NoMoreAvailableIdsException();
@@ -31,11 +31,4 @@ const int IdManager::addItemById() {
 
     actual_item_id ++;
     return actual_npc_id;
-}
-
-const int IdManager::getPlayerId(const std::string& username) {
-    if (username_ids.find(username) == username_ids.end())
-        throw UnexistentUsernameException();
-
-    return username_ids[username];
 }

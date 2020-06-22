@@ -10,7 +10,6 @@ class GameInputHandler : public Thread {
     BlockingQueue<CommandDTO*>& commandQueue;
 
 public:
-
     // Constructor
     explicit GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue);
 

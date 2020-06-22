@@ -4,9 +4,10 @@
 #include "protocol.h"
 #include "../../common/defines/debug.h"
 #include "../../common/defines/world_structs.h"
-#define SIZE_32 4
-#define SIZE_16 2
-#define SIZE_8 1
+
+#define SIZE_8      sizeof(uint8_t)
+#define SIZE_16     sizeof(uint16_t)
+#define SIZE_32     sizeof(uint32_t)
 #define STATIC_TERRAIN_PART_SIZE 6
 #define HEIGHT_PLUS_WIDTH_SIZE 4
 
@@ -24,25 +25,38 @@ void ClientProtocol::sendCommand(CommandDTO& command) {
     }
 }
 
-void ClientProtocol::sendUsername(const std::string& username) {
+void ClientProtocol::sendPlayerInfo(const std::string& username,
+        const uint8_t race_type, const uint8_t class_type) {
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + username.length();
+    size_t total_size = 3*SIZE_8 + username.length();
 
     // Vector serializado
     std::vector<char> byte_msg;
     byte_msg.resize(total_size);
 
     // Longitud del username
-    byte_msg[0] = username.length();
+    byte_msg[0] = 2*SIZE_8 + username.length();
+
+    // Raza
+    byte_msg[1] = race_type;
+
+    // Clase
+    byte_msg[2] = class_type;
 
     // Username
-    memcpy(&byte_msg[1], username.c_str(), username.length());
+    memcpy(&byte_msg[3], username.c_str(), username.length());
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
-void ClientProtocol::initializeMap(GameRender& gameRender) {
+const int ClientProtocol::receiveUsernameConfirmation() {
+    std::vector<char> code;
+    code.resize(SIZE_8);
+    socket.receiveBytes(code.data(), SIZE_8);
+    return (int) code[0];
+}
 
+void ClientProtocol::initializeMap(GameRender& gameRender) {
     std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
     socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
     matrix_t m;
@@ -81,13 +95,10 @@ void ClientProtocol::initializeMap(GameRender& gameRender) {
             ++current_index;
         }
     }
-
     gameRender.renderTerrain(received_terrain);
-
 }
 
 void ClientProtocol::receiveWorld(GameRender& gameRender) {
-
     world_t w;
     std::vector<char> length_buffer(SIZE_16, 0);
     socket.receiveBytes(length_buffer.data(), SIZE_16);
@@ -155,10 +166,16 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
 
 
 
-    std::cout << "\n\nrecibi esto: actual life: " << w.player_info.actual_life << " max life " << w.player_info.max_life
-              << " actual mana " << w.player_info.actual_mana << " max mana " << w.player_info.max_mana
-              << " actual gold " << w.player_info.actual_gold << " max gold " << w.player_info.max_gold
-              << " actual_experience " << w.player_info.actual_experience << " level " << w.player_info.level << "\n\n";
+    std::cout << "\n\nrecibi esto: actual life: " <<
+    w.player_info.actual_life << " max life " <<
+            w.player_info.max_life
+              << " actual mana " <<
+              w.player_info.actual_mana << " max mana " <<
+              w.player_info.max_mana
+              << " actual gold " << w.player_info.actual_gold <<
+              " max gold " << w.player_info.max_gold
+              << " actual_experience " << w.player_info.actual_experience <<
+              " level " << w.player_info.level << "\n\n";
 
     //recibimos inventario
     inventory_t inventory;
@@ -230,12 +247,15 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
 
         players[i] = player;
 
-        std::cout << "\n\nrecibi este player: id: " << player.id << " posx: " << player.pos_x << " posy: " << player.pos_y
-         << " is alive " << (int) player.is_alive << " orientation: "<< (int)player.orientation << " race type " <<  (int)player.race_type
-         << " class type " <<(int) player.class_type << " body armor " << player.body_armor << " head armor " << player.head_armor
+        std::cout << "\n\nrecibi este player: id: " << player.id <<
+        " posx: " << player.pos_x << " posy: " << player.pos_y
+         << " is alive " << (int) player.is_alive << " orientation: "
+         << (int)player.orientation << " race type " <<
+         (int)player.race_type
+         << " class type " <<(int) player.class_type <<
+         " body armor " << player.body_armor << " head armor "
+         << player.head_armor
          << " weapong " << player.weapon << "\n\n";
-
-
     }
     w.players = players;
     gameRender.renderPlayers(w.players);

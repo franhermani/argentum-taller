@@ -3,8 +3,8 @@
 #include "../../common/socket_error.h"
 
 ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
-        Player& player, int ms_per_send) : protocol(socket),
-        worldMonitor(world_monitor), player(player), msPerSend(ms_per_send) {
+        int ms_per_send) : protocol(socket), worldMonitor(world_monitor),
+        msPerSend(ms_per_send) {
     keepRunning = true;
     isRunning = true;
 }
@@ -17,7 +17,7 @@ void ClientSender::run() {
     while (keepRunning) {
         try {
             std::this_thread::sleep_for(ms(msPerSend));
-            protocol.sendWorldAround(worldMonitor, player);
+            protocol.sendWorldAround(worldMonitor, *player);
         } catch(SocketError&) {
             break;
         }
@@ -31,4 +31,12 @@ void ClientSender::stop() {
 
 bool ClientSender::isDead() {
     return (! isRunning);
+}
+
+void ClientSender::sendUsernameConfirmation(int code) {
+    protocol.sendUsernameConfirmation(code);
+}
+
+void ClientSender::setPlayer(Player* new_player) {
+    player = new_player;
 }

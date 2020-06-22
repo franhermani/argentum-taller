@@ -2,8 +2,6 @@
 #define CLIENT_H
 
 #include <string>
-#include <vector>
-#include <SDL2/SDL_image.h>
 #include "game/game_handler.h"
 
 class Client {
@@ -12,7 +10,8 @@ class Client {
 public:
     // Constructor
     // Asocia al cliente al 'host' y 'port' recibidos
-    Client(const char *host, const char *port, const char *username);
+    Client(const char *host, const char *port, const std::string& username,
+            const uint8_t race_type, const uint8_t class_type);
 
     // Constructor y asignacion por copia deshabilitados
     Client(const Client& other) = delete;
@@ -27,7 +26,6 @@ public:
 
     // Desconecta al cliente del servidor
     void disconnectFromServer();
-
 };
 
 #endif // CLIENT_H

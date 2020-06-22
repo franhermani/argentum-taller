@@ -18,8 +18,12 @@ public:
     ClientProtocol(const ClientProtocol&) = delete;
     ClientProtocol& operator=(const ClientProtocol&) = delete;
 
-    // Envia el username a traves del socket
-    void sendUsername(const std::string& username);
+    // Envia la informacion del player a traves del socket
+    void sendPlayerInfo(const std::string& username, const uint8_t race_type,
+            const uint8_t class_type);
+
+    // Recibe el codigo de confirmacion del server por el username enviado
+    const int receiveUsernameConfirmation();
 
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);
@@ -27,9 +31,9 @@ public:
     //recibe desde el servidor un vector de Terrains
     void initializeMap(GameRender& gameRender);
 
-    //recibe desde el servidor el mundo actual y se lo pasa a gamerender para mostrarlo
+    //recibe desde el servidor el mundo actual y
+    // se lo pasa a gamerender para mostrarlo
     void receiveWorld(GameRender& gameRender);
-
-    };
+};
 
 #endif // CLIENT_PROTOCOL_H

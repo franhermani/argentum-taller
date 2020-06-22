@@ -11,7 +11,7 @@
 
 ServerProtocol::ServerProtocol(Socket& socket) : socket(socket) {}
 
-const std::string ServerProtocol::receiveUsername() {
+const std::vector<char> ServerProtocol::receivePlayerInfo() {
     std::vector<char> arguments;
     char buffer1[BYTE_SIZE];
     socket.receiveBytes(buffer1, BYTE_SIZE);
@@ -20,12 +20,23 @@ const std::string ServerProtocol::receiveUsername() {
     arguments.resize(length);
     socket.receiveBytes(arguments.data(), arguments.size());
 
-    std::string username(arguments.begin(), arguments.end());
+    if (debug) {
+        std::cout << "Raza recibida: " << (int) arguments[0] << "\n";
+        std::cout << "Clase recibida: " << (int) arguments[1] << "\n";
+        std::cout << "Username recibido: ";
+        size_t i;
+        for (i = 2; i < arguments.size(); i ++)
+            std::cout << arguments[i];
+        std::cout << "\n";
+    }
+    return arguments;
+}
 
-    if (debug)
-        std::cout << "Recibido el username " << username << "\n";
-
-    return username;
+void ServerProtocol::sendUsernameConfirmation(int code) {
+    std::vector<char> byte_msg;
+    byte_msg.resize(SIZE_8);
+    byte_msg[0] = code;
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
 Command* ServerProtocol::receiveCommand(Player& player) {
@@ -73,7 +84,8 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
     if (debug) {
-        std::cout << "esto es length" << 2*sizeof(uint16_t) + matrix_length*sizeof(uint8_t);
+        std::cout << "esto es length" << 2*sizeof(uint16_t)
+                            + matrix_length*sizeof(uint8_t);
         std::cout << "esto es width" << width;
         std::cout << "esto es height" << height;
         std::cout << "Matriz enviada: ";
@@ -87,13 +99,6 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
         Player& player) {
     std::vector<Player*> players =
             world_monitor.getPlayersAround(player);
-
-    std::cout << "envio esto: actual life: "<< player.actualLife << " max life "<<player.maxLife
-              << " actual mana " << player.actualMana << " max mana " << player.maxMana
-              << " actual gold " << player.actualGold << " max gold " << player.maxGold
-              << " actual_experience " << player.actualExperience << " level " << player.level << "\n";
-
-    int i;
 
     // Longitudes variables
     int inventory_length = 10;  // TODO: ...
@@ -123,12 +128,10 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     w.player_info.level = htons(player.level);
     w.player_info.actual_experience = htonl(player.actualExperience);
 
-
-
-
     // Info generica de todos los players (incluido el del cliente)
     w.num_players = num_players;
     w.players.resize(num_players);
+    int i;
     for (i = 0; i < num_players; i ++) {
         w.players[i].id = htons(players[i]->id);
         w.players[i].pos_x = htons(players[i]->posX);
@@ -151,7 +154,7 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     byte_msg.resize(SIZE_16 + message_length);
 
     // Longitud total mensaje
-    memcpy(&byte_msg[0], &w.length, SIZE_16);
+    memcpy(&byte_msg[pos], &w.length, SIZE_16);
 
     // Info particular del player del cliente
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_life, SIZE_16);
