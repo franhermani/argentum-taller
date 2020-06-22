@@ -37,6 +37,12 @@ public:
     // Devuelve la altura del mapa
     const int getHeight();
 
+    // Devuelve los bloques de vision del player (en ancho)
+    const int getPlayerWidth();
+
+    // Devuelve los bloques de vision del player (en alto)
+    const int getPlayerHeight();
+
     // Devuelve un vector de todos los players en la sub-matriz de 'player'
     // Incluye al mismo 'player' recibido por parametro
     std::vector<Player*> getPlayersAround(Player& player);

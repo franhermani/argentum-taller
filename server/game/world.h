@@ -47,6 +47,12 @@ public:
     // Remueve un Player del mundo segun su ID
     void removePlayer(const int id);
 
+    // Devuelve los bloques de vision del player (en ancho)
+    const int getPlayerWidth();
+
+    // Devuelve los bloques de vision del player (en alto)
+    const int getPlayerHeight();
+
     // Devuelve la matriz del mapa completo
     std::vector<std::vector<Terrain>> getMatrix() const;
 

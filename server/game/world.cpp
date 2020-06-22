@@ -55,6 +55,14 @@ void World::removePlayer(int id) {
             players.erase(players.begin() + i);
 }
 
+const int World::getPlayerWidth() {
+    return playerWidth;
+}
+
+const int World::getPlayerHeight() {
+    return playerHeight;
+}
+
 std::vector<std::vector<Terrain>> World::getMatrix() const {
     return matrix;
 }

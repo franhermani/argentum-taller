@@ -32,13 +32,6 @@ const std::vector<char> ServerProtocol::receivePlayerInfo() {
     return arguments;
 }
 
-void ServerProtocol::sendUsernameConfirmation(int code) {
-    std::vector<char> byte_msg;
-    byte_msg.resize(SIZE_8);
-    byte_msg[0] = code;
-    socket.sendBytes(byte_msg.data(), byte_msg.size());
-}
-
 Command* ServerProtocol::receiveCommand(Player& player) {
     std::vector<char> arguments;
     char buffer1[BYTE_SIZE], buffer2[BYTE_SIZE];
@@ -50,13 +43,37 @@ Command* ServerProtocol::receiveCommand(Player& player) {
 
     if (debug)
         std::cout << "Recibido el comando tipo " << type <<
-        " de longitud " << length << "\n";
+                  " de longitud " << length << "\n";
 
     if (length > 0) {
         arguments.resize(length);
         socket.receiveBytes(arguments.data(), arguments.size());
     }
     return commandFactory(player, type, arguments);
+}
+
+void ServerProtocol::sendUsernameConfirmation(int code) {
+    std::vector<char> byte_msg;
+    byte_msg.resize(SIZE_8);
+    byte_msg[0] = code;
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
+}
+
+void ServerProtocol::sendUsernameId(Player& player) {
+    uint32_t player_id = htons(player.id);
+    std::vector<char> byte_msg;
+    byte_msg.resize(SIZE_16);
+    memcpy(&byte_msg[0], &player_id, SIZE_16);
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
+}
+
+
+void ServerProtocol::sendBlocksAround(int width, int height) {
+    std::vector<char> byte_msg;
+    byte_msg.resize(SIZE_16);
+    byte_msg[0] = width;
+    byte_msg[1] = height;
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
 void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
