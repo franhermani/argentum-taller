@@ -45,9 +45,9 @@ actualGold(equations.eqInitialGold(*this)) {
         "- Oro maximo: " << maxGold << "\n" <<
         "- Oro actual: " << actualGold << "\n";
 
-        int exp1 = equations.eqExperienceLimit(*this);
-        int exp2 = equations.eqExperienceAttack(*this, *this);
-        int exp3 = equations.eqExperienceKill(*this, *this);
+        long exp1 = equations.eqExperienceLimit(*this),
+             exp2 = equations.eqExperienceAttack(*this, *this),
+             exp3 = equations.eqExperienceKill(*this, *this);
 
         std::cout << "Limite de experiencia: " << exp1 << "\n" <<
                   "Experiencia por ataque: " << exp2 << "\n" <<
@@ -73,7 +73,7 @@ void Player::loadInitialPosition() {
 void Player::subtractLife(int life) {
     actualLife -= life;
     if (actualLife < 0) actualLife = 0;
-    if (actualLife == 0) isAlive = false;
+    if (actualLife == 0) die();
 }
 
 void Player::addLife(int life) {
@@ -92,6 +92,10 @@ void Player::addExperience(int exp) {
     // TODO: testear caso de subir mas de un nivel a la vez
     if (actualExperience >= equations.eqExperienceLimit(*this))
         level += 1;
+}
+
+void Player::die() {
+    isAlive = false;
 }
 
 void Player::update(int ms) {
@@ -149,5 +153,5 @@ void Player::revive() {
 }
 
 void Player::meditate() {
-    isMeditating = !(classType == WARRIOR);
+    isMeditating = (isAlive && classType != WARRIOR);
 }

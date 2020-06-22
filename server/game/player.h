@@ -48,6 +48,9 @@ class Player {
     // Si llega al limite, sube de nivel
     void addExperience(int exp);
 
+    // Setea 'isAlive' en false
+    void die();
+
     friend class World;
     friend class Equations;
     friend class ClientHandler;
