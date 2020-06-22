@@ -77,7 +77,8 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
     if (debug) {
-        std::cout << "esto es length" << 2*sizeof(uint16_t) + matrix_length*sizeof(uint8_t);
+        std::cout << "esto es length" << 2*sizeof(uint16_t)
+                            + matrix_length*sizeof(uint8_t);
         std::cout << "esto es width" << width;
         std::cout << "esto es height" << height;
         std::cout << "Matriz enviada: ";
@@ -92,10 +93,14 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     std::vector<Player*> players =
             world_monitor.getPlayersAround(player);
 
-    std::cout << "envio esto: actual life: "<< player.actualLife << " max life "<<player.maxLife
-              << " actual mana " << player.actualMana << " max mana " << player.maxMana
-              << " actual gold " << player.actualGold << " max gold " << player.maxGold
-              << " actual_experience " << player.actualExperience << " level " << player.level << "\n";
+    std::cout << "envio esto: actual life: "<<
+            player.actualLife << " max life "<<player.maxLife
+              << " actual mana " << player.actualMana <<
+              " max mana " << player.maxMana
+              << " actual gold " << player.actualGold <<
+              " max gold " << player.maxGold
+              << " actual_experience " << player.actualExperience
+              << " level " << player.level << "\n";
 
     int i;
 
