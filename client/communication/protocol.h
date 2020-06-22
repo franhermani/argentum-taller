@@ -25,6 +25,12 @@ public:
     // Recibe el codigo de confirmacion del server por el username enviado
     const int receiveUsernameConfirmation();
 
+    // Recibe el id del username
+    const int receiveUsernameId();
+
+    // Recibe la vision del player medida en bloques (alto y ancho)
+    const std::vector<int> receiveBlocksAround();
+
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);
 

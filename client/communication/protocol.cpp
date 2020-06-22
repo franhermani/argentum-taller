@@ -56,6 +56,27 @@ const int ClientProtocol::receiveUsernameConfirmation() {
     return (int) code[0];
 }
 
+const int ClientProtocol::receiveUsernameId() {
+    std::vector<char> byte_msg;
+    uint16_t id;
+    byte_msg.resize(SIZE_16);
+    socket.receiveBytes(byte_msg.data(), SIZE_16);
+    memcpy(&id, byte_msg.data(), SIZE_16);
+    return ntohs(id);
+}
+
+const std::vector<int> ClientProtocol::receiveBlocksAround() {
+    std::vector<char> byte_msg;
+    std::vector<int> blocks;
+    byte_msg.resize(SIZE_16);
+    socket.receiveBytes(byte_msg.data(), SIZE_16);
+
+    blocks.push_back(byte_msg[0]);
+    blocks.push_back(byte_msg[1]);
+
+    return blocks;
+}
+
 void ClientProtocol::initializeMap(GameRender& gameRender) {
     std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
     socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
