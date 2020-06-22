@@ -5,6 +5,7 @@
 #include "world.h"
 #include "equations.h"
 #include "../../common/defines/commands.h"
+#include "../../common/defines/classes.h"
 
 Player::Player(World& world, Equations& equations, const int id,
         const int race_type, const int class_type) :
@@ -148,5 +149,5 @@ void Player::revive() {
 }
 
 void Player::meditate() {
-    isMeditating = true;
+    isMeditating = !(classType == WARRIOR);
 }
