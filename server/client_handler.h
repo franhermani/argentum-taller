@@ -15,6 +15,12 @@ class ClientHandler : public Thread {
     ClientSender* clientSender{};
     Player* player{};
 
+    // Hace el chequeo del username en el mismo constructor
+    // Si hay un error, le envia un mensaje al cliente y relanza la excepcion
+    // para que luego la catchee el ClientsAcceptor
+    // Si esta ok, crea al player y sigue con la ejecucion normal
+    void checkUsername();
+
 public:
     // Constructor
     ClientHandler(Socket socket, GameManager& game_manager);

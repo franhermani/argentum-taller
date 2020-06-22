@@ -15,10 +15,22 @@ ClientHandler::ClientHandler(Socket socket_received,
     clientSender = new ClientSender(socket, *gameManager.worldMonitor,
             gameManager.msPerSend);
 
+    checkUsername();
+}
+
+ClientHandler::~ClientHandler() {
+    delete clientSender;
+    delete clientReceiver;
+    gameManager.removePlayerFromWorld(player->id);
+    delete player;
+}
+
+void ClientHandler::checkUsername() {
+    std::vector<char> info = clientReceiver->receivePlayerInfo();
+    int race_type = info[0], class_type = info[1];
+    std::string username(info.begin() + 2, info.end());
+
     try {
-        std::vector<char> info = clientReceiver->receivePlayerInfo();
-        int race_type = info[0], class_type = info[1];
-        std::string username(info.begin() + 2, info.end());
         int id = gameManager.addIdByUsername(username);
         clientSender->sendUsernameConfirmation(USERNAME_OK);
         player = new Player(*gameManager.world, *gameManager.equations,
@@ -34,13 +46,6 @@ ClientHandler::ClientHandler(Socket socket_received,
         delete clientReceiver;
         throw NoMoreAvailableIdsException();
     }
-}
-
-ClientHandler::~ClientHandler() {
-    delete clientSender;
-    delete clientReceiver;
-    gameManager.removePlayerFromWorld(player->id);
-    delete player;
 }
 
 void ClientHandler::run() {

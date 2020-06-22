@@ -12,6 +12,19 @@ GameHandler::GameHandler(const char *host, const char *port,
     connectionSender = new ConnectionSender(socket, commandQueue);
     connectionSender->sendPlayerInfo(username, race_type, class_type);
 
+    checkUsername();
+    printStartMessage();
+
+    inputHandler = new GameInputHandler(commandQueue);
+}
+
+GameHandler::~GameHandler() {
+    delete connectionSender;
+    delete connectionReceiver;
+    delete inputHandler;
+}
+
+void GameHandler::checkUsername() {
     connectionReceiver = new ConnectionReceiver(socket, gameRender);
     int code = connectionReceiver->receiveUsernameConfirmation();
     if (code != USERNAME_OK) {
@@ -26,14 +39,11 @@ GameHandler::GameHandler(const char *host, const char *port,
                 break;
         }
     }
-    printStartMessage();
-    inputHandler = new GameInputHandler(commandQueue);
 }
 
-GameHandler::~GameHandler() {
-    delete connectionSender;
-    delete connectionReceiver;
-    delete inputHandler;
+void GameHandler::printStartMessage() {
+    std::cout << "\n¡Jugador creado correctamente!\n" <<
+              "El juego comenzará en unos instantes...\n";
 }
 
 void GameHandler::run() {
@@ -48,9 +58,4 @@ void GameHandler::stop() {
     connectionSender->join();
     connectionReceiver->stop();
     connectionReceiver->join();
-}
-
-void GameHandler::printStartMessage() {
-    std::cout << "\n¡Jugador creado correctamente!\n" <<
-    "El juego comenzará en unos instantes...\n";
 }
