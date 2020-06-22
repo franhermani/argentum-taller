@@ -6,9 +6,8 @@ IdManager::IdManager() : actual_player_id(1), actual_npc_id(1),
 actual_item_id(1) {}
 
 const int IdManager::addPlayerByUsername(const std::string &username) {
-    // TODO: descomentar esto cuando se haga el issue 35
-//    if (username_ids.find(username) != username_ids.end())
-//        throw DuplicatedUsernameException();
+    if (username_ids.find(username) != username_ids.end())
+        throw DuplicatedUsernameException();
 
     if (actual_player_id == USHRT_MAX)
         throw NoMoreAvailableIdsException();
