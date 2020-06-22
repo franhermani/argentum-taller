@@ -41,14 +41,18 @@ int GameRender::init() {
     return success;
 }
 
-void GameRender::createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix) {
+void GameRender::createNecessaryTerrains(
+        std::vector<std::vector<Terrain>>& matrix) {
     for (int i=0; i < blocksHeight; i++) {
-        for(int j=0; j < blocksWidth; j++){
-            if (terrainSurfacesMap.find(matrix[i][j]) == terrainSurfacesMap.end()) {
-                if (terrainSurfacesPaths.find(matrix[i][j]) == terrainSurfacesPaths.end()) {
+        for (int j=0; j < blocksWidth; j++){
+            if (terrainSurfacesMap.find(matrix[i][j])
+                    == terrainSurfacesMap.end()) {
+                if (terrainSurfacesPaths.find(matrix[i][j])
+                        == terrainSurfacesPaths.end()) {
                     continue;
                 }
-                Surface *surface = new Surface(terrainSurfacesPaths[matrix[i][j]], window);
+                Surface *surface = new Surface(
+                        terrainSurfacesPaths[matrix[i][j]], window);
                 terrainSurfacesMap.insert({matrix[i][j], surface});
             }
         }
@@ -64,12 +68,15 @@ void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
 
 
 void GameRender::createNecessaryNpcs(std::vector<npc_pos>& npc_positions) {
-    for(auto& elem:npc_positions) {
-        if (npcSurfacesMap.find(elem.npc_name) == npcSurfacesMap.end()) {
-            if (npcSurfacesPaths.find(elem.npc_name) == npcSurfacesPaths.end()) {
+    for (auto& elem:npc_positions) {
+        if (npcSurfacesMap.find(elem.npc_name)
+                == npcSurfacesMap.end()) {
+            if (npcSurfacesPaths.find(elem.npc_name)
+                    == npcSurfacesPaths.end()) {
                 continue;
             }
-            Surface* surface = new Surface(npcSurfacesPaths[elem.npc_name], window);
+            Surface* surface = new Surface(
+                    npcSurfacesPaths[elem.npc_name], window);
             npcSurfacesMap.insert({elem.npc_name, surface});
         }
     }
@@ -82,20 +89,24 @@ void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
     createNecessaryNpcs(npc_positions);
     for (auto it = std::begin(npc_positions);
     it != std::end(npc_positions); ++it) {
-        window.renderNpc(it->x, it->y, npcSurfacesMap.at(it->npc_name));
+        window.renderNpc(it->x, it->y,
+                npcSurfacesMap.at(it->npc_name));
     }
     window.UpdateWindowSurface();
 }
 
 void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
-    for(auto& player:players) {
+    for (auto& player:players) {
         int race = player.race_type;
         int orientation = player.orientation;
-        if (playerSurfacesMap[race].find(orientation) == playerSurfacesMap[race].end()) {
-            if (playerSurfacesPaths[race].find(orientation) == playerSurfacesPaths[race].end()) {
+        if (playerSurfacesMap[race].find(orientation)
+                == playerSurfacesMap[race].end()) {
+            if (playerSurfacesPaths[race].find(orientation)
+                    == playerSurfacesPaths[race].end()) {
                 continue;
             }
-            Surface* surface = new Surface(playerSurfacesPaths[race][orientation], window);
+            Surface* surface = new Surface(
+                    playerSurfacesPaths[race][orientation], window);
             playerSurfacesMap[race].insert({orientation, surface});
         }
     }
@@ -108,28 +119,32 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
-        window.renderNpc(it->pos_x, it->pos_y, playerSurfacesMap[it->race_type][it->orientation]);
+        window.renderNpc(it->pos_x, it->pos_y,
+                playerSurfacesMap[it->race_type][it->orientation]);
     }
     window.UpdateWindowSurface();
 }
 
 
 void GameRender::loadSurfacePaths() {
-    terrainSurfacesPaths = {{TERRAIN_WATER, "../client/resources/images/24082.png"},
-                            {TERRAIN_LAND, "../client/resources/images/24086.png"},
-                            {TERRAIN_GRASS, "../client/resources/images/24083.png"},
-                            {TERRAIN_SAND, "../client/resources/images/24086.png"},
-                            {TERRAIN_STONE, "../client/resources/images/12013.png"},
-                            {TERRAIN_WALL, "../client/resources/images/12017.png"},
-                            {TERRAIN_OUT_OF_BOUNDARIES, "../client/resources/images/12050.png"}};
-    npcSurfacesPaths = {{WARRIOR_UP, "../client/resources/images/tipito_sube.png"},
-                        {WARRIOR_DOWN, "../client/resources/images/tipito_baja.png"},
-                        {WARRIOR_LEFT, "../client/resources/images/tipito_izq.png"},
-                        {WARRIOR_RIGHT, "../client/resources/images/tipito_der.png"},
-                        {SKELETON_UP, "../client/resources/images/esqueleto_sube.png"},
-                        {SKELETON_DOWN, "../client/resources/images/esqueleto_baja.png"},
-                        {SKELETON_LEFT, "../client/resources/images/esqueleto_izq.png"},
-                        {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
+    terrainSurfacesPaths = {
+            {TERRAIN_WATER, "../client/resources/images/24082.png"},
+            {TERRAIN_LAND, "../client/resources/images/24086.png"},
+            {TERRAIN_GRASS, "../client/resources/images/24083.png"},
+            {TERRAIN_SAND, "../client/resources/images/24086.png"},
+            {TERRAIN_STONE, "../client/resources/images/12013.png"},
+            {TERRAIN_WALL, "../client/resources/images/12017.png"},
+            {TERRAIN_OUT_OF_BOUNDARIES,
+             "../client/resources/images/12050.png"}};
+    npcSurfacesPaths = {
+            {WARRIOR_UP, "../client/resources/images/tipito_sube.png"},
+            {WARRIOR_DOWN, "../client/resources/images/tipito_baja.png"},
+            {WARRIOR_LEFT, "../client/resources/images/tipito_izq.png"},
+            {WARRIOR_RIGHT, "../client/resources/images/tipito_der.png"},
+            {SKELETON_UP, "../client/resources/images/esqueleto_sube.png"},
+            {SKELETON_DOWN, "../client/resources/images/esqueleto_baja.png"},
+            {SKELETON_LEFT, "../client/resources/images/esqueleto_izq.png"},
+            {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
 
     std::map<int, std::string> human_orientations = {
             {UP, "../client/resources/images/human_up.png"},
@@ -169,7 +184,6 @@ void GameRender::loadSurfacePaths() {
                            {ELF, elf_surfaces},
                            {DWARF, dwarf_surfaces},
                            {GNOME, gnome_surfaces}};
-
 }
 
 void GameRender::setTilesSize(int width,int height) {

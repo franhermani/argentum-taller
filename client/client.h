@@ -27,7 +27,6 @@ public:
 
     // Desconecta al cliente del servidor
     void disconnectFromServer();
-
 };
 
 #endif // CLIENT_H

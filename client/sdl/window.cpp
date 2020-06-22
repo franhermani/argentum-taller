@@ -5,13 +5,14 @@
 #include "window.h"
 #include "exception.h"
 
-SDLWindow::SDLWindow(const int screenWidth, const int screenHeight): screenHeight(screenHeight), screenWidth(screenWidth){
+SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
+                screenHeight(screenHeight), screenWidth(screenWidth){
     int s;
     if ((s = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)))
         throw SDLException("Error al inicializar SDL", SDL_GetError());
 
     if ((s = SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
-                                         SDL_RENDERER_ACCELERATED, &window, &renderer)))
+            SDL_RENDERER_ACCELERATED, &window, &renderer)))
         throw SDLException("Error al crear la ventana", SDL_GetError());
 }
 
@@ -67,8 +68,6 @@ void SDLWindow::renderNpc(int x, int y, Surface* character_surface) {
 
 void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
                               std::map<Terrain, Surface*>& surfaces_map) {
-
-
     for (int y=0; y < numberOfTilesInHeight; y++) {
         for (int x=0; x < numberOfTilesInWidth; x++) {
             SDL_Rect stretchRect;
@@ -91,10 +90,12 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
             }*/
             if (surfaces_map.find(matrix[y][x]) != surfaces_map.end()) {
                 SDL_BlitScaled(surfaces_map.at(matrix[y][x])->
-                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+                        getRenderableSurface(), NULL,
+                        getSurface(), &stretchRect);
             } else {
                 SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER)->
-                        getRenderableSurface(), NULL, getSurface(), &stretchRect);
+                        getRenderableSurface(), NULL,
+                        getSurface(), &stretchRect);
             }
         }
     }
@@ -102,11 +103,9 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
 
 int SDLWindow::getXPixelPos(int x_tile_position) {
     return x_tile_position*xWidthTileSize;
-
 }
 int SDLWindow::getYPixelPos(int y_tile_position) {
     return y_tile_position*yHeightTileSize;
-
 }
 
 
