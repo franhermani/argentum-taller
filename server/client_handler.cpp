@@ -1,5 +1,5 @@
+#include <vector>
 #include <utility>
-#include <iostream>
 #include <chrono>
 #include "client_handler.h"
 
@@ -22,14 +22,17 @@ ClientHandler::~ClientHandler() {
 void ClientHandler::run() {
     using ms = std::chrono::milliseconds;
 
-    // Recibo el username
-    std::string username = clientReceiver->receiveUsername();
+    // Recibo la info del player
+    std::vector<char> info = clientReceiver->receivePlayerInfo();
+    int race_type = info[0], class_type = info[1];
+    std::string username(info.begin() + 2, info.end());
 
     // Agrego el ID del player al manager
     int id = gameManager.addIdByUsername(username);
 
     // Creo el player
-    player = new Player(*gameManager.world, *gameManager.equations, id, 1, 2);
+    player = new Player(*gameManager.world, *gameManager.equations,
+            id, race_type, class_type);
 
     // Agrego el player al world
     gameManager.addPlayerToWorld(player);
@@ -46,7 +49,6 @@ void ClientHandler::run() {
     while (true) {
         // TODO: preguntar si esta bien este sleep
         std::this_thread::sleep_for(ms(COMMUNICATION_WAIT_TIME));
-
         if (clientReceiver->isDead() || clientSender->isDead()) {
             isRunning = false;
             break;

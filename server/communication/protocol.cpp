@@ -11,7 +11,7 @@
 
 ServerProtocol::ServerProtocol(Socket& socket) : socket(socket) {}
 
-const std::string ServerProtocol::receiveUsername() {
+const std::vector<char> ServerProtocol::receivePlayerInfo() {
     std::vector<char> arguments;
     char buffer1[BYTE_SIZE];
     socket.receiveBytes(buffer1, BYTE_SIZE);
@@ -20,12 +20,16 @@ const std::string ServerProtocol::receiveUsername() {
     arguments.resize(length);
     socket.receiveBytes(arguments.data(), arguments.size());
 
-    std::string username(arguments.begin(), arguments.end());
-
-    if (debug)
-        std::cout << "Recibido el username " << username << "\n";
-
-    return username;
+    if (debug) {
+        std::cout << "Raza recibida: " << (int) arguments[0] << "\n";
+        std::cout << "Clase recibida: " << (int) arguments[1] << "\n";
+        std::cout << "Username recibido: ";
+        size_t i;
+        for (i = 2; i < arguments.size(); i ++)
+            std::cout << arguments[i];
+        std::cout << "\n";
+    }
+    return arguments;
 }
 
 Command* ServerProtocol::receiveCommand(Player& player) {
