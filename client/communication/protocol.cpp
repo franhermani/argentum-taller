@@ -4,9 +4,10 @@
 #include "protocol.h"
 #include "../../common/defines/debug.h"
 #include "../../common/defines/world_structs.h"
-#define SIZE_32 4
-#define SIZE_16 2
-#define SIZE_8 1
+
+#define SIZE_8      sizeof(uint8_t)
+#define SIZE_16     sizeof(uint16_t)
+#define SIZE_32     sizeof(uint32_t)
 #define STATIC_TERRAIN_PART_SIZE 6
 #define HEIGHT_PLUS_WIDTH_SIZE 4
 
@@ -24,20 +25,33 @@ void ClientProtocol::sendCommand(CommandDTO& command) {
     }
 }
 
-void ClientProtocol::sendUsername(const std::string& username) {
+void ClientProtocol::sendPlayerInfo(const std::string& username,
+        const uint8_t race_type, const uint8_t class_type) {
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + username.length();
+    size_t total_size = 3*SIZE_8 + username.length();
 
     // Vector serializado
     std::vector<char> byte_msg;
     byte_msg.resize(total_size);
 
     // Longitud del username
-    byte_msg[0] = username.length();
+    byte_msg[0] = 2*SIZE_8 + username.length();
+
+    // Raza
+    byte_msg[1] = race_type;
+
+    // Clase
+    byte_msg[2] = class_type;
 
     // Username
-    memcpy(&byte_msg[1], username.c_str(), username.length());
+    memcpy(&byte_msg[3], username.c_str(), username.length());
 
+    if (debug) {
+        std::cout << "Info del player enviada: ";
+        for (char& i : byte_msg)
+            printf("%02X ", (unsigned) (unsigned char) i);
+        std::cout << "\n";
+    }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 

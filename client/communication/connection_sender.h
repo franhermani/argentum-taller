@@ -28,9 +28,10 @@ public:
     // false en caso contrario
     bool isDead() override;
 
-    // Envia el username del cliente para que el server lo identifique
+    // Envia la informacion del player al server
     // Este metodo se llama antes de run()
-    void sendUsername(const std::string& username);
+    void sendPlayerInfo(const std::string& username, const uint8_t race_type,
+            const uint8_t class_type);
 };
 
 #endif // CONNECTION_SENDER_H

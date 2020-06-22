@@ -33,6 +33,7 @@ bool ConnectionSender::isDead() {
     return (! isRunning);
 }
 
-void ConnectionSender::sendUsername(const std::string& username) {
-    protocol.sendUsername(username);
+void ConnectionSender::sendPlayerInfo(const std::string &username,
+        const uint8_t race_type, const uint8_t class_type) {
+    protocol.sendPlayerInfo(username, race_type, class_type);
 }

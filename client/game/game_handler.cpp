@@ -4,10 +4,11 @@
 #include "game_handler.h"
 
 GameHandler::GameHandler(const char *host, const char *port,
-        const char *username) : socket(host, port, false),
+        const std::string& username, const uint8_t race_type,
+        const uint8_t class_type) : socket(host, port, false),
         gameRender(640*2, 480*2) {
     connectionSender = new ConnectionSender(socket, commandQueue);
-    connectionSender->sendUsername(username);
+    connectionSender->sendPlayerInfo(username, race_type, class_type);
     inputHandler = new GameInputHandler(commandQueue);
     connectionReceiver = new ConnectionReceiver(socket, gameRender);
 }

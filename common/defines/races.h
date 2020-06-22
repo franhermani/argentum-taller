@@ -7,7 +7,7 @@
 #define GNOME_STRING    "gnome"
 
 enum raceType {
-    HUMAN,
+    HUMAN = 1,
     ELF,
     DWARF,
     GNOME

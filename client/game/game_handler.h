@@ -23,7 +23,9 @@ class GameHandler {
 
 public:
     // Constructor
-    GameHandler(const char *host, const char *port, const char *username);
+    GameHandler(const char *host, const char *port,
+            const std::string& username, const uint8_t race_type,
+            const uint8_t class_type);
 
     // Constructor y asignacion por copia deshabilitados
     GameHandler(const GameHandler&) = delete;
