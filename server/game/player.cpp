@@ -20,8 +20,9 @@ actualExperience(0),
 isAlive(true),
 isMeditating(false),
 orientation(DOWN),
-bodyArmor(0),   // TODO: enum sin armadura
-headArmor(0),   // TODO: enum sin armadura
+armor(0),       // TODO: enum sin armadura
+helmet(0),      // TODO: enum sin casco
+shield(0),      // TODO: enum sin escudo
 weapon(0),      // TODO: enum sin arma
 maxLife(equations.eqMaxLife(*this)),
 actualLife(equations.eqInitialLife(*this)),
@@ -44,14 +45,6 @@ actualGold(equations.eqInitialGold(*this)) {
         "- Mana inicial: " << actualMana << "\n" <<
         "- Oro maximo: " << maxGold << "\n" <<
         "- Oro actual: " << actualGold << "\n";
-
-        long exp1 = equations.eqExperienceLimit(*this),
-             exp2 = equations.eqExperienceAttack(*this, *this),
-             exp3 = equations.eqExperienceKill(*this, *this);
-
-        std::cout << "Limite de experiencia: " << exp1 << "\n" <<
-                  "Experiencia por ataque: " << exp2 << "\n" <<
-                  "Experiencia por matar: " << exp3 << "\n";
     }
 }
 
@@ -141,12 +134,18 @@ void Player::moveTo(int direction) {
 }
 
 void Player::heal() {
+    if (! isAlive)
+        return;
+
     actualLife = maxLife;
     actualMana = maxMana;
     isMeditating = false;
 }
 
 void Player::revive() {
+    if (isAlive)
+        return;
+
     actualLife = maxLife;
     isAlive = true;
     isMeditating = false;
@@ -154,4 +153,22 @@ void Player::revive() {
 
 void Player::meditate() {
     isMeditating = (isAlive && classType != WARRIOR);
+}
+
+// TODO: contemplar NPCs
+void Player::attack(int enemy_id_type, int enemy_id) {
+    Player* other = world.getPlayerById(enemy_id);
+    if (! other || ! other->isAlive)
+        return;
+
+    int damage_caused = other->receiveAttack(equations.eqAttackDamage(*this));
+    equations.eqExperienceAttack(*this, *other, damage_caused);
+
+    if (! other->isAlive) equations.eqExperienceKill(*this, *other);
+}
+
+const int Player::receiveAttack(const int damage) {
+    int damage_received = equations.eqDamageReceived(*this, damage);
+    subtractLife(damage_received);
+    return damage_received;
 }

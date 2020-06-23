@@ -1,6 +1,7 @@
 #ifndef CLIENT_PROTOCOL_H
 #define CLIENT_PROTOCOL_H
 
+#include <vector>
 #include <string>
 #include "../../common/socket.h"
 #include "../data_transfer_objects/command_dto.h"
@@ -25,15 +26,20 @@ public:
     // Recibe el codigo de confirmacion del server por el username enviado
     const int receiveUsernameConfirmation();
 
+    // Recibe el id del username
+    const int receiveUsernameId();
+
+    // Recibe la vision del player medida en bloques (alto y ancho)
+    const std::vector<int> receiveBlocksAround();
+
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);
 
     //recibe desde el servidor un vector de Terrains
-    void initializeMap(GameRender& gameRender);
+    matrix_t receiveMatrix();
 
-    //recibe desde el servidor el mundo actual y
-    // se lo pasa a gamerender para mostrarlo
-    void receiveWorld(GameRender& gameRender);
-};
+    //recibe desde el servidor el mundo actual
+    world_t receiveWorld();
+    };
 
 #endif // CLIENT_PROTOCOL_H

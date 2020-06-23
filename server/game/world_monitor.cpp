@@ -33,6 +33,16 @@ const int WorldMonitor::getHeight() {
     return world.getHeight();
 }
 
+const int WorldMonitor::getPlayerWidth() {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getPlayerWidth();
+}
+
+const int WorldMonitor::getPlayerHeight() {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getPlayerHeight();
+}
+
 std::vector<Player*> WorldMonitor::getPlayersAround(Player &player) {
     std::unique_lock<std::mutex> lk(m);
     return world.getPlayersAround(player);

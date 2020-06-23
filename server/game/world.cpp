@@ -55,6 +55,14 @@ void World::removePlayer(int id) {
             players.erase(players.begin() + i);
 }
 
+const int World::getPlayerWidth() {
+    return playerWidth;
+}
+
+const int World::getPlayerHeight() {
+    return playerHeight;
+}
+
 std::vector<std::vector<Terrain>> World::getMatrix() const {
     return matrix;
 }
@@ -110,6 +118,14 @@ bool World::inCollision(int pos_x, int pos_y) {
     */
 
     return false;
+}
+
+Player* World::getPlayerById(const int id) {
+    for (auto& player : players)
+        if (player->id == id)
+            return player;
+
+    return nullptr;
 }
 
 // ------------------------------------------------ //

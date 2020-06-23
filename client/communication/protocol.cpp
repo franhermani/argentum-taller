@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <utility>
 #include <cstring>
 #include "protocol.h"
 #include "../../common/defines/debug.h"
@@ -10,6 +11,7 @@
 #define SIZE_32     sizeof(uint32_t)
 #define STATIC_TERRAIN_PART_SIZE 6
 #define HEIGHT_PLUS_WIDTH_SIZE 4
+
 
 ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 
@@ -49,6 +51,7 @@ void ClientProtocol::sendPlayerInfo(const std::string& username,
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
+
 const int ClientProtocol::receiveUsernameConfirmation() {
     std::vector<char> code;
     code.resize(SIZE_8);
@@ -56,14 +59,36 @@ const int ClientProtocol::receiveUsernameConfirmation() {
     return (int) code[0];
 }
 
-void ClientProtocol::initializeMap(GameRender& gameRender) {
+const int ClientProtocol::receiveUsernameId() {
+    std::vector<char> byte_msg;
+    uint16_t id;
+    byte_msg.resize(SIZE_16);
+    socket.receiveBytes(byte_msg.data(), SIZE_16);
+    memcpy(&id, byte_msg.data(), SIZE_16);
+    return ntohs(id);
+}
+
+const std::vector<int> ClientProtocol::receiveBlocksAround() {
+    std::vector<char> byte_msg;
+    std::vector<int> blocks;
+    byte_msg.resize(SIZE_16);
+    socket.receiveBytes(byte_msg.data(), SIZE_16);
+
+    blocks.resize(SIZE_16);
+    blocks.push_back(byte_msg[0]);
+    blocks.push_back(byte_msg[1]);
+
+    return blocks;
+}
+
+matrix_t ClientProtocol::receiveMatrix() {
     std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
     socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
     matrix_t m;
     int bytes_advanced = 0;
 
     uint16_t length;
-    memcpy(&length, matrix_data_buffer.data(), SIZE_16);
+    memcpy(&length, matrix_data_buffer.data()+bytes_advanced, SIZE_16);
     m.length = ntohs(length);
     bytes_advanced += SIZE_16;
 
@@ -76,29 +101,25 @@ void ClientProtocol::initializeMap(GameRender& gameRender) {
     memcpy(&height, matrix_data_buffer.data()+bytes_advanced, SIZE_16);
     m.height = ntohs(height);
 
-    gameRender.setTilesSize(m.width, m.height);
 
-    //TODO sacar a otra funcion. esta se hizo larga. una que haga la matriz
+
     int matrix_length = m.length-HEIGHT_PLUS_WIDTH_SIZE;
     std::vector<char> matrix_buffer(matrix_length,0);
     socket.receiveBytes(matrix_buffer.data(), matrix_length);
-    std::vector<std::vector<Terrain>> received_terrain;
-    received_terrain.resize(m.height);
+
+    std::vector<Terrain> terrains;
+    terrains.resize(m.height*m.width);
     int current_index = 0;
-    for (int i=0; i<m.height; i++) {
-        std::vector<Terrain> row;
-        row.resize(m.width);
-        received_terrain.push_back(row);
-        for (int j = 0; j < m.width; ++j) {
-            uint8_t terrain_type = (uint8_t) matrix_buffer[current_index];
-            received_terrain[i].push_back(static_cast<Terrain>(terrain_type));
-            ++current_index;
-        }
+    for (int i=0; i<m.height*m.width; i++) {
+        uint8_t terrain_type = (uint8_t) matrix_buffer[current_index];
+        terrains[i] = static_cast<Terrain>(terrain_type);
+        ++current_index;
     }
-    gameRender.renderTerrain(received_terrain);
+    m.terrains = terrains;
+    return std::move(m);
 }
 
-void ClientProtocol::receiveWorld(GameRender& gameRender) {
+world_t ClientProtocol::receiveWorld() {
     world_t w;
     std::vector<char> length_buffer(SIZE_16, 0);
     socket.receiveBytes(length_buffer.data(), SIZE_16);
@@ -167,15 +188,14 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
 
 
     std::cout << "\n\nrecibi esto: actual life: " <<
-    w.player_info.actual_life << " max life " <<
-            w.player_info.max_life
-              << " actual mana " <<
-              w.player_info.actual_mana << " max mana " <<
-              w.player_info.max_mana
-              << " actual gold " << w.player_info.actual_gold <<
-              " max gold " << w.player_info.max_gold
-              << " actual_experience " << w.player_info.actual_experience <<
-              " level " << w.player_info.level << "\n\n";
+                w.player_info.actual_life <<
+                " max life " << w.player_info.max_life
+              << " actual mana " << w.player_info.actual_mana
+              << " max mana " << w.player_info.max_mana
+              << " actual gold " << w.player_info.actual_gold
+              << " max gold " << w.player_info.max_gold
+              << " actual_experience " << w.player_info.actual_experience
+              << " level " << w.player_info.level << "\n\n";
 
     //recibimos inventario
     inventory_t inventory;
@@ -247,16 +267,17 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
 
         players[i] = player;
 
-        std::cout << "\n\nrecibi este player: id: " << player.id <<
-        " posx: " << player.pos_x << " posy: " << player.pos_y
-         << " is alive " << (int) player.is_alive << " orientation: "
-         << (int)player.orientation << " race type " <<
-         (int)player.race_type
-         << " class type " <<(int) player.class_type <<
-         " body armor " << player.body_armor << " head armor "
-         << player.head_armor
-         << " weapong " << player.weapon << "\n\n";
+        std::cout << "\n\nrecibi este player: id: " <<
+                    player.id << " posx: " << player.pos_x <<
+                    " posy: " << player.pos_y
+                  << " is alive " << (int) player.is_alive <<
+                  " orientation: "<< (int)player.orientation <<
+                  " race type " <<  (int)player.race_type
+                  << " class type " <<(int) player.class_type <<
+                  " body armor " << player.body_armor <<
+                  " head armor " << player.head_armor
+                  << " weapong " << player.weapon << "\n\n";
     }
     w.players = players;
-    gameRender.renderPlayers(w.players);
+    return std::move(w);
 }
