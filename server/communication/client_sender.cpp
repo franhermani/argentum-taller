@@ -12,26 +12,24 @@ ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
 void ClientSender::run() {
     using ms = std::chrono::milliseconds;
 
-    // TODO: todos estos send van dentro del try catch
+    try {
+        // Envio el ID para que el cliente lo almacene
+        protocol.sendUsernameId(*player);
 
-    // Envio el ID para que el cliente lo almacene
-    protocol.sendUsernameId(*player);
+        // Envio la vision para que el cliente sepa cuanto renderizar
+        protocol.sendBlocksAround(worldMonitor.getPlayerWidth(),
+                worldMonitor.getPlayerHeight());
 
-    // Envio la vision para que el cliente sepa cuanto renderizar
-    protocol.sendBlocksAround(worldMonitor.getPlayerWidth(),
-            worldMonitor.getPlayerHeight());
+        // Envio la matriz completa con todos los terrenos
+        protocol.sendMatrix(worldMonitor);
 
-    // Envio la matriz completa con todos los terrenos
-    protocol.sendMatrix(worldMonitor);
-
-    // Envio actualizaciones del mundo
-    while (keepRunning) {
-        try {
+        // Envio actualizaciones del mundo
+        while (keepRunning) {
             std::this_thread::sleep_for(ms(msPerSend));
             protocol.sendWorldAround(worldMonitor, *player);
-        } catch(SocketError&) {
-            break;
         }
+    } catch(SocketError&) {
+        // Do nothing
     }
     isRunning = false;
 }
