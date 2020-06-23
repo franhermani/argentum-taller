@@ -99,6 +99,19 @@ public:
 
     // Saca un item del inventario segun su posicion
     Item* removeItemFromInventory(const int pos);
+
+    // TODO: ver si recibir int o Item
+    // Asigna el enumType a 'armor'
+    void equipArmor(const int type);
+
+    // Asigna el enumType a 'helmet'
+    void equipHelmet(const int type);
+
+    // Asigna el enumType a 'shield'
+    void equipShield(const int type);
+
+    // Asigna el enumType a 'weapon'
+    void equipWeapon(const int type);
 };
 
 #endif // GAME_PLAYER_H

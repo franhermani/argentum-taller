@@ -185,3 +185,19 @@ void Player::addItemToInventory(Item* item) {
 Item* Player::removeItemFromInventory(const int pos) {
     return inventory->removeItem(pos);
 }
+
+void Player::equipArmor(const int type) {
+    armor = type;
+}
+
+void Player::equipHelmet(const int type) {
+    helmet = type;
+}
+
+void Player::equipShield(const int type) {
+    shield = type;
+}
+
+void Player::equipWeapon(const int type) {
+    weapon = type;
+}
