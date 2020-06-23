@@ -71,6 +71,7 @@ const std::vector<int> ClientProtocol::receiveBlocksAround() {
     byte_msg.resize(SIZE_16);
     socket.receiveBytes(byte_msg.data(), SIZE_16);
 
+    blocks.resize(SIZE_16);
     blocks.push_back(byte_msg[0]);
     blocks.push_back(byte_msg[1]);
 
