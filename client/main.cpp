@@ -60,7 +60,7 @@ const uint8_t readRaceType() {
                  "para tu personaje:\n";
     std::cout <<
               "1. Humanos: son una raza equilibrada\n" <<
-              "2. Elfos: son muy inteligentes y ágiles,"
+              "2. Elfos: son muy inteligentes y ágiles, "
               "pero de una constitución física frágil\n" <<
               "3. Enanos: son muy fuertes y resistentes, "
               "pero la agilidad no es lo suyo\n" <<
