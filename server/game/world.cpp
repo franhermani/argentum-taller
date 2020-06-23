@@ -120,6 +120,14 @@ bool World::inCollision(int pos_x, int pos_y) {
     return false;
 }
 
+Player* World::getPlayerById(const int id) {
+    for (auto& player : players)
+        if (player->id == id)
+            return player;
+
+    return nullptr;
+}
+
 // ------------------------------------------------ //
 // Metodos accedidos por WorldMonitor, Player y NPC //
 // ------------------------------------------------ //

@@ -7,5 +7,5 @@ AttackCommand::AttackCommand(Player& player, const uint8_t enemy_id_type,
 AttackCommand::~AttackCommand() = default;
 
 void AttackCommand::execute() {
-    // TODO: ...
+    player.attack(enemyIdType, enemyId);
 }

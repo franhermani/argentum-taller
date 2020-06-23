@@ -109,10 +109,10 @@ const long Equations::eqExperienceLimit(Player &player) {
     return experience;
 }
 
-const long Equations::eqExperienceAttack(Player &player, Player &other) {
+const long Equations::eqExperienceAttack(Player &player, Player &other,
+        const int damage) {
     json exp_params = configParams["player"]["experience"]["attack_eq"];
-    // TODO: ver de donde sacar 'damage' --> puede venir por parametro
-    int damage = 1, c1 = exp_params["c1"];
+    int c1 = exp_params["c1"];
     long experience = damage * std::max(other.level - player.level + c1, 0);
     return experience;
 }
@@ -127,9 +127,11 @@ const long Equations::eqExperienceKill(Player &player, Player &other) {
 }
 
 const int Equations::eqAttackDamage(Player &player) {
-    return 0;
+    // TODO: ...
+    return 1;
 }
 
-const int Equations::eqDamageReceived(Player &player) {
-    return 0;
+const int Equations::eqDamageReceived(Player &player, const int damage) {
+    // TODO: ...
+    return 1;
 }

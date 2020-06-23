@@ -77,6 +77,8 @@ public:
     // Determina si hay algun GameObject impenetrable en la posicion (x,y)
     bool inCollision(int pos_x, int pos_y);
 
+    Player* getPlayerById(const int id);
+
 
     // ------------------------------------------------ //
     // Metodos accedidos por WorldMonitor, Player y NPC //

@@ -79,6 +79,13 @@ public:
 
     // El player entra en estado de meditacion
     void meditate();
+
+    // Ataca a otro player o NPC segun su ID
+    void attack(const int enemy_id_type, const int enemy_id);
+
+    // Recibe el ataque de otro player o NPC
+    // Devuelve la cantidad de daño realmente recibido
+    const int receiveAttack(const int damage);
 };
 
 #endif // GAME_PLAYER_H

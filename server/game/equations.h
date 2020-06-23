@@ -58,8 +58,11 @@ public:
     const long eqExperienceLimit(Player& player);
 
     // Experiencia obtenida por ataque realizado
-    const long eqExperienceAttack(Player& player, Player& other);
-//    const long eqExperienceAttack(Player& player, NPC& npc);
+    const long eqExperienceAttack(Player& player, Player& other,
+            const int damage);
+
+//    const long eqExperienceAttack(Player& player, NPC& npc,
+//    const int damage);
 
     // Experiencia obtenida por matar a un enemigo
     const long eqExperienceKill(Player& player, Player& other);
@@ -69,7 +72,7 @@ public:
     const int eqAttackDamage(Player& player);
 
     // Daño recibido por ataque recibido (incluye la posibilidad de esquivarlo)
-    const int eqDamageReceived(Player& player);
+    const int eqDamageReceived(Player& player, const int damage);
 };
 
 #endif // EQUATIONS_H
