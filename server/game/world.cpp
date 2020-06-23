@@ -120,12 +120,16 @@ bool World::inCollision(int pos_x, int pos_y) {
     return false;
 }
 
-Player* World::getPlayerById(const int id) {
+Player* World::getPlayerById(const int id) const {
     for (auto& player : players)
         if (player->id == id)
             return player;
 
     return nullptr;
+}
+
+const int World::getInventoryLength() const {
+    return params.getConfigParams()["player"]["inventory"]["max_objects"];
 }
 
 // ------------------------------------------------ //

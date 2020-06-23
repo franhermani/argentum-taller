@@ -2,6 +2,7 @@
 #define GAME_PLAYER_H
 
 #include <string>
+#include "items/inventory.h"
 
 class World;
 class Equations;
@@ -31,7 +32,7 @@ class Player {
     int actualMana;
     int maxGold;
     int actualGold;
-//    Inventory inventory;
+    Inventory* inventory;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
@@ -66,7 +67,12 @@ public:
     Player(const Player& other) = delete;
     Player& operator=(const Player& other) = delete;
 
-    // TODO: ...
+    // Destructor
+    // Libera la memoria reservada para el inventario
+    ~Player();
+
+    // Recupera vida y mana con el paso del tiempo
+    // Recupera mana con el estado de meditacion
     void update(int ms);
 
     // Mueve el player segun la direccion dada
@@ -87,6 +93,12 @@ public:
     // Recibe el ataque de otro player o NPC
     // Devuelve la cantidad de daño realmente recibido
     const int receiveAttack(const int damage);
+
+    // Agrega un item al inventario
+    void addItemToInventory(Item* item);
+
+    // Saca un item del inventario segun su posicion
+    Item* removeItemFromInventory(const int pos);
 };
 
 #endif // GAME_PLAYER_H

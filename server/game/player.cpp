@@ -31,6 +31,7 @@ actualMana(equations.eqInitialMana(*this)),
 maxGold(equations.eqMaxSafeGold(*this)),
 actualGold(equations.eqInitialGold(*this)) {
     loadInitialPosition();
+    inventory = new Inventory(world.getInventoryLength());
 
     bool debug = true;
     if (debug) {
@@ -46,6 +47,10 @@ actualGold(equations.eqInitialGold(*this)) {
         "- Oro maximo: " << maxGold << "\n" <<
         "- Oro actual: " << actualGold << "\n";
     }
+}
+
+Player::~Player() {
+    delete inventory;
 }
 
 void Player::loadInitialPosition() {
@@ -171,4 +176,12 @@ const int Player::receiveAttack(const int damage) {
     int damage_received = equations.eqDamageReceived(*this, damage);
     subtractLife(damage_received);
     return damage_received;
+}
+
+void Player::addItemToInventory(Item* item) {
+    inventory->addItem(item);
+}
+
+Item* Player::removeItemFromInventory(const int pos) {
+    return inventory->removeItem(pos);
 }
