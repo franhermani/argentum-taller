@@ -209,10 +209,6 @@
         "arco_compuesto": {
           "min_damage": 4,
           "max_damage": 16
-        },
-        "armadura_cuero": {
-          "min_damage": 2,
-          "max_damage": 5
         }
       },
       "armor":{

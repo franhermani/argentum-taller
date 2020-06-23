@@ -157,8 +157,9 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
         w.players[i].orientation = players[i]->orientation;
         w.players[i].race_type = players[i]->raceType;
         w.players[i].class_type = players[i]->classType;
-        w.players[i].body_armor = players[i]->bodyArmor;
-        w.players[i].head_armor = players[i]->headArmor;
+        // TODO: renombrar estos y agregar 'shield'
+        w.players[i].body_armor = players[i]->armor;
+        w.players[i].head_armor = players[i]->helmet;
         w.players[i].weapon = players[i]->weapon;
     }
 

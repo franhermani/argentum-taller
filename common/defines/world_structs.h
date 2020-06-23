@@ -28,6 +28,7 @@ typedef struct {
     uint8_t orientation;        // Enum type de la orientacion
     uint8_t race_type;          // Enum type de la raza
     uint8_t class_type;         // Enum type de la clase
+    // TODO: renombrar estos y agregar 'shield'
     uint8_t body_armor;         // Enum type de la armadura o vestimenta
     uint8_t head_armor;         // Enum type del casco o sombrero
     uint8_t weapon;             // Enum type del arma

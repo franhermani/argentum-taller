@@ -21,9 +21,10 @@ class Player {
     bool isAlive;
     bool isMeditating;
     int orientation;
-    int bodyArmor;              // TODO: crear enum
-    int headArmor;              // TODO: crear enum
-    int weapon;                 // TODO: crear enum
+    int armor;              // TODO: crear enum
+    int helmet;             // TODO: crear enum
+    int shield;             // TODO: crear enum
+    int weapon;             // TODO: crear enum
     int maxLife;
     int actualLife;
     int maxMana;

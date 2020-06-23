@@ -20,8 +20,9 @@ actualExperience(0),
 isAlive(true),
 isMeditating(false),
 orientation(DOWN),
-bodyArmor(0),   // TODO: enum sin armadura
-headArmor(0),   // TODO: enum sin armadura
+armor(0),       // TODO: enum sin armadura
+helmet(0),      // TODO: enum sin casco
+shield(0),      // TODO: enum sin escudo
 weapon(0),      // TODO: enum sin arma
 maxLife(equations.eqMaxLife(*this)),
 actualLife(equations.eqInitialLife(*this)),
@@ -157,7 +158,7 @@ void Player::meditate() {
 // TODO: contemplar NPCs
 void Player::attack(int enemy_id_type, int enemy_id) {
     Player* other = world.getPlayerById(enemy_id);
-    if (! other->isAlive)
+    if (! other || ! other->isAlive)
         return;
 
     int damage_caused = other->receiveAttack(equations.eqAttackDamage(*this));
