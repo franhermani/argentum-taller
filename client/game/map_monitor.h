@@ -26,6 +26,12 @@ public:
     //actualiza el vector de jugadores y manda a renderizar
     void updateWorld(world_t receivedWorld);
 
+    //todo fix devolver referencia
+    std::vector<std::vector<Terrain>> getTerrains();
+
+    //todo fix devolver referencia
+    std::vector<player_t> getRenderablePlayers();
+
 };
 
 

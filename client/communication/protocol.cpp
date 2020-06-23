@@ -41,7 +41,7 @@ void ClientProtocol::sendUsername(const std::string& username) {
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
-matrix_t ClientProtocol::receiveMatrix(GameRender& gameRender) {
+matrix_t ClientProtocol::receiveMatrix() {
 
     std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
     socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
@@ -63,8 +63,6 @@ matrix_t ClientProtocol::receiveMatrix(GameRender& gameRender) {
     m.height = ntohs(height);
 
 
-    //TODO SACAR ESTO DE ACA
-    gameRender.setTilesSize(m.width, m.height);
 
 
     int matrix_length = m.length-HEIGHT_PLUS_WIDTH_SIZE;

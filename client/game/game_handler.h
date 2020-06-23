@@ -19,8 +19,8 @@ class GameHandler {
 
     // Receive related classes
     ConnectionReceiver* connectionReceiver;
-    GameRender gameRender;
     MapMonitor mapMonitor;
+    GameRender* gameRender;
 
 public:
     // Constructor

@@ -8,11 +8,10 @@
 
 class ConnectionReceiver : public Thread {
     ClientProtocol protocol;
-    GameRender& gameRender;
     MapMonitor& mapMonitor;
 public:
     // Constructor
-    explicit ConnectionReceiver(Socket& socket, GameRender& gameRender, MapMonitor& mapMonitor);
+    explicit ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor);
 
     // Constructor y asignacion por copia deshabilitados
     ConnectionReceiver(const ConnectionReceiver&) = delete;

@@ -25,7 +25,7 @@ public:
     void sendCommand(CommandDTO& command);
 
     //recibe desde el servidor un vector de Terrains
-    matrix_t receiveMatrix(GameRender& gameRender);
+    matrix_t receiveMatrix();
 
     //recibe desde el servidor el mundo actual y se lo pasa a gamerender para mostrarlo
     world_t receiveWorld();
