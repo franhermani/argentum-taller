@@ -12,13 +12,11 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor) :
 void ConnectionReceiver::run() {
     //en realidad esto de inicializar tambien deberia estar en un try
     matrix_t matrix = protocol.receiveMatrix();
-    std::cout << "\n\n YA RECIBI MATRIZ Y LA GUARDO\n\n";
-    mapMonitor.initializeMatrix(matrix);
+    mapMonitor.initializeMatrix(std::move(matrix));
     while (keepRunning) {
         try {
             world_t world = protocol.receiveWorld();
-            std::cout << "\n\n estoy updateando players\n\n";
-            mapMonitor.updateWorld(world);
+            mapMonitor.updateWorld(std::move(world));
         } catch(SocketError&) {
             break;
         }

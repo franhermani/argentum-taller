@@ -186,11 +186,9 @@ void GameRender::run() {
 
     using ms = std::chrono::milliseconds;
     std::this_thread::sleep_for(ms(500));
-    std::cout << "\n\n SOY RENDER Y PIDO MATRIZ\n\n";
     std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
     renderTerrain(terrains);
     while (keepRunning) {
-        std::cout << "\nsoy game render y voy a pedir players\n";
         std::vector<player_t> players = mapMonitor.getRenderablePlayers();
         renderPlayers(players);
     }

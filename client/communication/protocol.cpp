@@ -78,7 +78,7 @@ matrix_t ClientProtocol::receiveMatrix() {
         ++current_index;
     }
     m.terrains = terrains;
-    return m;
+    return std::move(m);
 
 }
 
@@ -234,5 +234,5 @@ world_t ClientProtocol::receiveWorld() {
 
     }
     w.players = players;
-    return w;
+    return std::move(w);
 }
