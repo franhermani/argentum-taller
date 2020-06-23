@@ -41,7 +41,7 @@ void ClientProtocol::sendUsername(const std::string& username) {
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
-void ClientProtocol::initializeMap(GameRender& gameRender) {
+matrix_t ClientProtocol::receiveMatrix(GameRender& gameRender) {
 
     std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
     socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
@@ -62,31 +62,29 @@ void ClientProtocol::initializeMap(GameRender& gameRender) {
     memcpy(&height, matrix_data_buffer.data()+bytes_advanced, SIZE_16);
     m.height = ntohs(height);
 
+
+    //TODO SACAR ESTO DE ACA
     gameRender.setTilesSize(m.width, m.height);
 
-    //TODO sacar a otra funcion. esta se hizo larga. una que haga la matriz
+
     int matrix_length = m.length-HEIGHT_PLUS_WIDTH_SIZE;
     std::vector<char> matrix_buffer(matrix_length,0);
     socket.receiveBytes(matrix_buffer.data(), matrix_length);
-    std::vector<std::vector<Terrain>> received_terrain;
-    received_terrain.resize(m.height);
-    int current_index = 0;
-    for (int i=0; i<m.height; i++) {
-        std::vector<Terrain> row;
-        row.resize(m.width);
-        received_terrain.push_back(row);
-        for (int j = 0; j < m.width; ++j) {
-            uint8_t terrain_type = (uint8_t) matrix_buffer[current_index];
-            received_terrain[i].push_back(static_cast<Terrain>(terrain_type));
-            ++current_index;
-        }
-    }
 
-    gameRender.renderTerrain(received_terrain);
+    std::vector<Terrain> terrains;
+    terrains.resize(m.height*m.width);
+    int current_index = 0;
+    for (int i=0; i<m.height*m.width; i++) {
+        uint8_t terrain_type = (uint8_t) matrix_buffer[current_index];
+        terrains[i] = static_cast<Terrain>(terrain_type);
+        ++current_index;
+    }
+    m.terrains = terrains;
+    return m;
 
 }
 
-void ClientProtocol::receiveWorld(GameRender& gameRender) {
+world_t ClientProtocol::receiveWorld() {
 
     world_t w;
     std::vector<char> length_buffer(SIZE_16, 0);
@@ -238,5 +236,5 @@ void ClientProtocol::receiveWorld(GameRender& gameRender) {
 
     }
     w.players = players;
-    gameRender.renderPlayers(w.players);
+    return w;
 }

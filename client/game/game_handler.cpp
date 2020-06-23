@@ -5,11 +5,12 @@
 
 GameHandler::GameHandler(const char *host, const char *port,
         const char *username) : socket(host, port, false),
-        gameRender(640*2, 480*2) {
+        gameRender(640*2, 480*2), mapMonitor() {
     connectionSender = new ConnectionSender(socket, commandQueue);
     connectionSender->sendUsername(username);
     inputHandler = new GameInputHandler(commandQueue);
-    connectionReceiver = new ConnectionReceiver(socket, gameRender);
+    //aca creo el mapa
+    connectionReceiver = new ConnectionReceiver(socket, gameRender, mapMonitor);
 }
 
 GameHandler::~GameHandler() {

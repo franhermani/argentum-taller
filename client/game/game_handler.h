@@ -20,6 +20,7 @@ class GameHandler {
     // Receive related classes
     ConnectionReceiver* connectionReceiver;
     GameRender gameRender;
+    MapMonitor mapMonitor;
 
 public:
     // Constructor
