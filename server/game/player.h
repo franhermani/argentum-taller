@@ -22,10 +22,10 @@ class Player {
     bool isAlive;
     bool isMeditating;
     int orientation;
-    int armor;              // TODO: crear enum
-    int helmet;             // TODO: crear enum
-    int shield;             // TODO: crear enum
-    int weapon;             // TODO: crear enum
+    int armor;              // TODO: usar clase Armor
+    int helmet;             // TODO: usar clase Helmet
+    int shield;             // TODO: usar clase Shield
+    int weapon;             // TODO: usar clase Weapon
     int maxLife;
     int actualLife;
     int maxMana;
@@ -100,16 +100,19 @@ public:
     // Saca un item del inventario segun su posicion
     Item* removeItemFromInventory(const int pos);
 
-    // TODO: ver si recibir int o Item
+    // TODO: recibir Armor
     // Asigna el enumType a 'armor'
     void equipArmor(const int type);
 
+    // TODO: recibir Helmet
     // Asigna el enumType a 'helmet'
     void equipHelmet(const int type);
 
+    // TODO: recibir Shield
     // Asigna el enumType a 'shield'
     void equipShield(const int type);
 
+    // TODO: recibir Weapon
     // Asigna el enumType a 'weapon'
     void equipWeapon(const int type);
 };
