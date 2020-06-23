@@ -1,7 +1,7 @@
 #ifndef SERVER_PROTOCOL_H
 #define SERVER_PROTOCOL_H
 
-#include <string>
+#include <vector>
 #include "../../common/socket.h"
 #include "../game/commands/command.h"
 #include "../game/world_monitor.h"
@@ -19,12 +19,21 @@ public:
     ServerProtocol(const ServerProtocol&) = delete;
     ServerProtocol& operator=(const ServerProtocol&) = delete;
 
-    // Recibe el username del cliente a traves del socket y lo devuelve
-    const std::string receiveUsername();
+    // Recibe la info del player del cliente a traves del socket
+    const std::vector<char> receivePlayerInfo();
 
     // Recibe un commandDTO del cliente a traves del socket
     // Llama al CommandFactory y devuelve una clase derivada de command
     Command* receiveCommand(Player& player);
+
+    // Envia un codigo de confirmacion del username al cliente
+    void sendUsernameConfirmation(int code);
+
+    // Envia el id del username para que el cliente lo almacene
+    void sendUsernameId(Player& player);
+
+    // Envia la vision del player medida en bloques (alto y ancho)
+    void sendBlocksAround(int width, int height);
 
     // Envia la matriz de terrenos a traves del socket
     void sendMatrix(WorldMonitor& world_monitor);

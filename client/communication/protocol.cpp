@@ -4,11 +4,13 @@
 #include "protocol.h"
 #include "../../common/defines/debug.h"
 #include "../../common/defines/world_structs.h"
-#define SIZE_32 4
-#define SIZE_16 2
-#define SIZE_8 1
+
+#define SIZE_8      sizeof(uint8_t)
+#define SIZE_16     sizeof(uint16_t)
+#define SIZE_32     sizeof(uint32_t)
 #define STATIC_TERRAIN_PART_SIZE 6
 #define HEIGHT_PLUS_WIDTH_SIZE 4
+
 
 ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 
@@ -24,21 +26,58 @@ void ClientProtocol::sendCommand(CommandDTO& command) {
     }
 }
 
-void ClientProtocol::sendUsername(const std::string& username) {
+void ClientProtocol::sendPlayerInfo(const std::string& username,
+                                    const uint8_t race_type, const uint8_t class_type) {
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + username.length();
+    size_t total_size = 3*SIZE_8 + username.length();
 
     // Vector serializado
     std::vector<char> byte_msg;
     byte_msg.resize(total_size);
 
     // Longitud del username
-    byte_msg[0] = username.length();
+    byte_msg[0] = 2*SIZE_8 + username.length();
+
+    // Raza
+    byte_msg[1] = race_type;
+
+    // Clase
+    byte_msg[2] = class_type;
 
     // Username
-    memcpy(&byte_msg[1], username.c_str(), username.length());
+    memcpy(&byte_msg[3], username.c_str(), username.length());
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
+}
+
+
+const int ClientProtocol::receiveUsernameConfirmation() {
+    std::vector<char> code;
+    code.resize(SIZE_8);
+    socket.receiveBytes(code.data(), SIZE_8);
+    return (int) code[0];
+}
+
+const int ClientProtocol::receiveUsernameId() {
+    std::vector<char> byte_msg;
+    uint16_t id;
+    byte_msg.resize(SIZE_16);
+    socket.receiveBytes(byte_msg.data(), SIZE_16);
+    memcpy(&id, byte_msg.data(), SIZE_16);
+    return ntohs(id);
+}
+
+const std::vector<int> ClientProtocol::receiveBlocksAround() {
+    std::vector<char> byte_msg;
+    std::vector<int> blocks;
+    byte_msg.resize(SIZE_16);
+    socket.receiveBytes(byte_msg.data(), SIZE_16);
+
+    blocks.resize(SIZE_16);
+    blocks.push_back(byte_msg[0]);
+    blocks.push_back(byte_msg[1]);
+
+    return blocks;
 }
 
 matrix_t ClientProtocol::receiveMatrix() {
@@ -49,7 +88,7 @@ matrix_t ClientProtocol::receiveMatrix() {
     int bytes_advanced = 0;
 
     uint16_t length;
-    memcpy(&length, matrix_data_buffer.data(), SIZE_16);
+    memcpy(&length, matrix_data_buffer.data()+bytes_advanced, SIZE_16);
     m.length = ntohs(length);
     bytes_advanced += SIZE_16;
 
@@ -63,8 +102,7 @@ matrix_t ClientProtocol::receiveMatrix() {
     m.height = ntohs(height);
 
 
-
-
+    
     int matrix_length = m.length-HEIGHT_PLUS_WIDTH_SIZE;
     std::vector<char> matrix_buffer(matrix_length,0);
     socket.receiveBytes(matrix_buffer.data(), matrix_length);
@@ -77,6 +115,7 @@ matrix_t ClientProtocol::receiveMatrix() {
         terrains[i] = static_cast<Terrain>(terrain_type);
         ++current_index;
     }
+
     m.terrains = terrains;
     return std::move(m);
 
@@ -227,9 +266,9 @@ world_t ClientProtocol::receiveWorld() {
         players[i] = player;
 
         std::cout << "\n\nrecibi este player: id: " << player.id << " posx: " << player.pos_x << " posy: " << player.pos_y
-         << " is alive " << (int) player.is_alive << " orientation: "<< (int)player.orientation << " race type " <<  (int)player.race_type
-         << " class type " <<(int) player.class_type << " body armor " << player.body_armor << " head armor " << player.head_armor
-         << " weapong " << player.weapon << "\n\n";
+                  << " is alive " << (int) player.is_alive << " orientation: "<< (int)player.orientation << " race type " <<  (int)player.race_type
+                  << " class type " <<(int) player.class_type << " body armor " << player.body_armor << " head armor " << player.head_armor
+                  << " weapong " << player.weapon << "\n\n";
 
 
     }

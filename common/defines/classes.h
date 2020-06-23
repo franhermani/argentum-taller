@@ -7,7 +7,7 @@
 #define WARRIOR_STRING  "warrior"
 
 enum classType {
-    MAGICIAN,
+    MAGICIAN = 1,
     CLERIC,
     PALADIN,
     WARRIOR

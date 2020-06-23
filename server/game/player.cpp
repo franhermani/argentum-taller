@@ -5,6 +5,7 @@
 #include "world.h"
 #include "equations.h"
 #include "../../common/defines/commands.h"
+#include "../../common/defines/classes.h"
 
 Player::Player(World& world, Equations& equations, const int id,
         const int race_type, const int class_type) :
@@ -19,8 +20,9 @@ actualExperience(0),
 isAlive(true),
 isMeditating(false),
 orientation(DOWN),
-bodyArmor(0),   // TODO: enum sin armadura
-headArmor(0),   // TODO: enum sin armadura
+armor(0),       // TODO: enum sin armadura
+helmet(0),      // TODO: enum sin casco
+shield(0),      // TODO: enum sin escudo
 weapon(0),      // TODO: enum sin arma
 maxLife(equations.eqMaxLife(*this)),
 actualLife(equations.eqInitialLife(*this)),
@@ -43,22 +45,14 @@ actualGold(equations.eqInitialGold(*this)) {
         "- Mana inicial: " << actualMana << "\n" <<
         "- Oro maximo: " << maxGold << "\n" <<
         "- Oro actual: " << actualGold << "\n";
-
-        int exp1 = equations.eqExperienceLimit(*this);
-        int exp2 = equations.eqExperienceAttack(*this, *this);
-        int exp3 = equations.eqExperienceKill(*this, *this);
-
-        std::cout << "Limite de experiencia: " << exp1 << "\n" <<
-                  "Experiencia por ataque: " << exp2 << "\n" <<
-                  "Experiencia por matar: " << exp3 << "\n";
     }
 }
 
 void Player::loadInitialPosition() {
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, world.getWidth()-1);
-    std::uniform_int_distribution<int> dist_y(0, world.getHeight()-1);
+    std::uniform_int_distribution<int> dist_x(0, world.getWidth() - 1);
+    std::uniform_int_distribution<int> dist_y(0, world.getHeight() - 1);
 
     int new_x = dist_x(mt), new_y = dist_y(mt);
     while (world.inCollision(new_x, new_y)) {
@@ -72,7 +66,7 @@ void Player::loadInitialPosition() {
 void Player::subtractLife(int life) {
     actualLife -= life;
     if (actualLife < 0) actualLife = 0;
-    if (actualLife == 0) isAlive = false;
+    if (actualLife == 0) die();
 }
 
 void Player::addLife(int life) {
@@ -91,6 +85,10 @@ void Player::addExperience(int exp) {
     // TODO: testear caso de subir mas de un nivel a la vez
     if (actualExperience >= equations.eqExperienceLimit(*this))
         level += 1;
+}
+
+void Player::die() {
+    isAlive = false;
 }
 
 void Player::update(int ms) {
@@ -136,17 +134,41 @@ void Player::moveTo(int direction) {
 }
 
 void Player::heal() {
+    if (! isAlive)
+        return;
+
     actualLife = maxLife;
     actualMana = maxMana;
     isMeditating = false;
 }
 
 void Player::revive() {
+    if (isAlive)
+        return;
+
     actualLife = maxLife;
     isAlive = true;
     isMeditating = false;
 }
 
 void Player::meditate() {
-    isMeditating = true;
+    isMeditating = (isAlive && classType != WARRIOR);
+}
+
+// TODO: contemplar NPCs
+void Player::attack(int enemy_id_type, int enemy_id) {
+    Player* other = world.getPlayerById(enemy_id);
+    if (! other || ! other->isAlive)
+        return;
+
+    int damage_caused = other->receiveAttack(equations.eqAttackDamage(*this));
+    equations.eqExperienceAttack(*this, *other, damage_caused);
+
+    if (! other->isAlive) equations.eqExperienceKill(*this, *other);
+}
+
+const int Player::receiveAttack(const int damage) {
+    int damage_received = equations.eqDamageReceived(*this, damage);
+    subtractLife(damage_received);
+    return damage_received;
 }

@@ -1,8 +1,8 @@
 #include <vector>
 #include <utility>
 #include "clients_acceptor.h"
-#include "client_receiver.h"
 #include "../../common/socket_accept_error.h"
+#include "../../common/defines/username_confirmation.h"
 
 ClientsAcceptor::ClientsAcceptor(const char *host, const char *port,
         GameManager& game_manager) : socket(host, port, true),
@@ -18,8 +18,12 @@ void ClientsAcceptor::run() {
             createClientHandler();
             startClientHandler();
             cleanDeadClientHandlers();
-        } catch(SocketAcceptError&) {
+        } catch (SocketAcceptError&) {
             break;
+        } catch (DuplicatedUsernameException&) {
+            // Do nothing
+        } catch (NoMoreAvailableIdsException&) {
+            // Do nothing
         }
     }
     isRunning = false;
@@ -37,8 +41,7 @@ bool ClientsAcceptor::isDead() {
 
 void ClientsAcceptor::createClientHandler() {
     Socket socket_client = socket.acceptClients();
-    clients.push_back(new ClientHandler(std::move(socket_client),
-            gameManager));
+    clients.push_back(new ClientHandler(std::move(socket_client),gameManager));
 }
 
 void ClientsAcceptor::startClientHandler() {

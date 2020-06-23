@@ -21,9 +21,10 @@ class Player {
     bool isAlive;
     bool isMeditating;
     int orientation;
-    int bodyArmor;              // TODO: crear enum
-    int headArmor;              // TODO: crear enum
-    int weapon;                 // TODO: crear enum
+    int armor;              // TODO: crear enum
+    int helmet;             // TODO: crear enum
+    int shield;             // TODO: crear enum
+    int weapon;             // TODO: crear enum
     int maxLife;
     int actualLife;
     int maxMana;
@@ -47,6 +48,9 @@ class Player {
     // Suma puntos de experiencia al player
     // Si llega al limite, sube de nivel
     void addExperience(int exp);
+
+    // Setea 'isAlive' en false
+    void die();
 
     friend class World;
     friend class Equations;
@@ -76,6 +80,13 @@ public:
 
     // El player entra en estado de meditacion
     void meditate();
+
+    // Ataca a otro player o NPC segun su ID
+    void attack(const int enemy_id_type, const int enemy_id);
+
+    // Recibe el ataque de otro player o NPC
+    // Devuelve la cantidad de daño realmente recibido
+    const int receiveAttack(const int damage);
 };
 
 #endif // GAME_PLAYER_H

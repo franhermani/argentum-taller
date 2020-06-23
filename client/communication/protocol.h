@@ -1,6 +1,7 @@
 #ifndef CLIENT_PROTOCOL_H
 #define CLIENT_PROTOCOL_H
 
+#include <vector>
 #include <string>
 #include "../../common/socket.h"
 #include "../data_transfer_objects/command_dto.h"
@@ -18,8 +19,18 @@ public:
     ClientProtocol(const ClientProtocol&) = delete;
     ClientProtocol& operator=(const ClientProtocol&) = delete;
 
-    // Envia el username a traves del socket
-    void sendUsername(const std::string& username);
+    // Envia la informacion del player a traves del socket
+    void sendPlayerInfo(const std::string& username, const uint8_t race_type,
+            const uint8_t class_type);
+
+    // Recibe el codigo de confirmacion del server por el username enviado
+    const int receiveUsernameConfirmation();
+
+    // Recibe el id del username
+    const int receiveUsernameId();
+
+    // Recibe la vision del player medida en bloques (alto y ancho)
+    const std::vector<int> receiveBlocksAround();
 
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);

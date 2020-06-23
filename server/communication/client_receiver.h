@@ -1,7 +1,7 @@
 #ifndef CLIENT_RECEIVER_H
 #define CLIENT_RECEIVER_H
 
-#include <string>
+#include <vector>
 #include "../../common/thread.h"
 #include "protocol.h"
 #include "../game/world_monitor.h"
@@ -30,9 +30,9 @@ public:
     // false en caso contrario
     bool isDead() override;
 
-    // Recibe el username del cliente para identificarlo
+    // Recibe la info del player del cliente
     // Este metodo se llama antes de run()
-    const std::string receiveUsername();
+    const std::vector<char> receivePlayerInfo();
 
     // Setea el atributo 'player'
     void setPlayer(Player* player);

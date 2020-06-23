@@ -1,4 +1,4 @@
-#include <string>
+#include <vector>
 #include "client_receiver.h"
 #include "../../common/socket_error.h"
 
@@ -29,8 +29,8 @@ bool ClientReceiver::isDead() {
     return (! isRunning);
 }
 
-const std::string ClientReceiver::receiveUsername() {
-    return protocol.receiveUsername();
+const std::vector<char> ClientReceiver::receivePlayerInfo() {
+    return protocol.receivePlayerInfo();
 }
 
 void ClientReceiver::setPlayer(Player* new_player) {

@@ -28,6 +28,7 @@ typedef struct {
     uint8_t orientation;        // Enum type de la orientacion
     uint8_t race_type;          // Enum type de la raza
     uint8_t class_type;         // Enum type de la clase
+    // TODO: renombrar estos y agregar 'shield'
     uint8_t body_armor;         // Enum type de la armadura o vestimenta
     uint8_t head_armor;         // Enum type del casco o sombrero
     uint8_t weapon;             // Enum type del arma
@@ -39,15 +40,15 @@ typedef struct {
 } inventory_t;
 
 typedef struct {
-    uint16_t actual_life;       // Vida actual
-    uint16_t max_life;          // Vida maxima
-    uint16_t actual_mana;       // Mana actual
-    uint16_t max_mana;          // Mana maxima
-    uint16_t actual_gold;       // Oro actual
-    uint16_t max_gold;          // Oro maximo
-    uint16_t level;             // Nivel
-    uint32_t actual_experience;        // Experiencia
-    inventory_t inventory;      // Inventario
+    uint16_t actual_life;           // Vida actual
+    uint16_t max_life;              // Vida maxima
+    uint16_t actual_mana;           // Mana actual
+    uint16_t max_mana;              // Mana maxima
+    uint16_t actual_gold;           // Oro actual
+    uint16_t max_gold;              // Oro maximo
+    uint16_t level;                 // Nivel
+    uint32_t actual_experience;     // Experiencia
+    inventory_t inventory;          // Inventario
 } player_info_t;
 
 typedef struct {
