@@ -8,7 +8,7 @@ public:
 
     // Ejecuta el comando
     // Metodo a definir por las clases derivadas
-    virtual void execute();
+    virtual void execute() = 0;
 };
 
 #endif // COMMAND_H

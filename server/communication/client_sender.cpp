@@ -12,6 +12,8 @@ ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
 void ClientSender::run() {
     using ms = std::chrono::milliseconds;
 
+    // TODO: todos estos send van dentro del try catch
+
     // Envio el ID para que el cliente lo almacene
     protocol.sendUsernameId(*player);
 
