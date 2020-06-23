@@ -6,21 +6,26 @@
 #include <map>
 #include <SDL2/SDL_image.h>
 #include "../sdl/window.h"
+#include "../../common/thread.h"
 #include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
+#include "map_monitor.h"
 
+
+//TODO MATAR ESTE STRUCT
 struct npc_pos {
     int x;
     int y;
     Npc npc_name;
 };
 
-class GameRender {
+class GameRender : public Thread{
     const int screenWidth;
     const int screenHeight;
     int blocksWidth;
     int blocksHeight;
+    MapMonitor& mapMonitor;
     SDLWindow window;
     // TODO arreglar private y public
     std::map<Terrain, Surface *> terrainSurfacesMap;
@@ -45,10 +50,21 @@ private:
 
 public:
     //Constructor
-    GameRender(const int screenWidth, const int screenHeight);
+    GameRender(const int screenWidth, const int screenHeight,
+            MapMonitor& mapMonitor);
 
     //Destructor
     ~GameRender();
+
+
+    void run() override;
+
+    // Setea la variable booleana 'keepRunning' en false
+    void stop() override;
+
+    // Devuelve true si el thread no esta corriendo o
+    // false en caso contrario
+    bool isDead() override;
 
     //Renderizador de pisos
     void renderTerrain(std::vector<std::vector<Terrain>> matrix);

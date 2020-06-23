@@ -2,6 +2,7 @@
 #include "game_render.h"
 #include <iostream>
 #include <exception>
+#include <chrono>
 #include <unistd.h>
 #include "../client.h"
 #include "../sdl/texture.h"
@@ -12,8 +13,10 @@
 #include "../../common/defines/races.h"
 
 
-GameRender::GameRender(const int screenWidth, const int screenHeight) :
+GameRender::GameRender(const int screenWidth, const int screenHeight,
+        MapMonitor& mapMonitor) :
                        screenWidth(screenWidth), screenHeight(screenHeight),
+                       mapMonitor(mapMonitor),
                        window(screenWidth, screenHeight) {
     init();
     loadSurfacePaths();
@@ -190,4 +193,23 @@ void GameRender::setTilesSize(int width,int height) {
     blocksWidth = width;
     blocksHeight = height;
     window.setTilesSize(width,height);
+}
+
+void GameRender::run() {
+    using ms = std::chrono::milliseconds;
+    std::this_thread::sleep_for(ms(500));
+    std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
+    renderTerrain(terrains);
+    while (keepRunning) {
+        std::vector<player_t> players = mapMonitor.getRenderablePlayers();
+        renderPlayers(players);
+    }
+}
+
+void GameRender::stop() {
+    keepRunning = false;
+}
+
+bool GameRender::isDead()  {
+    return (! isRunning);
 }

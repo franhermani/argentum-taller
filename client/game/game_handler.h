@@ -20,7 +20,8 @@ class GameHandler {
 
     // Receive related classes
     ConnectionReceiver* connectionReceiver;
-    GameRender gameRender;
+    MapMonitor mapMonitor;
+    GameRender* gameRender;
 
     // Hace el chequeo del username en el mismo constructor
     // Si hay un error, lanza la excepcion para que luego el main
