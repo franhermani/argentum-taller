@@ -14,7 +14,10 @@ class Equations {
     json configParams;
 
     // Devuelve un numero aleatorio entre 'a' y 'b'
-    double randomNumber(double a, double b);
+    const double randomNumber(const double a, const double b);
+
+    // Devuelve el promedio entre 'a' y 'b'
+    const double average(const double a, const double b);
 
 public:
     // Constructor

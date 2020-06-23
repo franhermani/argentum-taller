@@ -15,11 +15,15 @@ configParams(config_params) {
                    {PALADIN, PALADIN_STRING}, {WARRIOR, WARRIOR_STRING}};
 }
 
-double Equations::randomNumber(double a, double b) {
+const double Equations::randomNumber(const double a, const double b) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(a, b);
     return dist(mt);
+}
+
+const double Equations::average(const double a, const double b) {
+    return (a + b)/2;
 }
 
 const int Equations::eqMaxLife(Player &player) {
@@ -28,11 +32,12 @@ const int Equations::eqMaxLife(Player &player) {
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
-    int max_life = (int) race_params["constitution"] *
-                   (int) class_params["constitution"] *
-                   (int) race_params["life"] *
-                   (int) class_params["life"] *
-                   player.level;
+    double constitution = average(race_params["constitution"],
+                                  class_params["constitution"]);
+
+    int max_life = constitution * (int) race_params["life"] *
+                   (int) class_params["life"] * player.level;
+
     return max_life;
 }
 
@@ -55,11 +60,12 @@ const int Equations::eqMaxMana(Player &player) {
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
-    int max_mana = (int) race_params["intelligence"] *
-                   (int) class_params["intelligence"] *
-                   (int) race_params["mana"] *
-                   (int) class_params["mana"] *
-                   player.level;
+    double intelligence = average(race_params["intelligence"],
+                                  class_params["intelligence"]);
+
+    int max_mana = intelligence * (int) race_params["mana"] *
+                   (int) class_params["mana"] * player.level;
+
     return max_mana;
 }
 
@@ -82,10 +88,11 @@ const int Equations::eqManaMeditation(Player &player, int ms) {
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
 
-    int mana_recovery = (int) class_params["meditation"] *
-                        (int) race_params["intelligence"] *
-                        (int) class_params["intelligence"] *
-                        ms;
+    double intelligence = average(race_params["intelligence"],
+                                  class_params["intelligence"]);
+
+    int mana_recovery = (int) class_params["meditation"] * intelligence * ms;
+
     return mana_recovery;
 }
 
@@ -127,11 +134,35 @@ const long Equations::eqExperienceKill(Player &player, Player &other) {
 }
 
 const int Equations::eqAttackDamage(Player &player) {
-    // TODO: ...
-    return 1;
+    std::string race_type = races_map[player.raceType],
+            class_type = classes_map[player.classType];
+    json race_params = configParams["races"][race_type],
+            class_params = configParams["classes"][class_type];
+
+    double strength = average(race_params["strength"],
+                              class_params["strength"]);
+
+    int damage = strength;
+    // TODO: falta multiplicar por el daño del arma
+    return damage;
 }
 
 const int Equations::eqDamageReceived(Player &player, const int damage) {
-    // TODO: ...
+    std::string race_type = races_map[player.raceType],
+            class_type = classes_map[player.classType];
+    json race_params = configParams["races"][race_type],
+            class_params = configParams["classes"][class_type];
+
+    double agility = average(race_params["agility"], class_params["agility"]);
+
+    json dodge_params = configParams["player"]["defense"]["dodge_eq"];
+    double c1 = dodge_params["c1"], c2 = dodge_params["c2"],
+           c3 = dodge_params["c3"];
+
+    bool avoid_attack = pow(randomNumber(c1, c2), agility) < c3;
+    if (avoid_attack)
+        return 0;
+
+    // TODO: falta la ecuacion con armadura, escudo y casco
     return 1;
 }
