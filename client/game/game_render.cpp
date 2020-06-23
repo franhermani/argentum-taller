@@ -196,7 +196,6 @@ void GameRender::setTilesSize(int width,int height) {
 }
 
 void GameRender::run() {
-
     using ms = std::chrono::milliseconds;
     std::this_thread::sleep_for(ms(500));
     std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();

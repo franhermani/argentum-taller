@@ -38,9 +38,8 @@ public:
     //recibe desde el servidor un vector de Terrains
     matrix_t receiveMatrix();
 
-    //recibe desde el servidor el mundo actual y se lo pasa a gamerender para mostrarlo
+    //recibe desde el servidor el mundo actual
     world_t receiveWorld();
-
     };
 
 #endif // CLIENT_PROTOCOL_H

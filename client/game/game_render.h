@@ -50,7 +50,8 @@ private:
 
 public:
     //Constructor
-    GameRender(const int screenWidth, const int screenHeight, MapMonitor& mapMonitor);
+    GameRender(const int screenWidth, const int screenHeight,
+            MapMonitor& mapMonitor);
 
     //Destructor
     ~GameRender();

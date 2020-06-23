@@ -1,5 +1,6 @@
 
 #include "map.h"
+#include <vector>
 
 
 // constructor

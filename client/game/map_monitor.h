@@ -1,6 +1,7 @@
 
 #ifndef ARGENTUM_MAP_MONITOR_H
 #define ARGENTUM_MAP_MONITOR_H
+#include <vector>
 #include "map.h"
 #include <mutex>
 
@@ -9,6 +10,7 @@
 class MapMonitor {
     std::mutex m;
     Map map;
+
 public:
     // Constructor
     MapMonitor();
@@ -31,7 +33,6 @@ public:
 
     //todo fix devolver referencia
     std::vector<player_t> getRenderablePlayers();
-
 };
 
 

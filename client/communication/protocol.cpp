@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include <utility>
 #include <cstring>
 #include "protocol.h"
 #include "../../common/defines/debug.h"
@@ -27,7 +28,7 @@ void ClientProtocol::sendCommand(CommandDTO& command) {
 }
 
 void ClientProtocol::sendPlayerInfo(const std::string& username,
-                                    const uint8_t race_type, const uint8_t class_type) {
+        const uint8_t race_type, const uint8_t class_type) {
     // Longitud total
     size_t total_size = 3*SIZE_8 + username.length();
 
@@ -81,7 +82,6 @@ const std::vector<int> ClientProtocol::receiveBlocksAround() {
 }
 
 matrix_t ClientProtocol::receiveMatrix() {
-
     std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
     socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
     matrix_t m;
@@ -102,7 +102,7 @@ matrix_t ClientProtocol::receiveMatrix() {
     m.height = ntohs(height);
 
 
-    
+
     int matrix_length = m.length-HEIGHT_PLUS_WIDTH_SIZE;
     std::vector<char> matrix_buffer(matrix_length,0);
     socket.receiveBytes(matrix_buffer.data(), matrix_length);
@@ -115,14 +115,11 @@ matrix_t ClientProtocol::receiveMatrix() {
         terrains[i] = static_cast<Terrain>(terrain_type);
         ++current_index;
     }
-
     m.terrains = terrains;
     return std::move(m);
-
 }
 
 world_t ClientProtocol::receiveWorld() {
-
     world_t w;
     std::vector<char> length_buffer(SIZE_16, 0);
     socket.receiveBytes(length_buffer.data(), SIZE_16);
@@ -190,10 +187,15 @@ world_t ClientProtocol::receiveWorld() {
 
 
 
-    std::cout << "\n\nrecibi esto: actual life: " << w.player_info.actual_life << " max life " << w.player_info.max_life
-              << " actual mana " << w.player_info.actual_mana << " max mana " << w.player_info.max_mana
-              << " actual gold " << w.player_info.actual_gold << " max gold " << w.player_info.max_gold
-              << " actual_experience " << w.player_info.actual_experience << " level " << w.player_info.level << "\n\n";
+    std::cout << "\n\nrecibi esto: actual life: " <<
+                w.player_info.actual_life <<
+                " max life " << w.player_info.max_life
+              << " actual mana " << w.player_info.actual_mana
+              << " max mana " << w.player_info.max_mana
+              << " actual gold " << w.player_info.actual_gold
+              << " max gold " << w.player_info.max_gold
+              << " actual_experience " << w.player_info.actual_experience
+              << " level " << w.player_info.level << "\n\n";
 
     //recibimos inventario
     inventory_t inventory;
@@ -265,12 +267,16 @@ world_t ClientProtocol::receiveWorld() {
 
         players[i] = player;
 
-        std::cout << "\n\nrecibi este player: id: " << player.id << " posx: " << player.pos_x << " posy: " << player.pos_y
-                  << " is alive " << (int) player.is_alive << " orientation: "<< (int)player.orientation << " race type " <<  (int)player.race_type
-                  << " class type " <<(int) player.class_type << " body armor " << player.body_armor << " head armor " << player.head_armor
+        std::cout << "\n\nrecibi este player: id: " <<
+                    player.id << " posx: " << player.pos_x <<
+                    " posy: " << player.pos_y
+                  << " is alive " << (int) player.is_alive <<
+                  " orientation: "<< (int)player.orientation <<
+                  " race type " <<  (int)player.race_type
+                  << " class type " <<(int) player.class_type <<
+                  " body armor " << player.body_armor <<
+                  " head armor " << player.head_armor
                   << " weapong " << player.weapon << "\n\n";
-
-
     }
     w.players = players;
     return std::move(w);
