@@ -22,10 +22,10 @@ class Player {
     bool isAlive;
     bool isMeditating;
     int orientation;
+    int weapon;             // TODO: usar clase Weapon
     int armor;              // TODO: usar clase Armor
     int helmet;             // TODO: usar clase Helmet
     int shield;             // TODO: usar clase Shield
-    int weapon;             // TODO: usar clase Weapon
     int maxLife;
     int actualLife;
     int maxMana;

@@ -20,10 +20,10 @@ actualExperience(0),
 isAlive(true),
 isMeditating(false),
 orientation(DOWN),
+weapon(0),      // TODO: enum sin arma
 armor(0),       // TODO: enum sin armadura
 helmet(0),      // TODO: enum sin casco
 shield(0),      // TODO: enum sin escudo
-weapon(0),      // TODO: enum sin arma
 maxLife(equations.eqMaxLife(*this)),
 actualLife(equations.eqInitialLife(*this)),
 maxMana(equations.eqMaxMana(*this)),
