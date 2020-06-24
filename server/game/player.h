@@ -2,6 +2,11 @@
 #define GAME_PLAYER_H
 
 #include <string>
+#include "items/weapon.h"
+#include "items/armor.h"
+#include "items/helmet.h"
+#include "items/shield.h"
+#include "items/potion.h"
 #include "items/inventory.h"
 
 class World;
@@ -100,21 +105,20 @@ public:
     // Saca un item del inventario segun su posicion
     Item* removeItemFromInventory(const int pos);
 
-    // TODO: recibir Armor
-    // Asigna el enumType a 'armor'
-    void equipArmor(const int type);
+    // Asigna 'new_weapon' a 'weapon'
+    void equipWeapon(Weapon* new_weapon);
 
-    // TODO: recibir Helmet
-    // Asigna el enumType a 'helmet'
-    void equipHelmet(const int type);
+    // Asigna 'new_armor' a 'armor'
+    void equipArmor(Armor* new_armor);
 
-    // TODO: recibir Shield
-    // Asigna el enumType a 'shield'
-    void equipShield(const int type);
+    // Asigna 'new_helmet' a 'helmet'
+    void equipHelmet(Helmet* new_helmet);
 
-    // TODO: recibir Weapon
-    // Asigna el enumType a 'weapon'
-    void equipWeapon(const int type);
+    // Asigna el 'new_shield' a 'shield'
+    void equipShield(Shield* new_shield);
+
+    // Suma los puntos de vida y mana correspondientes segun la pocion
+    void equipPotion(Potion* new_potion);
 };
 
 #endif // GAME_PLAYER_H

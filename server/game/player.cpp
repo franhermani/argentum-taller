@@ -186,18 +186,24 @@ Item* Player::removeItemFromInventory(const int pos) {
     return inventory->removeItem(pos);
 }
 
-void Player::equipArmor(const int type) {
-    armor = type;
+void Player::equipWeapon(Weapon* new_weapon) {
+//    weapon = new_weapon;
 }
 
-void Player::equipHelmet(const int type) {
-    helmet = type;
+void Player::equipArmor(Armor* new_armor) {
+//    armor = new_armor;
 }
 
-void Player::equipShield(const int type) {
-    shield = type;
+void Player::equipHelmet(Helmet* new_helmet) {
+//    helmet = new_helmet;
 }
 
-void Player::equipWeapon(const int type) {
-    weapon = type;
+void Player::equipShield(Shield* new_shield) {
+//    shield = new_shield;
+}
+
+void Player::equipPotion(Potion *new_potion) {
+    addLife(new_potion->lifePoints);
+    addMana(new_potion->manaPoints);
+    delete new_potion;
 }
