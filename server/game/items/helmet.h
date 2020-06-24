@@ -4,9 +4,7 @@
 #include "item.h"
 
 class Helmet : public Item {
-    int type;
-    int minDefense;
-    int maxDefense;
+    int minDefense, maxDefense;
     bool isMagic;
 
     friend class Player;
@@ -14,8 +12,8 @@ class Helmet : public Item {
 
 public:
     // Constructor
-    Helmet(const int type,const int min_defense, const int max_defense,
-            bool is_magic);
+    Helmet(const int new_type, const int pos_x, const int pos_y,
+            const int min_defense, const int max_defense, bool is_magic);
 
     // Constructor y asignacion por copia deshabilitados
     Helmet(const Helmet& other) = delete;

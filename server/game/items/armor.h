@@ -4,16 +4,15 @@
 #include "item.h"
 
 class Armor : public Item {
-    int type;
-    int minDefense;
-    int maxDefense;
+    int minDefense, maxDefense;
 
     friend class Player;
     friend class ServerProtocol;
 
 public:
     // Constructor
-    Armor(const int type,const int min_defense, const int max_defense);
+    Armor(const int new_type, const int pos_x, const int pos_y,
+            const int min_defense, const int max_defense);
 
     // Constructor y asignacion por copia deshabilitados
     Armor(const Armor& other) = delete;

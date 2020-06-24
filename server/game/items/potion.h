@@ -4,16 +4,15 @@
 #include "item.h"
 
 class Potion : public Item {
-    int type;
-    int lifePoints;
-    int manaPoints;
+    int lifePoints, manaPoints;
 
     friend class Player;
     friend class ServerProtocol;
 
 public:
     // Constructor
-    Potion(const int type,const int life_points, const int mana_points);
+    Potion(const int new_type, const int pos_x, const int pos_y,
+            const int life_points, const int mana_points);
 
     // Constructor y asignacion por copia deshabilitados
     Potion(const Potion& other) = delete;
