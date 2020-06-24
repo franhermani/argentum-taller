@@ -120,6 +120,21 @@ bool World::inCollision(int pos_x, int pos_y) {
     return false;
 }
 
+void World::addItem(Item* item) {
+    items.push_back(item);
+}
+
+Item* World::removeItem(int pos_x, int pos_y) {
+    size_t i;
+    for (i = 0; i < items.size(); i ++)
+        if (items[i]->posX == pos_x && items[i]->posY == pos_y) {
+            Item* item = items[i];
+            items.erase(items.begin() + i);
+            return item;
+        }
+    return nullptr;
+}
+
 Player* World::getPlayerById(const int id) const {
     for (auto& player : players)
         if (player->id == id)

@@ -206,17 +206,9 @@ const int Player::receiveAttack(const int damage) {
     return damage_received;
 }
 
-void Player::addItemToInventory(Item* item) {
-    inventory.addItem(item);
-}
-
-Item* Player::removeItemFromInventory(const int pos) {
-    return inventory.removeItem(pos);
-}
-
 // TODO: testear esta funcion
 void Player::equipItemFromInventory(const int pos) {
-    Item* item = removeItemFromInventory(pos);
+    Item* item = inventory.removeItem(pos);
     if (typeid(item) == typeid(Weapon)) {
         equipWeapon(dynamic_cast<Weapon*>(item));
     } else if (typeid(item) == typeid(Armor)) {
@@ -230,6 +222,12 @@ void Player::equipItemFromInventory(const int pos) {
     }
 }
 
-void Player::dropItemFromInventoryToWorld(const int pos) {
+void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
+    Item* item = world.removeItem(pos_x, pos_y);
+    if (item) inventory.addItem(item);
+}
 
+void Player::dropItemFromInventoryToWorld(const int pos) {
+    Item* item = inventory.removeItem(pos);
+    if (item) world.addItem(item);
 }

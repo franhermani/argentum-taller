@@ -9,6 +9,8 @@ protected:
     // Actualiza la posicion (posX, posY) del item
     void updatePosition(const int new_x, const int new_y);
 
+    friend class World;
+
 public:
     // Destructor
     virtual ~Item();

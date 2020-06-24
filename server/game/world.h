@@ -12,6 +12,7 @@ class World {
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> impenetrableTerrains;
     std::vector<Player*> players;
+    std::vector<Item*> items;
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
 
@@ -74,8 +75,14 @@ public:
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     bool inMapBoundaries(int pos_x, int pos_y);
 
-    // Determina si hay algun GameObject impenetrable en la posicion (x,y)
+    // Determina si hay algun Player o NPC en la posicion (x,y)
     bool inCollision(int pos_x, int pos_y);
+
+    // Agrega un item al mundo
+    void addItem(Item* item);
+
+    // Remueve un item del mundo segun su pos (x,y)
+    Item* removeItem(int pos_x, int pos_y);
 
     Player* getPlayerById(const int id) const;
 

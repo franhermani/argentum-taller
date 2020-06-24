@@ -114,16 +114,13 @@ public:
     // Devuelve la cantidad de daño realmente recibido
     const int receiveAttack(const int damage);
 
-    // Agrega un item al inventario
-    void addItemToInventory(Item* item);
-
-    // Saca un item del inventario segun 'pos'
-    Item* removeItemFromInventory(const int pos);
-
     // Equipa un item del inventario segun 'pos'
     void equipItemFromInventory(const int pos);
 
-    // Tira un item del inventario al piso segun 'pos'
+    // Toma un item del mundo segun su pos (x,y) y lo guarda en el inventario
+    void takeItemFromWorldToInventory(const int pos_x, const int pos_y);
+
+    // Tira un item del inventario al mundo segun 'pos'
     void dropItemFromInventoryToWorld(const int pos);
 };
 
