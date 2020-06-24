@@ -10,6 +10,7 @@ class Helmet : public Item {
     bool isMagic;
 
     friend class Player;
+    friend class ServerProtocol;
 
 public:
     // Constructor

@@ -9,6 +9,7 @@ class Potion : public Item {
     int manaPoints;
 
     friend class Player;
+    friend class ServerProtocol;
 
 public:
     // Constructor

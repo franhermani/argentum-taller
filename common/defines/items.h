@@ -25,11 +25,14 @@ enum itemType {
 
     // Shield
     ESCUDO_TORTUGA,
-    ESCUDO_HIERRO
+    ESCUDO_HIERRO,
 
     // Potion
     LIFE_POTION,
-    MANA_POTION
+    MANA_POTION,
+
+    // No item equipped
+    NO_ITEM_EQUIPPED
 };
 
 #endif // ITEMS_H

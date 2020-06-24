@@ -27,16 +27,16 @@ class Player {
     bool isAlive;
     bool isMeditating;
     int orientation;
-    int weapon;             // TODO: usar clase Weapon
-    int armor;              // TODO: usar clase Armor
-    int helmet;             // TODO: usar clase Helmet
-    int shield;             // TODO: usar clase Shield
     int maxLife;
     int actualLife;
     int maxMana;
     int actualMana;
     int maxGold;
     int actualGold;
+    Weapon* weapon;
+    Armor* armor;
+    Helmet* helmet;
+    Shield* shield;
     Inventory* inventory;
 
     // Genera posiciones iniciales aleatorias para el player

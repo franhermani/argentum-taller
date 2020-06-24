@@ -9,6 +9,7 @@ class Shield : public Item {
     int maxDefense;
 
     friend class Player;
+    friend class ServerProtocol;
 
 public:
     // Constructor

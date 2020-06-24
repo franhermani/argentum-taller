@@ -20,10 +20,6 @@ actualExperience(0),
 isAlive(true),
 isMeditating(false),
 orientation(DOWN),
-weapon(0),      // TODO: enum sin arma
-armor(0),       // TODO: enum sin armadura
-helmet(0),      // TODO: enum sin casco
-shield(0),      // TODO: enum sin escudo
 maxLife(equations.eqMaxLife(*this)),
 actualLife(equations.eqInitialLife(*this)),
 maxMana(equations.eqMaxMana(*this)),
@@ -31,6 +27,10 @@ actualMana(equations.eqInitialMana(*this)),
 maxGold(equations.eqMaxSafeGold(*this)),
 actualGold(equations.eqInitialGold(*this)) {
     loadInitialPosition();
+    weapon = nullptr;
+    armor = nullptr;
+    helmet = nullptr;
+    shield = nullptr;
     inventory = new Inventory(world.getInventoryLength());
 
     bool debug = true;
@@ -187,19 +187,19 @@ Item* Player::removeItemFromInventory(const int pos) {
 }
 
 void Player::equipWeapon(Weapon* new_weapon) {
-//    weapon = new_weapon;
+    weapon = new_weapon;
 }
 
 void Player::equipArmor(Armor* new_armor) {
-//    armor = new_armor;
+    armor = new_armor;
 }
 
 void Player::equipHelmet(Helmet* new_helmet) {
-//    helmet = new_helmet;
+    helmet = new_helmet;
 }
 
 void Player::equipShield(Shield* new_shield) {
-//    shield = new_shield;
+    shield = new_shield;
 }
 
 void Player::equipPotion(Potion *new_potion) {

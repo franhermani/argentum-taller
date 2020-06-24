@@ -2,6 +2,7 @@
 #include <vector>
 #include "protocol.h"
 #include "../../common/defines/world_structs.h"
+#include "../../common/defines/items.h"
 #include "../../common/defines/debug.h"
 
 #define BYTE_SIZE   1
@@ -158,9 +159,12 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
         w.players[i].race_type = players[i]->raceType;
         w.players[i].class_type = players[i]->classType;
         // TODO: renombrar estos y agregar 'shield'
-        w.players[i].body_armor = players[i]->armor;
-        w.players[i].head_armor = players[i]->helmet;
-        w.players[i].weapon = players[i]->weapon;
+        w.players[i].body_armor = players[i]->armor ?
+                players[i]->armor->type : NO_ITEM_EQUIPPED;
+        w.players[i].head_armor = players[i]->helmet ?
+                players[i]->helmet->type : NO_ITEM_EQUIPPED;
+        w.players[i].weapon = players[i]->weapon ?
+                players[i]->weapon->type : NO_ITEM_EQUIPPED;
     }
 
     // TODO: completar con npcs e items
