@@ -25,13 +25,13 @@ actualLife(equations.eqInitialLife(*this)),
 maxMana(equations.eqMaxMana(*this)),
 actualMana(equations.eqInitialMana(*this)),
 maxGold(equations.eqMaxSafeGold(*this)),
-actualGold(equations.eqInitialGold(*this)) {
+actualGold(equations.eqInitialGold(*this)),
+inventory(world.getInventoryLength()) {
     loadInitialPosition();
     weapon = nullptr;
     armor = nullptr;
     helmet = nullptr;
     shield = nullptr;
-    inventory = new Inventory(world.getInventoryLength());
 
     bool debug = true;
     if (debug) {
@@ -49,9 +49,11 @@ actualGold(equations.eqInitialGold(*this)) {
     }
 }
 
-Player::~Player() {
-    delete inventory;
-}
+Player::~Player() = default;
+
+// --------------- //
+// Private methods //
+// --------------- //
 
 void Player::loadInitialPosition() {
     std::random_device rd;
@@ -95,6 +97,32 @@ void Player::addExperience(int exp) {
 void Player::die() {
     isAlive = false;
 }
+
+void Player::equipWeapon(Weapon* new_weapon) {
+    weapon = new_weapon;
+}
+
+void Player::equipArmor(Armor* new_armor) {
+    armor = new_armor;
+}
+
+void Player::equipHelmet(Helmet* new_helmet) {
+    helmet = new_helmet;
+}
+
+void Player::equipShield(Shield* new_shield) {
+    shield = new_shield;
+}
+
+void Player::equipPotion(Potion *new_potion) {
+    addLife(new_potion->lifePoints);
+    addMana(new_potion->manaPoints);
+    delete new_potion;
+}
+
+// -------------- //
+// Public methods //
+// -------------- //
 
 void Player::update(int ms) {
     addLife(equations.eqLifeRecovery(*this, ms));
@@ -179,31 +207,29 @@ const int Player::receiveAttack(const int damage) {
 }
 
 void Player::addItemToInventory(Item* item) {
-    inventory->addItem(item);
+    inventory.addItem(item);
 }
 
 Item* Player::removeItemFromInventory(const int pos) {
-    return inventory->removeItem(pos);
+    return inventory.removeItem(pos);
 }
 
-void Player::equipWeapon(Weapon* new_weapon) {
-    weapon = new_weapon;
+// TODO: testear esta funcion
+void Player::equipItemFromInventory(const int pos) {
+    Item* item = removeItemFromInventory(pos);
+    if (typeid(item) == typeid(Weapon)) {
+        equipWeapon(dynamic_cast<Weapon*>(item));
+    } else if (typeid(item) == typeid(Armor)) {
+        equipArmor(dynamic_cast<Armor*>(item));
+    } else if (typeid(item) == typeid(Helmet)) {
+        equipHelmet(dynamic_cast<Helmet*>(item));
+    } else if (typeid(item) == typeid(Shield)) {
+        equipShield(dynamic_cast<Shield*>(item));
+    } else if (typeid(item) == typeid(Potion)) {
+        equipPotion(dynamic_cast<Potion*>(item));
+    }
 }
 
-void Player::equipArmor(Armor* new_armor) {
-    armor = new_armor;
-}
+void Player::dropItemFromInventoryToWorld(const int pos) {
 
-void Player::equipHelmet(Helmet* new_helmet) {
-    helmet = new_helmet;
-}
-
-void Player::equipShield(Shield* new_shield) {
-    shield = new_shield;
-}
-
-void Player::equipPotion(Potion *new_potion) {
-    addLife(new_potion->lifePoints);
-    addMana(new_potion->manaPoints);
-    delete new_potion;
 }

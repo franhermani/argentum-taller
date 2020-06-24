@@ -37,7 +37,7 @@ class Player {
     Armor* armor;
     Helmet* helmet;
     Shield* shield;
-    Inventory* inventory;
+    Inventory inventory;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
@@ -57,6 +57,21 @@ class Player {
 
     // Setea 'isAlive' en false
     void die();
+
+    // Asigna 'new_weapon' a 'weapon'
+    void equipWeapon(Weapon* new_weapon);
+
+    // Asigna 'new_armor' a 'armor'
+    void equipArmor(Armor* new_armor);
+
+    // Asigna 'new_helmet' a 'helmet'
+    void equipHelmet(Helmet* new_helmet);
+
+    // Asigna el 'new_shield' a 'shield'
+    void equipShield(Shield* new_shield);
+
+    // Suma los puntos de vida y mana correspondientes segun la pocion
+    void equipPotion(Potion* new_potion);
 
     friend class World;
     friend class Equations;
@@ -102,23 +117,14 @@ public:
     // Agrega un item al inventario
     void addItemToInventory(Item* item);
 
-    // Saca un item del inventario segun su posicion
+    // Saca un item del inventario segun 'pos'
     Item* removeItemFromInventory(const int pos);
 
-    // Asigna 'new_weapon' a 'weapon'
-    void equipWeapon(Weapon* new_weapon);
+    // Equipa un item del inventario segun 'pos'
+    void equipItemFromInventory(const int pos);
 
-    // Asigna 'new_armor' a 'armor'
-    void equipArmor(Armor* new_armor);
-
-    // Asigna 'new_helmet' a 'helmet'
-    void equipHelmet(Helmet* new_helmet);
-
-    // Asigna el 'new_shield' a 'shield'
-    void equipShield(Shield* new_shield);
-
-    // Suma los puntos de vida y mana correspondientes segun la pocion
-    void equipPotion(Potion* new_potion);
+    // Tira un item del inventario al piso segun 'pos'
+    void dropItemFromInventoryToWorld(const int pos);
 };
 
 #endif // GAME_PLAYER_H
