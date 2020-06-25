@@ -58,6 +58,9 @@ class Player {
     // Setea 'isAlive' en false
     void die();
 
+    // Setea 'isMeditating' en false
+    void stopMeditating();
+
     // Asigna 'new_weapon' a 'weapon'
     void equipWeapon(Weapon* new_weapon);
 
@@ -88,7 +91,7 @@ public:
     Player& operator=(const Player& other) = delete;
 
     // Destructor
-    // Libera la memoria reservada para el inventario
+    // Libera la memoria reservada para los items que esten equipados
     ~Player();
 
     // Recupera vida y mana con el paso del tiempo

@@ -4,6 +4,11 @@ Inventory::Inventory(const int num_items) {
     items.resize(num_items);
 }
 
+Inventory::~Inventory() {
+    for (auto& item : items)
+        delete item;
+}
+
 void Inventory::addItem(Item* item) {
     items.push_back(item);
 }

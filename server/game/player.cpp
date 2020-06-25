@@ -49,7 +49,12 @@ inventory(world.getInventoryLength()) {
     }
 }
 
-Player::~Player() = default;
+Player::~Player() {
+    delete weapon;
+    delete armor;
+    delete helmet;
+    delete shield;
+}
 
 // --------------- //
 // Private methods //
@@ -98,6 +103,10 @@ void Player::die() {
     isAlive = false;
 }
 
+void Player::stopMeditating() {
+    isMeditating = false;
+}
+
 void Player::equipWeapon(Weapon* new_weapon) {
     weapon = new_weapon;
 }
@@ -140,6 +149,8 @@ void Player::update(int ms) {
 }
 
 void Player::moveTo(int direction) {
+    stopMeditating();
+
     int new_x = posX, new_y = posY;
     switch (direction) {
         case LEFT:
@@ -163,25 +174,24 @@ void Player::moveTo(int direction) {
         posY = new_y;
     }
     orientation = direction;
-    isMeditating = false;
 }
 
 void Player::heal() {
-    if (! isAlive)
-        return;
+    stopMeditating();
+
+    if (! isAlive) return;
 
     actualLife = maxLife;
     actualMana = maxMana;
-    isMeditating = false;
 }
 
 void Player::revive() {
-    if (isAlive)
-        return;
+    stopMeditating();
+
+    if (isAlive) return;
 
     actualLife = maxLife;
     isAlive = true;
-    isMeditating = false;
 }
 
 void Player::meditate() {
@@ -190,8 +200,10 @@ void Player::meditate() {
 
 // TODO: contemplar NPCs
 void Player::attack(int enemy_id_type, int enemy_id) {
+    stopMeditating();
+
     Player* other = world.getPlayerById(enemy_id);
-    if (! other || ! other->isAlive)
+    if (! isAlive || ! other || ! other->isAlive)
         return;
 
     int damage_caused = other->receiveAttack(equations.eqAttackDamage(*this));
@@ -201,6 +213,8 @@ void Player::attack(int enemy_id_type, int enemy_id) {
 }
 
 const int Player::receiveAttack(const int damage) {
+    stopMeditating();
+
     int damage_received = equations.eqDamageReceived(*this, damage);
     subtractLife(damage_received);
     return damage_received;
@@ -208,6 +222,10 @@ const int Player::receiveAttack(const int damage) {
 
 // TODO: testear esta funcion
 void Player::equipItemFromInventory(const int pos) {
+    stopMeditating();
+
+    if (! isAlive) return;
+
     Item* item = inventory.removeItem(pos);
     if (typeid(item) == typeid(Weapon)) {
         equipWeapon(dynamic_cast<Weapon*>(item));
@@ -223,11 +241,19 @@ void Player::equipItemFromInventory(const int pos) {
 }
 
 void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
+    stopMeditating();
+
+    if (! isAlive) return;
+
     Item* item = world.removeItem(pos_x, pos_y);
     if (item) inventory.addItem(item);
 }
 
 void Player::dropItemFromInventoryToWorld(const int pos) {
+    stopMeditating();
+
+    if (! isAlive) return;
+
     Item* item = inventory.removeItem(pos);
     if (item) world.addItem(item);
 }

@@ -12,6 +12,12 @@ World::World(GameParams& params) : params(params) {
     loadMatrix();
 }
 
+World::~World() {
+    // TODO: delete npcs
+    for (auto& item : items)
+        delete item;
+}
+
 void World::loadImpenetrableTerrains() {
     impenetrableTerrains.insert(TERRAIN_WALL);
     impenetrableTerrains.insert(TERRAIN_WATER);

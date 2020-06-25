@@ -15,6 +15,10 @@ public:
     Inventory(const Inventory& other) = delete;
     Inventory& operator=(const Inventory& other) = delete;
 
+    // Destructor
+    // Libera la memoria reservada para los items que esten almacenados
+    ~Inventory();
+
     // Agrega un item al inventario
     void addItem(Item* item);
 

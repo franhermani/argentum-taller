@@ -33,6 +33,10 @@ public:
     World(const World& other) = delete;
     World& operator=(const World& other) = delete;
 
+    // Destructor
+    // Libera la memoria reservada para los items que esten en el mundo
+    ~World();
+
     // --------------------------------------------- //
     // Metodos accedidos por WorldMonitor unicamente //
     // --------------------------------------------- //
