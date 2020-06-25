@@ -58,7 +58,6 @@ void ClientHandler::run() {
     clientSender->start();
 
     while (true) {
-        // TODO: preguntar si esta bien este sleep
         std::this_thread::sleep_for(ms(COMMUNICATION_WAIT_TIME));
         if (clientReceiver->isDead() || clientSender->isDead()) {
             isRunning = false;

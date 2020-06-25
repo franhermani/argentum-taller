@@ -7,7 +7,6 @@
 class IdManager {
     int actual_player_id;
     int actual_npc_id;
-    int actual_item_id;
     std::map<std::string, int> username_ids;
 
 public:
@@ -19,12 +18,6 @@ public:
 
     // Agrega un NPC por ID y lo devuelve
     const int addNPCById();
-
-    // Agrega un Item por ID y lo devuelve
-    const int addItemById();
-
-    // Obtiene el ID de un Player por username
-    const int getPlayerId(const std::string& username);
 };
 
 #endif // ID_MANAGER_H
