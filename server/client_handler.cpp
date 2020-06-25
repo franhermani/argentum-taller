@@ -11,8 +11,8 @@ ClientHandler::ClientHandler(Socket socket_received,
         GameManager& game_manager) : socket(std::move(socket_received)),
         gameManager(game_manager) {
     isRunning = true;
-    clientReceiver = new ClientReceiver(socket,*gameManager.commandQueue);
-    clientSender = new ClientSender(socket, *gameManager.worldMonitor,
+    clientReceiver = new ClientReceiver(socket, gameManager.commandQueue);
+    clientSender = new ClientSender(socket, gameManager.worldMonitor,
             gameManager.msPerSend);
 
     checkUsername();
@@ -33,7 +33,7 @@ void ClientHandler::checkUsername() {
     try {
         int id = gameManager.addIdByUsername(username);
         clientSender->sendUsernameConfirmation(USERNAME_OK);
-        player = new Player(*gameManager.world, *gameManager.equations,
+        player = new Player(gameManager.world, gameManager.equations,
                             id, race_type, class_type);
     } catch (DuplicatedUsernameException&) {
         clientSender->sendUsernameConfirmation(USERNAME_DUPLICATED);
