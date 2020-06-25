@@ -9,6 +9,7 @@ class Weapon : public Item {
     bool isLongDistance, isMagic;
 
     friend class Player;
+    friend class Equations;
     friend class ServerProtocol;
 
 public:

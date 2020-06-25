@@ -7,6 +7,7 @@ class Armor : public Item {
     int minDefense, maxDefense;
 
     friend class Player;
+    friend class Equations;
     friend class ServerProtocol;
 
 public:

@@ -7,6 +7,7 @@ class Potion : public Item {
     int lifePoints, manaPoints;
 
     friend class Player;
+    friend class Equations;
     friend class ServerProtocol;
 
 public:

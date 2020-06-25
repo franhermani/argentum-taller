@@ -8,6 +8,7 @@ class Helmet : public Item {
     bool isMagic;
 
     friend class Player;
+    friend class Equations;
     friend class ServerProtocol;
 
 public:
