@@ -12,6 +12,12 @@ World::World(GameParams& params) : params(params) {
     loadMatrix();
 }
 
+World::~World() {
+    // TODO: delete npcs
+    for (auto& item : items)
+        delete item;
+}
+
 void World::loadImpenetrableTerrains() {
     impenetrableTerrains.insert(TERRAIN_WALL);
     impenetrableTerrains.insert(TERRAIN_WATER);
@@ -120,12 +126,31 @@ bool World::inCollision(int pos_x, int pos_y) {
     return false;
 }
 
-Player* World::getPlayerById(const int id) {
+void World::addItem(Item* item) {
+    items.push_back(item);
+}
+
+Item* World::removeItem(int pos_x, int pos_y) {
+    size_t i;
+    for (i = 0; i < items.size(); i ++)
+        if (items[i]->posX == pos_x && items[i]->posY == pos_y) {
+            Item* item = items[i];
+            items.erase(items.begin() + i);
+            return item;
+        }
+    return nullptr;
+}
+
+Player* World::getPlayerById(const int id) const {
     for (auto& player : players)
         if (player->id == id)
             return player;
 
     return nullptr;
+}
+
+const int World::getInventoryLength() const {
+    return params.getConfigParams()["player"]["inventory"]["max_objects"];
 }
 
 // ------------------------------------------------ //

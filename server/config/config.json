@@ -211,7 +211,7 @@
           "max_damage": 16
         }
       },
-      "armor":{
+      "armor": {
         "armadura_cuero": {
           "min_defense": 2,
           "max_defense": 6
@@ -223,7 +223,9 @@
         "tunica_azul": {
           "min_defense": 6,
           "max_defense": 10
-        },
+        }
+      },
+      "helmet": {
         "capucha": {
           "min_defense": 1,
           "max_defense": 4
@@ -232,6 +234,12 @@
           "min_defense": 4,
           "max_defense": 8
         },
+        "sombrero_magico": {
+          "min_defense": 4,
+          "max_defense": 12
+        }
+      },
+      "shield": {
         "escudo_tortuga": {
           "min_defense": 1,
           "max_defense": 2
@@ -239,10 +247,16 @@
         "escudo_hierro": {
           "min_defense": 1,
           "max_defense": 4
+        }
+      },
+      "potion": {
+        "life_potion": {
+          "life_recovery": 50,
+          "mana_recovery": 0
         },
-        "sombrero_magico": {
-          "min_defense": 4,
-          "max_defense": 12
+        "mana_potion": {
+          "life_recovery": 0,
+          "mana_recovery": 50
         }
       }
     }

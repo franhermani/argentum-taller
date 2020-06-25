@@ -34,10 +34,8 @@ const int Equations::eqMaxLife(Player &player) {
 
     double constitution = average(race_params["constitution"],
                                   class_params["constitution"]);
-
     int max_life = constitution * (int) race_params["life"] *
                    (int) class_params["life"] * player.level;
-
     return max_life;
 }
 
@@ -62,10 +60,8 @@ const int Equations::eqMaxMana(Player &player) {
 
     double intelligence = average(race_params["intelligence"],
                                   class_params["intelligence"]);
-
     int max_mana = intelligence * (int) race_params["mana"] *
                    (int) class_params["mana"] * player.level;
-
     return max_mana;
 }
 
@@ -90,9 +86,7 @@ const int Equations::eqManaMeditation(Player &player, int ms) {
 
     double intelligence = average(race_params["intelligence"],
                                   class_params["intelligence"]);
-
     int mana_recovery = (int) class_params["meditation"] * intelligence * ms;
-
     return mana_recovery;
 }
 
@@ -141,9 +135,8 @@ const int Equations::eqAttackDamage(Player &player) {
 
     double strength = average(race_params["strength"],
                               class_params["strength"]);
-
-    int damage = strength;
-    // TODO: falta multiplicar por el daño del arma
+    int damage = strength *
+            randomNumber(player.weapon->minDamage, player.weapon->maxDamage);
     return damage;
 }
 
@@ -154,7 +147,6 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
             class_params = configParams["classes"][class_type];
 
     double agility = average(race_params["agility"], class_params["agility"]);
-
     json dodge_params = configParams["player"]["defense"]["dodge_eq"];
     double c1 = dodge_params["c1"], c2 = dodge_params["c2"],
            c3 = dodge_params["c3"];
@@ -163,6 +155,10 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
     if (avoid_attack)
         return 0;
 
-    // TODO: falta la ecuacion con armadura, escudo y casco
-    return 1;
+    int defense =
+           randomNumber(player.armor->minDefense, player.armor->maxDefense) +
+           randomNumber(player.helmet->minDefense, player.helmet->maxDefense) +
+           randomNumber(player.shield->minDefense, player.shield->maxDefense);
+    int damage_received = std::max(damage - defense, 0);
+    return damage_received;
 }

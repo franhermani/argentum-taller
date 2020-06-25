@@ -2,6 +2,12 @@
 #define GAME_PLAYER_H
 
 #include <string>
+#include "items/weapon.h"
+#include "items/armor.h"
+#include "items/helmet.h"
+#include "items/shield.h"
+#include "items/potion.h"
+#include "items/inventory.h"
 
 class World;
 class Equations;
@@ -21,17 +27,17 @@ class Player {
     bool isAlive;
     bool isMeditating;
     int orientation;
-    int armor;              // TODO: crear enum
-    int helmet;             // TODO: crear enum
-    int shield;             // TODO: crear enum
-    int weapon;             // TODO: crear enum
     int maxLife;
     int actualLife;
     int maxMana;
     int actualMana;
     int maxGold;
     int actualGold;
-//    Inventory inventory;
+    Weapon* weapon;
+    Armor* armor;
+    Helmet* helmet;
+    Shield* shield;
+    Inventory inventory;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
@@ -52,6 +58,24 @@ class Player {
     // Setea 'isAlive' en false
     void die();
 
+    // Setea 'isMeditating' en false
+    void stopMeditating();
+
+    // Asigna 'new_weapon' a 'weapon'
+    void equipWeapon(Weapon* new_weapon);
+
+    // Asigna 'new_armor' a 'armor'
+    void equipArmor(Armor* new_armor);
+
+    // Asigna 'new_helmet' a 'helmet'
+    void equipHelmet(Helmet* new_helmet);
+
+    // Asigna el 'new_shield' a 'shield'
+    void equipShield(Shield* new_shield);
+
+    // Suma los puntos de vida y mana correspondientes segun la pocion
+    void equipPotion(Potion* new_potion);
+
     friend class World;
     friend class Equations;
     friend class ClientHandler;
@@ -66,7 +90,12 @@ public:
     Player(const Player& other) = delete;
     Player& operator=(const Player& other) = delete;
 
-    // TODO: ...
+    // Destructor
+    // Libera la memoria reservada para los items que esten equipados
+    ~Player();
+
+    // Recupera vida y mana con el paso del tiempo
+    // Recupera mana con el estado de meditacion
     void update(int ms);
 
     // Mueve el player segun la direccion dada
@@ -87,6 +116,15 @@ public:
     // Recibe el ataque de otro player o NPC
     // Devuelve la cantidad de daño realmente recibido
     const int receiveAttack(const int damage);
+
+    // Equipa un item del inventario segun 'pos'
+    void equipItemFromInventory(const int pos);
+
+    // Toma un item del mundo segun su pos (x,y) y lo guarda en el inventario
+    void takeItemFromWorldToInventory(const int pos_x, const int pos_y);
+
+    // Tira un item del inventario al mundo segun 'pos'
+    void dropItemFromInventoryToWorld(const int pos);
 };
 
 #endif // GAME_PLAYER_H
