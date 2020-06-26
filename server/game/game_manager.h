@@ -16,11 +16,12 @@ class ClientHandler;
 
 class GameManager : public Thread {
     JsonParser jsonParser;
-    GameParams* params;
-    Equations* equations;
-    World* world;
-    WorldMonitor* worldMonitor;
-    ProtectedQueue<Command*>* commandQueue;
+    File worldFile;
+    GameParams params;
+    Equations equations;
+    World world;
+    WorldMonitor worldMonitor;
+    ProtectedQueue<Command*> commandQueue;
     IdManager idManager;
     int msPerSend;
 
@@ -33,10 +34,6 @@ public:
     // Constructor y asignacion por copia deshabilitados
     GameManager(const GameManager& other) = delete;
     GameManager& operator=(const GameManager& other) = delete;
-
-    // Destructor
-    // Libera la memoria reservada para 'params', 'world' y para cada player
-    ~GameManager();
 
     // Game loop
     void run() override;
