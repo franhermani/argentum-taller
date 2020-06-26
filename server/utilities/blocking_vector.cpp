@@ -10,11 +10,16 @@ void BlockingVector::add(ClientHandler* client) {
     clients.push_back(client);
 }
 
-// TODO: cv.wait(lk);
+void BlockingVector::notifyClientsCleaner() {
+    cv.notify_all();
+}
+
 void BlockingVector::removeDeadClients() {
     std::unique_lock<std::mutex> lk(m);
+
     if (clients.empty()) return;
 
+    cv.wait(lk);
     std::vector<ClientHandler*> tmp;
     auto iter = clients.begin();
     for (; iter != clients.end(); ++iter) {

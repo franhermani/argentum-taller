@@ -1,4 +1,3 @@
-#include <vector>
 #include "clients_cleaner.h"
 
 ClientsCleaner::ClientsCleaner(BlockingVector& clients) :
@@ -8,12 +7,9 @@ clients(clients) {
 }
 
 void ClientsCleaner::run() {
-    /*
-    while (keepRunning) {
-        // TODO: sleep o CV
+    while (keepRunning)
         clients.removeDeadClients();
-    }
-     */
+
     isRunning = false;
 }
 

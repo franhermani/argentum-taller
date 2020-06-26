@@ -4,13 +4,16 @@
 #include <string>
 #include "../common/thread.h"
 #include "../common/socket.h"
+#include "game/game_manager.h"
 #include "communication/client_sender.h"
 #include "communication/client_receiver.h"
-#include "game/game_manager.h"
+
+class BlockingVector;
 
 class ClientHandler : public Thread {
     Socket socket;
     GameManager& gameManager;
+    BlockingVector& clients;
     ClientReceiver* clientReceiver;
     ClientSender* clientSender{};
     Player* player{};
@@ -23,7 +26,8 @@ class ClientHandler : public Thread {
 
 public:
     // Constructor
-    ClientHandler(Socket socket, GameManager& game_manager);
+    ClientHandler(Socket socket, GameManager& game_manager,
+            BlockingVector& clients);
 
     // Constructor y asignacion por copia deshabilitados
     ClientHandler(const ClientHandler&) = delete;

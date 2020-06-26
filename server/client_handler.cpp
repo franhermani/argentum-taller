@@ -2,14 +2,16 @@
 #include <utility>
 #include <chrono>
 #include "client_handler.h"
+#include "utilities/blocking_vector.h"
 #include "game/id_manager.h"
 #include "../common/defines/username_confirmation.h"
 
 #define COMMUNICATION_WAIT_TIME 1000
 
 ClientHandler::ClientHandler(Socket socket_received,
-        GameManager& game_manager) : socket(std::move(socket_received)),
-        gameManager(game_manager) {
+        GameManager& game_manager, BlockingVector& clients) :
+        socket(std::move(socket_received)), gameManager(game_manager),
+        clients(clients) {
     isRunning = true;
     clientReceiver = new ClientReceiver(socket, gameManager.commandQueue);
     clientSender = new ClientSender(socket, gameManager.worldMonitor,
@@ -64,6 +66,7 @@ void ClientHandler::run() {
             break;
         }
     }
+    clients.notifyClientsCleaner();
 }
 
 void ClientHandler::stop() {

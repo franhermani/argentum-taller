@@ -24,7 +24,7 @@ void ClientsAcceptor::run() {
             socket.listenToClients();
             Socket socket_client = socket.acceptClients();
             auto new_client = new ClientHandler(std::move(socket_client),
-                    gameManager);
+                    gameManager, clients);
             new_client->start();
             clients.add(new_client);
         } catch (SocketAcceptError&) {

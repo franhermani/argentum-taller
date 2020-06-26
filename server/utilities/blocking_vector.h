@@ -27,6 +27,9 @@ public:
     // Agrega un client handler al final del vector
     void add(ClientHandler* client);
 
+    // Notifica al client cleaner que un cliente se desconecto
+    void notifyClientsCleaner();
+
     // Remueve los dead client handlers del vector
     void removeDeadClients();
 
