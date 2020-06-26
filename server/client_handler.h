@@ -8,12 +8,12 @@
 #include "communication/client_sender.h"
 #include "communication/client_receiver.h"
 
-class BlockingVector;
+class ClientsBlockingVector;
 
 class ClientHandler : public Thread {
     Socket socket;
     GameManager& gameManager;
-    BlockingVector& clients;
+    ClientsBlockingVector& clients;
     ClientReceiver* clientReceiver;
     ClientSender* clientSender{};
     Player* player{};
@@ -27,7 +27,7 @@ class ClientHandler : public Thread {
 public:
     // Constructor
     ClientHandler(Socket socket, GameManager& game_manager,
-            BlockingVector& clients);
+            ClientsBlockingVector& clients);
 
     // Constructor y asignacion por copia deshabilitados
     ClientHandler(const ClientHandler&) = delete;

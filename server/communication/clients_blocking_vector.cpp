@@ -1,20 +1,20 @@
 #include <vector>
-#include "blocking_vector.h"
+#include "clients_blocking_vector.h"
 
-BlockingVector::BlockingVector() = default;
+ClientsBlockingVector::ClientsBlockingVector() = default;
 
-BlockingVector::~BlockingVector() = default;
+ClientsBlockingVector::~ClientsBlockingVector() = default;
 
-void BlockingVector::add(ClientHandler* client) {
+void ClientsBlockingVector::add(ClientHandler* client) {
     std::unique_lock<std::mutex> lk(m);
     clients.push_back(client);
 }
 
-void BlockingVector::notifyClientsCleaner() {
+void ClientsBlockingVector::notifyClientsCleaner() {
     cv.notify_all();
 }
 
-void BlockingVector::removeDeadClients() {
+void ClientsBlockingVector::removeDeadClients() {
     std::unique_lock<std::mutex> lk(m);
 
     if (clients.empty()) return;
@@ -34,7 +34,7 @@ void BlockingVector::removeDeadClients() {
     clients.swap(tmp);
 }
 
-void BlockingVector::joinClients() {
+void ClientsBlockingVector::joinClients() {
     std::unique_lock<std::mutex> lk(m);
     if (clients.empty()) return;
 

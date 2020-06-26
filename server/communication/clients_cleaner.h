@@ -3,14 +3,14 @@
 
 #include <vector>
 #include "../../common/thread.h"
-#include "../utilities/blocking_vector.h"
+#include "clients_blocking_vector.h"
 
 class ClientsCleaner : public Thread {
-    BlockingVector& clients;
+    ClientsBlockingVector& clients;
 
 public:
     // Constructor
-    explicit ClientsCleaner(BlockingVector& clients);
+    explicit ClientsCleaner(ClientsBlockingVector& clients);
 
     // Constructor y asignacion por copia deshabilitados
     ClientsCleaner(const ClientsCleaner&) = delete;

@@ -1,6 +1,6 @@
 #include "clients_cleaner.h"
 
-ClientsCleaner::ClientsCleaner(BlockingVector& clients) :
+ClientsCleaner::ClientsCleaner(ClientsBlockingVector& clients) :
 clients(clients) {
     keepRunning = true;
     isRunning = true;

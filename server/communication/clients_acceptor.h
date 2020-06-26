@@ -4,13 +4,13 @@
 #include <vector>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
-#include "../utilities/blocking_vector.h"
+#include "clients_blocking_vector.h"
 #include "clients_cleaner.h"
 #include "../game/game_manager.h"
 
 class ClientsAcceptor : public Thread {
     Socket socket;
-    BlockingVector clients;
+    ClientsBlockingVector clients;
     ClientsCleaner* clientsCleaner;
     GameManager& gameManager;
 

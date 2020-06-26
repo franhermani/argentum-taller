@@ -7,7 +7,7 @@
 
 #include "../client_handler.h"
 
-class BlockingVector {
+class ClientsBlockingVector {
 private:
     std::mutex m;
     std::condition_variable cv;
@@ -15,14 +15,15 @@ private:
 
 public:
     // Constructor
-    BlockingVector();
+    ClientsBlockingVector();
 
     // Constructor y asignacion por copia deshabilitados
-    BlockingVector(const BlockingVector& other) = delete;
-    BlockingVector& operator=(const BlockingVector& other) = delete;
+    ClientsBlockingVector(const ClientsBlockingVector& other) = delete;
+    ClientsBlockingVector& operator=(const ClientsBlockingVector& other)
+            = delete;
 
     // Destructor
-    ~BlockingVector();
+    ~ClientsBlockingVector();
 
     // Agrega un client handler al final del vector
     void add(ClientHandler* client);
