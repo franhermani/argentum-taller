@@ -15,6 +15,7 @@ void ClientsCleaner::run() {
 
 void ClientsCleaner::stop() {
     keepRunning = false;
+    clients.joinClients();
 }
 
 bool ClientsCleaner::isDead() {

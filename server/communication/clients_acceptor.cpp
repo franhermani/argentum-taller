@@ -38,7 +38,6 @@ void ClientsAcceptor::run() {
     isRunning = false;
     clientsCleaner->stop();
     clientsCleaner->join();
-    clients.joinClients();
 }
 
 void ClientsAcceptor::stop() {

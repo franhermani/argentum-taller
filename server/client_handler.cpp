@@ -12,6 +12,7 @@ ClientHandler::ClientHandler(Socket socket_received,
         GameManager& game_manager, ClientsBlockingVector& clients) :
         socket(std::move(socket_received)), gameManager(game_manager),
         clients(clients) {
+    keepRunning = true;
     isRunning = true;
     clientReceiver = new ClientReceiver(socket, gameManager.commandQueue);
     clientSender = new ClientSender(socket, gameManager.worldMonitor,
@@ -59,17 +60,17 @@ void ClientHandler::run() {
     clientReceiver->start();
     clientSender->start();
 
-    while (true) {
+    while (keepRunning) {
         std::this_thread::sleep_for(ms(COMMUNICATION_WAIT_TIME));
-        if (clientReceiver->isDead() || clientSender->isDead()) {
-            isRunning = false;
-            break;
-        }
+        if (clientReceiver->isDead() || clientSender->isDead())
+            keepRunning = false;
     }
+    isRunning = false;
     clients.notifyClientsCleaner();
 }
 
 void ClientHandler::stop() {
+    keepRunning = false;
     clientReceiver->stop();
     clientSender->stop();
     clientReceiver->join();
