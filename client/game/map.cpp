@@ -79,10 +79,10 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     y_start = y_player - playerVisionHeight/2;
     if (y_start < 0) y_start = 0;
 
-    x_finish = x_player + playerVisionWidth / 2;
-    if (x_finish >= matrix.width) x_finish = matrix.width - 1;
-    y_finish = y_player + playerVisionHeight / 2;
-    if (y_finish >= matrix.height) y_finish = matrix.height - 1 ;
+    x_finish = x_player + (playerVisionWidth / 2) +1;
+    if (x_finish >= matrix.width) x_finish = matrix.width;
+    y_finish = y_player + (playerVisionHeight / 2 ) +1;
+    if (y_finish >= matrix.height) y_finish = matrix.height;
 
     std::cout << "\n\nel player va a ver en x desde "<<x_start << " hasta " << x_finish
     << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "\n\n" << matrix.width;
