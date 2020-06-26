@@ -4,27 +4,15 @@
 #include <vector>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
-#include "../client_handler.h"
+#include "clients_blocking_vector.h"
+#include "clients_cleaner.h"
 #include "../game/game_manager.h"
 
 class ClientsAcceptor : public Thread {
     Socket socket;
-    std::vector<ClientHandler*> clients;
+    ClientsBlockingVector clients;
+    ClientsCleaner* clientsCleaner;
     GameManager& gameManager;
-
-    // Crea el thread del cliente
-    void createClientHandler();
-
-    // Inicializa el thread del cliente
-    void startClientHandler();
-
-    // Recorre el vector de clientes y elimina aquellos que ya finalizaron
-    // Libera la memoria reservada
-    void cleanDeadClientHandlers();
-
-    // Recorre el vector de clientes y espera a que finalicen
-    // Libera la memoria reservada
-    void joinClientHandlers();
 
 public:
     // Constructor
@@ -34,6 +22,10 @@ public:
     // Constructor y asignacion por copia deshabilitados
     ClientsAcceptor(const ClientsAcceptor&) = delete;
     ClientsAcceptor& operator=(const ClientsAcceptor&) = delete;
+
+    // Destructor
+    // Libera la memoria reservada para ClientsCleaner
+    ~ClientsAcceptor();
 
     // Acepta clientes, crea sus threads, los almacena en el vector 'clients'
     // y los pone a correr

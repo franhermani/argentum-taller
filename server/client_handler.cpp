@@ -2,14 +2,17 @@
 #include <utility>
 #include <chrono>
 #include "client_handler.h"
+#include "communication/clients_blocking_vector.h"
 #include "game/id_manager.h"
 #include "../common/defines/username_confirmation.h"
 
 #define COMMUNICATION_WAIT_TIME 1000
 
 ClientHandler::ClientHandler(Socket socket_received,
-        GameManager& game_manager) : socket(std::move(socket_received)),
-        gameManager(game_manager) {
+        GameManager& game_manager, ClientsBlockingVector& clients) :
+        socket(std::move(socket_received)), gameManager(game_manager),
+        clients(clients) {
+    keepRunning = true;
     isRunning = true;
     clientReceiver = new ClientReceiver(socket, gameManager.commandQueue);
     clientSender = new ClientSender(socket, gameManager.worldMonitor,
@@ -22,13 +25,15 @@ ClientHandler::~ClientHandler() {
     delete clientSender;
     delete clientReceiver;
     gameManager.removePlayerFromWorld(player->id);
+    gameManager.removeUsername(username);
     delete player;
 }
 
 void ClientHandler::checkUsername() {
     std::vector<char> info = clientReceiver->receivePlayerInfo();
     int race_type = info[0], class_type = info[1];
-    std::string username(info.begin() + 2, info.end());
+    std::string str(info.begin() + 2, info.end());
+    username = str;
 
     try {
         int id = gameManager.addIdByUsername(username);
@@ -57,16 +62,17 @@ void ClientHandler::run() {
     clientReceiver->start();
     clientSender->start();
 
-    while (true) {
+    while (keepRunning) {
         std::this_thread::sleep_for(ms(COMMUNICATION_WAIT_TIME));
-        if (clientReceiver->isDead() || clientSender->isDead()) {
-            isRunning = false;
-            break;
-        }
+        if (clientReceiver->isDead() || clientSender->isDead())
+            keepRunning = false;
     }
+    isRunning = false;
+    clients.notifyClientsCleaner();
 }
 
 void ClientHandler::stop() {
+    keepRunning = false;
     clientReceiver->stop();
     clientSender->stop();
     clientReceiver->join();

@@ -18,6 +18,9 @@ public:
 
     // Agrega un NPC por ID y lo devuelve
     const int addNPCById();
+
+    // Elimina 'username' del map
+    void removeUsername(const std::string& username);
 };
 
 #endif // ID_MANAGER_H
