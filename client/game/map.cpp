@@ -100,6 +100,7 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
         sub_matrix[current_column_index] = row;
         ++current_column_index;
     }
+
         /*
 
 

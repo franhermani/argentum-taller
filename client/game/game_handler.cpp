@@ -18,7 +18,7 @@ GameHandler::GameHandler(const char *host, const char *port,
     gameRender = new GameRender(640*2, 480*2, mapMonitor);
     //TODO SACAR ESTO DE ACA
     //TODO lo deberiamos setear al saber la vision del player
-    //gameRender->setTilesSize(10, 10);
+    gameRender->setTilesSize(21, 21);
 }
 
 GameHandler::~GameHandler() {

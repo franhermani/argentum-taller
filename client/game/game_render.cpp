@@ -51,9 +51,11 @@ int GameRender::init() {
 
 void GameRender::createNecessaryTerrains(
         std::vector<std::vector<Terrain>>& matrix) {
-    std::cout << "\n\n " <<matrix.size();
-    for (int i=0; i < blocksHeight; i++) {
-        for (int j=0; j < blocksWidth; j++){
+    std::cout << "\n\n " <<matrix.size() << "\n\n " << matrix[0].size() << "\n\n" ;
+    int height_size = matrix.size()-1;
+    int width_size = matrix[0].size()-1;
+    for (int i=0; i < height_size; i++) {
+        for (int j=0; j < width_size; j++){
             std::cout << "\n\n AHORA VOY A con i = " << i << "   , j ="<<j<<"\n\n";
             if (terrainSurfacesMap.find(matrix[i][j])
                     == terrainSurfacesMap.end()) {
@@ -67,6 +69,7 @@ void GameRender::createNecessaryTerrains(
             }
         }
     }
+    std::cout << "\n\n\n\n temrino create necesariy terrains\n\n\n";
 }
 
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {

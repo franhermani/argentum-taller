@@ -3,8 +3,7 @@
 #include "id_manager.h"
 #include "../../common/defines/username_confirmation.h"
 
-IdManager::IdManager() : actual_player_id(1), actual_npc_id(1),
-actual_item_id(1) {}
+IdManager::IdManager() : actual_player_id(1), actual_npc_id(1) {}
 
 const int IdManager::addPlayerByUsername(const std::string &username) {
     if (username_ids.find(username) != username_ids.end())
@@ -22,13 +21,5 @@ const int IdManager::addNPCById() {
         throw NoMoreAvailableIdsException();
 
     actual_npc_id ++;
-    return actual_npc_id;
-}
-
-const int IdManager::addItemById() {
-    if (actual_item_id == USHRT_MAX)
-        throw NoMoreAvailableIdsException();
-
-    actual_item_id ++;
     return actual_npc_id;
 }

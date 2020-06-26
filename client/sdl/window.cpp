@@ -68,8 +68,10 @@ void SDLWindow::renderNpc(int x, int y, Surface* character_surface) {
 
 void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
                               std::map<Terrain, Surface*>& surfaces_map) {
-    for (int y=0; y < numberOfTilesInHeight; y++) {
-        for (int x=0; x < numberOfTilesInWidth; x++) {
+    int height_size = matrix.size()-1;
+    int width_size = matrix[0].size()-1;
+    for (int y=0; y < height_size; y++) {
+        for (int x=0; x < width_size; x++) {
             SDL_Rect stretchRect;
             stretchRect.x = getXPixelPos(x);
             stretchRect.y = getYPixelPos(y);
