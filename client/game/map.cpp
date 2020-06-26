@@ -121,6 +121,11 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     std::cout << "\n\n\n\n\nahora te meto esto 6 \n\n\n\n "<<sub_matrix[3][2];
 
 
+    std::cout << "\n\n\n\n\n\np player pos x " << x_player << " -- player pos y "<<y_player << "\n";
+    std::cout << "\n estoy devolviendo para renderizar una matriz de "<< sub_matrix.size() << " por  " <<sub_matrix[0].size();
+    std::cout << "\n\nel player va a ver en x desde "<<x_start << " hasta " << x_finish
+              << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "  de la matriz original que es de " << matrix.width
+              << " por " <<matrix.height;
     return sub_matrix;
 
 }
@@ -131,8 +136,12 @@ std::vector<player_t> Map::getRenderablePlayers() {
     std::vector<player_t> visible_players = world.players;
     //traducimos posiciones a la vision del jugador
     for(auto& player: visible_players) {
+        std::cout << "\n hice traduccion de posicion x "<< player.pos_x;
         player.pos_x = xPosToUser(player.pos_x);
+        std::cout << " a la posicion " << player.pos_x;
+        std::cout << "\n hice traduccion de posicion y "<< player.pos_y;
         player.pos_y = yPosToUser(player.pos_y);
+        std::cout << " a la posicion " << player.pos_y;
     }
     return visible_players;
 }

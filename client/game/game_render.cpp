@@ -56,7 +56,6 @@ void GameRender::createNecessaryTerrains(
     int width_size = matrix[0].size()-1;
     for (int i=0; i < height_size; i++) {
         for (int j=0; j < width_size; j++){
-            std::cout << "\n\n AHORA VOY A con i = " << i << "   , j ="<<j<<"\n\n";
             if (terrainSurfacesMap.find(matrix[i][j])
                     == terrainSurfacesMap.end()) {
                 if (terrainSurfacesPaths.find(matrix[i][j])
@@ -214,9 +213,10 @@ void GameRender::run() {
 
     std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
     renderTerrain(terrains);
+    std::vector<player_t> players = mapMonitor.getRenderablePlayers();
+    renderPlayers(players);
     while (keepRunning) {
-        std::vector<player_t> players = mapMonitor.getRenderablePlayers();
-        renderPlayers(players);
+        //aca podriamos unirlos ambos para que tengan el mutex juntos y recibir bien
     }
 }
 
