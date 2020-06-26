@@ -17,7 +17,7 @@ GameHandler::GameHandler(const char *host, const char *port,
     inputHandler = new GameInputHandler(commandQueue);
     gameRender = new GameRender(640*2, 480*2, mapMonitor);
     //TODO SACAR ESTO DE ACA
-    gameRender->setTilesSize(10, 10);
+    gameRender->setTilesSize(30, 30);
 }
 
 GameHandler::~GameHandler() {
