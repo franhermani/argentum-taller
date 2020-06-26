@@ -7,17 +7,26 @@
 ClientsAcceptor::ClientsAcceptor(const char *host, const char *port,
         GameManager& game_manager) : socket(host, port, true),
         gameManager(game_manager) {
+    clientsCleaner = new ClientsCleaner(clients);
     keepRunning = true;
     isRunning = true;
 }
 
+ClientsAcceptor::~ClientsAcceptor() {
+    delete clientsCleaner;
+}
+
 void ClientsAcceptor::run() {
+    clientsCleaner->start();
+
     while (keepRunning) {
         try {
             socket.listenToClients();
-            createClientHandler();
-            startClientHandler();
-            cleanDeadClientHandlers();
+            Socket socket_client = socket.acceptClients();
+            auto new_client = new ClientHandler(std::move(socket_client),
+                    gameManager);
+            new_client->start();
+            clients.add(new_client);
         } catch (SocketAcceptError&) {
             break;
         } catch (DuplicatedUsernameException&) {
@@ -27,7 +36,9 @@ void ClientsAcceptor::run() {
         }
     }
     isRunning = false;
-    joinClientHandlers();
+    clientsCleaner->stop();
+    clientsCleaner->join();
+    clients.joinClients();
 }
 
 void ClientsAcceptor::stop() {
@@ -37,37 +48,4 @@ void ClientsAcceptor::stop() {
 
 bool ClientsAcceptor::isDead() {
     return (! isRunning);
-}
-
-void ClientsAcceptor::createClientHandler() {
-    Socket socket_client = socket.acceptClients();
-    clients.push_back(new ClientHandler(std::move(socket_client),gameManager));
-}
-
-void ClientsAcceptor::startClientHandler() {
-    clients.back()->start();
-}
-
-void ClientsAcceptor::cleanDeadClientHandlers() {
-    std::vector<ClientHandler*> tmp;
-    auto iter = clients.begin();
-    for (; iter != clients.end(); ++iter) {
-        if ((*iter)->isDead()) {
-            (*iter)->stop();
-            (*iter)->join();
-            delete (*iter);
-        } else {
-            tmp.push_back((*iter));
-        }
-    }
-    clients.swap(tmp);
-}
-
-void ClientsAcceptor::joinClientHandlers() {
-    size_t i;
-    for (i = 0; i < clients.size(); i ++) {
-        clients[i]->stop();
-        clients[i]->join();
-        delete clients[i];
-    }
 }

@@ -1,0 +1,26 @@
+#include <vector>
+#include "clients_cleaner.h"
+
+ClientsCleaner::ClientsCleaner(BlockingVector& clients) :
+clients(clients) {
+    keepRunning = true;
+    isRunning = true;
+}
+
+void ClientsCleaner::run() {
+    /*
+    while (keepRunning) {
+        // TODO: sleep o CV
+        clients.removeDeadClients();
+    }
+     */
+    isRunning = false;
+}
+
+void ClientsCleaner::stop() {
+    keepRunning = false;
+}
+
+bool ClientsCleaner::isDead() {
+    return (! isRunning);
+}
