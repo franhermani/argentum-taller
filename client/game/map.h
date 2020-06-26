@@ -7,9 +7,13 @@
 class Map {
     world_t world;
     matrix_t matrix;
+    int username_id;
+    std::vector<int> blocks_around;
     //TODO SETEAR ESTOS recibidos al principio
     int playerVisionWidth;
     int playerVisionHeight;
+    int xPosToUser(int x);
+    int yPosToUser(int y);
 public:
     // constructor
     Map();
@@ -17,7 +21,7 @@ public:
     ~Map();
 
     //inicializa matriz
-    void initializeMatrix(matrix_t receivedMatrix);
+    void initialize(int username_id, std::vector<int> blocks_around, matrix_t received_matrix);
 
     //actualiza el vector de jugadores y manda a renderizar
     void updateWorld(world_t receivedWorld);
@@ -25,6 +29,13 @@ public:
     std::vector<std::vector<Terrain>> getTerrains();
 
     std::vector<player_t> getRenderablePlayers();
+
+    int getPlayerVisionWidth();
+
+    int getPlayerVisionHeight();
+
+
+
 };
 
 

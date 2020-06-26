@@ -23,9 +23,9 @@ struct npc_pos {
 class GameRender : public Thread{
     const int screenWidth;
     const int screenHeight;
+    MapMonitor& mapMonitor;
     int blocksWidth;
     int blocksHeight;
-    MapMonitor& mapMonitor;
     SDLWindow window;
     // TODO arreglar private y public
     std::map<Terrain, Surface *> terrainSurfacesMap;

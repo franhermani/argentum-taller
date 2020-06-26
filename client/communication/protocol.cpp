@@ -75,10 +75,10 @@ const std::vector<int> ClientProtocol::receiveBlocksAround() {
     socket.receiveBytes(byte_msg.data(), SIZE_16);
 
     blocks.resize(SIZE_16);
-    blocks.push_back(byte_msg[0]);
-    blocks.push_back(byte_msg[1]);
+    blocks[0] = (int) byte_msg[0];
+    blocks[1] = (int) byte_msg[1];
 
-    return blocks;
+    return std::move(blocks);
 }
 
 matrix_t ClientProtocol::receiveMatrix() {

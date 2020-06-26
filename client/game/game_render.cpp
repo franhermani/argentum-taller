@@ -17,7 +17,12 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
                        screenWidth(screenWidth), screenHeight(screenHeight),
                        mapMonitor(mapMonitor),
+                       blocksWidth(21),
+                       blocksHeight(21),
                        window(screenWidth, screenHeight) {
+//    blocksWidth(mapMonitor.getPlayerVisionWidth()),
+//            blocksHeight(mapMonitor.getPlayerVisionHeight()),
+    window.setTilesSize(blocksWidth,blocksHeight);
     init();
     loadSurfacePaths();
 }
@@ -63,6 +68,7 @@ void GameRender::createNecessaryTerrains(
 }
 
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
+    std::cout << "\n\n ahora voy a renderizar\n\n";
     floor = matrix;
     createNecessaryTerrains(matrix);
     window.renderTerrain(matrix, terrainSurfacesMap);
@@ -198,6 +204,7 @@ void GameRender::setTilesSize(int width,int height) {
 void GameRender::run() {
     using ms = std::chrono::milliseconds;
     std::this_thread::sleep_for(ms(500));
+
     std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
     renderTerrain(terrains);
     while (keepRunning) {

@@ -11,10 +11,12 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor) :
 
 void ConnectionReceiver::run() {
     try {
-        protocol.receiveUsernameId();
-        protocol.receiveBlocksAround();
+
+        int username_id = protocol.receiveUsernameId();
+        std::vector<int> blocks_around = protocol.receiveBlocksAround();
         matrix_t matrix = protocol.receiveMatrix();
-        mapMonitor.initializeMatrix(std::move(matrix));
+        //TODO PASAR DISTINTO ESTO POR REF POR EJ
+        mapMonitor.initialize(username_id, blocks_around, std::move(matrix));
         while (keepRunning) {
             world_t world = protocol.receiveWorld();
             mapMonitor.updateWorld(std::move(world));

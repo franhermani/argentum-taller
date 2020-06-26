@@ -23,7 +23,7 @@ public:
     MapMonitor& operator=(const MapMonitor& other) = delete;
 
     //inicializa matriz
-    void initializeMatrix(matrix_t receivedMatrix);
+    void initialize(int username_id, std::vector<int> blocks_around, matrix_t received_matrix);
 
     //actualiza el vector de jugadores y manda a renderizar
     void updateWorld(world_t receivedWorld);
@@ -33,6 +33,9 @@ public:
 
     //todo fix devolver referencia
     std::vector<player_t> getRenderablePlayers();
+
+    int getPlayerVisionWidth();
+    int getPlayerVisionHeight();
 };
 
 
