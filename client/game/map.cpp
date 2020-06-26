@@ -79,6 +79,7 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     y_start = y_player - playerVisionHeight/2;
     if (y_start < 0) y_start = 0;
 
+    //TODO ojo con este +1 que es porque 9/2 da 4 y sino me morfo un pedazo
     x_finish = x_player + (playerVisionWidth / 2) +1;
     if (x_finish >= matrix.width) x_finish = matrix.width;
     y_finish = y_player + (playerVisionHeight / 2 ) +1;
