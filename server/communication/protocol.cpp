@@ -85,6 +85,7 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
 
     matrix_t m;
     m.length = htons(2 * SIZE_16 + matrix_length * SIZE_8);
+    //TODO HARDCODEO TEMPORAL PORQUE SE LEE 10 EN VE Z DE 100!!!!
     m.width = htons(width);
     m.height = htons(height);
 

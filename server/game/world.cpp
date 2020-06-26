@@ -1,3 +1,4 @@
+#include <iostream>
 #include "world.h"
 
 World::World(GameParams& params) : params(params) {
@@ -26,6 +27,7 @@ void World::loadImpenetrableTerrains() {
 void World::loadMatrix() {
     json js = params.getWorldParams()["layers"][0];
     auto terrains = js["data"];
+    std::cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\nesto es hegiht " << worldHeight << " esto es width "<< worldWidth;
 
     matrix.resize(worldHeight);
     int i, j, pos, terrain_type;

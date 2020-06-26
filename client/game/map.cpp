@@ -21,6 +21,7 @@ void Map::updateWorld(world_t receivedWorld) {
 
 void Map::initialize(int received_id, std::vector<int> blocks_around, matrix_t received_matrix) {
     matrix = received_matrix;
+    std::cout << "\n\n esta es la received height y width " << matrix.height << matrix.width;
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
@@ -71,8 +72,38 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     std::cout << "esto es lo que vale player pos x " << x_player << " y eso vale y player "<<y_player << "\n";
     std::cout<< "\n\n\n\n\n\n meto esto 3\n\n\n\n" ;
     sub_matrix.resize(playerVisionHeight);
+    int x_start, y_start, x_finish, y_finish;
 
-    int i, j, pos_x, pos_y;
+    x_start = x_player - playerVisionWidth/2;
+    if (x_start < 0) x_start = 0;
+    y_start = y_player - playerVisionHeight/2;
+    if (y_start < 0) y_start = 0;
+
+    x_finish = x_player + playerVisionWidth / 2;
+    if (x_finish >= matrix.width) x_finish = matrix.width - 1;
+    y_finish = y_player + playerVisionHeight / 2;
+    if (y_finish >= matrix.height) y_finish = matrix.height - 1 ;
+
+    std::cout << "\n\nel player va a ver en x desde "<<x_start << " hasta " << x_finish
+    << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "\n\n" << matrix.width;
+
+
+    int current_column_index = 0;
+    for (int i=x_start; i<x_finish; i++) {
+        std::vector<Terrain> row;
+        row.resize(playerVisionWidth);
+        int current_row_index = 0;
+        for (int j = y_start; j < y_finish; j++) {
+            row[current_row_index] = received_terrain[j][i];
+            ++current_row_index;
+        }
+        sub_matrix[current_column_index] = row;
+        ++current_column_index;
+    }
+        /*
+
+
+        int i, j, pos_x, pos_y;
     for (i=0; i<playerVisionHeight; i++) {
         std::vector<Terrain> row;
         row.resize(playerVisionWidth);
@@ -85,8 +116,8 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
             std::cout<< "\n\n\n\n\n\n meto esto 5edio\n\n\n\n";
         }
         sub_matrix[i] = row;
-    }
-    std::cout << "\n\n\n\n\nahora te meto esto 6 \n\n\n\n ";//<<sub_matrix[2][2];
+    }*/
+    std::cout << "\n\n\n\n\nahora te meto esto 6 \n\n\n\n "<<sub_matrix[3][2];
 
 
     return sub_matrix;
