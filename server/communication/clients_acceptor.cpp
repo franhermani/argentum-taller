@@ -17,7 +17,7 @@ ClientsAcceptor::~ClientsAcceptor() {
 }
 
 void ClientsAcceptor::run() {
-    clientsCleaner->start();
+    bool cleaner_running = false;
 
     while (keepRunning) {
         try {
@@ -27,6 +27,11 @@ void ClientsAcceptor::run() {
                     gameManager, clients);
             new_client->start();
             clients.add(new_client);
+
+            if (! cleaner_running) {
+                clientsCleaner->start();
+                cleaner_running = true;
+            }
         } catch (SocketAcceptError&) {
             break;
         } catch (DuplicatedUsernameException&) {
@@ -36,8 +41,11 @@ void ClientsAcceptor::run() {
         }
     }
     isRunning = false;
-    clientsCleaner->stop();
-    clientsCleaner->join();
+
+    if (cleaner_running) {
+        clientsCleaner->stop();
+        clientsCleaner->join();
+    }
 }
 
 void ClientsAcceptor::stop() {
