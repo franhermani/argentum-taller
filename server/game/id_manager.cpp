@@ -23,3 +23,8 @@ const int IdManager::addNPCById() {
     actual_npc_id ++;
     return actual_npc_id;
 }
+
+void IdManager::removeUsername(const std::string& username) {
+    username_ids.erase(username);
+}
+

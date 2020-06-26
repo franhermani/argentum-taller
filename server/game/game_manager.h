@@ -54,6 +54,9 @@ public:
 
     // Elimina 'player' de 'world'
     void removePlayerFromWorld(const int id);
+
+    // Elimina 'username' del idManager
+    void removeUsername(const std::string& username);
 };
 
 #endif // GAME_MANAGER_H

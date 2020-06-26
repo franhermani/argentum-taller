@@ -61,3 +61,7 @@ void GameManager::addPlayerToWorld(Player* player) {
 void GameManager::removePlayerFromWorld(const int id) {
     worldMonitor.removePlayer(id);
 }
+
+void GameManager::removeUsername(const std::string& username) {
+    idManager.removeUsername(username);
+}

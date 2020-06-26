@@ -17,6 +17,7 @@ class ClientHandler : public Thread {
     ClientReceiver* clientReceiver;
     ClientSender* clientSender{};
     Player* player{};
+    std::string username;
 
     // Hace el chequeo del username en el mismo constructor
     // Si hay un error, le envia un mensaje al cliente y relanza la excepcion

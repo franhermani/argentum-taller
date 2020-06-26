@@ -25,13 +25,15 @@ ClientHandler::~ClientHandler() {
     delete clientSender;
     delete clientReceiver;
     gameManager.removePlayerFromWorld(player->id);
+    gameManager.removeUsername(username);
     delete player;
 }
 
 void ClientHandler::checkUsername() {
     std::vector<char> info = clientReceiver->receivePlayerInfo();
     int race_type = info[0], class_type = info[1];
-    std::string username(info.begin() + 2, info.end());
+    std::string str(info.begin() + 2, info.end());
+    username = str;
 
     try {
         int id = gameManager.addIdByUsername(username);
