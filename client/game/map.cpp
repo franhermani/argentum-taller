@@ -2,7 +2,7 @@
 #include "map.h"
 #include <vector>
 #include <iostream>
-
+#include "exception.h"
 
 // constructor
 Map::Map() {
@@ -27,6 +27,16 @@ void Map::initialize(int received_id, std::vector<int> blocks_around, matrix_t r
     username_id = received_id;
 }
 
+//TODO esto podria devolver una ref
+//puede haber un error?
+player_t Map::getMainPlayer() {
+    for (int i=0; i<world.num_players; i++) {
+        if (username_id == world.players[i].id) {
+            return world.players[i];
+        }
+    }
+    throw GameException("main player not found");
+}
 int Map::xPosToUser(int x) {
     if (x >= playerVisionWidth) return x-playerVisionWidth;
     return x;
@@ -66,12 +76,7 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
 
 
 
-    player_t player;
-    for (int i=0; i<world.num_players; i++) {
-        if (username_id == world.players[i].id) {
-            player = world.players[i];
-        }
-    }
+    player_t player = getMainPlayer();
 
     std::cout << "esto es lo que vale vision height " << playerVisionHeight << " y eso vale width "<<playerVisionWidth << "\n";
     std::vector<std::vector<Terrain>> sub_matrix;
@@ -158,12 +163,7 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
 
 
 std::vector<player_t> Map::getRenderablePlayers() {
-    player_t main_player;
-    for (int i=0; i<world.num_players; i++) {
-        if (username_id == world.players[i].id) {
-            main_player = world.players[i];
-        }
-    }
+    player_t main_player = getMainPlayer();
 
     //copiamos
     std::vector<player_t> visible_players;

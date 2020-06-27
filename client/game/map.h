@@ -26,6 +26,8 @@ public:
     //actualiza el vector de jugadores y manda a renderizar
     void updateWorld(world_t receivedWorld);
 
+
+    //
     std::vector<std::vector<Terrain>> getTerrains();
 
     std::vector<player_t> getRenderablePlayers();
@@ -33,6 +35,9 @@ public:
     int getPlayerVisionWidth();
 
     int getPlayerVisionHeight();
+
+    //busca en la lista actual de jugadores y devuelve el principal
+    player_t getMainPlayer();
 
 
 
