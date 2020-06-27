@@ -20,8 +20,23 @@ void Map::updateWorld(world_t receivedWorld) {
 }
 
 void Map::initialize(int received_id, std::vector<int> blocks_around, matrix_t received_matrix) {
-    matrix = received_matrix;
-    std::cout << "\n\n esta es la received height y width " << matrix.height << matrix.width;
+
+    int current_index = 0;
+    for (int i=0; i<received_matrix.height; i++) {
+        std::vector<Terrain> row;
+        terrainMatrix.push_back(row);
+        for (int j = 0; j < received_matrix.width; ++j) {
+            terrainMatrix[i].push_back(received_matrix.terrains[current_index]);
+            ++current_index;
+        }
+    }
+
+    terrainMatrixHeight = received_matrix.height;
+    terrainMatrixWidth = received_matrix.width;
+
+
+
+    std::cout << "\n\n esta es la received height y width " << received_matrix.height << received_matrix.width;
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
@@ -61,18 +76,7 @@ void Map::printDebugTerrainMatrix(std::vector<std::vector<Terrain>>& received_ma
 
 std::vector<std::vector<Terrain>> Map::getTerrains() {
 
-    std::vector<std::vector<Terrain>> received_terrain;
-    int current_index = 0;
-    for (int i=0; i<matrix.height; i++) {
-        std::vector<Terrain> row;
-        received_terrain.push_back(row);
-        for (int j = 0; j < matrix.width; ++j) {
-            received_terrain[i].push_back(matrix.terrains[current_index]);
-            ++current_index;
-        }
-    }
-
-    printDebugTerrainMatrix(received_terrain);
+    printDebugTerrainMatrix(terrainMatrix);
 
     //TODO TODO TOOD OTOD OTODOT OTOTODOTODTODOT refactor ya
 
@@ -93,24 +97,19 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     sub_matrix.resize(playerVisionHeight);
     int x_start, y_start, x_finish, y_finish;
     x_start = x_player - playerVisionWidth/2;
-    if (x_start < 0){
-        std::cout << "caso menor a 0 en x\n\n";
-        x_start = 0;
-    }
+    if (x_start < 0) x_start = 0;
     y_start = y_player - playerVisionHeight/2;
-    if (y_start < 0) {
-        std::cout << "caso menor a 0 en y\n\n";
-        y_start = 0;
-    }
+    if (y_start < 0) y_start = 0;
+
 
     //TODO ojo con este +1 que es porque 9/2 da 4 y sino me morfo un pedazo
     x_finish = x_player + (playerVisionWidth / 2) +1;
-    if (x_finish >= matrix.width) x_finish = matrix.width;
+    if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
     y_finish = y_player + (playerVisionHeight / 2 ) +1;
-    if (y_finish >= matrix.height) y_finish = matrix.height;
+    if (y_finish >= terrainMatrixHeight) y_finish = terrainMatrixHeight;
 
     std::cout << "\n\nel player va a ver en x desde "<<x_start << " hasta " << x_finish
-    << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "\n\n" << matrix.width;
+    << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "\n\n" << terrainMatrixWidth;
 
 
     int current_column_index = 0;
@@ -119,7 +118,7 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
         row.resize(playerVisionWidth);
         int current_row_index = 0;
         for (int j = x_start; j < x_finish; j++) {
-            row[current_row_index] = received_terrain[i][j];
+            row[current_row_index] = terrainMatrix[i][j];
             ++current_row_index;
         }
         sub_matrix[current_column_index] = row;
@@ -127,15 +126,15 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     }
 
     printDebugTerrainMatrix(sub_matrix);
- 
+
     std::cout << "\n\n\n\n\nahora te meto esto 6 \n\n\n\n "<<sub_matrix[3][2];
 
 
     std::cout << "\n\n\n\n\n\np player pos x " << x_player << " -- player pos y "<<y_player << "\n";
     std::cout << "\n estoy devolviendo para renderizar una matriz de "<< sub_matrix.size() << " por  " <<sub_matrix[0].size();
     std::cout << "\n\nel player va a ver en x desde "<<x_start << " hasta " << x_finish
-              << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "  de la matriz original que es de " << matrix.width
-              << " por " <<matrix.height;
+              << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "  de la matriz original que es de " << terrainMatrixWidth
+              << " por " <<terrainMatrixHeight;
     return sub_matrix;
 
 }
@@ -152,9 +151,9 @@ std::vector<player_t> Map::getRenderablePlayers() {
     y_start = main_player.pos_y - playerVisionHeight/2;
     if (y_start < 0) y_start = 0;
     x_finish = main_player.pos_x  + (playerVisionWidth / 2);
-    if (x_finish >= matrix.width) x_finish = matrix.width;
+    if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
     y_finish = main_player.pos_y  + (playerVisionHeight / 2 );
-    if (y_finish >= matrix.height) y_finish = matrix.height;
+    if (y_finish >= terrainMatrixHeight) y_finish = terrainMatrixHeight;
 
 
 
