@@ -79,6 +79,5 @@ public:
     void setTilesSize(int tileWidth, int tileHeight);
 
     void renderGameFrame(Surface *surface);
-
 };
 #endif // SDL_WINDOW_H

@@ -46,7 +46,6 @@ int GameRender::init() {
 
 Surface* GameRender::createGameFrameSurface(){
     return new Surface("../client/resources/images/game_frame.jpeg", window);
-
 }
 
 void GameRender::createNecessaryTerrains(
