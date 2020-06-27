@@ -44,6 +44,10 @@ int GameRender::init() {
     return success;
 }
 
+Surface* GameRender::createGameFrameSurface(){
+    return new Surface("../client/resources/images/game_frame.jpeg", window);
+}
+
 void GameRender::createNecessaryTerrains(
         std::vector<std::vector<Terrain>>& matrix) {
     int height_size = matrix.size()-1;
@@ -171,6 +175,7 @@ void GameRender::run() {
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     window.setTilesSize(blocksWidth,blocksHeight);
+    window.renderGameFrame(createGameFrameSurface());
 
     while (keepRunning) {
         std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();

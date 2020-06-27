@@ -104,10 +104,10 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
 }
 
 int SDLWindow::getXPixelPos(int x_tile_position) {
-    return x_tile_position*xWidthTileSize;
+    return frameXPixelBegin + x_tile_position * xWidthTileSize;
 }
 int SDLWindow::getYPixelPos(int y_tile_position) {
-    return y_tile_position*yHeightTileSize;
+    return frameYPixelBegin + y_tile_position * yHeightTileSize;
 }
 
 
@@ -115,9 +115,25 @@ void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
 }
 
+void SDLWindow::renderGameFrame(Surface* surface) {
+    SDL_Rect stretchRect;
+    stretchRect.x = 0;
+    stretchRect.y = 0;
+    stretchRect.w = screenWidth;
+    stretchRect.h = screenHeight;
+    SDL_BlitScaled(surface->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+}
+
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     numberOfTilesInWidth = tileWidth;
     numberOfTilesInHeight = tileHeight;
-    xWidthTileSize =  screenWidth/ numberOfTilesInWidth;
-    yHeightTileSize = screenHeight / numberOfTilesInHeight;
+    frameXPixelBegin = screenWidth / 50;
+    frameXPixelEnd = (screenWidth / 4) * 3;
+    frameYPixelBegin = screenHeight / 5;
+    frameYPixelEnd = (screenHeight / 100) * 99;
+    xWidthTileSize = (frameXPixelEnd - frameXPixelBegin) /
+            numberOfTilesInWidth;
+    yHeightTileSize = (frameYPixelEnd - frameYPixelBegin) /
+            numberOfTilesInHeight;
 }
