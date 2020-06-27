@@ -10,6 +10,7 @@ protected:
     void updatePosition(const int new_x, const int new_y);
 
     friend class World;
+    friend class Player;
 
 public:
     // Destructor

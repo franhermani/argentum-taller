@@ -255,5 +255,6 @@ void Player::dropItemFromInventoryToWorld(const int pos) {
     if (! isAlive) return;
 
     Item* item = inventory.removeItem(pos);
-    if (item) world.addItem(item);
+    item->updatePosition(posX, posY);
+    world.addItem(item);
 }
