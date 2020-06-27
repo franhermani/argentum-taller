@@ -39,9 +39,13 @@ public:
     //busca en la lista actual de jugadores y devuelve el principal
     player_t getMainPlayer();
 
+    //imprime la matriz recibida de terrains por consola para debugeo
+    void printDebugTerrainMatrix(std::vector<std::vector<Terrain>>& received_matrix);
 
 
-};
+
+
+    };
 
 
 #endif //ARGENTUM_MAP_H

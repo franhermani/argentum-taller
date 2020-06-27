@@ -46,6 +46,18 @@ int Map::yPosToUser(int y) {
     return y;
 }
 
+void Map::printDebugTerrainMatrix(std::vector<std::vector<Terrain>>& received_matrix){
+    int col_size = received_matrix.size();
+    int row_size = received_matrix[0].size();
+    std::cout << "\n\n\n ASI QUEDO LA MATRIZ\n\n\n";
+    for (int i=0; i<col_size; i++) {
+        for (int j=0; j< row_size; j++) {
+            std::cout << received_matrix[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
 
 std::vector<std::vector<Terrain>> Map::getTerrains() {
 
@@ -60,16 +72,7 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
         }
     }
 
-    int limita= received_terrain.size();
-    int limitb =received_terrain[0].size();
-    std::cout << "\n\n\n ASI QUEDO LA MATRIZ\n\n\n";
-    for (int i=0; i<limita; i++) {
-        for (int j=0; j< limitb; j++) {
-            std::cout << received_terrain[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-
+    printDebugTerrainMatrix(received_terrain);
 
     //TODO TODO TOOD OTOD OTODOT OTOTODOTODTODOT refactor ya
 
@@ -123,32 +126,8 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
         ++current_column_index;
     }
 
-    int limit1=sub_matrix.size();
-    int limit2 =sub_matrix[0].size();
-    std::cout << "\n\n\n ASI QUEDO LA MATRIZ\n\n\n";
-    for (int i=0; i<limit1; i++) {
-        for (int j=0; j< limit2; j++) {
-            std::cout << sub_matrix[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-        /*
-
-
-        int i, j, pos_x, pos_y;
-    for (i=0; i<playerVisionHeight; i++) {
-        std::vector<Terrain> row;
-        row.resize(playerVisionWidth);
-        for (j=0; j<playerVisionWidth; j++) {
-            pos_x = x_player - playerVisionWidth/2 + j;
-            pos_y = y_player - playerVisionHeight/2 + i;
-            std::cout << pos_y << "-- " << pos_x;
-            std::cout<< "\n\n\n\n\n\n meto esto 4\n\n\n\n" ;
-            row[j] = received_terrain[pos_y][pos_x];
-            std::cout<< "\n\n\n\n\n\n meto esto 5edio\n\n\n\n";
-        }
-        sub_matrix[i] = row;
-    }*/
+    printDebugTerrainMatrix(sub_matrix);
+ 
     std::cout << "\n\n\n\n\nahora te meto esto 6 \n\n\n\n "<<sub_matrix[3][2];
 
 
