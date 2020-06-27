@@ -24,10 +24,10 @@ class SDLWindow {
     int screenWidth;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    int frame_x_pixel_begin;
-    int frame_x_pixel_end;
-    int frame_y_pixel_begin;
-    int frame_y_pixel_end;
+    int frameXPixelBegin;
+    int frameXPixelEnd;
+    int frameYPixelBegin;
+    int frameYPixelEnd;
 
 public:
     // Constructor
@@ -77,6 +77,8 @@ public:
     void renderNpc(int x, int y, Surface *character_surface);
 
     void setTilesSize(int tileWidth, int tileHeight);
-};
 
+    void renderGameFrame(Surface *surface);
+
+};
 #endif // SDL_WINDOW_H

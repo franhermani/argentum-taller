@@ -13,10 +13,10 @@
 #include "map_monitor.h"
 
 
-class GameRender : public Thread{
+class GameRender : public Thread {
     const int screenWidth;
     const int screenHeight;
-    MapMonitor& mapMonitor;
+    MapMonitor &mapMonitor;
     int blocksWidth;
     int blocksHeight;
     SDLWindow window;
@@ -35,13 +35,13 @@ private:
     void createNecessaryTerrains(std::vector<std::vector<Terrain>> &matrix);
 
     // inicializa en playerSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryPlayers(std::vector<player_t>& players);
+    void createNecessaryPlayers(std::vector<player_t> &players);
 
 
 public:
     //Constructor
     GameRender(const int screenWidth, const int screenHeight,
-            MapMonitor& mapMonitor);
+               MapMonitor &mapMonitor);
 
     //Destructor
     ~GameRender();
@@ -60,7 +60,7 @@ public:
     void renderTerrain(std::vector<std::vector<Terrain>> matrix);
 
     //Renderizador de players
-    void renderPlayers(std::vector<player_t>& players);
+    void renderPlayers(std::vector<player_t> &players);
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();
@@ -69,6 +69,8 @@ public:
     int init();
 
     void setTilesSize(int width, int height);
+
+    Surface *createGameFrameSurface();
 };
 
 #endif //ARGENTUM_GAME_RENDER_H
