@@ -24,6 +24,10 @@ class SDLWindow {
     int screenWidth;
     SDL_Window *window;
     SDL_Renderer *renderer;
+    int frame_x_pixel_begin;
+    int frame_x_pixel_end;
+    int frame_y_pixel_begin;
+    int frame_y_pixel_end;
 
 public:
     // Constructor
