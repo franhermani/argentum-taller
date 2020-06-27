@@ -5,7 +5,6 @@
 
 class Shield : public Item {
     int minDefense, maxDefense;
-    int price;
 
     friend class Player;
     friend class Equations;

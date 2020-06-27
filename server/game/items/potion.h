@@ -5,7 +5,6 @@
 
 class Potion : public Item {
     int lifePoints, manaPoints;
-    int price;
 
     friend class Player;
     friend class Equations;

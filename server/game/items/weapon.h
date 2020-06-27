@@ -7,7 +7,6 @@ class Weapon : public Item {
     int minDamage, maxDamage;
     int manaConsumption;
     bool isLongDistance, isMagic;
-    int price;
 
     friend class Player;
     friend class Equations;

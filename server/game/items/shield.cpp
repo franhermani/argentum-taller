@@ -7,6 +7,7 @@ Shield::Shield(const int new_type, const int pos_x, const int pos_y,
     posX = pos_x;
     posY = pos_y;
     price = new_price;
+    uniqueInInventory = true;
 }
 
 Shield::~Shield() = default;
