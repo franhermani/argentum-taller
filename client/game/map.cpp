@@ -133,16 +133,43 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
 
 
 std::vector<player_t> Map::getRenderablePlayers() {
+    player_t main_player;
+    for (int i=0; i<world.num_players; i++) {
+        if (username_id == world.players[i].id) {
+            main_player = world.players[i];
+        }
+    }
+
     //copiamos
-    std::vector<player_t> visible_players = world.players;
+    std::vector<player_t> visible_players;
+    int x_start, y_start, x_finish, y_finish;
+    x_start = main_player.pos_x - playerVisionWidth/2;
+    if (x_start < 0) x_start = 0;
+    y_start = main_player.pos_y - playerVisionHeight/2;
+    if (y_start < 0) y_start = 0;
+    x_finish = main_player.pos_x  + (playerVisionWidth / 2);
+    if (x_finish >= matrix.width) x_finish = matrix.width;
+    y_finish = main_player.pos_y  + (playerVisionHeight / 2 );
+    if (y_finish >= matrix.height) y_finish = matrix.height;
+
+
+
     //traducimos posiciones a la vision del jugador
-    for(auto& player: visible_players) {
-        std::cout << "\n hice traduccion de posicion x "<< player.pos_x;
-        player.pos_x = xPosToUser(player.pos_x);
-        std::cout << " a la posicion " << player.pos_x;
-        std::cout << "\n hice traduccion de posicion y "<< player.pos_y;
-        player.pos_y = yPosToUser(player.pos_y);
-        std::cout << " a la posicion " << player.pos_y;
+    for(auto& player: world.players) {
+        if ((player.pos_x < x_start) ||  (player.pos_x > x_finish) || (player.pos_y < y_start) || (player.pos_y > y_finish)) {
+            continue;
+        } else {
+            player_t converted_player = player;
+            converted_player.pos_x = player.pos_x - x_start;
+            if (converted_player.pos_x < 0) converted_player.pos_x = 0;
+            converted_player.pos_y = player.pos_y - y_start;
+            if (converted_player.pos_y < 0) converted_player.pos_y = 0;
+            visible_players.push_back(converted_player);
+            std::cout << "\n hice traduccion de posicion x "<< player.pos_x;
+            std::cout << " a la posicion " << converted_player.pos_x;
+            std::cout << "\n hice traduccion de posicion y "<< player.pos_y;
+            std::cout << " a la posicion " << converted_player.pos_y;
+        }
     }
     return visible_players;
 }
