@@ -131,7 +131,7 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     frameXPixelBegin = screenWidth / 50;
     frameXPixelEnd = (screenWidth / 4) * 3;
     frameYPixelBegin = screenHeight / 5;
-    frameYPixelEnd = (screenHeight / 100) * 95;
+    frameYPixelEnd = (screenHeight / 100) * 99;
     xWidthTileSize = (frameXPixelEnd - frameXPixelBegin) /
             numberOfTilesInWidth;
     yHeightTileSize = (frameYPixelEnd - frameYPixelBegin) /
