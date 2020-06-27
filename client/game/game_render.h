@@ -33,7 +33,7 @@ class GameRender : public Thread{
 private:
     // inicializa en terrainSurfacesMap las surfaces necesarias faltantes
     void createNecessaryTerrains(std::vector<std::vector<Terrain>> &matrix);
-    
+
     // inicializa en playerSurfacesMap las surfaces necesarias faltantes
     void createNecessaryPlayers(std::vector<player_t>& players);
 

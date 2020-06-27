@@ -17,6 +17,7 @@ class Map {
     int playerVisionHeight;
     int xPosToUser(int x);
     int yPosToUser(int y);
+
 public:
     // constructor
     Map();
@@ -24,7 +25,8 @@ public:
     ~Map();
 
     //inicializa matriz
-    void initialize(int username_id, std::vector<int> blocks_around, matrix_t received_terrains);
+    void initialize(int username_id, std::vector<int>
+            blocks_around, matrix_t received_terrains);
 
     //actualiza el vector de jugadores y manda a renderizar
     void updateWorld(world_t receivedWorld);
@@ -46,7 +48,8 @@ public:
     player_t getMainPlayer();
 
     //imprime la matriz recibida de terrains por consola para debugeo
-    void printDebugTerrainMatrix(std::vector<std::vector<Terrain>>& received_matrix);
+    void printDebugTerrainMatrix(std::vector<
+            std::vector<Terrain>>& received_matrix);
 
     //Dada la posicion de un jugador, devuelve la posicion donde
     // arrancaria en X su submatriz dentro de la matriz principal
@@ -63,8 +66,6 @@ public:
     //Dada la posicion de un jugador, devuelve la posicion donde
     // terminaria en Y su submatriz dentro de la matriz principal
     int getPlayerYEnd(player_t& player);
-
-
     };
 
 

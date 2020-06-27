@@ -179,9 +179,7 @@ void GameRender::run() {
         renderPlayers(players);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
-
     }
-
 }
 
 void GameRender::stop() {

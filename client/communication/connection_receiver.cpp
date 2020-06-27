@@ -1,6 +1,7 @@
 #include <iostream>
 #include <utility>
 #include "connection_receiver.h"
+#include <vector>
 #include "../../common/socket_error.h"
 
 ConnectionReceiver::ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor) :
@@ -11,7 +12,6 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor) :
 
 void ConnectionReceiver::run() {
     try {
-
         int username_id = protocol.receiveUsernameId();
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
         matrix_t matrix = protocol.receiveMatrix();

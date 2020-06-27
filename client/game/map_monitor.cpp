@@ -8,10 +8,10 @@ MapMonitor::MapMonitor() {}
 MapMonitor::~MapMonitor() {}
 
 //inicializa matriz
-void MapMonitor::initialize(int username_id, std::vector<int> blocks_around, matrix_t received_matrix) {
+void MapMonitor::initialize(int username_id,
+        std::vector<int> blocks_around, matrix_t received_matrix) {
     std::unique_lock<std::mutex> lk(m);
     //TODO CUIDADO COPIAS CAMBIAR
-    std::cout<< "\n\n\n\n\n\n vasi llegan \n\n\n\n" << blocks_around[0] << blocks_around[1];
     map.initialize(username_id, blocks_around, received_matrix);
 }
 
