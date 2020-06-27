@@ -1,7 +1,6 @@
 #include <vector>
 #include "client_receiver.h"
 #include "../../common/socket_error.h"
-#include "../game/game_exception.h"
 
 ClientReceiver::ClientReceiver(Socket& socket,
         ProtectedQueue<Command*>& command_queue) :
@@ -17,10 +16,6 @@ void ClientReceiver::run() {
             commandQueue.push(command);
         } catch (SocketError&) {
             break;
-        } catch (GameException& e) {
-            // TODO: encolar e.errorCode en alguna estructura compartida
-            // para que luego el sender le envie al cliente el codigo de
-            // error y este le muestre un mensaje al usuario
         }
     }
     isRunning = false;
