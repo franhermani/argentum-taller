@@ -95,7 +95,7 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
         row.resize(playerVisionWidth);
         int current_row_index = 0;
         for (int j = y_start; j < y_finish; j++) {
-            row[current_row_index] = received_terrain[j][i];
+            row[current_row_index] = received_terrain[i][j];
             ++current_row_index;
         }
         sub_matrix[current_column_index] = row;

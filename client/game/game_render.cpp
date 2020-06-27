@@ -213,11 +213,12 @@ void GameRender::run() {
 
     std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
     renderTerrain(terrains);
-    std::vector<player_t> players = mapMonitor.getRenderablePlayers();
-    renderPlayers(players);
     while (keepRunning) {
+        std::vector<player_t> players = mapMonitor.getRenderablePlayers();
+        renderPlayers(players);
         //aca podriamos unirlos ambos para que tengan el mutex juntos y recibir bien
     }
+
 }
 
 void GameRender::stop() {
