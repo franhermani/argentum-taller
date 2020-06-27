@@ -45,7 +45,7 @@ player_t Map::getMainPlayer() {
             return world.players[i];
         }
     }
-    throw GameException("main player not found");
+    throw MapException("main player not found");
 }
 int Map::xPosToUser(int x) {
     if (x >= playerVisionWidth) return x-playerVisionWidth;

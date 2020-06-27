@@ -5,11 +5,11 @@
 #include <string>
 
 
-class GameException :  public std::exception{
+class MapException :  public std::exception{
     std::string message;
 public:
     // Constructor
-     explicit GameException(const char *message);
+     explicit MapException(const char *message);
 
     // Devuelve el mensaje de error
     const char * what() const noexcept;
