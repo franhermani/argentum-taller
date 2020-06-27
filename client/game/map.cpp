@@ -40,17 +40,28 @@ int Map::yPosToUser(int y) {
 std::vector<std::vector<Terrain>> Map::getTerrains() {
 
     std::vector<std::vector<Terrain>> received_terrain;
-    received_terrain.resize(matrix.height);
+    //received_terrain.resize(matrix.height);
     int current_index = 0;
     for (int i=0; i<matrix.height; i++) {
         std::vector<Terrain> row;
-        row.resize(matrix.width);
+        //row.resize(matrix.width);
         received_terrain.push_back(row);
         for (int j = 0; j < matrix.width; ++j) {
             received_terrain[i].push_back(matrix.terrains[current_index]);
             ++current_index;
         }
     }
+
+    int limita= received_terrain.size();
+    int limitb =received_terrain[0].size();
+    std::cout << "\n\n\n ASI QUEDO LA MATRIZ\n\n\n";
+    for (int i=0; i<limita; i++) {
+        for (int j=0; j< limitb; j++) {
+            std::cout << received_terrain[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+
 
     //TODO TODO TOOD OTOD OTODOT OTOTODOTODTODOT refactor ya
 
@@ -102,6 +113,15 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
         ++current_column_index;
     }
 
+    int limit1=sub_matrix.size();
+    int limit2 =sub_matrix[0].size();
+    std::cout << "\n\n\n ASI QUEDO LA MATRIZ\n\n\n";
+    for (int i=0; i<limit1; i++) {
+        for (int j=0; j< limit2; j++) {
+            std::cout << sub_matrix[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
         /*
 
 
