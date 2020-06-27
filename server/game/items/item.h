@@ -13,6 +13,7 @@ protected:
 
     friend class World;
     friend class Player;
+    friend class Inventory;
 
 public:
     // Destructor

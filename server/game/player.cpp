@@ -19,6 +19,7 @@ maxExperience(LONG_MAX),
 actualExperience(0),
 isAlive(true),
 isMeditating(false),
+ableToUseMagic(classType != WARRIOR),
 orientation(DOWN),
 maxLife(equations.eqMaxLife(*this)),
 actualLife(equations.eqInitialLife(*this)),
@@ -108,6 +109,9 @@ void Player::stopMeditating() {
 }
 
 void Player::equipWeapon(Weapon* new_weapon) {
+    // TODO: ...
+//    if (new_weapon->isMagic && ! ableToUseMagic)
+//        throw GamingException(code);
     weapon = new_weapon;
 }
 
@@ -116,6 +120,9 @@ void Player::equipArmor(Armor* new_armor) {
 }
 
 void Player::equipHelmet(Helmet* new_helmet) {
+    // TODO: ...
+//    if (new_helmet->isMagic && ! ableToUseMagic)
+//        throw GamingException(code);
     helmet = new_helmet;
 }
 
@@ -195,7 +202,9 @@ void Player::revive() {
 }
 
 void Player::meditate() {
-    isMeditating = (isAlive && classType != WARRIOR);
+    // TODO: ...
+//    if(! ableToUseMagic) throw GamingException(code);
+    isMeditating = isAlive;
 }
 
 // TODO: contemplar NPCs
@@ -221,12 +230,12 @@ const int Player::receiveAttack(const int damage) {
 }
 
 // TODO: testear esta funcion
-void Player::equipItemFromInventory(const int pos) {
+void Player::equipItemFromInventory(const int type) {
     stopMeditating();
 
     if (! isAlive) return;
 
-    Item* item = inventory.removeItem(pos);
+    Item* item = inventory.removeItem(type);
     if (typeid(item) == typeid(Weapon)) {
         equipWeapon(dynamic_cast<Weapon*>(item));
     } else if (typeid(item) == typeid(Armor)) {
@@ -249,12 +258,12 @@ void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
     if (item) inventory.addItem(item);
 }
 
-void Player::dropItemFromInventoryToWorld(const int pos) {
+void Player::dropItemFromInventoryToWorld(const int type) {
     stopMeditating();
 
     if (! isAlive) return;
 
-    Item* item = inventory.removeItem(pos);
+    Item* item = inventory.removeItem(type);
     item->updatePosition(posX, posY);
     world.addItem(item);
 }
