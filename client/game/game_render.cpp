@@ -216,7 +216,6 @@ void GameRender::run() {
         renderTerrain(terrains);
         std::vector<player_t> players = mapMonitor.getRenderablePlayers();
         renderPlayers(players);
-        std::this_thread::sleep_for(ms(500));
         //aca podriamos unirlos ambos para que tengan el mutex juntos y recibir bien
     }
 
