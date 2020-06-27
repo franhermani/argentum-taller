@@ -16,7 +16,7 @@
 class GameRender : public Thread {
     const int screenWidth;
     const int screenHeight;
-    MapMonitor &mapMonitor;
+    MapMonitor& mapMonitor;
     int blocksWidth;
     int blocksHeight;
     SDLWindow window;
@@ -32,10 +32,10 @@ class GameRender : public Thread {
 
 private:
     // inicializa en terrainSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryTerrains(std::vector<std::vector<Terrain>> &matrix);
+    void createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix);
 
     // inicializa en playerSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryPlayers(std::vector<player_t> &players);
+    void createNecessaryPlayers(std::vector<player_t>& players);
 
 
 public:
@@ -70,7 +70,7 @@ public:
 
     void setTilesSize(int width, int height);
 
-    Surface *createGameFrameSurface();
+    Surface* createGameFrameSurface();
 };
 
 #endif //ARGENTUM_GAME_RENDER_H
