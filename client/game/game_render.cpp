@@ -46,8 +46,10 @@ int GameRender::init() {
 
 void GameRender::createNecessaryTerrains(
         std::vector<std::vector<Terrain>>& matrix) {
-    for (int i=0; i < blocksHeight; i++) {
-        for (int j=0; j < blocksWidth; j++){
+    int height_size = matrix.size()-1;
+    int width_size = matrix[0].size()-1;
+    for (int i=0; i < height_size; i++) {
+        for (int j=0; j < width_size; j++){
             if (terrainSurfacesMap.find(matrix[i][j])
                     == terrainSurfacesMap.end()) {
                 if (terrainSurfacesPaths.find(matrix[i][j])
@@ -63,39 +65,8 @@ void GameRender::createNecessaryTerrains(
 }
 
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
-    floor = matrix;
     createNecessaryTerrains(matrix);
     window.renderTerrain(matrix, terrainSurfacesMap);
-    window.UpdateWindowSurface();
-}
-
-
-void GameRender::createNecessaryNpcs(std::vector<npc_pos>& npc_positions) {
-    for (auto& elem:npc_positions) {
-        if (npcSurfacesMap.find(elem.npc_name)
-                == npcSurfacesMap.end()) {
-            if (npcSurfacesPaths.find(elem.npc_name)
-                    == npcSurfacesPaths.end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    npcSurfacesPaths[elem.npc_name], window);
-            npcSurfacesMap.insert({elem.npc_name, surface});
-        }
-    }
-}
-
-void GameRender::renderNpcs(std::vector<npc_pos>& npc_positions) {
-    //re renderizo piso
-    window.renderTerrain(floor, terrainSurfacesMap);
-    // recorro vector y renderizo con su surface correspondiente en el mapa
-    createNecessaryNpcs(npc_positions);
-    for (auto it = std::begin(npc_positions);
-    it != std::end(npc_positions); ++it) {
-        window.renderNpc(it->x, it->y,
-                npcSurfacesMap.at(it->npc_name));
-    }
-    window.UpdateWindowSurface();
 }
 
 void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
@@ -116,7 +87,7 @@ void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
 }
 
 void GameRender::renderPlayers(std::vector<player_t>& players) {
-    window.renderTerrain(floor, terrainSurfacesMap);
+    //window.renderTerrain(floor, terrainSurfacesMap);
     // recorro vector y renderizo con su surface correspondiente en el mapa
 
     createNecessaryPlayers(players);
@@ -125,7 +96,6 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
         window.renderNpc(it->pos_x, it->pos_y,
                 playerSurfacesMap[it->race_type][it->orientation]);
     }
-    window.UpdateWindowSurface();
 }
 
 
@@ -198,11 +168,17 @@ void GameRender::setTilesSize(int width,int height) {
 void GameRender::run() {
     using ms = std::chrono::milliseconds;
     std::this_thread::sleep_for(ms(500));
-    std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
-    renderTerrain(terrains);
+    blocksWidth = mapMonitor.getPlayerVisionWidth();
+    blocksHeight = mapMonitor.getPlayerVisionHeight();
+    window.setTilesSize(blocksWidth,blocksHeight);
+
     while (keepRunning) {
+        std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
+        renderTerrain(terrains);
         std::vector<player_t> players = mapMonitor.getRenderablePlayers();
         renderPlayers(players);
+        window.UpdateWindowSurface();
+        std::this_thread::sleep_for(ms(10));
     }
 }
 

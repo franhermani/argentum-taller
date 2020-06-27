@@ -1,3 +1,4 @@
+#include <iostream>
 #include "world.h"
 
 World::World(GameParams& params) : params(params) {
@@ -21,6 +22,7 @@ World::~World() {
 void World::loadImpenetrableTerrains() {
     impenetrableTerrains.insert(TERRAIN_WALL);
     impenetrableTerrains.insert(TERRAIN_WATER);
+    impenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
 }
 
 void World::loadMatrix() {
