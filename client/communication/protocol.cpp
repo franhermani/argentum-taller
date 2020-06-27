@@ -189,7 +189,7 @@ world_t ClientProtocol::receiveWorld() {
     bytes_advanced += SIZE_32;
 
 
-
+/*
     std::cout << "\n\nrecibi esto: actual life: " <<
                 w.player_info.actual_life <<
                 " max life " << w.player_info.max_life
@@ -199,6 +199,7 @@ world_t ClientProtocol::receiveWorld() {
               << " max gold " << w.player_info.max_gold
               << " actual_experience " << w.player_info.actual_experience
               << " level " << w.player_info.level << "\n\n";
+              */
 
     //recibimos inventario
     inventory_t inventory;
@@ -209,7 +210,7 @@ world_t ClientProtocol::receiveWorld() {
     memcpy(&num_players, world_buffer.data()+bytes_advanced, SIZE_16);
     w.num_players = ntohs(num_players);
     bytes_advanced += SIZE_16;
-    std::cout << "\n\n numero de players " << w.num_players << "\n\n";
+    //std::cout << "\n\n numero de players " << w.num_players << "\n\n";
     std::vector<player_t> players;
     players.resize(w.num_players);
     for (int i = 0; i < w.num_players; i ++) {
@@ -270,7 +271,7 @@ world_t ClientProtocol::receiveWorld() {
 
         players[i] = player;
 
-        std::cout << "\n\nrecibi este player: id: " <<
+        /*std::cout << "\n\nrecibi este player: id: " <<
                     player.id << " posx: " << player.pos_x <<
                     " posy: " << player.pos_y
                   << " is alive " << (int) player.is_alive <<
@@ -279,7 +280,7 @@ world_t ClientProtocol::receiveWorld() {
                   << " class type " <<(int) player.class_type <<
                   " body armor " << player.body_armor <<
                   " head armor " << player.head_armor
-                  << " weapong " << player.weapon << "\n\n";
+                  << " weapong " << player.weapon << "\n\n";*/
     }
     w.players = players;
     return std::move(w);
