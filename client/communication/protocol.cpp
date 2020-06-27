@@ -76,10 +76,8 @@ const std::vector<int> ClientProtocol::receiveBlocksAround() {
 
     blocks.resize(SIZE_16);
     //TODO HARDCODEO TEMPORAL SACAR
-    blocks[0] = 9;
-    blocks[1] = 9;
-//    blocks[0] = (int) byte_msg[0];
-//    blocks[1] = (int) byte_msg[1];
+    blocks[0] = (int) byte_msg[0];
+    blocks[1] = (int) byte_msg[1];
 
     return std::move(blocks);
 }
