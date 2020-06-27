@@ -17,7 +17,7 @@ public:
     Weapon(const int new_type, const int pos_x, const int pos_y,
             const int min_damage, const int max_damage,
             const int mana_consumption, const bool is_long_distance,
-            const bool is_magic);
+            const bool is_magic, const int new_price);
 
     // Constructor y asignacion por copia deshabilitados
     Weapon(const Weapon& other) = delete;

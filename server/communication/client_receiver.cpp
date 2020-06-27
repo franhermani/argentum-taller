@@ -14,7 +14,7 @@ void ClientReceiver::run() {
         try {
             Command* command = protocol.receiveCommand(*player);
             commandQueue.push(command);
-        } catch(SocketError&) {
+        } catch (SocketError&) {
             break;
         }
     }

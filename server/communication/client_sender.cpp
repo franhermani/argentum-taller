@@ -28,7 +28,7 @@ void ClientSender::run() {
             std::this_thread::sleep_for(ms(msPerSend));
             protocol.sendWorldAround(worldMonitor, *player);
         }
-    } catch(SocketError&) {
+    } catch (SocketError&) {
         // Do nothing
     }
     isRunning = false;

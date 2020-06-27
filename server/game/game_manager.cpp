@@ -2,6 +2,7 @@
 #include <thread>
 #include <chrono>
 #include "game_manager.h"
+#include "game_exception.h"
 
 GameManager::GameManager(File& config_file) :
 worldFile(jsonParser.getConfigParams(config_file)["world_path"]),
@@ -26,7 +27,13 @@ void GameManager::run() {
         while (! commandQueue.isEmpty()) {
             try {
                 Command* command = commandQueue.pop();
-                command->execute();
+                try {
+                    command->execute();
+                } catch (GameException& e) {
+                    // TODO: encolar e.errorCode en una estructura compartida
+                    // para que luego el sender le envie al cliente el codigo
+                    // de error y este le muestre un mensaje al usuario
+                }
                 delete command;
             } catch(ClosedQueueException&) {
                 break;

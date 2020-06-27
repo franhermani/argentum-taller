@@ -26,6 +26,7 @@ class Player {
     long actualExperience;
     bool isAlive;
     bool isMeditating;
+    bool ableToUseMagic;
     int orientation;
     int maxLife;
     int actualLife;
@@ -62,12 +63,16 @@ class Player {
     void stopMeditating();
 
     // Asigna 'new_weapon' a 'weapon'
+    // Lanza una excepcion si:
+    // - el arma es magica y player no puede usar la magia
     void equipWeapon(Weapon* new_weapon);
 
     // Asigna 'new_armor' a 'armor'
     void equipArmor(Armor* new_armor);
 
     // Asigna 'new_helmet' a 'helmet'
+    // Lanza una excepcion si:
+    // - el arma es magica y player no puede usar la magia
     void equipHelmet(Helmet* new_helmet);
 
     // Asigna el 'new_shield' a 'shield'
@@ -108,6 +113,8 @@ public:
     void revive();
 
     // El player entra en estado de meditacion
+    // Lanza una excepcion si:
+    // - el player no puede usar la magia
     void meditate();
 
     // Ataca a otro player o NPC segun su ID
@@ -117,14 +124,14 @@ public:
     // Devuelve la cantidad de daño realmente recibido
     const int receiveAttack(const int damage);
 
-    // Equipa un item del inventario segun 'pos'
-    void equipItemFromInventory(const int pos);
+    // Equipa un item del inventario segun 'type'
+    void equipItemFromInventory(const int type);
 
     // Toma un item del mundo segun su pos (x,y) y lo guarda en el inventario
     void takeItemFromWorldToInventory(const int pos_x, const int pos_y);
 
-    // Tira un item del inventario al mundo segun 'pos'
-    void dropItemFromInventoryToWorld(const int pos);
+    // Tira un item del inventario al mundo segun 'type'
+    void dropItemFromInventoryToWorld(const int type);
 };
 
 #endif // GAME_PLAYER_H

@@ -175,88 +175,107 @@
       "weapons": {
         "espada": {
           "min_damage": 2,
-          "max_damage": 5
+          "max_damage": 5,
+          "price": 200
         },
         "hacha": {
           "min_damage": 4,
-          "max_damage": 5
+          "max_damage": 5,
+          "price": 300
         },
         "martillo": {
           "min_damage": 1,
-          "max_damage": 9
+          "max_damage": 9,
+          "price": 500
         },
         "vara_fresno": {
           "min_damage": 2,
           "max_damage": 4,
-          "mana_consumption": 5
+          "mana_consumption": 5,
+          "price": 350
         },
         "flauta_elfica": {
-          "mana_consumption": 100
+          "mana_consumption": 100,
+          "price": 400
         },
         "baculo_nudoso": {
           "min_damage": 4,
           "max_damage": 8,
-          "mana_consumption": 15
+          "mana_consumption": 15,
+          "price": 500
         },
         "baculo_engarzado": {
           "min_damage": 8,
-          "max_damage": 20
+          "max_damage": 20,
+          "price": 700
         },
         "arco_simple": {
           "min_damage": 1,
-          "max_damage": 4
+          "max_damage": 4,
+          "price": 150
         },
         "arco_compuesto": {
           "min_damage": 4,
-          "max_damage": 16
+          "max_damage": 16,
+          "price": 300
         }
       },
       "armor": {
         "armadura_cuero": {
           "min_defense": 2,
-          "max_defense": 6
+          "max_defense": 6,
+          "price": 100
         },
         "armadura_placas": {
           "min_defense": 15,
-          "max_defense": 30
+          "max_defense": 30,
+          "price": 800
         },
         "tunica_azul": {
           "min_defense": 6,
-          "max_defense": 10
+          "max_defense": 10,
+          "price": 250
         }
       },
       "helmet": {
         "capucha": {
           "min_defense": 1,
-          "max_defense": 4
+          "max_defense": 4,
+          "price": 150
         },
         "casco_hierro": {
           "min_defense": 4,
-          "max_defense": 8
+          "max_defense": 8,
+          "price": 300
         },
         "sombrero_magico": {
           "min_defense": 4,
-          "max_defense": 12
+          "max_defense": 12,
+          "price": 450
         }
       },
       "shield": {
         "escudo_tortuga": {
           "min_defense": 1,
-          "max_defense": 2
+          "max_defense": 2,
+          "price": 100
         },
         "escudo_hierro": {
           "min_defense": 1,
-          "max_defense": 4
+          "max_defense": 4,
+          "price": 200
         }
       },
       "potion": {
         "life_potion": {
           "life_recovery": 50,
-          "mana_recovery": 0
+          "mana_recovery": 0,
+          "price": 75
         },
         "mana_potion": {
           "life_recovery": 0,
-          "mana_recovery": 50
+          "mana_recovery": 50,
+          "price": 75
         }
       }
     }
