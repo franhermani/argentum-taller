@@ -78,7 +78,6 @@ void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
     std::cout << "\n la matriz tiene este " << matrix.size() << "por este "<<matrix[0].size();
     std::cout << "\n la matriz tiene este \n\n";
     window.renderTerrain(matrix, terrainSurfacesMap);
-    window.UpdateWindowSurface();
 }
 
 
@@ -137,7 +136,6 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
         window.renderNpc(it->pos_x, it->pos_y,
                 playerSurfacesMap[it->race_type][it->orientation]);
     }
-    window.UpdateWindowSurface();
 }
 
 
@@ -216,6 +214,8 @@ void GameRender::run() {
         renderTerrain(terrains);
         std::vector<player_t> players = mapMonitor.getRenderablePlayers();
         renderPlayers(players);
+        window.UpdateWindowSurface();
+
         //aca podriamos unirlos ambos para que tengan el mutex juntos y recibir bien
     }
 
