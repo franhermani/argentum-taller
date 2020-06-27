@@ -1,4 +1,6 @@
 #include "inventory.h"
+#include "../game_exception.h"
+#include "../../../common/defines/game_exceptions.h"
 
 Inventory::Inventory(const int max_items) :
 maxItems(max_items), numItems(0) {
@@ -11,14 +13,14 @@ Inventory::~Inventory() {
 }
 
 void Inventory::checkFullness() {
-    // TODO: ...
-//    if (numItems == maxItems) throw GamingException(code)
+    if (numItems == maxItems)
+        throw GameException(FULL_INVENTORY);
 }
 
 void Inventory::checkUniqueness(const int type) {
-    // TODO: ...
-//    for (auto& item : items)
-//        if (item->type == type) throw GamingException(code)
+    for (auto& item : items)
+        if (item->type == type)
+            throw GameException(ITEM_ALREADY_IN_INVENTORY);
 }
 
 void Inventory::addItem(Item* item) {
@@ -39,6 +41,5 @@ Item* Inventory::removeItem(const int type) {
             return item;
         }
     }
-    // TODO: throw GamingException(code);
     return nullptr;
 }

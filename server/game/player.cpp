@@ -6,6 +6,8 @@
 #include "equations.h"
 #include "../../common/defines/commands.h"
 #include "../../common/defines/classes.h"
+#include "game_exception.h"
+#include "../../common/defines/game_exceptions.h"
 
 Player::Player(World& world, Equations& equations, const int id,
         const int race_type, const int class_type) :
@@ -101,6 +103,7 @@ void Player::addExperience(int exp) {
 }
 
 void Player::die() {
+    stopMeditating();
     isAlive = false;
 }
 
@@ -109,9 +112,9 @@ void Player::stopMeditating() {
 }
 
 void Player::equipWeapon(Weapon* new_weapon) {
-    // TODO: ...
-//    if (new_weapon->isMagic && ! ableToUseMagic)
-//        throw GamingException(code);
+    if (new_weapon->isMagic && ! ableToUseMagic)
+        throw GameException(UNABLE_TO_USE_MAGIC);
+
     weapon = new_weapon;
 }
 
@@ -120,9 +123,9 @@ void Player::equipArmor(Armor* new_armor) {
 }
 
 void Player::equipHelmet(Helmet* new_helmet) {
-    // TODO: ...
-//    if (new_helmet->isMagic && ! ableToUseMagic)
-//        throw GamingException(code);
+    if (new_helmet->isMagic && ! ableToUseMagic)
+        throw GameException(UNABLE_TO_USE_MAGIC);
+
     helmet = new_helmet;
 }
 
@@ -184,41 +187,46 @@ void Player::moveTo(int direction) {
 }
 
 void Player::heal() {
+    if (! isAlive)
+        throw GameException(UNABLE_TO_INTERACT);
+
     stopMeditating();
-
-    if (! isAlive) return;
-
     actualLife = maxLife;
     actualMana = maxMana;
 }
 
 void Player::revive() {
+    if (isAlive)
+        throw GameException(UNABLE_TO_REVIVE);
+
     stopMeditating();
-
-    if (isAlive) return;
-
     actualLife = maxLife;
     isAlive = true;
 }
 
 void Player::meditate() {
-    // TODO: ...
-//    if(! ableToUseMagic) throw GamingException(code);
+    if (! ableToUseMagic)
+        throw GameException(UNABLE_TO_MEDITATE);
+
     isMeditating = isAlive;
 }
 
 // TODO: contemplar NPCs
 void Player::attack(int enemy_id_type, int enemy_id) {
+    if (! isAlive)
+        throw GameException(UNABLE_TO_INTERACT);
+
     stopMeditating();
 
     Player* other = world.getPlayerById(enemy_id);
-    if (! isAlive || ! other || ! other->isAlive)
-        return;
+    if (! other || ! other->isAlive)
+        throw GameException(UNABLE_TO_ATTACK_DEAD_PLAYER);
 
     int damage_caused = other->receiveAttack(equations.eqAttackDamage(*this));
     equations.eqExperienceAttack(*this, *other, damage_caused);
 
-    if (! other->isAlive) equations.eqExperienceKill(*this, *other);
+    if (! other->isAlive)
+        equations.eqExperienceKill(*this, *other);
 }
 
 const int Player::receiveAttack(const int damage) {
@@ -231,9 +239,10 @@ const int Player::receiveAttack(const int damage) {
 
 // TODO: testear esta funcion
 void Player::equipItemFromInventory(const int type) {
-    stopMeditating();
+    if (! isAlive)
+        throw GameException(UNABLE_TO_INTERACT);
 
-    if (! isAlive) return;
+    stopMeditating();
 
     Item* item = inventory.removeItem(type);
     if (typeid(item) == typeid(Weapon)) {
@@ -250,18 +259,20 @@ void Player::equipItemFromInventory(const int type) {
 }
 
 void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
-    stopMeditating();
+    if (! isAlive)
+        throw GameException(UNABLE_TO_INTERACT);
 
-    if (! isAlive) return;
+    stopMeditating();
 
     Item* item = world.removeItem(pos_x, pos_y);
     if (item) inventory.addItem(item);
 }
 
 void Player::dropItemFromInventoryToWorld(const int type) {
-    stopMeditating();
+    if (! isAlive)
+        throw GameException(UNABLE_TO_INTERACT);
 
-    if (! isAlive) return;
+    stopMeditating();
 
     Item* item = inventory.removeItem(type);
     item->updatePosition(posX, posY);
