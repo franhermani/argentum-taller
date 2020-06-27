@@ -75,11 +75,9 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     printDebugTerrainMatrix(terrainMatrix);
     player_t player = getMainPlayer();
 
-    std::cout << "esto es lo que vale vision height " << playerVisionHeight << " y eso vale width "<<playerVisionWidth << "\n";
     std::vector<std::vector<Terrain>> sub_matrix;
     int x_player = player.pos_x;
     int y_player = player.pos_y;
-    std::cout << "esto es lo que vale player pos x " << x_player << " y eso vale y player "<<y_player << "\n";
 
     sub_matrix.resize(playerVisionHeight);
     int x_start, y_start, x_finish, y_finish;
@@ -90,9 +88,6 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
     y_finish = y_player + (playerVisionHeight / 2 ) +1;
     if (y_finish >= terrainMatrixHeight) y_finish = terrainMatrixHeight;
-
-    std::cout << "\n\nel player va a ver en x desde "<<x_start << " hasta " << x_finish
-    << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "\n\n" << terrainMatrixWidth;
 
 
     int current_column_index = 0;
@@ -110,13 +105,6 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
 
     printDebugTerrainMatrix(sub_matrix);
 
-
-
-    std::cout << "\n\n\n\n\n\np player pos x " << x_player << " -- player pos y "<<y_player << "\n";
-    std::cout << "\n estoy devolviendo para renderizar una matriz de "<< sub_matrix.size() << " por  " <<sub_matrix[0].size();
-    std::cout << "\n\nel player va a ver en x desde "<<x_start << " hasta " << x_finish
-              << " y va a ver y desde "<<y_start << " hasta "<<y_finish<< "  de la matriz original que es de " << terrainMatrixWidth
-              << " por " <<terrainMatrixHeight;
     return sub_matrix;
 
 }
@@ -171,10 +159,6 @@ std::vector<player_t> Map::getRenderablePlayers() {
             converted_player.pos_y = player.pos_y - y_start;
             if (converted_player.pos_y < 0) converted_player.pos_y = 0;
             visible_players.push_back(converted_player);
-            std::cout << "\n hice traduccion de posicion x "<< player.pos_x;
-            std::cout << " a la posicion " << converted_player.pos_x;
-            std::cout << "\n hice traduccion de posicion y "<< player.pos_y;
-            std::cout << " a la posicion " << converted_player.pos_y;
         }
     }
     return visible_players;

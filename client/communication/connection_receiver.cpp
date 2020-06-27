@@ -15,7 +15,7 @@ void ConnectionReceiver::run() {
         int username_id = protocol.receiveUsernameId();
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
         matrix_t matrix = protocol.receiveMatrix();
-        //TODO PASAR DISTINTO ESTO POR REF POR EJ
+        //TODO PASAR DISTINTO ESTO. POR REF POR EJ
         mapMonitor.initialize(username_id, blocks_around, std::move(matrix));
         while (keepRunning) {
             world_t world = protocol.receiveWorld();

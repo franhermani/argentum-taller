@@ -13,13 +13,6 @@
 #include "map_monitor.h"
 
 
-//TODO MATAR ESTE STRUCT
-struct npc_pos {
-    int x;
-    int y;
-    Npc npc_name;
-};
-
 class GameRender : public Thread{
     const int screenWidth;
     const int screenHeight;
@@ -40,10 +33,7 @@ class GameRender : public Thread{
 private:
     // inicializa en terrainSurfacesMap las surfaces necesarias faltantes
     void createNecessaryTerrains(std::vector<std::vector<Terrain>> &matrix);
-
-    // inicializa en npcSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryNpcs(std::vector<npc_pos> &npc_positions);
-
+    
     // inicializa en playerSurfacesMap las surfaces necesarias faltantes
     void createNecessaryPlayers(std::vector<player_t>& players);
 
@@ -68,9 +58,6 @@ public:
 
     //Renderizador de pisos
     void renderTerrain(std::vector<std::vector<Terrain>> matrix);
-
-    //Renderizador de npcs
-    void renderNpcs(std::vector<npc_pos>& npc_positions);
 
     //Renderizador de players
     void renderPlayers(std::vector<player_t>& players);

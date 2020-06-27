@@ -30,11 +30,14 @@ public:
     void updateWorld(world_t receivedWorld);
 
 
-    //
+    // devuelve la matriz de pisos
     std::vector<std::vector<Terrain>> getTerrains();
 
+    // devuelve los jugadores dentro del rango de vision del jguador principal
+    // con posiciones actualizadas a la submatriz
     std::vector<player_t> getRenderablePlayers();
 
+    //
     int getPlayerVisionWidth();
 
     int getPlayerVisionHeight();
@@ -45,12 +48,20 @@ public:
     //imprime la matriz recibida de terrains por consola para debugeo
     void printDebugTerrainMatrix(std::vector<std::vector<Terrain>>& received_matrix);
 
+    //Dada la posicion de un jugador, devuelve la posicion donde
+    // arrancaria en X su submatriz dentro de la matriz principal
     int getPlayerXStart(player_t& player);
 
+    //Dada la posicion de un jugador, devuelve la posicion donde
+    // arrancaria en Y su submatriz dentro de la matriz principal
     int getPlayerYStart(player_t& player);
 
+    //Dada la posicion de un jugador, devuelve la posicion donde
+    // terminaria en X su submatriz dentro de la matriz principal
     int getPlayerXEnd(player_t& player);
 
+    //Dada la posicion de un jugador, devuelve la posicion donde
+    // terminaria en Y su submatriz dentro de la matriz principal
     int getPlayerYEnd(player_t& player);
 
 
