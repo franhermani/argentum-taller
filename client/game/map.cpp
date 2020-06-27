@@ -83,10 +83,8 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
 
     sub_matrix.resize(playerVisionHeight);
     int x_start, y_start, x_finish, y_finish;
-    x_start = x_player - playerVisionWidth/2;
-    if (x_start < 0) x_start = 0;
-    y_start = y_player - playerVisionHeight/2;
-    if (y_start < 0) y_start = 0;
+    x_start = getPlayerXStart(player);
+    y_start = getPlayerYStart(player);
     //TODO ojo con este +1 que es porque 9/2 da 4 y sino me morfo un pedazo
     x_finish = x_player + (playerVisionWidth / 2) +1;
     if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
@@ -135,13 +133,13 @@ int Map::getPlayerYStart(player_t& player) {
 }
 
 int Map::getPlayerXEnd(player_t& player) {
-    int x_finish = player.pos_x  + (playerVisionWidth / 2);
+    int x_finish = player.pos_x  + (playerVisionWidth / 2) + 1;
     if (x_finish >= terrainMatrixWidth) return terrainMatrixWidth;
     return x_finish;
 }
 
 int Map::getPlayerYEnd(player_t& player) {
-    int y_finish = player.pos_y  + (playerVisionHeight / 2 );
+    int y_finish = player.pos_y  + (playerVisionHeight / 2 ) + 1;
     if (y_finish >= terrainMatrixHeight) return terrainMatrixHeight;
     return y_finish;
 }

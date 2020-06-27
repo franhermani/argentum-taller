@@ -17,12 +17,7 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
                        screenWidth(screenWidth), screenHeight(screenHeight),
                        mapMonitor(mapMonitor),
-                       blocksWidth(21),
-                       blocksHeight(21),
                        window(screenWidth, screenHeight) {
-//    blocksWidth(mapMonitor.getPlayerVisionWidth()),
-//            blocksHeight(mapMonitor.getPlayerVisionHeight()),
-    window.setTilesSize(blocksWidth,blocksHeight);
     init();
     loadSurfacePaths();
 }
@@ -208,6 +203,9 @@ void GameRender::setTilesSize(int width,int height) {
 void GameRender::run() {
     using ms = std::chrono::milliseconds;
     std::this_thread::sleep_for(ms(500));
+    blocksWidth = mapMonitor.getPlayerVisionWidth();
+    blocksHeight = mapMonitor.getPlayerVisionHeight();
+    window.setTilesSize(blocksWidth,blocksHeight);
 
     while (keepRunning) {
         std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
@@ -215,8 +213,8 @@ void GameRender::run() {
         std::vector<player_t> players = mapMonitor.getRenderablePlayers();
         renderPlayers(players);
         window.UpdateWindowSurface();
+        std::this_thread::sleep_for(ms(10));
 
-        //aca podriamos unirlos ambos para que tengan el mutex juntos y recibir bien
     }
 
 }
