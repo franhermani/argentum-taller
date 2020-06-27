@@ -27,4 +27,3 @@ const int IdManager::addNPCById() {
 void IdManager::removeUsername(const std::string& username) {
     username_ids.erase(username);
 }
-
