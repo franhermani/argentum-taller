@@ -45,7 +45,13 @@ public:
     //imprime la matriz recibida de terrains por consola para debugeo
     void printDebugTerrainMatrix(std::vector<std::vector<Terrain>>& received_matrix);
 
+    int getPlayerXStart(player_t& player);
 
+    int getPlayerYStart(player_t& player);
+
+    int getPlayerXEnd(player_t& player);
+
+    int getPlayerYEnd(player_t& player);
 
 
     };

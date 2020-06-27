@@ -30,13 +30,8 @@ void Map::initialize(int received_id, std::vector<int> blocks_around, matrix_t r
             ++current_index;
         }
     }
-
     terrainMatrixHeight = received_matrix.height;
     terrainMatrixWidth = received_matrix.width;
-
-
-
-    std::cout << "\n\n esta es la received height y width " << received_matrix.height << received_matrix.width;
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
@@ -74,15 +69,10 @@ void Map::printDebugTerrainMatrix(std::vector<std::vector<Terrain>>& received_ma
 }
 
 
+
 std::vector<std::vector<Terrain>> Map::getTerrains() {
 
     printDebugTerrainMatrix(terrainMatrix);
-
-    //TODO TODO TOOD OTOD OTODOT OTOTODOTODTODOT refactor ya
-
-
-
-
     player_t player = getMainPlayer();
 
     std::cout << "esto es lo que vale vision height " << playerVisionHeight << " y eso vale width "<<playerVisionWidth << "\n";
@@ -91,17 +81,12 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     int y_player = player.pos_y;
     std::cout << "esto es lo que vale player pos x " << x_player << " y eso vale y player "<<y_player << "\n";
 
-
-
-
     sub_matrix.resize(playerVisionHeight);
     int x_start, y_start, x_finish, y_finish;
     x_start = x_player - playerVisionWidth/2;
     if (x_start < 0) x_start = 0;
     y_start = y_player - playerVisionHeight/2;
     if (y_start < 0) y_start = 0;
-
-
     //TODO ojo con este +1 que es porque 9/2 da 4 y sino me morfo un pedazo
     x_finish = x_player + (playerVisionWidth / 2) +1;
     if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
@@ -127,7 +112,6 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
 
     printDebugTerrainMatrix(sub_matrix);
 
-    std::cout << "\n\n\n\n\nahora te meto esto 6 \n\n\n\n "<<sub_matrix[3][2];
 
 
     std::cout << "\n\n\n\n\n\np player pos x " << x_player << " -- player pos y "<<y_player << "\n";
@@ -139,27 +123,48 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
 
 }
 
+int Map::getPlayerXStart(player_t& player) {
+    int x_start = player.pos_x - playerVisionWidth/2;
+    if (x_start < 0) return 0;
+    return x_start;
+}
+int Map::getPlayerYStart(player_t& player) {
+    int y_start = player.pos_y - playerVisionHeight/2;
+    if (y_start < 0) return 0;
+    return y_start;
+}
+
+int Map::getPlayerXEnd(player_t& player) {
+    int x_finish = player.pos_x  + (playerVisionWidth / 2);
+    if (x_finish >= terrainMatrixWidth) return terrainMatrixWidth;
+    return x_finish;
+}
+
+int Map::getPlayerYEnd(player_t& player) {
+    int y_finish = player.pos_y  + (playerVisionHeight / 2 );
+    if (y_finish >= terrainMatrixHeight) return terrainMatrixHeight;
+    return y_finish;
+}
+
+
 
 std::vector<player_t> Map::getRenderablePlayers() {
     player_t main_player = getMainPlayer();
 
-    //copiamos
-    std::vector<player_t> visible_players;
+    //Pedimos los bordes de vision del jugador en coordenadas de la matriz principal
     int x_start, y_start, x_finish, y_finish;
-    x_start = main_player.pos_x - playerVisionWidth/2;
-    if (x_start < 0) x_start = 0;
-    y_start = main_player.pos_y - playerVisionHeight/2;
-    if (y_start < 0) y_start = 0;
-    x_finish = main_player.pos_x  + (playerVisionWidth / 2);
-    if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
-    y_finish = main_player.pos_y  + (playerVisionHeight / 2 );
-    if (y_finish >= terrainMatrixHeight) y_finish = terrainMatrixHeight;
+    x_start = getPlayerXStart(main_player);
+    y_start = getPlayerYStart(main_player);
+    x_finish = getPlayerXEnd(main_player);
+    y_finish = getPlayerYEnd(main_player);
+    std::vector<player_t> visible_players;
 
 
-
-    //traducimos posiciones a la vision del jugador
+    //traducimos posiciones a la vision del jugador y nos quedamos con los jugadores que esten
+    //dentro del rango de vision del principal
     for(auto& player: world.players) {
-        if ((player.pos_x < x_start) ||  (player.pos_x > x_finish) || (player.pos_y < y_start) || (player.pos_y > y_finish)) {
+        if ((player.pos_x < x_start) ||  (player.pos_x > x_finish)
+        || (player.pos_y < y_start) || (player.pos_y > y_finish)) {
             continue;
         } else {
             player_t converted_player = player;
