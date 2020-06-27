@@ -5,7 +5,6 @@
 #include "../../common/defines/items.h"
 #include "../../common/defines/debug.h"
 
-#define BYTE_SIZE   1
 #define SIZE_8      sizeof(uint8_t)
 #define SIZE_16     sizeof(uint16_t)
 #define SIZE_32     sizeof(uint32_t)
@@ -14,8 +13,8 @@ ServerProtocol::ServerProtocol(Socket& socket) : socket(socket) {}
 
 const std::vector<char> ServerProtocol::receivePlayerInfo() {
     std::vector<char> arguments;
-    char buffer1[BYTE_SIZE];
-    socket.receiveBytes(buffer1, BYTE_SIZE);
+    char buffer1[SIZE_8];
+    socket.receiveBytes(buffer1, SIZE_8);
 
     int length = buffer1[0];
     arguments.resize(length);
@@ -35,10 +34,10 @@ const std::vector<char> ServerProtocol::receivePlayerInfo() {
 
 Command* ServerProtocol::receiveCommand(Player& player) {
     std::vector<char> arguments;
-    char buffer1[BYTE_SIZE], buffer2[BYTE_SIZE];
+    char buffer1[SIZE_8], buffer2[SIZE_8];
 
-    socket.receiveBytes(buffer1, BYTE_SIZE);
-    socket.receiveBytes(buffer2, BYTE_SIZE);
+    socket.receiveBytes(buffer1, SIZE_8);
+    socket.receiveBytes(buffer2, SIZE_8);
 
     int type = buffer1[0], length = buffer2[0];
 

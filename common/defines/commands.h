@@ -8,6 +8,8 @@ enum commandType {
     CMD_HEAL,
     CMD_DEPOSIT,
     CMD_WITHDRAW,
+    CMD_DEPOSIT_GOLD,
+    CMD_WITHDRAW_GOLD,
     CMD_LIST,
     CMD_BUY,
     CMD_SELL,

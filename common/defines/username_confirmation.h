@@ -13,7 +13,7 @@ struct DuplicatedUsernameException : public std::exception {
     }
 };
 
-enum usernameCodes {
+enum usernameCode {
     USERNAME_OK,
     USERNAME_DUPLICATED,
     NO_MORE_USERNAME_IDS
