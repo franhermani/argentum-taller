@@ -5,6 +5,7 @@ class Item {
 protected:
     int type{};
     int posX{}, posY{};
+    int price{};
 
     // Actualiza la posicion (posX, posY) del item
     void updatePosition(const int new_x, const int new_y);

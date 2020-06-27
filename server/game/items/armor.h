@@ -5,6 +5,7 @@
 
 class Armor : public Item {
     int minDefense, maxDefense;
+    int price;
 
     friend class Player;
     friend class Equations;
@@ -13,7 +14,8 @@ class Armor : public Item {
 public:
     // Constructor
     Armor(const int new_type, const int pos_x, const int pos_y,
-            const int min_defense, const int max_defense);
+            const int min_defense, const int max_defense,
+            const int new_price);
 
     // Constructor y asignacion por copia deshabilitados
     Armor(const Armor& other) = delete;
