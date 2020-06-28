@@ -35,7 +35,11 @@ enum exceptionCode {
 
     // Un player intenta agregar un item de caracter unico al inventario
     // y ya existe
-    ITEM_ALREADY_IN_INVENTORY
+    ITEM_ALREADY_IN_INVENTORY,
+
+    // Un player intenta tirar un item en una posicion
+    // en la que ya hay otro item
+    ITEM_IN_POSITION
 };
 
 #endif // GAME_EXCEPTIONS_H

@@ -46,7 +46,7 @@ void World::loadMatrix() {
 // Metodos accedidos por WorldMonitor unicamente //
 // --------------------------------------------- //
 
-void World::update(int ms) {
+void World::update(const int ms) {
     // TODO: update tmb a los npcs
     for (auto player : players) player->update(ms);
 }
@@ -55,7 +55,7 @@ void World::addPlayer(Player* player) {
     players.push_back(player);
 }
 
-void World::removePlayer(int id) {
+void World::removePlayer(const int id) {
     size_t i;
     for (i = 0; i < players.size(); i ++)
         if (players[i]->id == id)
@@ -84,7 +84,8 @@ std::vector<Player*> World::getPlayersAround(Player &player) {
     return players_around;
 }
 
-bool World::inPlayerBoundaries(Player &player, int pos_x, int pos_y) {
+const bool World::inPlayerBoundaries(Player &player,
+        const int pos_x, const int pos_y) {
     int player_xi = player.posX - playerWidth/2,
         player_xf = player.posX + playerWidth/2,
         player_yi = player.posY - playerHeight/2,
@@ -100,14 +101,14 @@ bool World::inPlayerBoundaries(Player &player, int pos_x, int pos_y) {
 // Metodos accedidos por Player y NPC unicamente //
 // --------------------------------------------- //
 
-bool World::inMapBoundaries(int pos_x, int pos_y) {
+const bool World::inMapBoundaries(const int pos_x, const int pos_y) {
     bool x_in_boundaries = (pos_x >= 0) && (pos_x < worldWidth),
          y_in_boundaries = (pos_y >= 0) && (pos_y < worldHeight);
 
     return x_in_boundaries && y_in_boundaries;
 }
 
-bool World::inCollision(int pos_x, int pos_y) {
+const bool World::inCollision(const int pos_x, const int pos_y) {
     // Terrenos impenetrables
     if (impenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
         return true;
@@ -127,11 +128,20 @@ bool World::inCollision(int pos_x, int pos_y) {
     return false;
 }
 
+const bool World::itemInPosition(const int pos_x, const int pos_y) {
+    size_t i;
+    for (i = 0; i < items.size(); i ++)
+        if (items[i]->posX == pos_x && items[i]->posY == pos_y)
+            return true;
+
+    return false;
+}
+
 void World::addItem(Item* item) {
     items.push_back(item);
 }
 
-Item* World::removeItem(int pos_x, int pos_y) {
+Item* World::removeItem(const int pos_x, const int pos_y) {
     size_t i;
     for (i = 0; i < items.size(); i ++)
         if (items[i]->posX == pos_x && items[i]->posY == pos_y) {

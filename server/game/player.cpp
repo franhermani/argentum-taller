@@ -305,6 +305,9 @@ void Player::dropItemFromInventoryToWorld(const int type) {
     if (! isAlive)
         throw GameException(UNABLE_TO_INTERACT);
 
+    if (world.itemInPosition(posX, posY))
+        throw GameException(ITEM_IN_POSITION);
+
     Item* item = inventory.removeItem(type);
     item->updatePosition(posX, posY);
     world.addItem(item);

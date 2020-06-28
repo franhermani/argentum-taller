@@ -23,7 +23,8 @@ class World {
     void loadMatrix();
 
     // Determina si una posicion (x,y) esta dentro de los limites de 'player'
-    bool inPlayerBoundaries(Player& player, int pos_x, int pos_y);
+    const bool inPlayerBoundaries(Player& player,
+            const int pos_x, const int pos_y);
 
 public:
     // Constructor
@@ -44,7 +45,7 @@ public:
     // Actualiza el mundo segun los milisegundos recibidos
     // Simula el paso del tiempo llamando al metodo update()
     // de todos los players y npcs
-    void update(int ms);
+    void update(const int ms);
 
     // Agrega un Player al mundo
     void addPlayer(Player* player);
@@ -77,16 +78,19 @@ public:
     // --------------------------------------------- //
 
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
-    bool inMapBoundaries(int pos_x, int pos_y);
+    const bool inMapBoundaries(const int pos_x, const int pos_y);
 
     // Determina si hay algun Player o NPC en la posicion (x,y)
-    bool inCollision(int pos_x, int pos_y);
+    const bool inCollision(const int pos_x, const int pos_y);
+
+    // Determina si hay algun Item en la posicion (x,y)
+    const bool itemInPosition(const int pos_x, const int pos_y);
 
     // Agrega un item al mundo
     void addItem(Item* item);
 
     // Remueve un item del mundo segun su pos (x,y)
-    Item* removeItem(int pos_x, int pos_y);
+    Item* removeItem(const int pos_x, const int pos_y);
 
     Player* getPlayerById(const int id) const;
 
