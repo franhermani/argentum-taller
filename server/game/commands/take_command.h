@@ -10,7 +10,7 @@ class TakeCommand : public Command {
 
 public:
     // Constructor
-    explicit TakeCommand(Player& player, const int pos_x, const int pot_y);
+    TakeCommand(Player& player, const int pos_x, const int pot_y);
 
     // Constructor y asignacion por copia deshabilitados
     TakeCommand(const TakeCommand&) = delete;

@@ -9,6 +9,7 @@
 #include "heal_command.h"
 #include "list_command.h"
 #include "take_command.h"
+#include "throw_command.h"
 #include "move_command.h"
 #include "attack_command.h"
 #include "equip_command.h"
@@ -67,7 +68,8 @@ Command* CommandFactory::operator()(Player& player, int type,
         return new TakeCommand(player, ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_THROW) {
-        // TODO:...
+        int item_type = arguments[0];
+        return new ThrowCommand(player, item_type);
 
     } else if (type == CMD_MOVE) {
         int direction = arguments[0];

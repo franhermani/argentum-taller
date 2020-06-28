@@ -10,7 +10,7 @@ class EquipCommand : public Command {
 
 public:
     // Constructor
-    explicit EquipCommand(Player& player, const int item_type);
+    EquipCommand(Player& player, const int item_type);
 
     // Constructor y asignacion por copia deshabilitados
     EquipCommand(const EquipCommand&) = delete;
