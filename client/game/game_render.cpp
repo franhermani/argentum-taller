@@ -45,7 +45,7 @@ int GameRender::init() {
 }
 
 Surface* GameRender::createGameFrameSurface(){
-    return new Surface("../client/resources/images/game_frame.jpeg", window);
+    return new Surface("../client/resources/images/game_frame.jpeg", window, 0);
 }
 
 void GameRender::createNecessaryTerrains(
@@ -61,7 +61,7 @@ void GameRender::createNecessaryTerrains(
                     continue;
                 }
                 Surface *surface = new Surface(
-                        terrainSurfacesPaths[matrix[i][j]], window);
+                        terrainSurfacesPaths[matrix[i][j]], window, 0);
                 terrainSurfacesMap.insert({matrix[i][j], surface});
             }
         }
@@ -84,7 +84,7 @@ void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
                 continue;
             }
             Surface* surface = new Surface(
-                    playerSurfacesPaths[race][orientation], window);
+                    playerSurfacesPaths[race][orientation], window, 1);
             playerSurfacesMap[race].insert({orientation, surface});
         }
     }
@@ -124,28 +124,28 @@ void GameRender::loadSurfacePaths() {
             {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
 
     std::map<int, std::string> human_orientations = {
-            {UP, "../client/resources/images/human_up.png"},
-            {DOWN, "../client/resources/images/human_down.png"},
-            {LEFT, "../client/resources/images/human_left.png"},
-            {RIGHT, "../client/resources/images/human_right.png"}
+            {UP, "../client/resources/images/human_up_t.png"},
+            {DOWN, "../client/resources/images/human_down_t.png"},
+            {LEFT, "../client/resources/images/human_left_t.png"},
+            {RIGHT, "../client/resources/images/human_right_t.png"}
     };
     std::map<int, std::string> elf_orientations = {
-            {UP, "../client/resources/images/elf_up.png"},
-            {DOWN, "../client/resources/images/elf_down.png"},
-            {LEFT, "../client/resources/images/elf_left.png"},
-            {RIGHT, "../client/resources/images/elf_right.png"}
+            {UP, "../client/resources/images/elf_up_t.png"},
+            {DOWN, "../client/resources/images/elf_down_t.png"},
+            {LEFT, "../client/resources/images/elf_left_t.png"},
+            {RIGHT, "../client/resources/images/elf_right_t.png"}
     };
     std::map<int, std::string> dwarf_orientations = {
-            {UP, "../client/resources/images/dwarf_up.png"},
-            {DOWN, "../client/resources/images/dwarf_down.png"},
-            {LEFT, "../client/resources/images/dwarf_left.png"},
-            {RIGHT, "../client/resources/images/dwarf_right.png"}
+            {UP, "../client/resources/images/dwarf_up_t.png"},
+            {DOWN, "../client/resources/images/dwarf_down_t.png"},
+            {LEFT, "../client/resources/images/dwarf_left_t.png"},
+            {RIGHT, "../client/resources/images/dwarf_right_t.png"}
     };
     std::map<int, std::string> gnome_orientations = {
-            {UP, "../client/resources/images/gnome_up.png"},
-            {DOWN, "../client/resources/images/gnome_down.png"},
-            {LEFT, "../client/resources/images/gnome_left.png"},
-            {RIGHT, "../client/resources/images/gnome_right.png"}
+            {UP, "../client/resources/images/gnome_up_t.png"},
+            {DOWN, "../client/resources/images/gnome_down_t.png"},
+            {LEFT, "../client/resources/images/gnome_left_t.png"},
+            {RIGHT, "../client/resources/images/gnome_right_t.png"}
     };
     playerSurfacesPaths = {
             {HUMAN, human_orientations},
