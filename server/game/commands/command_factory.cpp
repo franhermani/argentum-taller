@@ -11,6 +11,7 @@
 #include "take_command.h"
 #include "move_command.h"
 #include "attack_command.h"
+#include "equip_command.h"
 
 #define SIZE_8      sizeof(uint8_t)
 #define SIZE_16     sizeof(uint16_t)
@@ -80,7 +81,8 @@ Command* CommandFactory::operator()(Player& player, int type,
         return new AttackCommand(player, enemy_id_type, ntohs(enemy_id));
 
     } else if (type == CMD_EQUIP) {
-        // TODO:...
+        int item_type = arguments[0];
+        return new EquipCommand(player, item_type);
 
     } else if (type == CMD_TRICK) {
         // TODO:...

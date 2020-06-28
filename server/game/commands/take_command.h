@@ -19,7 +19,7 @@ public:
     // Destructor
     ~TakeCommand() override;
 
-    // Revive al jugador
+    // Toma un item del piso y lo equipa en el inventario
     void execute() override;
 };
 
