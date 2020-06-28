@@ -130,10 +130,10 @@ void GameRender::loadSurfacePaths() {
             {RIGHT, "../client/resources/images/human_right_t.png"}
     };
     std::map<int, std::string> elf_orientations = {
-            {UP, "../client/resources/images/elf_up.png"},
-            {DOWN, "../client/resources/images/elf_down.png"},
-            {LEFT, "../client/resources/images/elf_left.png"},
-            {RIGHT, "../client/resources/images/elf_right.png"}
+            {UP, "../client/resources/images/elf_up_t.png"},
+            {DOWN, "../client/resources/images/elf_down_t.png"},
+            {LEFT, "../client/resources/images/elf_left_t.png"},
+            {RIGHT, "../client/resources/images/elf_right_t.png"}
     };
     std::map<int, std::string> dwarf_orientations = {
             {UP, "../client/resources/images/dwarf_up.png"},
