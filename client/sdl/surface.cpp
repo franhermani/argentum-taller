@@ -17,12 +17,20 @@ Surface::Surface(const std::string filename, const SDLWindow& window, int isTran
         SDL_FreeSurface(basic_surface);
 
         if (!optimized_surface)
-            throw SDLException("Error al optimizar la surface", SDL_GetError());
+            throw SDLException("Error al optimizar la surface",
+                    SDL_GetError());
         surface = optimized_surface;
     }
     else {
         SDL_RWops* rwops = SDL_RWFromFile(filename.c_str(), "rb");
+        if (!rwops)
+            throw SDLException("Error al cargar rwops", SDL_GetError());
         surface = IMG_LoadPNG_RW(rwops);
+        if (!surface) {
+            SDLException("Error al convertir rw a png", SDL_GetError());
+            SDL_FreeRW(rwops);
+        }
+        SDL_FreeRW(rwops);
     }
 }
 
