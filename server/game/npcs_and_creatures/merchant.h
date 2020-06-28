@@ -16,10 +16,10 @@ public:
     // Destructor
     ~Merchant();
 
-    // Compra un item al player recibido
+    // Compra el item al player
     void buy(Player& player, int item_type);
 
-    // Vende un item al player recibido
+    // Vende el item al player
     void sell(Player& player, int item_type);
 };
 

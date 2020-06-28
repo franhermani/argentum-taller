@@ -16,10 +16,10 @@ public:
     // Destructor
     ~Priest();
 
-    // Revive al player recibido
+    // Revive al player
     void revive(Player& player);
 
-    // Cura al player recibido
+    // Cura al player
     void heal(Player& player);
 };
 
