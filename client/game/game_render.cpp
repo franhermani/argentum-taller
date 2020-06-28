@@ -45,7 +45,7 @@ int GameRender::init() {
 }
 
 Surface* GameRender::createGameFrameSurface(){
-    return new Surface("../client/resources/images/game_frame.jpeg", window);
+    return new Surface("../client/resources/images/game_frame.jpeg", window, 0);
 }
 
 void GameRender::createNecessaryTerrains(
@@ -61,7 +61,7 @@ void GameRender::createNecessaryTerrains(
                     continue;
                 }
                 Surface *surface = new Surface(
-                        terrainSurfacesPaths[matrix[i][j]], window);
+                        terrainSurfacesPaths[matrix[i][j]], window, 0);
                 terrainSurfacesMap.insert({matrix[i][j], surface});
             }
         }
@@ -84,7 +84,7 @@ void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
                 continue;
             }
             Surface* surface = new Surface(
-                    playerSurfacesPaths[race][orientation], window);
+                    playerSurfacesPaths[race][orientation], window, 1);
             playerSurfacesMap[race].insert({orientation, surface});
         }
     }
@@ -124,10 +124,10 @@ void GameRender::loadSurfacePaths() {
             {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
 
     std::map<int, std::string> human_orientations = {
-            {UP, "../client/resources/images/human_up.png"},
-            {DOWN, "../client/resources/images/human_down.png"},
-            {LEFT, "../client/resources/images/human_left.png"},
-            {RIGHT, "../client/resources/images/human_right.png"}
+            {UP, "../client/resources/images/Circle_file.487.png"},
+            {DOWN, "../client/resources/images/Circle_file.487.png"},
+            {LEFT, "../client/resources/images/Circle_file.487.png"},
+            {RIGHT, "../client/resources/images/Circle_file.487.png"}
     };
     std::map<int, std::string> elf_orientations = {
             {UP, "../client/resources/images/elf_up.png"},
