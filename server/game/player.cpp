@@ -1,7 +1,7 @@
 #include <iostream>
 #include <random>
 #include <climits>
-#include <cmath>
+#include <algorithm>
 #include "player.h"
 #include "world.h"
 #include "equations.h"
