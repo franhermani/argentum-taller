@@ -127,16 +127,21 @@ const long Equations::eqExperienceKill(Player &player, Player &other) {
     return experience;
 }
 
-const int Equations::eqAttackDamage(Player &player) {
+const int Equations::eqDamageCaused(Player &player) {
     std::string race_type = races_map[player.raceType],
             class_type = classes_map[player.classType];
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
+    json attack_params = configParams["player"]["attack"]["no_weapon_eq"];
+
+    double weapon_damage = player.weapon ?
+    randomNumber(player.weapon->minDamage, player.weapon->maxDamage) :
+    randomNumber(attack_params["c1"], attack_params["c2"]);
 
     double strength = average(race_params["strength"],
                               class_params["strength"]);
-    int damage = strength *
-            randomNumber(player.weapon->minDamage, player.weapon->maxDamage);
+
+    int damage = strength * weapon_damage;
     return damage;
 }
 
@@ -155,10 +160,16 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
     if (avoid_attack)
         return 0;
 
-    int defense =
-           randomNumber(player.armor->minDefense, player.armor->maxDefense) +
-           randomNumber(player.helmet->minDefense, player.helmet->maxDefense) +
-           randomNumber(player.shield->minDefense, player.shield->maxDefense);
+    double armor_defense = player.armor ?
+    randomNumber(player.armor->minDefense, player.armor->maxDefense) : 0;
+
+    double helmet_defense = player.helmet ?
+    randomNumber(player.helmet->minDefense, player.helmet->maxDefense) : 0;
+
+    double shield_defense = player.shield ?
+    randomNumber(player.shield->minDefense, player.shield->maxDefense) : 0;
+
+    int defense = armor_defense + helmet_defense + shield_defense;
     int damage_received = std::max(damage - defense, 0);
     return damage_received;
 }

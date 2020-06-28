@@ -252,7 +252,7 @@ void Player::attack(int enemy_id_type, int enemy_id) {
     if (level_diff > world.getMinLevelDiff())
         throw GameException(DIFF_LEVEL_ATTACK_FORBIDDEN);
 
-    int damage_caused = other->receiveAttack(equations.eqAttackDamage(*this));
+    int damage_caused = other->receiveAttack(equations.eqDamageCaused(*this));
     equations.eqExperienceAttack(*this, *other, damage_caused);
 
     if (! other->isAlive)

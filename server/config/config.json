@@ -46,6 +46,12 @@
           "c3": 10
         }
       },
+      "attack": {
+        "no_weapon_eq": {
+          "c1": 1,
+          "c2": 2
+        }
+      },
       "defense": {
         "dodge_eq": {
           "c1": 0,

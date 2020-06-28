@@ -72,7 +72,7 @@ public:
 //    const long eqExperienceKill(Player& player, NPC& npc);
 
     // Daño producido por ataque realizado
-    const int eqAttackDamage(Player& player);
+    const int eqDamageCaused(Player& player);
 
     // Daño recibido por ataque recibido (incluye la posibilidad de esquivarlo)
     const int eqDamageReceived(Player& player, const int damage);
