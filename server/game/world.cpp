@@ -1,4 +1,3 @@
-#include <iostream>
 #include "world.h"
 
 World::World(GameParams& params) : params(params) {

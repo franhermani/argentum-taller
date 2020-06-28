@@ -14,6 +14,8 @@ class Inventory {
     // Lanza una excepcion si el item type ya se encuentra en el inventario
     void checkUniqueness(const int type);
 
+    friend class ServerProtocol;
+
 public:
     // Constructor
     explicit Inventory(const int max_items);
