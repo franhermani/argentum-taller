@@ -124,10 +124,10 @@ void GameRender::loadSurfacePaths() {
             {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
 
     std::map<int, std::string> human_orientations = {
-            {UP, "../client/resources/images/Circle_file.487.png"},
-            {DOWN, "../client/resources/images/Circle_file.487.png"},
-            {LEFT, "../client/resources/images/Circle_file.487.png"},
-            {RIGHT, "../client/resources/images/Circle_file.487.png"}
+            {UP, "../client/resources/images/human_up_t.png"},
+            {DOWN, "../client/resources/images/human_down_t.png"},
+            {LEFT, "../client/resources/images/human_left_t.png"},
+            {RIGHT, "../client/resources/images/human_right_t.png"}
     };
     std::map<int, std::string> elf_orientations = {
             {UP, "../client/resources/images/elf_up.png"},
