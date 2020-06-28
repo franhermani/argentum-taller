@@ -85,7 +85,6 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
 
     matrix_t m;
     m.length = htons(2 * SIZE_16 + matrix_length * SIZE_8);
-    //TODO HARDCODEO TEMPORAL PORQUE SE LEE 10 EN VE Z DE 100!!!!
     m.width = htons(width);
     m.height = htons(height);
 
@@ -102,20 +101,9 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
         }
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
-    if (debug) {
-        std::cout << "esto es length" << 2*sizeof(uint16_t)
-                            + matrix_length*sizeof(uint8_t);
-        std::cout << "esto es width" << width;
-        std::cout << "esto es height" << height;
-        std::cout << "Matriz enviada: ";
-        for (char& c : byte_msg)
-            printf("%02X ", (unsigned) (unsigned char) c);
-        std::cout << "\n";
-    }
 }
 
-void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
-        Player& player) {
+void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     world_t w;
     std::vector<Player*> players = world_monitor.getPlayersAround(player);
 
@@ -231,4 +219,9 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
             printf("%02X ", (unsigned) (unsigned char) c);
         std::cout << "\n";
     }
+}
+
+void ServerProtocol::sendMessage(WorldMonitor &world_monitor, Player &player) {
+    // TODO: por ahora se envia solo el mundo
+    sendWorld(world_monitor, player);
 }
