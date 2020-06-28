@@ -5,8 +5,7 @@
 #include <string>
 #include "../../common/socket.h"
 #include "../data_transfer_objects/command_dto.h"
-#include "../../common/defines/terrains.h"
-#include "../game/game_render.h"
+#include "../../common/defines/world_structs.h"
 
 class ClientProtocol {
     Socket& socket;
@@ -35,11 +34,11 @@ public:
     // Envia un comando a traves del socket
     void sendCommand(CommandDTO& command);
 
-    //recibe desde el servidor un vector de Terrains
+    // Recibe la matriz (vector de terrenos)
     matrix_t receiveMatrix();
 
-    //recibe desde el servidor el mundo actual
-    world_t receiveWorld();
-    };
+    // Recibe una actualizacion del juego
+    world_t receiveMessage();
+};
 
 #endif // CLIENT_PROTOCOL_H

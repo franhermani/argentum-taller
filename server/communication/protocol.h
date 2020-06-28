@@ -3,13 +3,16 @@
 
 #include <vector>
 #include "../../common/socket.h"
+#include "../game/commands/command_factory.h"
 #include "../game/commands/command.h"
 #include "../game/world_monitor.h"
-#include "../game/commands/command_factory.h"
 
 class ServerProtocol {
     Socket& socket;
     CommandFactory commandFactory;
+
+    // Envia el mundo alrededor del player a traves del socket
+    void sendWorld(WorldMonitor& world_monitor, Player& player);
 
 public:
     // Constructor
@@ -38,8 +41,9 @@ public:
     // Envia la matriz de terrenos a traves del socket
     void sendMatrix(WorldMonitor& world_monitor);
 
-    // Envia el mundo alrededor del player a traves del socket
-    void sendWorldAround(WorldMonitor& world_monitor, Player& player);
+    // Envia actualizaciones del juego a traves del socket
+    // TODO: ver que recibir por parametro
+    void sendMessage(WorldMonitor& world_monitor, Player& player);
 };
 
 #endif // SERVER_PROTOCOL_H

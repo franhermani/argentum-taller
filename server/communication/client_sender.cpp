@@ -23,10 +23,10 @@ void ClientSender::run() {
         // Envio la matriz completa con todos los terrenos
         protocol.sendMatrix(worldMonitor);
 
-        // Envio actualizaciones del mundo
+        // Envio actualizaciones del juego
         while (keepRunning) {
             std::this_thread::sleep_for(ms(msPerSend));
-            protocol.sendWorldAround(worldMonitor, *player);
+            protocol.sendMessage(worldMonitor, *player);
         }
     } catch (SocketError&) {
         // Do nothing

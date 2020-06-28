@@ -14,6 +14,7 @@ protected:
     friend class World;
     friend class Player;
     friend class Inventory;
+    friend class ServerProtocol;
 
 public:
     // Destructor

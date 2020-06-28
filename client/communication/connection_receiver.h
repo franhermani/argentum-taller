@@ -3,12 +3,12 @@
 
 #include "../../common/thread.h"
 #include "protocol.h"
-#include "../game/game_render.h"
 #include "../game/map_monitor.h"
 
 class ConnectionReceiver : public Thread {
     ClientProtocol protocol;
     MapMonitor& mapMonitor;
+
 public:
     // Constructor
     explicit ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor);

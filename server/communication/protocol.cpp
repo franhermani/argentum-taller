@@ -3,6 +3,7 @@
 #include "protocol.h"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/items.h"
+#include "../../common/defines/messages.h"
 #include "../../common/defines/debug.h"
 
 #define SIZE_8      sizeof(uint8_t)
@@ -20,15 +21,6 @@ const std::vector<char> ServerProtocol::receivePlayerInfo() {
     arguments.resize(length);
     socket.receiveBytes(arguments.data(), arguments.size());
 
-    if (debug) {
-        std::cout << "Raza recibida: " << (int) arguments[0] << "\n";
-        std::cout << "Clase recibida: " << (int) arguments[1] << "\n";
-        std::cout << "Username recibido: ";
-        size_t i;
-        for (i = 2; i < arguments.size(); i ++)
-            std::cout << arguments[i];
-        std::cout << "\n";
-    }
     return arguments;
 }
 
@@ -84,7 +76,6 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
 
     matrix_t m;
     m.length = htons(2 * SIZE_16 + matrix_length * SIZE_8);
-    //TODO HARDCODEO TEMPORAL PORQUE SE LEE 10 EN VE Z DE 100!!!!
     m.width = htons(width);
     m.height = htons(height);
 
@@ -101,25 +92,14 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
         }
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
-    if (debug) {
-        std::cout << "esto es length" << 2*sizeof(uint16_t)
-                            + matrix_length*sizeof(uint8_t);
-        std::cout << "esto es width" << width;
-        std::cout << "esto es height" << height;
-        std::cout << "Matriz enviada: ";
-        for (char& c : byte_msg)
-            printf("%02X ", (unsigned) (unsigned char) c);
-        std::cout << "\n";
-    }
 }
 
-void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
-        Player& player) {
-    std::vector<Player*> players =
-            world_monitor.getPlayersAround(player);
+void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
+    world_t w;
+    std::vector<Player*> players = world_monitor.getPlayersAround(player);
 
     // Longitudes variables
-    int inventory_length = 10;  // TODO: ...
+    int inventory_length = player.inventory.numItems;
     int num_players = players.size();
 //    int num_npcs = npcs.size();
 //    int num_items = items.size();
@@ -129,9 +109,11 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     size_t message_length =
             7 * SIZE_16 + SIZE_32 +
             SIZE_8 + inventory_length * SIZE_8 +
-            SIZE_16 + num_players * (3 * SIZE_16 + 7 * SIZE_8);
+            SIZE_16 + num_players * (3 * SIZE_16 + 9 * SIZE_8);
 
-    world_t w;
+    // ------------------------ //
+    // Carga del struct world_t //
+    // ------------------------ //
 
     // Longitud total mensaje
     w.length = htons(message_length);
@@ -155,28 +137,37 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
         w.players[i].pos_x = htons(players[i]->posX);
         w.players[i].pos_y = htons(players[i]->posY);
         w.players[i].is_alive = players[i]->isAlive ? 1 : 0;
+        w.players[i].is_meditating = players[i]->isMeditating ? 1 : 0;
         w.players[i].orientation = players[i]->orientation;
         w.players[i].race_type = players[i]->raceType;
         w.players[i].class_type = players[i]->classType;
-        // TODO: renombrar estos y agregar 'shield'
-        w.players[i].body_armor = players[i]->armor ?
-                players[i]->armor->type : NO_ITEM_EQUIPPED;
-        w.players[i].head_armor = players[i]->helmet ?
-                players[i]->helmet->type : NO_ITEM_EQUIPPED;
         w.players[i].weapon = players[i]->weapon ?
-                players[i]->weapon->type : NO_ITEM_EQUIPPED;
+                              players[i]->weapon->type : NO_ITEM_EQUIPPED;
+        w.players[i].armor = players[i]->armor ?
+                             players[i]->armor->type : NO_ITEM_EQUIPPED;
+        w.players[i].helmet = players[i]->helmet ?
+                              players[i]->helmet->type : NO_ITEM_EQUIPPED;
+        w.players[i].shield = players[i]->shield ?
+                              players[i]->shield->type : NO_ITEM_EQUIPPED;
     }
 
     // TODO: completar con npcs e items
 //    std::vector<NPC*> npc = world.getNPCsAround(player);
 //    std::vector<Item*> items = world.getItemsAround(player);
 
+    // ------------------ //
+    // Carga del byte_msg //
+    // ------------------ //
+
     int pos = 0;
     std::vector<char> byte_msg;
-    byte_msg.resize(SIZE_16 + message_length);
+    byte_msg.resize(SIZE_8 + SIZE_16 + message_length);
+
+    // Enum messageType
+    byte_msg[pos] = MSG_WORLD_UPDATE;
 
     // Longitud total mensaje
-    memcpy(&byte_msg[pos], &w.length, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_8], &w.length, SIZE_16);
 
     // Info particular del player del cliente
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_life, SIZE_16);
@@ -191,7 +182,7 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
     // Inventario
     byte_msg[pos+=SIZE_32] = inventory_length;
     for (i = 0; i < inventory_length; i ++)
-        byte_msg[pos+=SIZE_8] = i + 1;      // TODO: ...
+        byte_msg[pos+=SIZE_8] = player.inventory.items[i]->type;
 
     // Lista de players
     memcpy(&byte_msg[pos+=SIZE_16], &w.num_players, SIZE_16);
@@ -201,12 +192,14 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
         memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].pos_x, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].pos_y, SIZE_16);
         byte_msg[pos+=SIZE_16] = w.players[i].is_alive;
+        byte_msg[pos+=SIZE_8] = w.players[i].is_meditating;
         byte_msg[pos+=SIZE_8] = w.players[i].orientation;
         byte_msg[pos+=SIZE_8] = w.players[i].race_type;
         byte_msg[pos+=SIZE_8] = w.players[i].class_type;
-        byte_msg[pos+=SIZE_8] = w.players[i].body_armor;
-        byte_msg[pos+=SIZE_8] = w.players[i].head_armor;
         byte_msg[pos+=SIZE_8] = w.players[i].weapon;
+        byte_msg[pos+=SIZE_8] = w.players[i].armor;
+        byte_msg[pos+=SIZE_8] = w.players[i].helmet;
+        byte_msg[pos+=SIZE_8] = w.players[i].shield;
         pos -= SIZE_8;
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
@@ -217,4 +210,9 @@ void ServerProtocol::sendWorldAround(WorldMonitor& world_monitor,
             printf("%02X ", (unsigned) (unsigned char) c);
         std::cout << "\n";
     }
+}
+
+void ServerProtocol::sendMessage(WorldMonitor &world_monitor, Player &player) {
+    // TODO: por ahora se envia solo el mundo
+    sendWorld(world_monitor, player);
 }

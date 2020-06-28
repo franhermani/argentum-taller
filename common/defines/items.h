@@ -2,6 +2,9 @@
 #define ITEMS_H
 
 enum itemType {
+    // No item equipped
+    NO_ITEM_EQUIPPED,
+
     // Weapons
     ESPADA,
     HACHA,
@@ -29,10 +32,7 @@ enum itemType {
 
     // Potion
     LIFE_POTION,
-    MANA_POTION,
-
-    // No item equipped
-    NO_ITEM_EQUIPPED
+    MANA_POTION
 };
 
 #endif // ITEMS_H

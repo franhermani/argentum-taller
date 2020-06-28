@@ -25,13 +25,14 @@ typedef struct {
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
     uint8_t is_alive;           // 1 si esta vivo, 0 si no (fantasma)
+    uint8_t is_meditating;      // 1 si esta vivo, 0 si no
     uint8_t orientation;        // Enum type de la orientacion
     uint8_t race_type;          // Enum type de la raza
     uint8_t class_type;         // Enum type de la clase
-    // TODO: renombrar estos y agregar 'shield'
-    uint8_t body_armor;         // Enum type de la armadura o vestimenta
-    uint8_t head_armor;         // Enum type del casco o sombrero
     uint8_t weapon;             // Enum type del arma
+    uint8_t armor;              // Enum type del armadura
+    uint8_t helmet;             // Enum type del casco
+    uint8_t shield;             // Enum type del escudo
 } player_t;
 
 typedef struct {
