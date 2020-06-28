@@ -5,11 +5,12 @@
 #include "command_dto.h"
 
 class HealCommandDTO : public CommandDTO {
-    uint16_t priestId;
+    uint16_t priestPosX, priestPosY;
 
 public:
     // Constructor
-    explicit HealCommandDTO(const uint16_t priest_id);
+    explicit HealCommandDTO(const uint16_t priest_pos_x,
+            const uint16_t priest_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
     HealCommandDTO(const HealCommandDTO&) = delete;

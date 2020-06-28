@@ -5,14 +5,15 @@
 #include "command_dto.h"
 
 class ReviveCommandDTO : public CommandDTO {
-    uint16_t priestId;
+    uint16_t priestPosX{}, priestPosY{};
 
 public:
     // Constructor sin sacerdote
     ReviveCommandDTO();
 
     // Constructor con sacerdote
-    explicit ReviveCommandDTO(const uint16_t priest_id);
+    explicit ReviveCommandDTO(const uint16_t priest_pos_x,
+            const uint16_t priest_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
     ReviveCommandDTO(const ReviveCommandDTO&) = delete;

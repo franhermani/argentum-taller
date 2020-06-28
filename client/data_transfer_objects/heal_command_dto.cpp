@@ -5,15 +5,17 @@
 #include "../../common/defines/commands.h"
 
 #define SIZE_8      sizeof(uint8_t)
+#define SIZE_16     sizeof(uint16_t)
 
-HealCommandDTO::HealCommandDTO(const uint16_t priest_id) :
-priestId(priest_id) {}
+HealCommandDTO::HealCommandDTO(const uint16_t priest_pos_x,
+        const uint16_t priest_pos_y) :
+priestPosX(priest_pos_x), priestPosY(priest_pos_y) {}
 
 HealCommandDTO::~HealCommandDTO() = default;
 
 const std::vector<char> HealCommandDTO::serialize() const {
     // Longitud de los argumentos
-    uint8_t arguments_size = sizeof(priestId);
+    uint8_t arguments_size = sizeof(priestPosX) + sizeof(priestPosY);
 
     // Longitud total
     size_t total_size = 2 * SIZE_8 + arguments_size;
@@ -29,8 +31,9 @@ const std::vector<char> HealCommandDTO::serialize() const {
     byte_msg[1] = arguments_size;
 
     // Argumentos
-    uint16_t id = htons(priestId);
-    memcpy(&byte_msg[2], &id, arguments_size);
+    uint16_t pos_x = htons(priestPosX), pos_y = htons(priestPosY);
+    memcpy(&byte_msg[2], &pos_x, SIZE_16);
+    memcpy(&byte_msg[4], &pos_y, SIZE_16);
 
     return byte_msg;
 }
