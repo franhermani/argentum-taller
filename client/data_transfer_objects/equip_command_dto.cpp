@@ -3,6 +3,8 @@
 #include "equip_command_dto.h"
 #include "../../common/defines/commands.h"
 
+#define SIZE_8      sizeof(uint8_t)
+
 EquipCommandDTO::EquipCommandDTO(const uint8_t item_type) :
 itemType(item_type) {}
 
@@ -13,7 +15,7 @@ const std::vector<char> EquipCommandDTO::serialize() const {
     uint8_t arguments_size = sizeof(itemType);
 
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
+    size_t total_size = 2 * SIZE_8 + arguments_size;
 
     // Vector serializado
     std::vector<char> byte_msg;

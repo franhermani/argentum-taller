@@ -17,7 +17,7 @@ const std::vector<char> AttackCommandDTO::serialize() const {
     uint8_t arguments_size = sizeof(enemyIdType) + sizeof(enemyId);
 
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
+    size_t total_size = 2 * SIZE_8 + arguments_size;
 
     // Vector serializado
     std::vector<char> byte_msg;

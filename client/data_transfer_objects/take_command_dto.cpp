@@ -4,7 +4,8 @@
 #include "take_command_dto.h"
 #include "../../common/defines/commands.h"
 
-#define SIZE_16      sizeof(uint16_t)
+#define SIZE_8      sizeof(uint8_t)
+#define SIZE_16     sizeof(uint16_t)
 
 TakeCommandDTO::TakeCommandDTO(const uint16_t pos_x, const uint16_t pos_y) :
 posX(pos_x), posY(pos_y) {}
@@ -16,7 +17,7 @@ const std::vector<char> TakeCommandDTO::serialize() const {
     uint8_t arguments_size = sizeof(posX) + sizeof(posY);
 
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
+    size_t total_size = 2 * SIZE_8 + arguments_size;
 
     // Vector serializado
     std::vector<char> byte_msg;
