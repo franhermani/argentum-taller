@@ -219,6 +219,12 @@ world_t ClientProtocol::receiveMessage() {
     w.player_info.actual_experience = ntohl(actual_experience);
     bytes_advanced += SIZE_32;
 
+    // Booleano de arma equipada a distancia
+    uint8_t long_distance;
+    memcpy(&long_distance, world_buffer.data() + bytes_advanced, SIZE_8);
+    w.player_info.long_distance = long_distance;
+    bytes_advanced += SIZE_8;
+
     if (debug) {
         std::cout << "\nPLAYER PRINCIPAL\n" <<
         "Vida actual: " << w.player_info.actual_life << "\n" <<
@@ -229,6 +235,7 @@ world_t ClientProtocol::receiveMessage() {
         "Oro maximo: " << w.player_info.max_gold << "\n" <<
         "Nivel: " << w.player_info.level << "\n" <<
         "Experiencia actual: " << w.player_info.actual_experience << "\n" <<
+        "Arma a distancia: " << (int) w.player_info.long_distance << "\n" <<
         "Inventario:\n";
     }
 

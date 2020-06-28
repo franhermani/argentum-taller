@@ -107,7 +107,7 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     // Longitud total del mensaje
     // TODO: completar con npcs e items
     size_t message_length =
-            7 * SIZE_16 + SIZE_32 +
+            7 * SIZE_16 + SIZE_32 + SIZE_8 +
             SIZE_8 + inventory_length * SIZE_8 +
             SIZE_16 + num_players * (3 * SIZE_16 + 9 * SIZE_8);
 
@@ -127,6 +127,8 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     w.player_info.max_gold = htons(player.maxGold);
     w.player_info.level = htons(player.level);
     w.player_info.actual_experience = htonl(player.actualExperience);
+    w.player_info.long_distance = player.weapon &&
+            player.weapon->isLongDistance ? 1 : 0;
 
     // Info generica de todos los players (incluido el del cliente)
     w.num_players = num_players;
@@ -178,9 +180,10 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_gold, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.level, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_experience, SIZE_32);
+    memcpy(&byte_msg[pos+=SIZE_32], &w.player_info.long_distance, SIZE_8);
 
     // Inventario
-    byte_msg[pos+=SIZE_32] = inventory_length;
+    byte_msg[pos+=SIZE_8] = inventory_length;
     for (i = 0; i < inventory_length; i ++)
         byte_msg[pos+=SIZE_8] = player.inventory.items[i]->type;
 

@@ -49,6 +49,7 @@ typedef struct {
     uint16_t max_gold;              // Oro maximo
     uint16_t level;                 // Nivel
     uint32_t actual_experience;     // Experiencia
+    uint8_t long_distance;          // 1 si el arma es a distancia, 0 si no
     inventory_t inventory;          // Inventario
 } player_info_t;
 
