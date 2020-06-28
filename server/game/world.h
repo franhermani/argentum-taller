@@ -92,6 +92,10 @@ public:
 
     const int getInventoryLength() const;
 
+    const int getMinLevelNewbie() const;
+
+    const int getMinLevelDiff() const;
+
 
     // ------------------------------------------------ //
     // Metodos accedidos por WorldMonitor, Player y NPC //

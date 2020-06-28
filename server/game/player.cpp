@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <climits>
+#include <algorithm>
 #include "player.h"
 #include "world.h"
 #include "equations.h"
@@ -8,6 +9,7 @@
 #include "../../common/defines/classes.h"
 #include "game_exception.h"
 #include "../../common/defines/game_exceptions.h"
+#include "../../common/defines/id_types.h"
 
 Player::Player(World& world, Equations& equations, const int id,
         const int race_type, const int class_type) :
@@ -21,6 +23,7 @@ maxExperience(LONG_MAX),
 actualExperience(0),
 isAlive(true),
 isMeditating(false),
+isNewbie(level <= world.getMinLevelNewbie()),
 ableToUseMagic(classType != WARRIOR),
 orientation(DOWN),
 maxLife(equations.eqMaxLife(*this)),
@@ -80,26 +83,40 @@ void Player::loadInitialPosition() {
 
 void Player::subtractLife(int life) {
     actualLife -= life;
-    if (actualLife < 0) actualLife = 0;
-    if (actualLife == 0) die();
+
+    if (actualLife < 0)
+        actualLife = 0;
+
+    if (actualLife == 0)
+        die();
 }
 
 void Player::addLife(int life) {
     actualLife += life;
-    if (actualLife > maxLife) actualLife = maxLife;
+
+    if (actualLife > maxLife)
+        actualLife = maxLife;
 }
 
 void Player::addMana(int mana) {
     actualMana += mana;
-    if (actualMana > maxMana) actualMana = maxMana;
+
+    if (actualMana > maxMana)
+        actualMana = maxMana;
 }
 
 void Player::addExperience(int exp) {
     actualExperience += exp;
-    if (actualExperience > maxExperience) actualExperience = maxExperience;
+
+    if (actualExperience > maxExperience)
+        actualExperience = maxExperience;
+
     // TODO: testear caso de subir mas de un nivel a la vez
-    if (actualExperience >= equations.eqExperienceLimit(*this))
+    if (actualExperience >= equations.eqExperienceLimit(*this)) {
         level += 1;
+        if (level > world.getMinLevelNewbie())
+            isNewbie = false;
+    }
 }
 
 void Player::die() {
@@ -187,19 +204,21 @@ void Player::moveTo(int direction) {
 }
 
 void Player::heal() {
+    stopMeditating();
+
     if (! isAlive)
         throw GameException(UNABLE_TO_INTERACT);
 
-    stopMeditating();
     actualLife = maxLife;
     actualMana = maxMana;
 }
 
 void Player::revive() {
+    stopMeditating();
+
     if (isAlive)
         throw GameException(UNABLE_TO_REVIVE);
 
-    stopMeditating();
     actualLife = maxLife;
     isAlive = true;
 }
@@ -212,15 +231,26 @@ void Player::meditate() {
 }
 
 // TODO: contemplar NPCs
+// TODO: testear todos los casos de esta funcion
 void Player::attack(int enemy_id_type, int enemy_id) {
+    stopMeditating();
+
     if (! isAlive)
         throw GameException(UNABLE_TO_INTERACT);
 
-    stopMeditating();
+    if (isNewbie && enemy_id_type == ID_PLAYER)
+        throw GameException(NEWBIE_ATTACK_FORBIDDEN);
 
     Player* other = world.getPlayerById(enemy_id);
     if (! other || ! other->isAlive)
         throw GameException(UNABLE_TO_ATTACK_DEAD_PLAYER);
+
+    if (other->isNewbie)
+        throw GameException(NEWBIE_ATTACK_FORBIDDEN);
+
+    int level_diff = std::max(level - other->level, other->level - level);
+    if (level_diff > world.getMinLevelDiff())
+        throw GameException(DIFF_LEVEL_ATTACK_FORBIDDEN);
 
     int damage_caused = other->receiveAttack(equations.eqAttackDamage(*this));
     equations.eqExperienceAttack(*this, *other, damage_caused);
@@ -239,10 +269,10 @@ const int Player::receiveAttack(const int damage) {
 
 // TODO: testear esta funcion
 void Player::equipItemFromInventory(const int type) {
+    stopMeditating();
+
     if (! isAlive)
         throw GameException(UNABLE_TO_INTERACT);
-
-    stopMeditating();
 
     Item* item = inventory.removeItem(type);
     if (typeid(item) == typeid(Weapon)) {
@@ -259,20 +289,21 @@ void Player::equipItemFromInventory(const int type) {
 }
 
 void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
+    stopMeditating();
+
     if (! isAlive)
         throw GameException(UNABLE_TO_INTERACT);
 
-    stopMeditating();
 
     Item* item = world.removeItem(pos_x, pos_y);
     if (item) inventory.addItem(item);
 }
 
 void Player::dropItemFromInventoryToWorld(const int type) {
+    stopMeditating();
+
     if (! isAlive)
         throw GameException(UNABLE_TO_INTERACT);
-
-    stopMeditating();
 
     Item* item = inventory.removeItem(type);
     item->updatePosition(posX, posY);

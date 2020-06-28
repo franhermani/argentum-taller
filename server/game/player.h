@@ -26,6 +26,7 @@ class Player {
     long actualExperience;
     bool isAlive;
     bool isMeditating;
+    bool isNewbie;
     bool ableToUseMagic;
     int orientation;
     int maxLife;

@@ -2,6 +2,8 @@
 #include "meditate_command_dto.h"
 #include "../../common/defines/commands.h"
 
+#define SIZE_8      sizeof(uint8_t)
+
 MeditateCommandDTO::MeditateCommandDTO() = default;
 
 MeditateCommandDTO::~MeditateCommandDTO() = default;
@@ -11,7 +13,7 @@ const std::vector<char> MeditateCommandDTO::serialize() const {
     uint8_t arguments_size = 0;
 
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
+    size_t total_size = 2 * SIZE_8 + arguments_size;
 
     // Vector serializado
     std::vector<char> byte_msg;

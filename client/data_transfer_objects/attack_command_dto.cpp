@@ -4,6 +4,8 @@
 #include "attack_command_dto.h"
 #include "../../common/defines/commands.h"
 
+#define SIZE_8      sizeof(uint8_t)
+
 AttackCommandDTO::AttackCommandDTO(const uint8_t enemy_id_type,
         const uint16_t enemy_id) : enemyIdType(enemy_id_type),
         enemyId(enemy_id) {}
@@ -15,7 +17,7 @@ const std::vector<char> AttackCommandDTO::serialize() const {
     uint8_t arguments_size = sizeof(enemyIdType) + sizeof(enemyId);
 
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
+    size_t total_size = 2 * SIZE_8 + arguments_size;
 
     // Vector serializado
     std::vector<char> byte_msg;
@@ -30,7 +32,7 @@ const std::vector<char> AttackCommandDTO::serialize() const {
     // Argumentos
     byte_msg[2] = enemyIdType;
     uint16_t id = htons(enemyId);
-    memcpy(&byte_msg[3], &id, arguments_size);
+    memcpy(&byte_msg[3], &id, arguments_size - SIZE_8);
 
     return byte_msg;
 }

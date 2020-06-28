@@ -4,6 +4,8 @@
 #include "list_command_dto.h"
 #include "../../common/defines/commands.h"
 
+#define SIZE_8      sizeof(uint8_t)
+
 ListCommandDTO::ListCommandDTO(const uint16_t npc_id) : npcId(npc_id) {}
 
 ListCommandDTO::~ListCommandDTO() = default;
@@ -13,7 +15,7 @@ const std::vector<char> ListCommandDTO::serialize() const {
     uint8_t arguments_size = sizeof(npcId);
 
     // Longitud total
-    size_t total_size = sizeof(uint8_t) + sizeof(uint8_t) + arguments_size;
+    size_t total_size = 2 * SIZE_8 + arguments_size;
 
     // Vector serializado
     std::vector<char> byte_msg;

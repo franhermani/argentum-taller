@@ -1,19 +1,18 @@
 #include <vector>
 #include <cstring>
-#include <arpa/inet.h>
-#include "heal_command_dto.h"
+#include "equip_command_dto.h"
 #include "../../common/defines/commands.h"
 
 #define SIZE_8      sizeof(uint8_t)
 
-HealCommandDTO::HealCommandDTO(const uint16_t priest_id) :
-priestId(priest_id) {}
+EquipCommandDTO::EquipCommandDTO(const uint8_t item_type) :
+itemType(item_type) {}
 
-HealCommandDTO::~HealCommandDTO() = default;
+EquipCommandDTO::~EquipCommandDTO() = default;
 
-const std::vector<char> HealCommandDTO::serialize() const {
+const std::vector<char> EquipCommandDTO::serialize() const {
     // Longitud de los argumentos
-    uint8_t arguments_size = sizeof(priestId);
+    uint8_t arguments_size = sizeof(itemType);
 
     // Longitud total
     size_t total_size = 2 * SIZE_8 + arguments_size;
@@ -23,14 +22,13 @@ const std::vector<char> HealCommandDTO::serialize() const {
     byte_msg.resize(total_size);
 
     // Tipo de comando
-    byte_msg[0] = CMD_HEAL;
+    byte_msg[0] = CMD_EQUIP;
 
     // Longitud de los argumentos
     byte_msg[1] = arguments_size;
 
     // Argumentos
-    uint16_t id = htons(priestId);
-    memcpy(&byte_msg[2], &id, arguments_size);
+    byte_msg[2] = itemType;
 
     return byte_msg;
 }
