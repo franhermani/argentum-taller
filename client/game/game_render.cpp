@@ -136,16 +136,16 @@ void GameRender::loadSurfacePaths() {
             {RIGHT, "../client/resources/images/elf_right_t.png"}
     };
     std::map<int, std::string> dwarf_orientations = {
-            {UP, "../client/resources/images/dwarf_up.png"},
-            {DOWN, "../client/resources/images/dwarf_down.png"},
-            {LEFT, "../client/resources/images/dwarf_left.png"},
-            {RIGHT, "../client/resources/images/dwarf_right.png"}
+            {UP, "../client/resources/images/dwarf_up_t.png"},
+            {DOWN, "../client/resources/images/dwarf_down_t.png"},
+            {LEFT, "../client/resources/images/dwarf_left_t.png"},
+            {RIGHT, "../client/resources/images/dwarf_right_t.png"}
     };
     std::map<int, std::string> gnome_orientations = {
-            {UP, "../client/resources/images/gnome_up.png"},
-            {DOWN, "../client/resources/images/gnome_down.png"},
-            {LEFT, "../client/resources/images/gnome_left.png"},
-            {RIGHT, "../client/resources/images/gnome_right.png"}
+            {UP, "../client/resources/images/gnome_up_t.png"},
+            {DOWN, "../client/resources/images/gnome_down_t.png"},
+            {LEFT, "../client/resources/images/gnome_left_t.png"},
+            {RIGHT, "../client/resources/images/gnome_right_t.png"}
     };
     playerSurfacesPaths = {
             {HUMAN, human_orientations},
