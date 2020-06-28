@@ -154,6 +154,14 @@ const int World::getInventoryLength() const {
     return params.getConfigParams()["player"]["inventory"]["max_objects"];
 }
 
+const int World::getMinLevelNewbie() const {
+    return params.getConfigParams()["player"]["fair_play"]["min_level_newbie"];
+}
+
+const int World::getMinLevelDiff() const {
+    return params.getConfigParams()["player"]["fair_play"]["min_level_diff"];
+}
+
 // ------------------------------------------------ //
 // Metodos accedidos por WorldMonitor, Player y NPC //
 // ------------------------------------------------ //

@@ -20,6 +20,13 @@ enum exceptionCode {
     // Un player intenta atacar a otro player muerto
     UNABLE_TO_ATTACK_DEAD_PLAYER,
 
+    // Un player newbie no puede atacar ni ser atacado por otro player
+    NEWBIE_ATTACK_FORBIDDEN,
+
+    // Un player no puede atacar a otro si la diferencia de niveles
+    // entre ellos es alta
+    DIFF_LEVEL_ATTACK_FORBIDDEN,
+
     // Un player no tiene suficiente oro para comprar un item
     INSUFFICIENT_GOLD,
 
