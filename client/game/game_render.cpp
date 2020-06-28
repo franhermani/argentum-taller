@@ -113,15 +113,6 @@ void GameRender::loadSurfacePaths() {
             {TERRAIN_WALL, "../client/resources/images/12017.png"},
             {TERRAIN_OUT_OF_BOUNDARIES,
              "../client/resources/images/12050.png"}};
-    npcSurfacesPaths = {
-            {WARRIOR_UP, "../client/resources/images/tipito_sube.png"},
-            {WARRIOR_DOWN, "../client/resources/images/tipito_baja.png"},
-            {WARRIOR_LEFT, "../client/resources/images/tipito_izq.png"},
-            {WARRIOR_RIGHT, "../client/resources/images/tipito_der.png"},
-            {SKELETON_UP, "../client/resources/images/esqueleto_sube.png"},
-            {SKELETON_DOWN, "../client/resources/images/esqueleto_baja.png"},
-            {SKELETON_LEFT, "../client/resources/images/esqueleto_izq.png"},
-            {SKELETON_RIGHT, "../client/resources/images/esqueleto_der.png"}};
 
     std::map<int, std::string> human_orientations = {
             {UP, "../client/resources/images/human_up_t.png"},
