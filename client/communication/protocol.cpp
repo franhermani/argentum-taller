@@ -4,7 +4,6 @@
 #include <cstring>
 #include "protocol.h"
 #include "../../common/defines/debug.h"
-#include "../../common/defines/world_structs.h"
 
 #define SIZE_8                      sizeof(uint8_t)
 #define SIZE_16                     sizeof(uint16_t)
@@ -74,8 +73,6 @@ const std::vector<int> ClientProtocol::receiveBlocksAround() {
     socket.receiveBytes(byte_msg.data(), SIZE_16);
 
     blocks.resize(SIZE_16);
-
-    // TODO: HARDCODEO TEMPORAL SACAR
     blocks[0] = (int) byte_msg[0];
     blocks[1] = (int) byte_msg[1];
 
@@ -128,7 +125,7 @@ matrix_t ClientProtocol::receiveMatrix() {
     return std::move(m);
 }
 
-world_t ClientProtocol::receiveWorld() {
+world_t ClientProtocol::receiveMessage() {
     world_t w;
 
     // Tipo de mensaje

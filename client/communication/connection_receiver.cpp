@@ -15,14 +15,16 @@ void ConnectionReceiver::run() {
         int username_id = protocol.receiveUsernameId();
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
         matrix_t matrix = protocol.receiveMatrix();
-        //TODO PASAR DISTINTO ESTO. POR REF POR EJ
+
+        // TODO: pasar por referencia
         mapMonitor.initialize(username_id, blocks_around, std::move(matrix));
+
         while (keepRunning) {
-            world_t world = protocol.receiveWorld();
+            world_t world = protocol.receiveMessage();
             mapMonitor.updateWorld(std::move(world));
         }
     } catch(SocketError&) {
-        // TODO ver que hacer aca
+        // Do nothing
     }
     isRunning = false;
 }
@@ -38,4 +40,3 @@ bool ConnectionReceiver::isDead() {
 const int ConnectionReceiver::receiveUsernameConfirmation() {
     return protocol.receiveUsernameConfirmation();
 }
-
