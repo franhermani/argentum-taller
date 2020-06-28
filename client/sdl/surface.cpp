@@ -4,7 +4,8 @@
 #include "exception.h"
 #include "window.h"
 
-Surface::Surface(const std::string filename, const SDLWindow& window, int isTransparent) {
+Surface::Surface(const std::string filename, const SDLWindow& window,
+        int isTransparent) {
     if (not isTransparent) {
         SDL_Surface* basic_surface = IMG_Load(filename.c_str());
         if (!basic_surface) {
@@ -20,8 +21,7 @@ Surface::Surface(const std::string filename, const SDLWindow& window, int isTran
             throw SDLException("Error al optimizar la surface",
                     SDL_GetError());
         surface = optimized_surface;
-    }
-    else {
+    } else {
         SDL_RWops* rwops = SDL_RWFromFile(filename.c_str(), "rb");
         if (!rwops)
             throw SDLException("Error al cargar rwops", SDL_GetError());

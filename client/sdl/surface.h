@@ -11,7 +11,8 @@ class Surface {
 
 public:
     // Constructor
-    Surface(const std::string filename, const SDLWindow& window, int isTransparent);
+    Surface(const std::string filename, const SDLWindow& window,
+            int isTransparent);
 
     // Destructor
     ~Surface();
