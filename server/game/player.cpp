@@ -230,33 +230,46 @@ void Player::meditate() {
     isMeditating = isAlive;
 }
 
-// TODO: contemplar NPCs
-// TODO: testear todos los casos de esta funcion
-void Player::attack(int enemy_id_type, int enemy_id) {
+void Player::attack(Player& other) {
     stopMeditating();
 
     if (! isAlive)
         throw GameException(UNABLE_TO_INTERACT);
 
-    if (isNewbie && enemy_id_type == ID_PLAYER)
+    if (isNewbie)
         throw GameException(NEWBIE_ATTACK_FORBIDDEN);
 
-    Player* other = world.getPlayerById(enemy_id);
-    if (! other || ! other->isAlive)
+    if (! other.isAlive)
         throw GameException(UNABLE_TO_ATTACK_DEAD_PLAYER);
 
-    if (other->isNewbie)
+    if (other.isNewbie)
         throw GameException(NEWBIE_ATTACK_FORBIDDEN);
 
-    int level_diff = std::max(level - other->level, other->level - level);
+    int level_diff = std::max(level - other.level, other.level - level);
     if (level_diff > world.getMaxLevelDiff())
         throw GameException(DIFF_LEVEL_ATTACK_FORBIDDEN);
 
-    int damage_caused = other->receiveAttack(equations.eqDamageCaused(*this));
-    equations.eqExperienceAttack(*this, *other, damage_caused);
+    int damage_caused = other.receiveAttack(equations.eqDamageCaused(*this));
+    equations.eqExperienceAttack(*this, other, damage_caused);
 
-    if (! other->isAlive)
-        equations.eqExperienceKill(*this, *other);
+    if (! other.isAlive)
+        equations.eqExperienceKill(*this, other);
+}
+
+void Player::attack(Creature &creature) {
+    stopMeditating();
+
+    if (! isAlive)
+        throw GameException(UNABLE_TO_INTERACT);
+
+    // TODO: ...
+
+//    int damage_caused = creature.receiveAttack(
+//    equations.eqDamageCaused(*this));
+//    equations.eqExperienceAttack(*this, creature, damage_caused);
+//
+//    if (! creature.isAlive)
+//        equations.eqExperienceKill(*this, creature);
 }
 
 const int Player::receiveAttack(const int damage) {
@@ -267,7 +280,6 @@ const int Player::receiveAttack(const int damage) {
     return damage_received;
 }
 
-// TODO: testear esta funcion
 void Player::equipItemFromInventory(const int type) {
     stopMeditating();
 

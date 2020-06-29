@@ -8,6 +8,7 @@
 #include "items/shield.h"
 #include "items/potion.h"
 #include "items/inventory.h"
+#include "npcs_and_creatures/creature.h"
 
 class World;
 class Equations;
@@ -118,8 +119,11 @@ public:
     // - el player no puede usar la magia
     void meditate();
 
-    // Ataca a otro player o NPC segun su ID
-    void attack(const int enemy_id_type, const int enemy_id);
+    // Ataca a otro player
+    void attack(Player& other);
+
+    // Ataca a una criatura
+    void attack(Creature& creature);
 
     // Recibe el ataque de otro player o NPC
     // Devuelve la cantidad de daño realmente recibido

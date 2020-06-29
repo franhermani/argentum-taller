@@ -47,11 +47,11 @@ public:
     // Incluye al mismo 'player' recibido por parametro
     std::vector<Player*> getPlayersAround(Player& player);
 
-    // Devuelve un vector de todos los npc en la sub-matriz de 'player'
-//    std::vector<NPC*> getNPCsAround(Player& player);
+    // Devuelve un vector de todas las criaturas en la sub-matriz de 'player'
+    std::vector<Creature*> getCreaturesAround(Player& player);
 
     // Devuelve un vector de todos los items en la sub-matriz de 'player'
-//    std::vector<Item*> getItemsAround(Player& player);
+    std::vector<Item*> getItemsAround(Player& player);
 };
 
 #endif // WORLD_MONITOR_H

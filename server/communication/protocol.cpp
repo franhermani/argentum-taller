@@ -96,12 +96,17 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
 
 void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     world_t w;
-    std::vector<Player*> players = world_monitor.getPlayersAround(player);
+    std::vector<Player*> players = world_monitor.
+            getPlayersAround(player);
+    std::vector<Creature*> creatures = world_monitor.
+            getCreaturesAround(player);
+    std::vector<Item*> items = world_monitor.
+            getItemsAround(player);
 
     // Longitudes variables
     int inventory_length = player.inventory.numItems;
     int num_players = players.size();
-//    int num_npcs = npcs.size();
+//    int num_creatures = creatures.size();
 //    int num_items = items.size();
 
     // Longitud total del mensaje
@@ -153,10 +158,6 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
                               players[i]->shield->type : NO_ITEM_EQUIPPED;
     }
 
-    // TODO: completar con npcs e items
-//    std::vector<NPC*> npc = world.getNPCsAround(player);
-//    std::vector<Item*> items = world.getItemsAround(player);
-
     // ------------------ //
     // Carga del byte_msg //
     // ------------------ //
@@ -205,6 +206,13 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
         byte_msg[pos+=SIZE_8] = w.players[i].shield;
         pos -= SIZE_8;
     }
+
+    // Lista de criaturas
+    // TODO: ...
+
+    // Lista de items
+    // TODO: ...
+
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
     if (debug) {

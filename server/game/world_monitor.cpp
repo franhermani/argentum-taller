@@ -47,3 +47,13 @@ std::vector<Player*> WorldMonitor::getPlayersAround(Player &player) {
     std::unique_lock<std::mutex> lk(m);
     return world.getPlayersAround(player);
 }
+
+std::vector<Creature*> WorldMonitor::getCreaturesAround(Player &player) {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getCreaturesAround(player);
+}
+
+std::vector<Item*> WorldMonitor::getItemsAround(Player &player) {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getItemsAround(player);
+}
