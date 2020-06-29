@@ -24,7 +24,7 @@ void ClientSender::run() {
         protocol.sendMatrix(worldMonitor);
 
         // Envio la lista de NPCs
-//        protocol.sendNPCs(worldMonitor);
+        protocol.sendNPCs(worldMonitor);
 
         // Envio actualizaciones del juego
         while (keepRunning) {

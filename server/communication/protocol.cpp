@@ -106,8 +106,9 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     n.length = htons(message_length);
 
     // Cantidad de NPCs
+    // TODO: si hago htons(num_npcs) lo carga en 0...
     n.num_npcs = num_npcs;
-    n.npcs.resize(num_npcs);
+    n.npcs.resize(num_npcs * sizeof(npc_t));
 
     // Lista de NPCs
     int i;
@@ -130,6 +131,13 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
         pos -= SIZE_8;
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
+
+    if (debug) {
+        std::cout << "NPCs enviados:\n";
+        for (char& c : byte_msg)
+            printf("%02X ", (unsigned) (unsigned char) c);
+        std::cout << "\n";
+    }
 }
 
 void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
@@ -142,8 +150,8 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
             getItemsAround(player);
 
     // Longitudes variables
-    int inventory_length = player.inventory.numItems;
-    int num_players = players.size();
+    uint8_t inventory_length = player.inventory.numItems;
+    uint16_t num_players = players.size();
 //    int num_creatures = creatures.size();
 //    int num_items = items.size();
 
@@ -172,6 +180,7 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
             player.weapon->isLongDistance ? 1 : 0;
 
     // Info generica de todos los players (incluido el del cliente)
+    // TODO: si hago htons(num_players) lo carga en 0...
     w.num_players = num_players;
     w.players.resize(num_players * sizeof(player_t));
     int i;

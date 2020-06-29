@@ -147,7 +147,7 @@ npcs_t ClientProtocol::receiveNPCs() {
     // Cantidad de NPCs
     uint16_t num_npcs;
     memcpy(&num_npcs, npcs_buffer.data() + bytes_advanced, SIZE_16);
-    n.num_npcs = num_npcs;
+    n.num_npcs = ntohs(num_npcs);
     bytes_advanced += SIZE_16;
 
     // Lista de NPCs
@@ -177,6 +177,13 @@ npcs_t ClientProtocol::receiveNPCs() {
         bytes_advanced += SIZE_8;
 
         npcs[i] = npc;
+
+        if (debug) {
+            std::cout << "NPC RECIBIDO:\n" <<
+            "Pos X: " << npc.pos_x << "\n" <<
+            "Pos Y: " << npc.pos_y << "\n" <<
+            "Orientacion: " << (int) npc.orientation << "\n";
+        }
     }
     n.npcs = npcs;
 
