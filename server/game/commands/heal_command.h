@@ -6,11 +6,12 @@
 
 class HealCommand : public Command {
     Player& player;
-    uint16_t priestId;
+    uint16_t priestPosX, priestPosY;
 
 public:
     // Constructor
-    explicit HealCommand(Player& player, const uint16_t priest_id);
+    explicit HealCommand(Player& player, const uint16_t priest_pos_x,
+            const uint16_t priest_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
     HealCommand(const HealCommand&) = delete;
