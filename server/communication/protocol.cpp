@@ -94,6 +94,44 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
+void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
+    std::vector<NPC*> npcs = world_monitor.getNPCs();
+
+    int num_npcs = npcs.size();
+
+    npcs_t n;
+
+    // Longitud total del mensaje
+    uint16_t message_length = SIZE_16 + num_npcs * (2 * SIZE_16 + SIZE_8);
+    n.length = htons(message_length);
+
+    // Cantidad de NPCs
+    n.num_npcs = num_npcs;
+    n.npcs.resize(num_npcs);
+
+    // Lista de NPCs
+    int i;
+    for (i = 0; i < num_npcs; i ++) {
+        n.npcs[i].pos_x = htons(npcs[i]->posX);
+        n.npcs[i].pos_y = htons(npcs[i]->posY);
+        n.npcs[i].orientation = npcs[i]->orientation;
+    }
+
+    std::vector<char> byte_msg;
+    byte_msg.resize(SIZE_16 + message_length);
+
+    int pos = 0;
+    memcpy(&byte_msg[pos], &n.length, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &n.num_npcs, SIZE_16);
+    for (i = 0; i < num_npcs; i ++) {
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].orientation, SIZE_8);
+        pos -= SIZE_8;
+    }
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
+}
+
 void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     world_t w;
     std::vector<Player*> players = world_monitor.
@@ -110,7 +148,7 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
 //    int num_items = items.size();
 
     // Longitud total del mensaje
-    // TODO: completar con npcs e items
+    // TODO: completar con criaturas e items
     size_t message_length =
             7 * SIZE_16 + SIZE_32 + SIZE_8 +
             SIZE_8 + inventory_length * SIZE_8 +

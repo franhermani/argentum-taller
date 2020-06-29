@@ -18,6 +18,9 @@ public:
     ClientProtocol(const ClientProtocol&) = delete;
     ClientProtocol& operator=(const ClientProtocol&) = delete;
 
+    // Envia un comando a traves del socket
+    void sendCommand(CommandDTO& command);
+
     // Envia la informacion del player a traves del socket
     void sendPlayerInfo(const std::string& username, const uint8_t race_type,
             const uint8_t class_type);
@@ -31,11 +34,11 @@ public:
     // Recibe la vision del player medida en bloques (alto y ancho)
     const std::vector<int> receiveBlocksAround();
 
-    // Envia un comando a traves del socket
-    void sendCommand(CommandDTO& command);
-
     // Recibe la matriz (vector de terrenos)
     matrix_t receiveMatrix();
+
+    // Recibe la lista de NPCs
+    npcs_t receiveNPCs();
 
     // Recibe una actualizacion del juego
     world_t receiveMessage();

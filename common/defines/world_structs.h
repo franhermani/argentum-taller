@@ -8,18 +8,20 @@
 typedef struct {
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
-    uint16_t id;                // Id
     uint8_t type;               // Enum type del item
 } item_t;
 
 typedef struct {
+    uint16_t id;                // Id
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
-    uint16_t id;                // Id
+    uint8_t type;               // Enum type del tipo de criatura
     uint8_t orientation;        // Enum type de la orientacion
-    uint8_t type;               // Enum type de la criatura o npc
-} npc_t;
+    uint16_t actual_life;       // Vida actual
+    uint16_t max_life;          // Vida maxima
+} creature_t;
 
+// TODO: mandar vida actual y vida maxima aca
 typedef struct {
     uint16_t id;                // Id
     uint16_t pos_x;             // Pos x en la matriz
@@ -54,15 +56,27 @@ typedef struct {
 } player_info_t;
 
 typedef struct {
-    uint16_t length;                // Longitud total del mensaje
-    player_info_t player_info;      // Info particular del player del cliente
-    uint16_t num_players;           // Cantidad de players en 'players'
-    std::vector<player_t> players;  // Lista de structs 'player_t'
-    uint16_t num_npcs;              // Cantidad de npcs en 'npcs'
-    std::vector<npc_t> npcs;        // Lista de structs 'npc_t'
-    uint16_t num_items;             // Cantidad de items en 'items'
-    std::vector<item_t> items;      // Lista de structs 'item_t'
+    uint16_t length;                    // Longitud total del mensaje
+    player_info_t player_info;          // Info del player del cliente
+    uint16_t num_players;               // Cantidad de players en 'players'
+    std::vector<player_t> players;      // Lista de structs 'player_t'
+    uint16_t num_creatures;             // Cantidad de criaturas en 'creatures'
+    std::vector<creature_t> creatures;  // Lista de structs 'npc_t'
+    uint16_t num_items;                 // Cantidad de items en 'items'
+    std::vector<item_t> items;          // Lista de structs 'item_t'
 } world_t;
+
+typedef struct {
+    uint16_t pos_x;             // Pos x en la matriz
+    uint16_t pos_y;             // Pos y en la matriz
+    uint8_t orientation;        // Enum type de la orientacion
+} npc_t;
+
+typedef struct {
+    uint16_t length;            // Longitud total del mensaje
+    uint16_t num_npcs;          // Cantidad de npcs en 'npcs'
+    std::vector<npc_t> npcs;    // Lista de structs 'npc_t'
+} npcs_t;
 
 typedef struct {
     uint16_t length;                // Longitud total del mensaje

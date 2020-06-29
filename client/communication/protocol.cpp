@@ -125,6 +125,64 @@ matrix_t ClientProtocol::receiveMatrix() {
     return std::move(m);
 }
 
+npcs_t ClientProtocol::receiveNPCs() {
+    npcs_t n;
+
+    // Recibo longitud del mensaje
+    std::vector<char> length_buffer;
+    length_buffer.resize(SIZE_16);
+    socket.receiveBytes(length_buffer.data(), SIZE_16);
+
+    uint16_t message_length;
+    memcpy(&message_length, length_buffer.data(), SIZE_16);
+    n.length = ntohs(message_length);
+
+    // Recibo el mensaje
+    std::vector<char> npcs_buffer;
+    npcs_buffer.resize(n.length);
+    socket.receiveBytes(npcs_buffer.data(), n.length);
+
+    int bytes_advanced = 0;
+
+    // Cantidad de NPCs
+    uint16_t num_npcs;
+    memcpy(&num_npcs, npcs_buffer.data() + bytes_advanced, SIZE_16);
+    n.num_npcs = num_npcs;
+    bytes_advanced += SIZE_16;
+
+    // Lista de NPCs
+    std::vector<npc_t> npcs;
+    npcs.resize(n.num_npcs * sizeof(npc_t));
+
+    int i;
+    for (i = 0; i < num_npcs; i ++) {
+        npc_t npc;
+
+        // Pos x en la matriz
+        uint16_t pos_x;
+        memcpy(&pos_x, npcs_buffer.data() + bytes_advanced, SIZE_16);
+        npc.pos_x = ntohs(pos_x);
+        bytes_advanced += SIZE_16;
+
+        // Pos y en la matriz
+        uint16_t pos_y;
+        memcpy(&pos_y, npcs_buffer.data() + bytes_advanced, SIZE_16);
+        npc.pos_y = ntohs(pos_y);
+        bytes_advanced += SIZE_16;
+
+        // Enum type de la orientacion
+        uint8_t orientation;
+        memcpy(&orientation, npcs_buffer.data() + bytes_advanced, SIZE_8);
+        npc.orientation = orientation;
+        bytes_advanced += SIZE_8;
+
+        npcs[i] = npc;
+    }
+    n.npcs = npcs;
+
+    return std::move(n);
+}
+
 world_t ClientProtocol::receiveMessage() {
     world_t w;
 
@@ -271,7 +329,8 @@ world_t ClientProtocol::receiveMessage() {
 
     // Lista de players
     std::vector<player_t> players;
-    players.resize(w.num_players);
+
+    players.resize(w.num_players * sizeof(player_t));
     for (i = 0; i < w.num_players; i ++) {
         player_t player;
 

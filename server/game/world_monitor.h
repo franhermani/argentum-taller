@@ -31,6 +31,9 @@ public:
     // Devuelve la matriz del mapa completo
     std::vector<std::vector<Terrain>> getMatrix();
 
+    // Devuelve un vector de todos los npcs
+    std::vector<NPC*> getNPCs();
+
     // Devuelve la base del mapa
     const int getWidth();
 

@@ -82,6 +82,10 @@ std::vector<std::vector<Terrain>> World::getMatrix() const {
     return matrix;
 }
 
+std::vector<NPC *> World::getNPCs() const {
+    return npcs;
+}
+
 std::vector<Player*> World::getPlayersAround(Player &player) {
     std::vector<Player*> players_around;
 

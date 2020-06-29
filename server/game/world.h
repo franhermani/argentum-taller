@@ -66,6 +66,9 @@ public:
     // Devuelve la matriz del mapa completo
     std::vector<std::vector<Terrain>> getMatrix() const;
 
+    // Devuelve un vector de todos los npcs
+    std::vector<NPC*> getNPCs() const;
+
     // Devuelve un vector de todos los players en la sub-matriz de 'player'
     // Incluye al mismo 'player' recibido por parametro
     std::vector<Player*> getPlayersAround(Player& player);

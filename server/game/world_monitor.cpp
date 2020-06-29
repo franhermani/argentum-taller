@@ -23,6 +23,11 @@ std::vector<std::vector<Terrain>> WorldMonitor::getMatrix() {
     return world.getMatrix();
 }
 
+std::vector<NPC *> WorldMonitor::getNPCs() {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getNPCs();
+}
+
 const int WorldMonitor::getWidth() {
     std::unique_lock<std::mutex> lk(m);
     return world.getWidth();

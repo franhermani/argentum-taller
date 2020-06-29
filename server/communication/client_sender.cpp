@@ -23,6 +23,9 @@ void ClientSender::run() {
         // Envio la matriz completa con todos los terrenos
         protocol.sendMatrix(worldMonitor);
 
+        // Envio la lista de NPCs
+//        protocol.sendNPCs(worldMonitor);
+
         // Envio actualizaciones del juego
         while (keepRunning) {
             std::this_thread::sleep_for(ms(msPerSend));

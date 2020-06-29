@@ -41,6 +41,9 @@ public:
     // Envia la matriz de terrenos a traves del socket
     void sendMatrix(WorldMonitor& world_monitor);
 
+    // Envia la lista de NPCs a traves del socket
+    void sendNPCs(WorldMonitor& world_monitor);
+
     // Envia actualizaciones del juego a traves del socket
     // TODO: ver que recibir por parametro
     void sendMessage(WorldMonitor& world_monitor, Player& player);

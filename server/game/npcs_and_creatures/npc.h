@@ -11,6 +11,7 @@ protected:
     std::vector<itemType> items;
 
     friend class World;
+    friend class ServerProtocol;
 
 public:
     // Destructor
