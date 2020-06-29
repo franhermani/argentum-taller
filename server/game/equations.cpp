@@ -118,12 +118,29 @@ const long Equations::eqExperienceAttack(Player &player, Player &other,
     return experience;
 }
 
+const long Equations::eqExperienceAttack(Player &player, Creature &creature,
+        const int damage) {
+    json exp_params = configParams["player"]["experience"]["attack_eq"];
+    int c1 = exp_params["c1"];
+    long experience = damage * std::max(creature.level - player.level + c1, 0);
+    return experience;
+}
+
 const long Equations::eqExperienceKill(Player &player, Player &other) {
     json exp_params = configParams["player"]["experience"]["kill_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
     int c3 = exp_params["c3"];
     long experience = randomNumber(c1, c2) * other.maxLife *
                       std::max(other.level - player.level + c3, 0);
+    return experience;
+}
+
+const long Equations::eqExperienceKill(Player &player, Creature &creature) {
+    json exp_params = configParams["player"]["experience"]["kill_eq"];
+    double c1 = exp_params["c1"], c2 = exp_params["c2"];
+    int c3 = exp_params["c3"];
+    long experience = randomNumber(c1, c2) * creature.maxLife *
+                      std::max(creature.level - player.level + c3, 0);
     return experience;
 }
 
@@ -142,6 +159,14 @@ const int Equations::eqDamageCaused(Player &player) {
                               class_params["strength"]);
 
     int damage = strength * weapon_damage;
+    return damage;
+}
+
+const int Equations::eqDamageCaused(Creature &creature) {
+    // TODO: ...
+//    double strength = ...;
+//    int damage = strength * ...;
+    int damage = 1;
     return damage;
 }
 
@@ -171,5 +196,11 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
 
     int defense = armor_defense + helmet_defense + shield_defense;
     int damage_received = std::max(damage - defense, 0);
+    return damage_received;
+}
+
+const int Equations::eqDamageReceived(Creature &creature, const int damage) {
+    // TODO: ...
+    int damage_received = 1;
     return damage_received;
 }

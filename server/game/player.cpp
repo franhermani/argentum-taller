@@ -262,14 +262,12 @@ void Player::attack(Creature &creature) {
     if (! isAlive)
         throw GameException(UNABLE_TO_INTERACT);
 
-    // TODO: ...
+    int damage_caused = creature.receiveAttack(
+            equations.eqDamageCaused(*this));
+    equations.eqExperienceAttack(*this, creature, damage_caused);
 
-//    int damage_caused = creature.receiveAttack(
-//    equations.eqDamageCaused(*this));
-//    equations.eqExperienceAttack(*this, creature, damage_caused);
-//
-//    if (creature.isDead())
-//        equations.eqExperienceKill(*this, creature);
+    if (creature.isDead())
+        equations.eqExperienceKill(*this, creature);
 }
 
 const int Player::receiveAttack(const int damage) {

@@ -30,6 +30,7 @@ class Creature {
     void attack(const int player_id);
 
     friend class World;
+    friend class Equations;
     friend class ServerProtocol;
 
 public:

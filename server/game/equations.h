@@ -54,28 +54,39 @@ public:
     // Oro inicial
     const int eqInitialGold(Player& player);
 
-    // Oro que dropea un NPC al morir
+    // Oro que dropea una criatura al morir
 //    const int eqGoldDrop(NPC& npc);
 
     // Limite de experiencia del nivel actual
     const long eqExperienceLimit(Player& player);
 
-    // Experiencia obtenida por ataque realizado
+    // Experiencia obtenida por ataque realizado a otro player
     const long eqExperienceAttack(Player& player, Player& other,
             const int damage);
 
-//    const long eqExperienceAttack(Player& player, NPC& npc,
-//    const int damage);
+    // Experiencia obtenida por ataque realizado a una criatura
+    const long eqExperienceAttack(Player& player, Creature& creature,
+            const int damage);
 
-    // Experiencia obtenida por matar a un enemigo
+    // Experiencia obtenida por matar a otro player
     const long eqExperienceKill(Player& player, Player& other);
-//    const long eqExperienceKill(Player& player, NPC& npc);
 
-    // Daño producido por ataque realizado
+    // Experiencia obtenida por matar a una criatura
+    const long eqExperienceKill(Player& player, Creature& creature);
+
+    // Daño producido por ataque realizado de un player
     const int eqDamageCaused(Player& player);
 
-    // Daño recibido por ataque recibido (incluye la posibilidad de esquivarlo)
+    // Daño producido por ataque realizado de una criatura
+    const int eqDamageCaused(Creature& creature);
+
+    // Daño recibido de player por ataque recibido
+    // Incluye la posibilidad de esquivarlo
     const int eqDamageReceived(Player& player, const int damage);
+
+    // Daño recibido de criatura por ataque recibido
+    // Incluye la posibilidad de esquivarlo
+    const int eqDamageReceived(Creature& creature, const int damage);
 };
 
 #endif // EQUATIONS_H
