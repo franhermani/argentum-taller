@@ -260,12 +260,6 @@ world_t ClientProtocol::receiveMessage() {
     w.player_info.max_gold = ntohs(max_gold);
     bytes_advanced += SIZE_16;
 
-    // Nivel
-    uint16_t level;
-    memcpy(&level, world_buffer.data() + bytes_advanced, SIZE_16);
-    w.player_info.level = ntohs(level);
-    bytes_advanced += SIZE_16;
-
     // Experiencia actual
     uint32_t actual_experience;
     memcpy(&actual_experience, world_buffer.data() + bytes_advanced, SIZE_32);
@@ -284,7 +278,6 @@ world_t ClientProtocol::receiveMessage() {
         "Mana maxima: " << w.player_info.max_mana << "\n" <<
         "Oro actual: " << w.player_info.actual_gold << "\n" <<
         "Oro maximo: " << w.player_info.max_gold << "\n" <<
-        "Nivel: " << w.player_info.level << "\n" <<
         "Experiencia actual: " << w.player_info.actual_experience << "\n" <<
         "Arma a distancia: " << (int) w.player_info.long_distance << "\n" <<
         "Inventario:\n";
@@ -357,6 +350,12 @@ world_t ClientProtocol::receiveMessage() {
         player.max_life = ntohs(max_life);
         bytes_advanced += SIZE_16;
 
+        // Nivel
+        uint16_t level;
+        memcpy(&level, world_buffer.data() + bytes_advanced, SIZE_16);
+        player.level = ntohs(level);
+        bytes_advanced += SIZE_16;
+
         // 1 si esta vivo, 0 si no (fantasma)
         uint8_t is_alive;
         memcpy(&is_alive, world_buffer.data() + bytes_advanced, SIZE_8);
@@ -420,6 +419,7 @@ world_t ClientProtocol::receiveMessage() {
             "Pos Y: " << player.pos_y << "\n" <<
             "Vida actual: " << player.actual_life << "\n" <<
             "Vida maxima: " << player.max_life << "\n" <<
+            "Nivel: " << player.level << "\n" <<
             "Is alive: " << (int) player.is_alive << "\n" <<
             "Is meditating: " << (int) player.is_meditating << "\n" <<
             "Orientacion: " << (int) player.orientation << "\n" <<

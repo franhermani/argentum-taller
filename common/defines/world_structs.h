@@ -15,10 +15,11 @@ typedef struct {
     uint16_t id;                // Id
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
-    uint8_t type;               // Enum type del tipo de criatura
-    uint8_t orientation;        // Enum type de la orientacion
     uint16_t actual_life;       // Vida actual
     uint16_t max_life;          // Vida maxima
+    uint16_t level;             // Nivel
+    uint8_t type;               // Enum type del tipo de criatura
+    uint8_t orientation;        // Enum type de la orientacion
 } creature_t;
 
 typedef struct {
@@ -27,6 +28,7 @@ typedef struct {
     uint16_t pos_y;             // Pos y en la matriz
     uint16_t actual_life;       // Vida actual
     uint16_t max_life;          // Vida maxima
+    uint16_t level;             // Nivel
     uint8_t is_alive;           // 1 si esta vivo, 0 si no (fantasma)
     uint8_t is_meditating;      // 1 si esta vivo, 0 si no
     uint8_t orientation;        // Enum type de la orientacion
@@ -48,7 +50,6 @@ typedef struct {
     uint16_t max_mana;              // Mana maxima
     uint16_t actual_gold;           // Oro actual
     uint16_t max_gold;              // Oro maximo
-    uint16_t level;                 // Nivel
     uint32_t actual_experience;     // Experiencia
     uint8_t long_distance;          // 1 si el arma es a distancia, 0 si no
     inventory_t inventory;          // Inventario
