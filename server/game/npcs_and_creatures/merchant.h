@@ -1,6 +1,7 @@
 #ifndef MERCHANT_H
 #define MERCHANT_H
 
+#include <vector>
 #include "npc.h"
 #include "../player.h"
 
@@ -21,6 +22,9 @@ public:
 
     // Vende el item al player
     void sell(Player& player, int item_type);
+
+    // Lista los items que tiene para vender
+    const std::vector<itemType> listItems() const override;
 };
 
 #endif // MERCHANT_H

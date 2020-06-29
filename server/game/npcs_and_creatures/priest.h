@@ -1,6 +1,7 @@
 #ifndef PRIEST_H
 #define PRIEST_H
 
+#include <vector>
 #include "npc.h"
 #include "../player.h"
 
@@ -21,6 +22,9 @@ public:
 
     // Cura al player
     void heal(Player& player);
+
+    // Lista los items que tiene para vender
+    const std::vector<itemType> listItems() const override;
 };
 
 #endif // PRIEST_H

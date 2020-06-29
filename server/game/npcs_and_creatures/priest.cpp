@@ -1,3 +1,4 @@
+#include <vector>
 #include "priest.h"
 
 Priest::Priest(const int pos_x, const int pos_y, const int orient) {
@@ -14,4 +15,8 @@ void Priest::revive(Player &player) {
 
 void Priest::heal(Player &player) {
     player.heal();
+}
+
+const std::vector<itemType> Priest::listItems() const {
+    return std::vector<itemType>();
 }

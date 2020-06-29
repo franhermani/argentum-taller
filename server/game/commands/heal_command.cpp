@@ -9,7 +9,6 @@ HealCommand::~HealCommand() = default;
 
 void HealCommand::execute(World& world) {
     auto* priest = dynamic_cast<Priest*>
-            (world.getNPCByPos(priestPosX, priestPosY));
-
+    (world.getNPCByPos(priestPosX, priestPosY));
     priest->heal(player);
 }

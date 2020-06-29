@@ -1,3 +1,4 @@
+#include <vector>
 #include "banker.h"
 
 Banker::Banker(const int pos_x, const int pos_y, const int orient) {
@@ -22,4 +23,9 @@ void Banker::depositGold(Player &player, int quantity) {
 
 void Banker::withdrawGold(Player &player, int quantity) {
     // TODO: ...
+}
+
+const std::vector<itemType> Banker::listItems() const {
+    // TODO: ...
+    return std::vector<itemType>();
 }

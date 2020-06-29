@@ -1,3 +1,4 @@
+#include <vector>
 #include "merchant.h"
 
 Merchant::Merchant(const int pos_x, const int pos_y, const int orient) {
@@ -14,4 +15,9 @@ void Merchant::buy(Player &player, int item_type) {
 
 void Merchant::sell(Player &player, int item_type) {
     // TODO: ...
+}
+
+const std::vector<itemType> Merchant::listItems() const {
+    // TODO: ...
+    return std::vector<itemType>();
 }

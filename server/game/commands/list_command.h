@@ -6,11 +6,12 @@
 
 class ListCommand : public Command {
     Player& player;
-    uint16_t npcId;
+    uint16_t NPCPosX, NPCPosY;
 
 public:
     // Constructor
-    explicit ListCommand(Player& player, const uint16_t npc_id);
+    explicit ListCommand(Player& player, const uint16_t npc_pos_x,
+            const uint16_t npc_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
     ListCommand(const ListCommand&) = delete;

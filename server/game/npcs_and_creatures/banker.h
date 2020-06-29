@@ -1,6 +1,7 @@
 #ifndef BANKER_H
 #define BANKER_H
 
+#include <vector>
 #include "npc.h"
 #include "../player.h"
 
@@ -27,6 +28,10 @@ public:
 
     // Retira la cantidad recibida de oro del player del banco
     void withdrawGold(Player& player, int quantity);
+
+    // Lista los items que tiene el player en el banco
+    // TODO: necesita recibir al player por parametro
+    const std::vector<itemType> listItems() const override;
 };
 
 #endif // BANKER_H
