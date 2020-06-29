@@ -21,11 +21,12 @@ typedef struct {
     uint16_t max_life;          // Vida maxima
 } creature_t;
 
-// TODO: mandar vida actual y vida maxima aca
 typedef struct {
     uint16_t id;                // Id
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
+    uint16_t actual_life;       // Vida actual
+    uint16_t max_life;          // Vida maxima
     uint8_t is_alive;           // 1 si esta vivo, 0 si no (fantasma)
     uint8_t is_meditating;      // 1 si esta vivo, 0 si no
     uint8_t orientation;        // Enum type de la orientacion
@@ -43,8 +44,6 @@ typedef struct {
 } inventory_t;
 
 typedef struct {
-    uint16_t actual_life;           // Vida actual
-    uint16_t max_life;              // Vida maxima
     uint16_t actual_mana;           // Mana actual
     uint16_t max_mana;              // Mana maxima
     uint16_t actual_gold;           // Oro actual

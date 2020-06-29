@@ -229,18 +229,6 @@ world_t ClientProtocol::receiveMessage() {
     // Player principal //
     // ---------------- //
 
-    // Vida actual
-    uint16_t actual_life;
-    memcpy(&actual_life, world_buffer.data() + bytes_advanced, SIZE_16);
-    w.player_info.actual_life = ntohs(actual_life);
-    bytes_advanced += SIZE_16;
-
-    // Vida maxima
-    uint16_t max_life;
-    memcpy(&max_life, world_buffer.data() + bytes_advanced, SIZE_16);
-    w.player_info.max_life = ntohs(max_life);
-    bytes_advanced += SIZE_16;
-
     // Mana actual
     uint16_t actual_mana;
     memcpy(&actual_mana, world_buffer.data() + bytes_advanced, SIZE_16);
@@ -285,8 +273,6 @@ world_t ClientProtocol::receiveMessage() {
 
     if (debug) {
         std::cout << "\nPLAYER PRINCIPAL\n" <<
-        "Vida actual: " << w.player_info.actual_life << "\n" <<
-        "Vida maxima: " << w.player_info.max_life << "\n" <<
         "Mana actual: " << w.player_info.actual_mana << "\n" <<
         "Mana maxima: " << w.player_info.max_mana << "\n" <<
         "Oro actual: " << w.player_info.actual_gold << "\n" <<
@@ -352,6 +338,18 @@ world_t ClientProtocol::receiveMessage() {
         player.pos_y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
+        // Vida actual
+        uint16_t actual_life;
+        memcpy(&actual_life, world_buffer.data() + bytes_advanced, SIZE_16);
+        player.actual_life = ntohs(actual_life);
+        bytes_advanced += SIZE_16;
+
+        // Vida maxima
+        uint16_t max_life;
+        memcpy(&max_life, world_buffer.data() + bytes_advanced, SIZE_16);
+        player.max_life = ntohs(max_life);
+        bytes_advanced += SIZE_16;
+
         // 1 si esta vivo, 0 si no (fantasma)
         uint8_t is_alive;
         memcpy(&is_alive, world_buffer.data() + bytes_advanced, SIZE_8);
@@ -413,6 +411,8 @@ world_t ClientProtocol::receiveMessage() {
             "Id: " << player.id << "\n" <<
             "Pos X: " << player.pos_x << "\n" <<
             "Pos Y: " << player.pos_y << "\n" <<
+            "Vida actual: " << player.actual_life << "\n" <<
+            "Vida maxima: " << player.max_life << "\n" <<
             "Is alive: " << (int) player.is_alive << "\n" <<
             "Is meditating: " << (int) player.is_meditating << "\n" <<
             "Orientacion: " << (int) player.orientation << "\n" <<
@@ -426,9 +426,9 @@ world_t ClientProtocol::receiveMessage() {
     }
     w.players = players;
 
-    // ------------- //
-    // Lista de NPCs //
-    // ------------- //
+    // ------------------ //
+    // Lista de Criaturas //
+    // ------------------ //
 
     // TODO: ...
 

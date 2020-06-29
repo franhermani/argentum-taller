@@ -150,9 +150,9 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     // Longitud total del mensaje
     // TODO: completar con criaturas e items
     size_t message_length =
-            7 * SIZE_16 + SIZE_32 + SIZE_8 +
+            5 * SIZE_16 + SIZE_32 + SIZE_8 +
             SIZE_8 + inventory_length * SIZE_8 +
-            SIZE_16 + num_players * (3 * SIZE_16 + 9 * SIZE_8);
+            SIZE_16 + num_players * (5 * SIZE_16 + 9 * SIZE_8);
 
     // ------------------------ //
     // Carga del struct world_t //
@@ -162,8 +162,6 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     w.length = htons(message_length);
 
     // Info particular del player del cliente
-    w.player_info.actual_life = htons(player.actualLife);
-    w.player_info.max_life = htons(player.maxLife);
     w.player_info.actual_mana = htons(player.actualMana);
     w.player_info.max_mana = htons(player.maxMana);
     w.player_info.actual_gold = htons(player.actualGold);
@@ -175,12 +173,14 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
 
     // Info generica de todos los players (incluido el del cliente)
     w.num_players = num_players;
-    w.players.resize(num_players);
+    w.players.resize(num_players * sizeof(player_t));
     int i;
     for (i = 0; i < num_players; i ++) {
         w.players[i].id = htons(players[i]->id);
         w.players[i].pos_x = htons(players[i]->posX);
         w.players[i].pos_y = htons(players[i]->posY);
+        w.players[i].actual_life = htons(player.actualLife);
+        w.players[i].max_life = htons(player.maxLife);
         w.players[i].is_alive = players[i]->isAlive ? 1 : 0;
         w.players[i].is_meditating = players[i]->isMeditating ? 1 : 0;
         w.players[i].orientation = players[i]->orientation;
@@ -211,8 +211,6 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     memcpy(&byte_msg[pos+=SIZE_8], &w.length, SIZE_16);
 
     // Info particular del player del cliente
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_life, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_life, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_mana, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_mana, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_gold, SIZE_16);
@@ -233,6 +231,8 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
         memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].id, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].pos_x, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].actual_life, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].max_life, SIZE_16);
         byte_msg[pos+=SIZE_16] = w.players[i].is_alive;
         byte_msg[pos+=SIZE_8] = w.players[i].is_meditating;
         byte_msg[pos+=SIZE_8] = w.players[i].orientation;
