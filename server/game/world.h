@@ -5,6 +5,7 @@
 #include <set>
 #include "params.h"
 #include "player.h"
+#include "npcs_and_creatures/creature.h"
 #include "npcs_and_creatures/npc.h"
 #include "../../common/defines/terrains.h"
 
@@ -13,6 +14,7 @@ class World {
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> impenetrableTerrains;
     std::vector<Player*> players;
+    std::vector<Creature*> creatures;
     std::vector<NPC*> npcs;
     std::vector<Item*> items;
     int worldWidth, worldHeight;
@@ -69,10 +71,10 @@ public:
     std::vector<Player*> getPlayersAround(Player& player);
 
     // Devuelve un vector de todas las criaturas en la sub-matriz de 'player'
-//    std::vector<NPC*> getCreaturesAround(Player& player);
+    std::vector<Creature*> getCreaturesAround(Player& player);
 
     // Devuelve un vector de todos los items en la sub-matriz de 'player'
-//    std::vector<Item*> getItemsAround(Player& player);
+    std::vector<Item*> getItemsAround(Player& player);
 
     // Devuelve la base del mapa
     const int getWidth() const;
@@ -99,15 +101,23 @@ public:
     // Remueve un item del mundo segun su pos (x,y)
     Item* removeItem(const int pos_x, const int pos_y);
 
+    // Devuelve el player asociado al id
     Player* getPlayerById(const int id) const;
 
+    // Devuelve la criatura asociada al id
+    Creature* getCreatureById(const int id) const;
+
+    // Devuelve el NPC asociado a la posicion (pos_x, pos_y)
     NPC* getNPCByPos(const int pos_x, const int pos_y) const;
 
+    // Devuelve el largo maximo del inventario
     const int getInventoryLength() const;
 
-    const int getMinLevelNewbie() const;
+    // Devuelve el nivel maximo de un newbie
+    const int getMaxLevelNewbie() const;
 
-    const int getMinLevelDiff() const;
+    // Devuelve la diferencia de niveles maxima para atacar
+    const int getMaxLevelDiff() const;
 };
 
 #endif // GAME_WORLD_H

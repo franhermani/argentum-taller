@@ -23,7 +23,7 @@ maxExperience(LONG_MAX),
 actualExperience(0),
 isAlive(true),
 isMeditating(false),
-isNewbie(level <= world.getMinLevelNewbie()),
+isNewbie(level <= world.getMaxLevelNewbie()),
 ableToUseMagic(classType != WARRIOR),
 orientation(DOWN),
 maxLife(equations.eqMaxLife(*this)),
@@ -114,7 +114,7 @@ void Player::addExperience(int exp) {
     // TODO: testear caso de subir mas de un nivel a la vez
     if (actualExperience >= equations.eqExperienceLimit(*this)) {
         level += 1;
-        if (level > world.getMinLevelNewbie())
+        if (level > world.getMaxLevelNewbie())
             isNewbie = false;
     }
 }
@@ -249,7 +249,7 @@ void Player::attack(int enemy_id_type, int enemy_id) {
         throw GameException(NEWBIE_ATTACK_FORBIDDEN);
 
     int level_diff = std::max(level - other->level, other->level - level);
-    if (level_diff > world.getMinLevelDiff())
+    if (level_diff > world.getMaxLevelDiff())
         throw GameException(DIFF_LEVEL_ATTACK_FORBIDDEN);
 
     int damage_caused = other->receiveAttack(equations.eqDamageCaused(*this));

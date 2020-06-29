@@ -13,7 +13,8 @@ World::World(GameParams& params) : params(params) {
 }
 
 World::~World() {
-    // TODO: delete criaturas tmb
+    for (auto& creature : creatures)
+        delete creature;
 
     for (auto& npc : npcs)
         delete npc;
@@ -51,8 +52,11 @@ void World::loadMatrix() {
 // -------------------------------------------- //
 
 void World::update(const int ms) {
-    // TODO: update tmb a las criaturas
-    for (auto player : players) player->update(ms);
+    for (auto& player : players)
+        player->update(ms);
+
+    for (auto& creature : creatures)
+        creature->update(ms);
 }
 
 void World::addPlayer(Player* player) {
@@ -86,6 +90,26 @@ std::vector<Player*> World::getPlayersAround(Player &player) {
             players_around.push_back(p);
 
     return players_around;
+}
+
+std::vector<Creature*> World::getCreaturesAround(Player &player) {
+    std::vector<Creature*> creatures_around;
+
+    for (auto& c : creatures)
+        if (inPlayerBoundaries(player, c->posX, c->posY))
+            creatures_around.push_back(c);
+
+    return creatures_around;
+}
+
+std::vector<Item*> World::getItemsAround(Player &player) {
+    std::vector<Item*> items_around;
+
+    for (auto& i : items)
+        if (inPlayerBoundaries(player, i->posX, i->posY))
+            items_around.push_back(i);
+
+    return items_around;
 }
 
 const bool World::inPlayerBoundaries(Player &player,
@@ -135,7 +159,10 @@ const bool World::inCollision(const int pos_x, const int pos_y) {
         if (npc->posX == pos_x && npc->posY == pos_y)
             return true;
 
-    // TODO: chequear lista de criaturas
+    // Criaturas
+    for (auto& creature : creatures)
+        if (creature->posX == pos_x && creature->posY == pos_y)
+            return true;
 
     return false;
 }
@@ -172,6 +199,14 @@ Player* World::getPlayerById(const int id) const {
     return nullptr;
 }
 
+Creature* World::getCreatureById(const int id) const {
+    for (auto& creature : creatures)
+        if (creature->id == id)
+            return creature;
+
+    return nullptr;
+}
+
 NPC* World::getNPCByPos(const int pos_x, const int pos_y) const {
     for (auto& npc : npcs)
         if (npc->posX == pos_x && npc->posY == pos_y)
@@ -184,10 +219,10 @@ const int World::getInventoryLength() const {
     return params.getConfigParams()["player"]["inventory"]["max_objects"];
 }
 
-const int World::getMinLevelNewbie() const {
+const int World::getMaxLevelNewbie() const {
     return params.getConfigParams()["player"]["fair_play"]["min_level_newbie"];
 }
 
-const int World::getMinLevelDiff() const {
+const int World::getMaxLevelDiff() const {
     return params.getConfigParams()["player"]["fair_play"]["min_level_diff"];
 }

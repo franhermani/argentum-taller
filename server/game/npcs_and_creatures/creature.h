@@ -28,6 +28,9 @@ class Creature {
     // Ataca a otro player segun su ID
     void attack(const int player_id);
 
+    friend class World;
+    friend class ServerProtocol;
+
 public:
     Creature(World& world, const int id, const int type);
 
