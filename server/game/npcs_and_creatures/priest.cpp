@@ -1,7 +1,9 @@
 #include <vector>
 #include "priest.h"
+#include "../../../common/defines/npcs.h"
 
 Priest::Priest(const int pos_x, const int pos_y, const int orient) {
+    type = PRIEST;
     posX = pos_x;
     posY = pos_y;
     orientation = orient;

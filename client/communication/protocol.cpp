@@ -158,6 +158,12 @@ npcs_t ClientProtocol::receiveNPCs() {
     for (i = 0; i < num_npcs; i ++) {
         npc_t npc;
 
+        // Enum type del NPC
+        uint16_t type;
+        memcpy(&type, npcs_buffer.data() + bytes_advanced, SIZE_8);
+        npc.type = type;
+        bytes_advanced += SIZE_8;
+
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, npcs_buffer.data() + bytes_advanced, SIZE_16);
@@ -180,6 +186,7 @@ npcs_t ClientProtocol::receiveNPCs() {
 
         if (debug) {
             std::cout << "NPC RECIBIDO:\n" <<
+            "Tipo: " << npc.type << "\n" <<
             "Pos X: " << npc.pos_x << "\n" <<
             "Pos Y: " << npc.pos_y << "\n" <<
             "Orientacion: " << (int) npc.orientation << "\n";

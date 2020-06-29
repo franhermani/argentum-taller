@@ -26,9 +26,9 @@ GameRender::~GameRender() {
     for (auto const& surface : terrainSurfacesMap) {
         delete surface.second;
     }
-    for (auto const& surface : npcSurfacesMap) {
-        delete surface.second;
-    }
+//    for (auto const& surface : npcSurfacesMap) {
+//        delete surface.second;
+//    }
     SDL_Quit();
 }
 

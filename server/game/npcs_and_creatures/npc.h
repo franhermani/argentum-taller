@@ -6,6 +6,7 @@
 
 class NPC {
 protected:
+    int type;
     int posX, posY;
     int orientation;
     std::vector<itemType> items;

@@ -102,7 +102,7 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     npcs_t n;
 
     // Longitud total del mensaje
-    uint16_t message_length = SIZE_16 + num_npcs * (2 * SIZE_16 + SIZE_8);
+    uint16_t message_length = SIZE_16 + num_npcs * (2 * SIZE_16 + 2 * SIZE_8);
     n.length = htons(message_length);
 
     // Cantidad de NPCs
@@ -113,6 +113,7 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     // Lista de NPCs
     int i;
     for (i = 0; i < num_npcs; i ++) {
+        n.npcs[i].type = npcs[i]->type;
         n.npcs[i].pos_x = htons(npcs[i]->posX);
         n.npcs[i].pos_y = htons(npcs[i]->posY);
         n.npcs[i].orientation = npcs[i]->orientation;
@@ -125,7 +126,8 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     memcpy(&byte_msg[pos], &n.length, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &n.num_npcs, SIZE_16);
     for (i = 0; i < num_npcs; i ++) {
-        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_x, SIZE_8);
+        memcpy(&byte_msg[pos+=SIZE_8], &n.npcs[i].pos_x, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_y, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].orientation, SIZE_8);
         pos -= SIZE_8;

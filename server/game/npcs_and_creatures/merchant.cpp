@@ -1,7 +1,9 @@
 #include <vector>
 #include "merchant.h"
+#include "../../../common/defines/npcs.h"
 
 Merchant::Merchant(const int pos_x, const int pos_y, const int orient) {
+    type = MERCHANT;
     posX = pos_x;
     posY = pos_y;
     orientation = orient;

@@ -67,6 +67,7 @@ typedef struct {
 } world_t;
 
 typedef struct {
+    uint8_t type;               // Enum type del tipo de NPC
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
     uint8_t orientation;        // Enum type de la orientacion
