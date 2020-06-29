@@ -20,7 +20,7 @@ public:
     ~ListCommand() override;
 
     // Lista los objetos del comerciante o banquero segun su 'npcId'
-    void execute() override;
+    void execute(World& world) override;
 };
 
 

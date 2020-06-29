@@ -23,7 +23,7 @@ public:
     ~ReviveCommand() override;
 
     // Revive al jugador
-    void execute() override;
+    void execute(World& world) override;
 };
 
 #endif // REVIVE_COMMAND_H

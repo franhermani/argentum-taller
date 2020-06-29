@@ -20,7 +20,7 @@ public:
     ~EquipCommand() override;
 
     // Toma un objeto del inventario y lo equipa
-    void execute() override;
+    void execute(World& world) override;
 };
 
 #endif // EQUIP_COMMAND_H

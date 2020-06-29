@@ -28,7 +28,7 @@ void GameManager::run() {
             try {
                 Command* command = commandQueue.pop();
                 try {
-                    command->execute();
+                    command->execute(world);
                 } catch (GameException& e) {
                     // TODO: encolar e.errorCode en una estructura compartida
                     // para que luego el sender le envie al cliente el codigo

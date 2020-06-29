@@ -5,6 +5,6 @@ player(player), npcId(npc_id) {}
 
 ListCommand::~ListCommand() = default;
 
-void ListCommand::execute() {
+void ListCommand::execute(World& world) {
     // TODO: ...
 }

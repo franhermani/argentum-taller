@@ -6,6 +6,8 @@ protected:
     int posX, posY;
     int orientation;
 
+    friend class World;
+
 public:
     // Destructor
     virtual ~NPC();

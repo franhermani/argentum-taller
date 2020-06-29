@@ -6,6 +6,7 @@ AttackCommand::AttackCommand(Player& player, const uint8_t enemy_id_type,
 
 AttackCommand::~AttackCommand() = default;
 
-void AttackCommand::execute() {
+void AttackCommand::execute(World& world) {
+    // TODO: ver si conviene obtener el enemigo de world
     player.attack(enemyIdType, enemyId);
 }

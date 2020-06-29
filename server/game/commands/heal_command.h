@@ -21,7 +21,7 @@ public:
     ~HealCommand() override;
 
     // Recupera los puntos de vida y mana
-    void execute() override;
+    void execute(World& world) override;
 };
 
 #endif // HEAL_COMMAND_H

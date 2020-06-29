@@ -5,6 +5,6 @@ TakeCommand::TakeCommand(Player& player, const int pos_x, const int pos_y) :
 
 TakeCommand::~TakeCommand() = default;
 
-void TakeCommand::execute() {
+void TakeCommand::execute(World& world) {
     player.takeItemFromWorldToInventory(posX, posY);
 }

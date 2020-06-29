@@ -8,6 +8,6 @@ player(player), priestId(priest_id) {}
 
 ReviveCommand::~ReviveCommand() = default;
 
-void ReviveCommand::execute() {
+void ReviveCommand::execute(World& world) {
     player.revive();
 }

@@ -20,7 +20,7 @@ public:
     ~ThrowCommand() override;
 
     // Toma un objeto del inventario y lo tira al piso
-    void execute() override;
+    void execute(World& world) override;
 };
 
 #endif // THROW_COMMAND_H

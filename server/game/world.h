@@ -5,6 +5,7 @@
 #include <set>
 #include "params.h"
 #include "player.h"
+#include "npcs_and_creatures/npc.h"
 #include "../../common/defines/terrains.h"
 
 class World {
@@ -12,6 +13,7 @@ class World {
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> impenetrableTerrains;
     std::vector<Player*> players;
+    std::vector<NPC*> npcs;
     std::vector<Item*> items;
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
@@ -38,9 +40,9 @@ public:
     // Libera la memoria reservada para los items que esten en el mundo
     ~World();
 
-    // --------------------------------------------- //
-    // Metodos accedidos por WorldMonitor unicamente //
-    // --------------------------------------------- //
+    // -------------------------------------------- //
+    // Metodos accedidos por threads (WorldMonitor) //
+    // -------------------------------------------- //
 
     // Actualiza el mundo segun los milisegundos recibidos
     // Simula el paso del tiempo llamando al metodo update()
@@ -66,16 +68,21 @@ public:
     // Incluye al mismo 'player' recibido por parametro
     std::vector<Player*> getPlayersAround(Player& player);
 
-    // Devuelve un vector de todos los npc en la sub-matriz de 'player'
-//    std::vector<NPC*> getNPCsAround(Player& player);
+    // Devuelve un vector de todas las criaturas en la sub-matriz de 'player'
+//    std::vector<NPC*> getCreaturesAround(Player& player);
 
     // Devuelve un vector de todos los items en la sub-matriz de 'player'
 //    std::vector<Item*> getItemsAround(Player& player);
 
+    // Devuelve la base del mapa
+    const int getWidth() const;
 
-    // --------------------------------------------- //
-    // Metodos accedidos por Player y NPC unicamente //
-    // --------------------------------------------- //
+    // Devuelve la altura del mapa
+    const int getHeight() const;
+
+    // ------------------------------------------- //
+    // Metodos accedidos por entidades del dominio //
+    // ------------------------------------------- //
 
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     const bool inMapBoundaries(const int pos_x, const int pos_y);
@@ -94,22 +101,13 @@ public:
 
     Player* getPlayerById(const int id) const;
 
+    NPC* getNPCByPos(const int pos_x, const int pos_y) const;
+
     const int getInventoryLength() const;
 
     const int getMinLevelNewbie() const;
 
     const int getMinLevelDiff() const;
-
-
-    // ------------------------------------------------ //
-    // Metodos accedidos por WorldMonitor, Player y NPC //
-    // ------------------------------------------------ //
-
-    // Devuelve la base del mapa
-    const int getWidth() const;
-
-    // Devuelve la altura del mapa
-    const int getHeight() const;
 };
 
 #endif // GAME_WORLD_H

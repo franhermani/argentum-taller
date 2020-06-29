@@ -20,7 +20,7 @@ public:
     ~TakeCommand() override;
 
     // Toma un item del piso y lo equipa en el inventario
-    void execute() override;
+    void execute(World& world) override;
 };
 
 #endif // TAKE_COMMAND_H

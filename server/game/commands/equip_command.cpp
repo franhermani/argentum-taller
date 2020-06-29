@@ -5,6 +5,6 @@ player(player), itemType(item_type) {}
 
 EquipCommand::~EquipCommand() = default;
 
-void EquipCommand::execute() {
+void EquipCommand::execute(World& world) {
     player.equipItemFromInventory(itemType);
 }

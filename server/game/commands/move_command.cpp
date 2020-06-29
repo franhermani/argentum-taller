@@ -5,6 +5,6 @@ player(player), direction(direction) {}
 
 MoveCommand::~MoveCommand() = default;
 
-void MoveCommand::execute() {
+void MoveCommand::execute(World& world) {
     player.moveTo(direction);
 }

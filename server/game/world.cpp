@@ -13,7 +13,11 @@ World::World(GameParams& params) : params(params) {
 }
 
 World::~World() {
-    // TODO: delete npcs
+    // TODO: delete criaturas tmb
+
+    for (auto& npc : npcs)
+        delete npc;
+
     for (auto& item : items)
         delete item;
 }
@@ -42,12 +46,12 @@ void World::loadMatrix() {
     }
 }
 
-// --------------------------------------------- //
-// Metodos accedidos por WorldMonitor unicamente //
-// --------------------------------------------- //
+// -------------------------------------------- //
+// Metodos accedidos por threads (WorldMonitor) //
+// -------------------------------------------- //
 
 void World::update(const int ms) {
-    // TODO: update tmb a los npcs
+    // TODO: update tmb a las criaturas
     for (auto player : players) player->update(ms);
 }
 
@@ -97,9 +101,17 @@ const bool World::inPlayerBoundaries(Player &player,
     return x_in_boundaries && y_in_boundaries;
 }
 
-// --------------------------------------------- //
-// Metodos accedidos por Player y NPC unicamente //
-// --------------------------------------------- //
+const int World::getWidth() const {
+    return worldWidth;
+}
+
+const int World::getHeight() const {
+    return worldHeight;
+}
+
+// ------------------------------------------- //
+// Metodos accedidos por entidades del dominio //
+// ------------------------------------------- //
 
 const bool World::inMapBoundaries(const int pos_x, const int pos_y) {
     bool x_in_boundaries = (pos_x >= 0) && (pos_x < worldWidth),
@@ -118,12 +130,12 @@ const bool World::inCollision(const int pos_x, const int pos_y) {
         if (player->posX == pos_x && player->posY == pos_y)
             return true;
 
-    // TODO: chequear lista de NPCs
-    /*
+    // NPCs
     for (auto& npc : npcs)
         if (npc->posX == pos_x && npc->posY == pos_y)
             return true;
-    */
+
+    // TODO: chequear lista de criaturas
 
     return false;
 }
@@ -160,6 +172,14 @@ Player* World::getPlayerById(const int id) const {
     return nullptr;
 }
 
+NPC* World::getNPCByPos(const int pos_x, const int pos_y) const {
+    for (auto& npc : npcs)
+        if (npc->posX == pos_x && npc->posY == pos_y)
+            return npc;
+
+    return nullptr;
+}
+
 const int World::getInventoryLength() const {
     return params.getConfigParams()["player"]["inventory"]["max_objects"];
 }
@@ -170,16 +190,4 @@ const int World::getMinLevelNewbie() const {
 
 const int World::getMinLevelDiff() const {
     return params.getConfigParams()["player"]["fair_play"]["min_level_diff"];
-}
-
-// ------------------------------------------------ //
-// Metodos accedidos por WorldMonitor, Player y NPC //
-// ------------------------------------------------ //
-
-const int World::getWidth() const {
-    return worldWidth;
-}
-
-const int World::getHeight() const {
-    return worldHeight;
 }
