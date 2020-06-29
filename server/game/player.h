@@ -129,6 +129,9 @@ public:
     // Devuelve la cantidad de daño realmente recibido
     const int receiveAttack(const int damage);
 
+    // Devuelve true si esta muerto, false en caso contrario
+    const bool isDead() const;
+
     // Equipa un item del inventario segun 'type'
     void equipItemFromInventory(const int type);
 

@@ -239,7 +239,7 @@ void Player::attack(Player& other) {
     if (isNewbie)
         throw GameException(NEWBIE_ATTACK_FORBIDDEN);
 
-    if (! other.isAlive)
+    if (other.isDead())
         throw GameException(UNABLE_TO_ATTACK_DEAD_PLAYER);
 
     if (other.isNewbie)
@@ -252,7 +252,7 @@ void Player::attack(Player& other) {
     int damage_caused = other.receiveAttack(equations.eqDamageCaused(*this));
     equations.eqExperienceAttack(*this, other, damage_caused);
 
-    if (! other.isAlive)
+    if (other.isDead())
         equations.eqExperienceKill(*this, other);
 }
 
@@ -268,7 +268,7 @@ void Player::attack(Creature &creature) {
 //    equations.eqDamageCaused(*this));
 //    equations.eqExperienceAttack(*this, creature, damage_caused);
 //
-//    if (! creature.isAlive)
+//    if (creature.isDead())
 //        equations.eqExperienceKill(*this, creature);
 }
 
@@ -278,6 +278,10 @@ const int Player::receiveAttack(const int damage) {
     int damage_received = equations.eqDamageReceived(*this, damage);
     subtractLife(damage_received);
     return damage_received;
+}
+
+const bool Player::isDead() const {
+    return (! isAlive);
 }
 
 void Player::equipItemFromInventory(const int type) {

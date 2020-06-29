@@ -9,6 +9,7 @@ class Creature {
     int type;
     int posX{}, posY{};
     int level;
+    bool isAlive;
     int orientation;
     int maxLife;
     int actualLife;
@@ -44,6 +45,9 @@ public:
     // Recibe el ataque de otro player
     // Devuelve la cantidad de daño realmente recibido
     const int receiveAttack(const int damage);
+
+    // Devuelve true si esta muerto, false en caso contrario
+    const bool isDead() const;
 };
 
 #endif // CREATURE_H

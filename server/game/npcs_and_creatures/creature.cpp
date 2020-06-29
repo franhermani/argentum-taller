@@ -8,6 +8,7 @@ world(world),
 id(id),
 type(type),
 level(10),              // TODO: ver de donde cargar esto
+isAlive(true),
 orientation(DOWN),
 maxLife(100),           // TODO: ver de donde cargar esto
 actualLife(100) {       // TODO: ver de donde cargar esto
@@ -70,6 +71,7 @@ void Creature::subtractLife(int life) {
 }
 
 void Creature::die() {
+    isAlive = false;
     // TODO: dropear item u oro
     // TODO: respawnear en otra posicion (puede ser en un cementerio)
 }
@@ -89,4 +91,8 @@ void Creature::update(int ms) {
 const int Creature::receiveAttack(const int damage) {
     // TODO: ...
     return 0;
+}
+
+const bool Creature::isDead() const {
+    return (! isAlive);
 }
