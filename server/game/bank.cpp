@@ -43,7 +43,7 @@ void Bank::depositGold(const int id, const int quant) {
     goldPerPlayer[id] += quant;
 }
 
-const int Bank::withdrawGold(const int id, const int quant) {
+void Bank::withdrawGold(const int id, const int quant) {
     std::unique_lock<std::mutex> lk(m);
 
     if (goldPerPlayer.find(id) == goldPerPlayer.end())
@@ -53,5 +53,4 @@ const int Bank::withdrawGold(const int id, const int quant) {
         throw GameException(INSUFFICIENT_GOLD);
 
     goldPerPlayer[id] -= quant;
-    return quant;
 }

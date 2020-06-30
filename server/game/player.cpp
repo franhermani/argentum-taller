@@ -328,3 +328,11 @@ void Player::dropItemFromInventoryToWorld(const int type) {
     item->updatePosition(posX, posY);
     world.addItem(item);
 }
+
+Item* Player::takeItemFromInventory(const int type) {
+    return inventory.removeItem(type);
+}
+
+void Player::addItemToInventory(Item *item) {
+    inventory.addItem(item);
+}

@@ -33,7 +33,7 @@ public:
     void depositGold(const int id, const int quant);
 
     // Retira la cantidad de oro del player segun su id
-    const int withdrawGold(const int id, const int quant);
+    void withdrawGold(const int id, const int quant);
 };
 
 #endif // BANK_H

@@ -85,6 +85,7 @@ class Player {
 
     friend class World;
     friend class Equations;
+    friend class Banker;
     friend class ClientHandler;
     friend class ServerProtocol;
 
@@ -132,14 +133,20 @@ public:
     // Devuelve true si esta muerto, false en caso contrario
     const bool isDead() const;
 
-    // Equipa un item del inventario segun 'type'
+    // Saca un item del inventario segun 'type' y lo equipa
     void equipItemFromInventory(const int type);
 
-    // Toma un item del mundo segun su pos (x,y) y lo guarda en el inventario
+    // Saca un item del mundo segun su pos (x,y) y lo guarda en el inventario
     void takeItemFromWorldToInventory(const int pos_x, const int pos_y);
 
-    // Tira un item del inventario al mundo segun 'type'
+    // Saca un item del inventario segun 'type' y lo tira al mundo
     void dropItemFromInventoryToWorld(const int type);
+
+    // Saca un item del inventario segun 'type' y lo devuelve
+    Item* takeItemFromInventory(const int type);
+
+    // Agrega un item al inventario
+    void addItemToInventory(Item* item);
 };
 
 #endif // GAME_PLAYER_H
