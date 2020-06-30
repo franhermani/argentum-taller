@@ -9,7 +9,6 @@
 #include "../../common/defines/classes.h"
 #include "game_exception.h"
 #include "../../common/defines/game_exceptions.h"
-#include "../../common/defines/id_types.h"
 
 Player::Player(World& world, Equations& equations, const int id,
         const int race_type, const int class_type) :
@@ -206,7 +205,7 @@ void Player::moveTo(int direction) {
 void Player::heal() {
     stopMeditating();
 
-    if (! isAlive)
+    if (isDead())
         throw GameException(UNABLE_TO_INTERACT);
 
     actualLife = maxLife;
@@ -216,7 +215,7 @@ void Player::heal() {
 void Player::revive() {
     stopMeditating();
 
-    if (isAlive)
+    if (! isDead())
         throw GameException(UNABLE_TO_REVIVE);
 
     actualLife = maxLife;
@@ -233,7 +232,7 @@ void Player::meditate() {
 void Player::attack(Player& other) {
     stopMeditating();
 
-    if (! isAlive)
+    if (isDead())
         throw GameException(UNABLE_TO_INTERACT);
 
     if (isNewbie)
@@ -250,24 +249,27 @@ void Player::attack(Player& other) {
         throw GameException(DIFF_LEVEL_ATTACK_FORBIDDEN);
 
     int damage_caused = other.receiveAttack(equations.eqDamageCaused(*this));
-    equations.eqExperienceAttack(*this, other, damage_caused);
+
+    addExperience(equations.eqExperienceAttack(*this, other, damage_caused));
 
     if (other.isDead())
-        equations.eqExperienceKill(*this, other);
+        addExperience(equations.eqExperienceKill(*this, other));
 }
 
 void Player::attack(Creature &creature) {
     stopMeditating();
 
-    if (! isAlive)
+    if (isDead())
         throw GameException(UNABLE_TO_INTERACT);
 
     int damage_caused = creature.receiveAttack(
             equations.eqDamageCaused(*this));
-    equations.eqExperienceAttack(*this, creature, damage_caused);
+
+    addExperience(equations.eqExperienceAttack(
+            *this, creature, damage_caused));
 
     if (creature.isDead())
-        equations.eqExperienceKill(*this, creature);
+        addExperience(equations.eqExperienceKill(*this, creature));
 }
 
 const int Player::receiveAttack(const int damage) {
@@ -285,7 +287,7 @@ const bool Player::isDead() const {
 void Player::equipItemFromInventory(const int type) {
     stopMeditating();
 
-    if (! isAlive)
+    if (isDead())
         throw GameException(UNABLE_TO_INTERACT);
 
     Item* item = inventory.removeItem(type);
@@ -305,7 +307,7 @@ void Player::equipItemFromInventory(const int type) {
 void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
     stopMeditating();
 
-    if (! isAlive)
+    if (isDead())
         throw GameException(UNABLE_TO_INTERACT);
 
 
@@ -316,7 +318,7 @@ void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
 void Player::dropItemFromInventoryToWorld(const int type) {
     stopMeditating();
 
-    if (! isAlive)
+    if (isDead())
         throw GameException(UNABLE_TO_INTERACT);
 
     if (world.itemInPosition(posX, posY))

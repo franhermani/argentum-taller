@@ -1,10 +1,14 @@
 #include <random>
 #include "creature.h"
 #include "../world.h"
+#include "../equations.h"
+#include "../player.h"
 #include "../../../common/defines/commands.h"
 
-Creature::Creature(World &world, const int id, const int type) :
+Creature::Creature(World &world, Equations& equations,
+        const int id, const int type) :
 world(world),
+equations(equations),
 id(id),
 type(type),
 level(10),              // TODO: ver de donde cargar esto
@@ -76,8 +80,11 @@ void Creature::die() {
     // TODO: respawnear en otra posicion (puede ser en un cementerio)
 }
 
-void Creature::attack(const int player_id) {
-    // TODO: ...
+void Creature::attack(Player& player) {
+    if (isDead())
+        return;
+
+    player.receiveAttack(equations.eqDamageCaused(*this));
 }
 
 // -------------- //
@@ -89,8 +96,9 @@ void Creature::update(int ms) {
 }
 
 const int Creature::receiveAttack(const int damage) {
-    // TODO: ...
-    return 0;
+    int damage_received = equations.eqDamageReceived(*this, damage);
+    subtractLife(damage_received);
+    return damage_received;
 }
 
 const bool Creature::isDead() const {

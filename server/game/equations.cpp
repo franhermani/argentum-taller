@@ -5,6 +5,7 @@
 #include "equations.h"
 #include "../../common/defines/races.h"
 #include "../../common/defines/classes.h"
+#include "../../common/defines/creatures.h"
 
 Equations::Equations(const json& config_params) :
 configParams(config_params) {
@@ -13,6 +14,9 @@ configParams(config_params) {
 
     classes_map = {{MAGICIAN, MAGICIAN_STRING}, {CLERIC, CLERIC_STRING},
                    {PALADIN, PALADIN_STRING}, {WARRIOR, WARRIOR_STRING}};
+
+    creatures_map = {{GOBLIN, GOBLIN_STRING}, {SKELETON, SKELETON_STRING},
+                     {ZOMBIE, ZOMBIE_STRING}, {SPIDER, SPIDER_STRING}};
 }
 
 const double Equations::randomNumber(const double a, const double b) {
@@ -163,10 +167,11 @@ const int Equations::eqDamageCaused(Player &player) {
 }
 
 const int Equations::eqDamageCaused(Creature &creature) {
-    // TODO: ...
-//    double strength = ...;
-//    int damage = strength * ...;
-    int damage = 1;
+    std::string type = creatures_map[creature.type];
+    json type_params = configParams["creatures"][type];
+
+    int damage = randomNumber(type_params["min_attack"],
+                              type_params["max_attack"]);
     return damage;
 }
 
@@ -200,7 +205,12 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
 }
 
 const int Equations::eqDamageReceived(Creature &creature, const int damage) {
-    // TODO: ...
-    int damage_received = 1;
+    std::string type = creatures_map[creature.type];
+    json type_params = configParams["creatures"][type];
+
+    int defense = randomNumber(type_params["min_defense"],
+                               type_params["max_defense"]);
+
+    int damage_received = std::max(damage - defense, 0);
     return damage_received;
 }

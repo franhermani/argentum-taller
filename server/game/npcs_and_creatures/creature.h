@@ -2,9 +2,12 @@
 #define CREATURE_H
 
 class World;
+class Player;
+class Equations;
 
 class Creature {
     World& world;
+    Equations& equations;
     int id;
     int type;
     int posX{}, posY{};
@@ -27,14 +30,15 @@ class Creature {
     void moveTo(int direction);
 
     // Ataca a otro player segun su ID
-    void attack(const int player_id);
+    void attack(Player& player);
 
     friend class World;
     friend class Equations;
     friend class ServerProtocol;
 
 public:
-    Creature(World& world, const int id, const int type);
+    Creature(World& world, Equations& equations,
+            const int id, const int type);
 
     // Constructor y asignacion por copia deshabilitados
     Creature(const Creature& other) = delete;

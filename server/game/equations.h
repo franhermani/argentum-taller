@@ -11,6 +11,7 @@ using json = nlohmann::json;
 class Equations {
     std::map<int, std::string> races_map;
     std::map<int, std::string> classes_map;
+    std::map<int, std::string> creatures_map;
     json configParams;
 
     // Devuelve un numero aleatorio entre 'a' y 'b'
