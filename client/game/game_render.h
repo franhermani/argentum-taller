@@ -23,11 +23,11 @@ class GameRender : public Thread {
     // TODO arreglar private y public
     std::map<Terrain, Surface *> terrainSurfacesMap;
     // TODO: borrar esto, Npc ya no existe
-    std::map<int, std::map<int, Surface *>> npcSurfacesMap;
+    std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
     std::map<Terrain, std::string> terrainSurfacesPaths;
     // TODO: borrar esto, Npc ya no existe
-    std::map<int, std::map<int, std::string>> npcSurfacesPaths;
+    std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
     std::vector<std::vector<Terrain>> floor;
 

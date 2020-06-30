@@ -26,7 +26,7 @@ GameRender::~GameRender() {
     for (auto const& surface : terrainSurfacesMap) {
         delete surface.second;
     }
-//    for (auto const& surface : npcSurfacesMap) {
+//    for (auto const& surface : creatureSurfacesMap) {
 //        delete surface.second;
 //    }
     SDL_Quit();
@@ -122,9 +122,8 @@ void GameRender::loadSurfacePaths() {
             {RIGHT, "../client/resources/images/skeleton_right_t.png"}
     };
 
-    npcSurfacesPaths = {
-            {SKELETON, skeleton_orientations};
-
+    creatureSurfacesPaths = {
+            {SKELETON, skeleton_orientations}
     };
 
             std::map<int, std::string> human_orientations = {
@@ -166,7 +165,7 @@ void GameRender::loadSurfacePaths() {
                            {DWARF, dwarf_surfaces},
                            {GNOME, gnome_surfaces}};
     std::map<int, Surface*> skeleton_surfaces;
-    npcSurfacesMap = {{SKELETON, skeleton_surfaces}};
+    creatureSurfacesMap = {{SKELETON, skeleton_surfaces}};
 
 }
 
