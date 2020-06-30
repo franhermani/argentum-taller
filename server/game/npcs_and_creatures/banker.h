@@ -4,11 +4,15 @@
 #include <vector>
 #include "npc.h"
 #include "../player.h"
+#include "../bank.h"
 
 class Banker : public NPC {
+    Bank& bank;
+
 public:
     // Constructor
-    Banker(const int pos_x, const int pos_y, const int orient);
+    Banker(Bank& bank, const int pos_x, const int pos_y,
+            const int orient);
 
     // Constructor y asignacion por copia deshabilitados
     Banker(const Banker& other) = delete;

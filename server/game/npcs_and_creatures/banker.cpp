@@ -2,7 +2,8 @@
 #include "banker.h"
 #include "../../../common/defines/npcs.h"
 
-Banker::Banker(const int pos_x, const int pos_y, const int orient) {
+Banker::Banker(Bank& bank, const int pos_x, const int pos_y,
+        const int orient) : bank(bank) {
     type = BANKER;
     posX = pos_x;
     posY = pos_y;
