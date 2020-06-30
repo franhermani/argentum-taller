@@ -8,7 +8,6 @@ class Map {
     world_t world;
     matrix_t matrix;
     int username_id;
-    std::vector<int> blocks_around;
     std::vector<std::vector<Terrain>> terrainMatrix;
     int terrainMatrixHeight;
     int terrainMatrixWidth;

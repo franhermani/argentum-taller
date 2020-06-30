@@ -14,6 +14,7 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if ((s = SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer)))
         throw SDLException("Error al crear la ventana", SDL_GetError());
+    setTilesSize(9, 9);
 }
 
 SDLWindow::~SDLWindow() {
@@ -69,7 +70,10 @@ void SDLWindow::renderNpc(int x, int y, Surface* character_surface) {
 void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
                               std::map<Terrain, Surface*>& surfaces_map) {
     int height_size = matrix.size();
+    if (height_size <= 0) return;
     int width_size = matrix[0].size();
+    if (width_size <= 0) return;
+
     for (int y=0; y < height_size; y++) {
         for (int x=0; x < width_size; x++) {
             SDL_Rect stretchRect;
@@ -92,12 +96,12 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
             }*/
             if (surfaces_map.find(matrix[y][x]) != surfaces_map.end()) {
                 SDL_BlitScaled(surfaces_map.at(matrix[y][x])->
-                        getRenderableSurface(), NULL,
-                        getSurface(), &stretchRect);
+                getRenderableSurface(), NULL,
+                getSurface(), &stretchRect);
             } else {
-                SDL_BlitScaled(surfaces_map.at(TERRAIN_WATER)->
-                        getRenderableSurface(), NULL,
-                        getSurface(), &stretchRect);
+                SDL_BlitScaled(surfaces_map.at(TERRAIN_GRASS)->
+                getRenderableSurface(), NULL,
+                getSurface(), &stretchRect);
             }
         }
     }
