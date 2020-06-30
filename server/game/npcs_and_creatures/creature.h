@@ -44,7 +44,7 @@ public:
     Creature(const Creature& other) = delete;
     Creature& operator=(const Creature& other) = delete;
 
-    // TODO: ...
+    // Mueve a la criatura en busca de players para atacarlos
     void update(int ms);
 
     // Recibe el ataque de otro player
