@@ -27,6 +27,7 @@ GameRender::~GameRender() {
     for (auto const& surface : terrainSurfacesMap) {
         delete surface.second;
     }
+    //TODO DELETE DE LAS OTRAS SURFACES!!!!!!!!
 //    for (auto const& surface : creatureSurfacesMap) {
 //        delete surface.second;
 //    }

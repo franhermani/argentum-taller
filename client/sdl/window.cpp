@@ -63,6 +63,7 @@ void SDLWindow::renderNpc(int x, int y, Surface* character_surface) {
     stretchRect.y = getYPixelPos(y);
     stretchRect.w = xWidthTileSize;
     stretchRect.h = yHeightTileSize;
+    if ((stretchRect.x+xWidthTileSize >= frameXPixelEnd) || (stretchRect.y+yHeightTileSize >= frameYPixelEnd)) return;
     SDL_BlitScaled(character_surface->getRenderableSurface(), NULL,
             getSurface(), &stretchRect);
 }

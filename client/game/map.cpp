@@ -75,8 +75,6 @@ void Map::printDebugTerrainMatrix(
     }
 }
 
-
-
 std::vector<std::vector<Terrain>> Map::getTerrains() {
     printDebugTerrainMatrix(terrainMatrix);
     player_t player = getMainPlayer();
