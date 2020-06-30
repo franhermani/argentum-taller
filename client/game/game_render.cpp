@@ -94,9 +94,6 @@ void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
 }
 
 void GameRender::renderPlayers(std::vector<player_t>& players) {
-    //window.renderTerrain(floor, terrainSurfacesMap);
-    // recorro vector y renderizo con su surface correspondiente en el mapa
-
     createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
@@ -124,9 +121,6 @@ void GameRender::createNecessaryNpcs(std::vector<npc_t>& npcs) {
 }
 
 void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
-    //window.renderTerrain(floor, terrainSurfacesMap);
-    // recorro vector y renderizo con su surface correspondiente en el mapa
-
     createNecessaryNpcs(npcs);
     for (auto it = std::begin(npcs);
          it != std::end(npcs); ++it) {
