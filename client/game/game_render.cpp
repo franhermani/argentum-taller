@@ -50,8 +50,9 @@ Surface* GameRender::createGameFrameSurface(){
 
 void GameRender::createNecessaryTerrains(
         std::vector<std::vector<Terrain>>& matrix) {
-    int height_size = matrix.size()-1;
-    int width_size = matrix[0].size()-1;
+    int height_size = matrix.size();
+    if(height_size < 1) return;
+    int width_size = matrix[0].size();
     for (int i=0; i < height_size; i++) {
         for (int j=0; j < width_size; j++){
             if (terrainSurfacesMap.find(matrix[i][j])

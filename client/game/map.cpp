@@ -59,7 +59,9 @@ int Map::yPosToUser(int y) {
 void Map::printDebugTerrainMatrix(
         std::vector<std::vector<Terrain>>& received_matrix){
     int col_size = received_matrix.size();
+    if (col_size <=0) return;
     int row_size = received_matrix[0].size();
+    if (row_size <=0) return;
     std::cout << "\n\n\n ASI QUEDO LA MATRIZ\n\n\n";
     for (int i=0; i<col_size; i++) {
         for (int j=0; j< row_size; j++) {
@@ -88,7 +90,6 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
     y_finish = y_player + (playerVisionHeight / 2) +1;
     if (y_finish >= terrainMatrixHeight) y_finish = terrainMatrixHeight;
-
 
     int current_column_index = 0;
     for (int i=y_start; i<y_finish; i++) {
