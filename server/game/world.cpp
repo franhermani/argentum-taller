@@ -1,3 +1,4 @@
+#include <random>
 #include "world.h"
 
 World::World(GameParams& params) : params(params) {
@@ -229,4 +230,54 @@ const int World::getMaxLevelNewbie() const {
 
 const int World::getMaxLevelDiff() const {
     return params.getConfigParams()["player"]["fair_play"]["min_level_diff"];
+}
+
+// --------------------------------- //
+// Metodos accedidos por GameManager //
+// --------------------------------- //
+
+void World::addNPC(NPC *npc) {
+    npcs.push_back(npc);
+}
+
+void World::addCreature(Creature *creature) {
+    creatures.push_back(creature);
+}
+
+// TODO: dentro de safe zones
+std::vector<int> World::loadNPCPosition() {
+    std::vector<int> pos = {0,0};
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist_x(0, worldWidth - 1);
+    std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
+
+    int new_x = dist_x(mt), new_y = dist_y(mt);
+    while (inCollision(new_x, new_y)) {
+        new_x = dist_x(mt);
+        new_y = dist_y(mt);
+    }
+    pos[0] = new_x;
+    pos[1] = new_y;
+
+    return pos;
+}
+
+// TODO: fuera de safe zones
+std::vector<int> World::loadCreaturePosition() {
+    std::vector<int> pos = {0,0};
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist_x(0, worldWidth - 1);
+    std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
+
+    int new_x = dist_x(mt), new_y = dist_y(mt);
+    while (inCollision(new_x, new_y)) {
+        new_x = dist_x(mt);
+        new_y = dist_y(mt);
+    }
+    pos[0] = new_x;
+    pos[1] = new_y;
+
+    return pos;
 }

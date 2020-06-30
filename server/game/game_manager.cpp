@@ -3,6 +3,11 @@
 #include <chrono>
 #include "game_manager.h"
 #include "game_exception.h"
+#include "npcs_and_creatures/priest.h"
+#include "npcs_and_creatures/merchant.h"
+#include "npcs_and_creatures/banker.h"
+#include "../../common/defines/commands.h"
+#include "../../common/defines/creatures.h"
 
 GameManager::GameManager(File& config_file) :
 worldFile(jsonParser.getConfigParams(config_file)["world_path"]),
@@ -14,6 +19,9 @@ worldMonitor(world),
 msPerSend(params.getConfigParams()["ms_per_send"]) {
     keepRunning = true;
     isRunning = true;
+
+    spawnNPCs();
+    spawnCreatures();
 }
 
 void GameManager::run() {
@@ -71,4 +79,61 @@ void GameManager::removePlayerFromWorld(const int id) {
 
 void GameManager::removeUsername(const std::string& username) {
     idManager.removeUsername(username);
+}
+
+void GameManager::spawnNPCs() {
+    json js = params.getConfigParams()["npcs"];
+
+    int num_priests = js["priest"]["quantity"],
+        num_merchants = js["merchant"]["quantity"],
+        num_bankers = js["banker"]["quantity"];
+
+    // TODO: hacer random la orientacion
+
+    std::vector<int> pos = {0,0};
+    int i;
+    for (i = 0; i < num_priests; i ++) {
+        pos = world.loadNPCPosition();
+        world.addNPC(new Priest(pos[0], pos[1], DOWN));
+    }
+    for (i = 0; i < num_merchants; i ++) {
+        pos = world.loadNPCPosition();
+        world.addNPC(new Merchant(pos[0], pos[1], DOWN));
+    }
+    for (i = 0; i < num_bankers; i ++) {
+        pos = world.loadNPCPosition();
+        world.addNPC(new Banker(pos[0], pos[1], DOWN));
+    }
+}
+
+void GameManager::spawnCreatures() {
+    json js = params.getConfigParams()["creatures"];
+
+    int num_goblins = js["goblin"]["quantity"],
+        num_skeletons = js["skeleton"]["quantity"],
+        num_zombies = js["zombie"]["quantity"],
+        num_spiders = js["spider"]["quantity"];
+
+    std::vector<int> pos = {0,0};
+    int i;
+    for (i = 0; i < num_goblins; i ++) {
+        pos = world.loadCreaturePosition();
+        world.addCreature(new Creature(world, equations,
+                idManager.addCreatureById(), GOBLIN));
+    }
+    for (i = 0; i < num_skeletons; i ++) {
+        pos = world.loadCreaturePosition();
+        world.addCreature(new Creature(world, equations,
+                idManager.addCreatureById(), SKELETON));
+    }
+    for (i = 0; i < num_zombies; i ++) {
+        pos = world.loadCreaturePosition();
+        world.addCreature(new Creature(world, equations,
+                idManager.addCreatureById(), ZOMBIE));
+    }
+    for (i = 0; i < num_spiders; i ++) {
+        pos = world.loadCreaturePosition();
+        world.addCreature(new Creature(world, equations,
+                idManager.addCreatureById(), SPIDER));
+    }
 }

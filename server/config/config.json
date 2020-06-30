@@ -64,6 +64,17 @@
         "min_level_diff": 10
       }
     },
+    "npcs": {
+      "priest": {
+        "quantity": 10
+      },
+      "merchant": {
+        "quantity": 10
+      },
+      "banker": {
+        "quantity": 10
+      }
+    },
     "creatures": {
       "death_prob_eq": {
         "nothing": {
@@ -84,6 +95,7 @@
         }
       },
       "goblin": {
+        "quantity": 5,
         "max_life": 100,
         "min_defense": 5,
         "max_defense": 10,
@@ -91,6 +103,7 @@
         "max_attack": 10
       },
       "skeleton": {
+        "quantity": 5,
         "max_life": 200,
         "min_defense": 7,
         "max_defense": 12,
@@ -98,6 +111,7 @@
         "max_attack": 13
       },
       "zombie": {
+        "quantity": 5,
         "max_life": 250,
         "min_defense": 3,
         "max_defense": 8,
@@ -105,6 +119,7 @@
         "max_attack": 7
       },
       "spider": {
+        "quantity": 5,
         "max_life": 150,
         "min_defense": 5,
         "max_defense": 10,

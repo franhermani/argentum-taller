@@ -27,6 +27,12 @@ class GameManager : public Thread {
 
     friend class ClientHandler;
 
+    // Crea NPCs en posiciones random dentro de una zona segura
+    void spawnNPCs();
+
+    // Crea criaturas en posiciones random fuera de una zona segura
+    void spawnCreatures();
+
 public:
     // Constructor
     explicit GameManager(File& config_file);

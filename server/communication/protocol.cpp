@@ -126,7 +126,7 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     memcpy(&byte_msg[pos], &n.length, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &n.num_npcs, SIZE_16);
     for (i = 0; i < num_npcs; i ++) {
-        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_x, SIZE_8);
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].type, SIZE_8);
         memcpy(&byte_msg[pos+=SIZE_8], &n.npcs[i].pos_x, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_y, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].orientation, SIZE_8);

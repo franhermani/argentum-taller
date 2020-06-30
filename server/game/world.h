@@ -121,6 +121,22 @@ public:
 
     // Devuelve la diferencia de niveles maxima para atacar
     const int getMaxLevelDiff() const;
+
+    // --------------------------------- //
+    // Metodos accedidos por GameManager //
+    // --------------------------------- //
+
+    // Agrega un NPC al mundo
+    void addNPC(NPC* npc);
+
+    // Agrega una criatura al mundo
+    void addCreature(Creature* creature);
+
+    // Devuelve una posicion random para un NPC dentro de una zona segura
+    std::vector<int> loadNPCPosition();
+
+    // Devuelve una posicion random para una criatura fuera de una zona segura
+    std::vector<int> loadCreaturePosition();
 };
 
 #endif // GAME_WORLD_H
