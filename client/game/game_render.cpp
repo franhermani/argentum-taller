@@ -159,7 +159,9 @@ void GameRender::loadSurfacePaths() {
     std::map<int, Surface*> skeleton_surfaces;
     npcSurfacesMap = {{SKELETON, skeleton_surfaces}};
 
-    //CRIATURAS
+
+
+    //npcs
     std::map<int, std::string> banker_orientations = {
             {UP, "../client/resources/images/skeleton_up_t.png"},
             {DOWN, "../client/resources/images/skeleton_down_t.png"},
@@ -167,19 +169,19 @@ void GameRender::loadSurfacePaths() {
             {RIGHT, "../client/resources/images/skeleton_right_t.png"}
     };
     std::map<int, std::string> priest_orientations = {
-            {UP, "../client/resources/images/skeleton_up_t.png"},
-            {DOWN, "../client/resources/images/skeleton_down_t.png"},
-            {LEFT, "../client/resources/images/skeleton_left_t.png"},
-            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+            {UP, "../client/resources/images/priest_up_t.png"},
+            {DOWN, "../client/resources/images/priest_down_t.png"},
+            {LEFT, "../client/resources/images/priest_left_t.png"},
+            {RIGHT, "../client/resources/images/priest_right_t.png"}
     };
     std::map<int, std::string> merchant_orientations = {
-            {UP, "../client/resources/images/skeleton_up_t.png"},
-            {DOWN, "../client/resources/images/skeleton_down_t.png"},
-            {LEFT, "../client/resources/images/skeleton_left_t.png"},
-            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+            {UP, "../client/resources/images/spider_up_t.png"},
+            {DOWN, "../client/resources/images/spider_down_t.png"},
+            {LEFT, "../client/resources/images/spider_left_t.png"},
+            {RIGHT, "../client/resources/images/spider_right_t.png"}
     };
 
-    creatureSurfacesPaths = {
+    npcSurfacesPaths = {
             {PRIEST, priest_orientations},
             {MERCHANT, merchant_orientations},
             {BANKER, {banker_orientations}}
@@ -188,7 +190,7 @@ void GameRender::loadSurfacePaths() {
     std::map<int, Surface*> priest_surfaces;
     std::map<int, Surface*> merchant_surfaces;
     std::map<int, Surface*> banker_surfaces;
-    creatureSurfacesMap = {{PRIEST, priest_surfaces},
+    npcSurfacesMap = {{PRIEST, priest_surfaces},
                            {MERCHANT, merchant_surfaces},
                            {BANKER, banker_surfaces}
     };
