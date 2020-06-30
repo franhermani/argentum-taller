@@ -12,6 +12,7 @@
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
 #include "../../common/defines/creatures.h"
+#include "../../common/defines/npcs.h"
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -105,6 +106,8 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
 
 
 void GameRender::loadSurfacePaths() {
+
+    //PISOS
     terrainSurfacesPaths = {
             {TERRAIN_WATER, "../client/resources/images/24082.png"},
             {TERRAIN_LAND, "../client/resources/images/24086.png"},
@@ -115,6 +118,7 @@ void GameRender::loadSurfacePaths() {
             {TERRAIN_OUT_OF_BOUNDARIES,
              "../client/resources/images/12050.png"}};
 
+    //CRIATURAS
     std::map<int, std::string> skeleton_orientations = {
             {UP, "../client/resources/images/skeleton_up_t.png"},
             {DOWN, "../client/resources/images/skeleton_down_t.png"},
@@ -122,11 +126,51 @@ void GameRender::loadSurfacePaths() {
             {RIGHT, "../client/resources/images/skeleton_right_t.png"}
     };
 
-    creatureSurfacesPaths = {
+    npcSurfacesPaths = {
             {SKELETON, skeleton_orientations}
     };
 
-            std::map<int, std::string> human_orientations = {
+    std::map<int, Surface*> skeleton_surfaces;
+    npcSurfacesMap = {{SKELETON, skeleton_surfaces}};
+
+    //CRIATURAS
+    std::map<int, std::string> banker_orientations = {
+            {UP, "../client/resources/images/skeleton_up_t.png"},
+            {DOWN, "../client/resources/images/skeleton_down_t.png"},
+            {LEFT, "../client/resources/images/skeleton_left_t.png"},
+            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+    };
+    std::map<int, std::string> priest_orientations = {
+            {UP, "../client/resources/images/skeleton_up_t.png"},
+            {DOWN, "../client/resources/images/skeleton_down_t.png"},
+            {LEFT, "../client/resources/images/skeleton_left_t.png"},
+            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+    };
+    std::map<int, std::string> merchant_orientations = {
+            {UP, "../client/resources/images/skeleton_up_t.png"},
+            {DOWN, "../client/resources/images/skeleton_down_t.png"},
+            {LEFT, "../client/resources/images/skeleton_left_t.png"},
+            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+    };
+
+    creatureSurfacesPaths = {
+            {PRIEST, priest_orientations},
+            {MERCHANT, merchant_orientations},
+            {BANKER, {banker_orientations}}
+    };
+
+    std::map<int, Surface*> priest_surfaces;
+    std::map<int, Surface*> merchant_surfaces;
+    std::map<int, Surface*> banker_surfaces;
+    creatureSurfacesMap = {{PRIEST, priest_surfaces},
+                           {MERCHANT, merchant_surfaces},
+                           {BANKER, banker_surfaces}
+    };
+
+
+    //JUGADORES
+
+    std::map<int, std::string> human_orientations = {
             {UP, "../client/resources/images/human_up_t.png"},
             {DOWN, "../client/resources/images/human_down_t.png"},
             {LEFT, "../client/resources/images/human_left_t.png"},
@@ -164,8 +208,6 @@ void GameRender::loadSurfacePaths() {
                            {ELF, elf_surfaces},
                            {DWARF, dwarf_surfaces},
                            {GNOME, gnome_surfaces}};
-    std::map<int, Surface*> skeleton_surfaces;
-    creatureSurfacesMap = {{SKELETON, skeleton_surfaces}};
 
 }
 
