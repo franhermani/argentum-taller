@@ -14,8 +14,8 @@ type(type),
 level(10),              // TODO: ver de donde cargar esto
 isAlive(true),
 orientation(DOWN),
-maxLife(100),           // TODO: ver de donde cargar esto
-actualLife(100) {       // TODO: ver de donde cargar esto
+maxLife(equations.eqMaxLife(*this)),
+actualLife(maxLife) {
     loadInitialPosition();
 }
 

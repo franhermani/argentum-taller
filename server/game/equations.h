@@ -28,8 +28,11 @@ public:
     Equations(const Equations& other) = delete;
     Equations& operator=(const Equations& other) = delete;
 
-    // Vida maxima
+    // Vida maxima del player
     const int eqMaxLife(Player& player);
+
+    // Vida maxima de la criatura
+    const int eqMaxLife(Creature& creature);
 
     // Vida inicial
     const int eqInitialLife(Player& player);

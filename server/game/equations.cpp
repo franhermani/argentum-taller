@@ -43,6 +43,14 @@ const int Equations::eqMaxLife(Player &player) {
     return max_life;
 }
 
+const int Equations::eqMaxLife(Creature &creature) {
+    std::string type = creatures_map[creature.type];
+    json type_params = configParams["creatures"][type];
+
+    int max_life = type_params["max_life"];
+    return max_life;
+}
+
 const int Equations::eqInitialLife(Player &player) {
     double percentage = configParams["player"]["life"]["initial_percentage"];
     int initial_life = percentage * player.maxLife;
