@@ -41,5 +41,5 @@ Item* Inventory::removeItem(const int type) {
             return item;
         }
     }
-    return nullptr;
+    throw GameException(ITEM_NOT_IN_INVENTORY);
 }
