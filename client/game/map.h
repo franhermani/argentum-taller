@@ -7,6 +7,7 @@
 class Map {
     world_t world;
     matrix_t matrix;
+    npcs_t npcs;
     int username_id;
     std::vector<std::vector<Terrain>> terrainMatrix;
     int terrainMatrixHeight;
@@ -27,16 +28,24 @@ public:
     void initialize(int username_id, std::vector<int>
             blocks_around, matrix_t received_terrains);
 
-    //actualiza el vector de jugadores y manda a renderizar
+    //actualiza el vector de jugadores
     void updateWorld(world_t receivedWorld);
 
+    //actualiza el vector de npcs
+    void updateNpcs(npcs_t receivedNpcs);
 
-    // devuelve la matriz de pisos
+
+
+        // devuelve la matriz de pisos
     std::vector<std::vector<Terrain>> getTerrains();
 
     // devuelve los jugadores dentro del rango de vision del jguador principal
     // con posiciones actualizadas a la submatriz
     std::vector<player_t> getRenderablePlayers();
+
+    // devuelve los npcs dentro del rango de vision del jguador principal
+    // con posiciones actualizadas a la submatriz
+    std::vector<npc_t> getRenderableNpcs();
 
     //
     int getPlayerVisionWidth();
