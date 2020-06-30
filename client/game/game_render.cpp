@@ -11,7 +11,7 @@
 #include "../sdl/window.h"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
-
+#include "../../common/defines/creatures.h"
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -115,7 +115,19 @@ void GameRender::loadSurfacePaths() {
             {TERRAIN_OUT_OF_BOUNDARIES,
              "../client/resources/images/12050.png"}};
 
-    std::map<int, std::string> human_orientations = {
+    std::map<int, std::string> skeleton_orientations = {
+            {UP, "../client/resources/images/skeleton_up_t.png"},
+            {DOWN, "../client/resources/images/skeleton_down_t.png"},
+            {LEFT, "../client/resources/images/skeleton_left_t.png"},
+            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+    };
+
+    npcSurfacesPaths = {
+            {SKELETON, skeleton_orientations};
+
+    };
+
+            std::map<int, std::string> human_orientations = {
             {UP, "../client/resources/images/human_up_t.png"},
             {DOWN, "../client/resources/images/human_down_t.png"},
             {LEFT, "../client/resources/images/human_left_t.png"},
@@ -153,6 +165,9 @@ void GameRender::loadSurfacePaths() {
                            {ELF, elf_surfaces},
                            {DWARF, dwarf_surfaces},
                            {GNOME, gnome_surfaces}};
+    std::map<int, Surface*> skeleton_surfaces;
+    npcSurfacesMap = {{SKELETON, skeleton_surfaces}};
+
 }
 
 void GameRender::setTilesSize(int width,int height) {
