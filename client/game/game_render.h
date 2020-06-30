@@ -41,8 +41,12 @@ private:
     // inicializa en playerSurfacesMap las surfaces necesarias faltantes
     void createNecessaryPlayers(std::vector<player_t>& players);
 
+    // inicializa en npcSurfacesMap las surfaces necesarias faltantes
+    void createNecessaryNpcs(std::vector<npc_t>& npcs);
 
-public:
+
+
+        public:
     //Constructor
     GameRender(const int screenWidth, const int screenHeight,
                MapMonitor &mapMonitor);
@@ -65,6 +69,9 @@ public:
 
     //Renderizador de players
     void renderPlayers(std::vector<player_t> &players);
+
+    //renderizador de npcs
+    void renderNpcs(std::vector<npc_t>& npcs);
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();

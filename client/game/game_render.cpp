@@ -70,6 +70,7 @@ void GameRender::createNecessaryTerrains(
     }
 }
 
+
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
     createNecessaryTerrains(matrix);
     window.renderTerrain(matrix, terrainSurfacesMap);
@@ -103,6 +104,37 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
                 playerSurfacesMap[it->race_type][it->orientation]);
     }
 }
+
+
+void GameRender::createNecessaryNpcs(std::vector<npc_t>& npcs) {
+    for (auto& npc:npcs) {
+        int type = npc.type;
+        int orientation = npc.orientation;
+        if (npcSurfacesMap[type].find(orientation)
+            == npcSurfacesMap[type].end()) {
+            if (npcSurfacesPaths[type].find(orientation)
+                == npcSurfacesPaths[type].end()) {
+                continue;
+            }
+            Surface* surface = new Surface(
+                    npcSurfacesPaths[type][orientation], window, 1);
+            npcSurfacesMap[type].insert({orientation, surface});
+        }
+    }
+}
+
+void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
+    //window.renderTerrain(floor, terrainSurfacesMap);
+    // recorro vector y renderizo con su surface correspondiente en el mapa
+
+    createNecessaryNpcs(npcs);
+    for (auto it = std::begin(npcs);
+         it != std::end(npcs); ++it) {
+        window.renderNpc(it->pos_x, it->pos_y,
+                         npcSurfacesMap[it->type][it->orientation]);
+    }
+}
+
 
 
 void GameRender::loadSurfacePaths() {
