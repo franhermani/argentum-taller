@@ -256,6 +256,8 @@ void GameRender::run() {
         renderTerrain(terrains);
         std::vector<player_t> players = mapMonitor.getRenderablePlayers();
         renderPlayers(players);
+        std::vector<npc_t> npcs = mapMonitor.getRenderableNpcs();
+        renderNpcs(npcs);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

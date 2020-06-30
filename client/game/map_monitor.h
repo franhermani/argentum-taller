@@ -35,6 +35,9 @@ public:
     //todo fix devolver referencia
     std::vector<player_t> getRenderablePlayers();
 
+    //todo fix devolver referencia
+    std::vector<npc_t> getRenderableNpcs();
+
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
 };
