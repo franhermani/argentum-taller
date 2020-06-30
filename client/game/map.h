@@ -35,7 +35,6 @@ public:
     void updateNpcs(npcs_t receivedNpcs);
 
 
-
         // devuelve la matriz de pisos
     std::vector<std::vector<Terrain>> getTerrains();
 

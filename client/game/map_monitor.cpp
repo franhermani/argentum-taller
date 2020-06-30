@@ -15,12 +15,20 @@ void MapMonitor::initialize(int username_id,
     map.initialize(username_id, blocks_around, received_matrix);
 }
 
-//actualiza el vector de jugadores y manda a renderizar
+//actualiza el vector de jugadores
 void MapMonitor::updateWorld(world_t receivedWorld) {
     std::unique_lock<std::mutex> lk(m);
     //TODO CUIDADO COPIAS CAMBIAR
     map.updateWorld(receivedWorld);
 }
+
+//actualiza el vector de npcs
+void MapMonitor::updateNpcs(npcs_t receivedNpcs) {
+    std::unique_lock<std::mutex> lk(m);
+    //TODO CUIDADO COPIAS CAMBIAR
+    map.updateNpcs(receivedNpcs);
+}
+
 
 std::vector<std::vector<Terrain>> MapMonitor::getTerrains() {
     std::unique_lock<std::mutex> lk(m);

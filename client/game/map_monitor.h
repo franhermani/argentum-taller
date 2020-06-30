@@ -26,8 +26,11 @@ public:
     void initialize(int username_id, std::vector<int> blocks_around,
             matrix_t received_matrix);
 
-    //actualiza el vector de jugadores y manda a renderizar
+    //actualiza el vector de jugadores
     void updateWorld(world_t receivedWorld);
+
+    //actualiza el vector de npcs
+    void updateNpcs(npcs_t receivedNpcs);
 
     //todo fix devolver referencia
     std::vector<std::vector<Terrain>> getTerrains();
