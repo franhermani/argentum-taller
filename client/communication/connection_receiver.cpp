@@ -20,10 +20,11 @@ void ConnectionReceiver::run() {
         npcs_t npcs = protocol.receiveNPCs();
 
         // TODO: pasar por referencia
-        mapMonitor.initialize(username_id, blocks_around, std::move(matrix), npcs);
+        mapMonitor.initialize(username_id, blocks_around,
+                std::move(matrix), npcs);
 
         while (keepRunning) {
-            world_t world = protocol.receiveMessage();
+            world_t world = protocol.receiveWorldUpdate();
             mapMonitor.updateWorld(std::move(world));
         }
     } catch(SocketError&) {

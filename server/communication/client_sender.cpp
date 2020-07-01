@@ -29,7 +29,10 @@ void ClientSender::run() {
         // Envio actualizaciones del juego
         while (keepRunning) {
             std::this_thread::sleep_for(ms(msPerSend));
-            protocol.sendMessage(worldMonitor, *player);
+            protocol.sendWorldUpdate(worldMonitor, *player);
+
+            // TODO: desencolar mensajes de una cola compartida y enviarlos
+            protocol.sendGameMessage(*player);
         }
     } catch (SocketError&) {
         // Do nothing

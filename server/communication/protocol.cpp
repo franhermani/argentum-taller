@@ -142,7 +142,8 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     }
 }
 
-void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
+void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
+        Player& player) {
     world_t w;
     std::vector<Player*> players = world_monitor.
             getPlayersAround(player);
@@ -213,13 +214,10 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
 
     int pos = 0;
     std::vector<char> byte_msg;
-    byte_msg.resize(SIZE_8 + SIZE_16 + message_length);
-
-    // Enum messageType
-    byte_msg[pos] = MSG_WORLD_UPDATE;
+    byte_msg.resize(SIZE_16 + message_length);
 
     // Longitud total mensaje
-    memcpy(&byte_msg[pos+=SIZE_8], &w.length, SIZE_16);
+    memcpy(&byte_msg[pos], &w.length, SIZE_16);
 
     // Info particular del player del cliente
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_mana, SIZE_16);
@@ -272,7 +270,8 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     }
 }
 
-void ServerProtocol::sendMessage(WorldMonitor &world_monitor, Player &player) {
-    // TODO: por ahora se envia solo el mundo
-    sendWorld(world_monitor, player);
+void ServerProtocol::sendGameMessage(Player &player) {
+    // TODO: enviar 1 byte con el tipo:
+    // - Listado de items
+    // - GameException con mensaje
 }

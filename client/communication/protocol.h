@@ -40,8 +40,11 @@ public:
     // Recibe la lista de NPCs
     npcs_t receiveNPCs();
 
-    // Recibe una actualizacion del juego
-    world_t receiveMessage();
+    // Recibe una actualizacion del mundo
+    world_t receiveWorldUpdate();
+
+    // Recibe un mensaje del juego
+    void receiveGameMessage();
 };
 
 #endif // CLIENT_PROTOCOL_H
