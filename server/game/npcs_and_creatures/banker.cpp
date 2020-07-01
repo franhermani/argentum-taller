@@ -23,15 +23,13 @@ void Banker::withdrawItem(Player &player, int type) {
 }
 
 void Banker::depositGold(Player &player, int quantity) {
-    // TODO: ...
-    //  player.takeGold(quantity);
+    player.removeGold(quantity);
     bank.depositGold(player.id, quantity);
 }
 
 void Banker::withdrawGold(Player &player, int quantity) {
-    // TODO: ...
     bank.withdrawGold(player.id, quantity);
-//    player.addGold(quantity);
+    player.addGold(quantity);
 }
 
 const std::vector<itemType> Banker::listItems() const {

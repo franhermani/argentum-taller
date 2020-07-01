@@ -28,8 +28,11 @@ enum exceptionCode {
     DIFF_LEVEL_ATTACK_FORBIDDEN,
 
     // Un player no tiene suficiente oro para comprar un item
-    // o para retirar del banco
+    // o para retirar del banco o para sacar de su posesion
     INSUFFICIENT_GOLD,
+
+    // Un player intenta agregar oro y no tiene suficiente espacio
+    FULL_GOLD,
 
     // Un player intenta agregar un ítem al inventario y ya esta lleno
     FULL_INVENTORY,

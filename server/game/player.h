@@ -147,6 +147,12 @@ public:
 
     // Agrega un item al inventario
     void addItemToInventory(Item* item);
+
+    // Agrega 'quant' oro al player
+    void addGold(const int quant);
+
+    // Remueve 'quant' oro del player
+    void removeGold(const int quant);
 };
 
 #endif // GAME_PLAYER_H
