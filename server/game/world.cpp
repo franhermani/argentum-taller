@@ -25,6 +25,9 @@ World::~World() {
 
     for (auto& gold : golds)
         delete gold;
+
+    for (auto& shot : shots)
+        delete shot;
 }
 
 void World::loadImpenetrableTerrains() {
@@ -56,6 +59,8 @@ void World::loadMatrix() {
 // -------------------------------------------- //
 
 void World::update(const int ms) {
+    // TODO: delete shots out of range
+
     for (auto& player : players)
         player->update(ms);
 
@@ -212,6 +217,10 @@ Gold* World::removeGold(const int pos_x, const int pos_y) {
             return gold;
         }
     return nullptr;
+}
+
+void World::addShot(Shot *shot) {
+    shots.push_back(shot);
 }
 
 Player* World::getPlayerById(const int id) const {

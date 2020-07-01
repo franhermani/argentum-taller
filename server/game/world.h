@@ -4,11 +4,12 @@
 #include <vector>
 #include <set>
 #include "params.h"
+#include "../../common/defines/terrains.h"
 #include "entities/player.h"
 #include "entities/npcs_and_creatures/creature.h"
 #include "entities/npcs_and_creatures/npc.h"
-#include "../../common/defines/terrains.h"
 #include "entities/gold.h"
+#include "entities/shot.h"
 
 class World {
     GameParams& params;
@@ -19,6 +20,7 @@ class World {
     std::vector<NPC*> npcs;
     std::vector<Item*> items;
     std::vector<Gold*> golds;
+    std::vector<Shot*> shots;
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
 
@@ -111,6 +113,9 @@ public:
 
     // Remueve un oro del mundo segun su pos (x,y)
     Gold* removeGold(const int pos_x, const int pos_y);
+
+    // Agrega un disparo al mundo
+    void addShot(Shot* shot);
 
     // Devuelve el player asociado al id
     Player* getPlayerById(const int id) const;
