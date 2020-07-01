@@ -1,5 +1,5 @@
-#include <string.h>
-#include <errno.h>
+#include <cstring>
+#include <cerrno>
 #include <cstdio>
 #include <cstdarg>
 #include "socket_error.h"
