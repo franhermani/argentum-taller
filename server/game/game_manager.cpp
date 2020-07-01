@@ -21,7 +21,7 @@ msPerSend(params.getConfigParams()["ms_per_send"]) {
     isRunning = true;
 
     spawnNPCs();
-    spawnCreatures();
+    //spawnCreatures();
 }
 
 void GameManager::run() {
