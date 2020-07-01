@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include "player.h"
+#include "entities/player.h"
 #include "../utilities/json.hpp"
 
 using json = nlohmann::json;

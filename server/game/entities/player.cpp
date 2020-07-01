@@ -3,11 +3,11 @@
 #include <climits>
 #include <algorithm>
 #include "player.h"
-#include "world.h"
-#include "equations.h"
-#include "../../common/defines/commands.h"
-#include "../../common/defines/classes.h"
-#include "game_exception.h"
+#include "../world.h"
+#include "../equations.h"
+#include "../../../common/defines/commands.h"
+#include "../../../common/defines/classes.h"
+#include "../game_exception.h"
 
 Player::Player(World& world, Equations& equations, const int id,
         const int race_type, const int class_type) :

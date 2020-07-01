@@ -1,9 +1,9 @@
 #include <random>
 #include "creature.h"
-#include "../world.h"
-#include "../equations.h"
+#include "../../world.h"
+#include "../../equations.h"
 #include "../player.h"
-#include "../../../common/defines/commands.h"
+#include "../../../../common/defines/commands.h"
 
 Creature::Creature(World &world, Equations& equations,
         const int id, const int type) :

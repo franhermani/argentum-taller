@@ -4,11 +4,11 @@
 #include <vector>
 #include <set>
 #include "params.h"
-#include "player.h"
-#include "npcs_and_creatures/creature.h"
-#include "npcs_and_creatures/npc.h"
+#include "entities/player.h"
+#include "entities/npcs_and_creatures/creature.h"
+#include "entities/npcs_and_creatures/npc.h"
 #include "../../common/defines/terrains.h"
-#include "gold.h"
+#include "entities/gold.h"
 
 class World {
     GameParams& params;

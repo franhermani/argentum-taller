@@ -2,7 +2,7 @@
 #define NPC_H
 
 #include <vector>
-#include "../../../common/defines/items.h"
+#include "../../../../common/defines/items.h"
 
 class NPC {
 protected:
