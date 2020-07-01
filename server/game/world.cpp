@@ -22,6 +22,9 @@ World::~World() {
 
     for (auto& item : items)
         delete item;
+
+    for (auto& gold : golds)
+        delete gold;
 }
 
 void World::loadImpenetrableTerrains() {
@@ -192,6 +195,21 @@ Item* World::removeItem(const int pos_x, const int pos_y) {
             Item* item = items[i];
             items.erase(items.begin() + i);
             return item;
+        }
+    return nullptr;
+}
+
+void World::addGold(Gold *gold) {
+    golds.push_back(gold);
+}
+
+Gold* World::removeGold(const int pos_x, const int pos_y) {
+    size_t i;
+    for (i = 0; i < golds.size(); i ++)
+        if (golds[i]->posX == pos_x && golds[i]->posY == pos_y) {
+            Gold* gold = golds[i];
+            golds.erase(golds.begin() + i);
+            return gold;
         }
     return nullptr;
 }

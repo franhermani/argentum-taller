@@ -153,6 +153,9 @@ public:
 
     // Remueve 'quant' oro del player
     void removeGold(const int quant);
+
+    // Saca un oro del mundo segun su pos (x,y) y guarda su cantidad
+    void takeGoldFromWorld(const int pos_x, const int pos_y);
 };
 
 #endif // GAME_PLAYER_H

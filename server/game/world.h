@@ -8,6 +8,7 @@
 #include "npcs_and_creatures/creature.h"
 #include "npcs_and_creatures/npc.h"
 #include "../../common/defines/terrains.h"
+#include "gold.h"
 
 class World {
     GameParams& params;
@@ -17,6 +18,7 @@ class World {
     std::vector<Creature*> creatures;
     std::vector<NPC*> npcs;
     std::vector<Item*> items;
+    std::vector<Gold*> golds;
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
 
@@ -103,6 +105,12 @@ public:
 
     // Remueve un item del mundo segun su pos (x,y)
     Item* removeItem(const int pos_x, const int pos_y);
+
+    // Agrega un oro al mundo
+    void addGold(Gold* gold);
+
+    // Remueve un oro del mundo segun su pos (x,y)
+    Gold* removeGold(const int pos_x, const int pos_y);
 
     // Devuelve el player asociado al id
     Player* getPlayerById(const int id) const;

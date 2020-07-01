@@ -352,3 +352,9 @@ void Player::removeGold(const int quant) {
 
     actualGold -= quant;
 }
+
+void Player::takeGoldFromWorld(const int pos_x, const int pos_y) {
+    Gold* gold = world.removeGold(pos_x, pos_y);
+    addGold(gold->quantity);
+    delete gold;
+}
