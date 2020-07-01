@@ -1,6 +1,7 @@
 #ifndef SERVER_PROTOCOL_H
 #define SERVER_PROTOCOL_H
 
+#include <string>
 #include <vector>
 #include "../../common/socket.h"
 #include "../game/commands/command_factory.h"
@@ -10,9 +11,6 @@
 class ServerProtocol {
     Socket& socket;
     CommandFactory commandFactory;
-
-    // Envia el mundo alrededor del player a traves del socket
-    void sendWorld(WorldMonitor& world_monitor, Player& player);
 
 public:
     // Constructor
@@ -44,9 +42,14 @@ public:
     // Envia la lista de NPCs a traves del socket
     void sendNPCs(WorldMonitor& world_monitor);
 
-    // Envia actualizaciones del juego a traves del socket
-    // TODO: ver que recibir por parametro
-    void sendMessage(WorldMonitor& world_monitor, Player& player);
+    // Envia una actualizacion del mundo a traves del socket
+    void sendWorldUpdate(WorldMonitor& world_monitor, Player& player);
+
+    // Envia un listado de items a traves del socket (incluye oro)
+    void sendItemsList(WorldMonitor& world_monitor, Player& player);
+
+    // Envia un mensaje del juego a traves del socket
+    void sendGameMessage(const std::string& message, Player& player);
 };
 
 #endif // SERVER_PROTOCOL_H

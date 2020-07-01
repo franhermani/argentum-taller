@@ -11,7 +11,7 @@ class SocketError : public std::exception {
 
 public:
     explicit SocketError(const char *fmt, ...) noexcept;
-    virtual const char *what() const noexcept;
+    virtual const char* what() const noexcept;
 };
 
 #endif // SOCKET_ERROR_H

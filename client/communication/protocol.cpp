@@ -197,19 +197,8 @@ npcs_t ClientProtocol::receiveNPCs() {
     return std::move(n);
 }
 
-world_t ClientProtocol::receiveMessage() {
+world_t ClientProtocol::receiveWorldUpdate() {
     world_t w;
-
-    // Tipo de mensaje
-    std::vector<char> message_type_buffer(SIZE_8, 0);
-    socket.receiveBytes(message_type_buffer.data(), SIZE_8);
-
-    if (debug) {
-        std::cout << "Tipo de mensaje: \n";
-        for (char& c : message_type_buffer)
-            printf("%02X ", (unsigned) (unsigned char) c);
-        std::cout << "\n";
-    }
 
     // Longitud del mensaje
     std::vector<char> length_buffer(SIZE_16, 0);
@@ -453,4 +442,25 @@ world_t ClientProtocol::receiveMessage() {
     // TODO: ...
 
     return std::move(w);
+}
+
+void ClientProtocol::receiveItemsList() {
+    // TODO: ...
+}
+
+const std::string ClientProtocol::receiveGameMessage() {
+    // Longitud del mensaje
+    std::vector<char> length_buffer(SIZE_8, 0);
+    socket.receiveBytes(length_buffer.data(), SIZE_8);
+
+    int message_length = (int) length_buffer[0];
+    if (message_length == 0) return "";
+
+    // Mensaje
+    std::vector<char> msg_buffer;
+    msg_buffer.resize(message_length);
+    socket.receiveBytes(msg_buffer.data(), message_length);
+
+    std::string message(msg_buffer.data());
+    return message;
 }

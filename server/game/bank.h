@@ -24,16 +24,16 @@ public:
     ~Bank();
 
     // Agrega el item a las pertenencias del player segun su id
-    void depositItem(const int id, Item* item);
+    void depositItem(const int player_id, Item* item);
 
     // Retira el item segun su type de las pertenencias del player segun su id
-    Item* withdrawItem(const int id, const int type);
+    Item* withdrawItem(const int player_id, const int type);
 
     // Agrega la cantidad de oro al oro del player segun su id
-    void depositGold(const int id, const int quant);
+    void depositGold(const int player_id, const int quant);
 
     // Retira la cantidad de oro del player segun su id
-    void withdrawGold(const int id, const int quant);
+    void withdrawGold(const int player_id, const int quant);
 };
 
 #endif // BANK_H

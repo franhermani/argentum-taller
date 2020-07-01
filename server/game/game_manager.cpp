@@ -21,6 +21,7 @@ msPerSend(params.getConfigParams()["ms_per_send"]) {
     isRunning = true;
 
     spawnNPCs();
+    // TODO: descomentar esto cuando ya se rendericen en el cliente
     //spawnCreatures();
 }
 
@@ -38,9 +39,8 @@ void GameManager::run() {
                 try {
                     command->execute(world);
                 } catch (GameException& e) {
-                    // TODO: encolar e.errorCode en una estructura compartida
-                    // para que luego el sender le envie al cliente el codigo
-                    // de error y este le muestre un mensaje al usuario
+                    std::string message(e.what());
+                    messagesQueuePerPlayer[e.getPlayerId()].push(message);
                 }
                 delete command;
             } catch(ClosedQueueException&) {
@@ -58,6 +58,10 @@ void GameManager::run() {
 
 void GameManager::stop() {
     commandQueue.close();
+
+    for (auto& kv : messagesQueuePerPlayer)
+        messagesQueuePerPlayer[kv.first].close();
+
     keepRunning = false;
 }
 

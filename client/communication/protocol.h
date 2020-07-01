@@ -40,8 +40,15 @@ public:
     // Recibe la lista de NPCs
     npcs_t receiveNPCs();
 
-    // Recibe una actualizacion del juego
-    world_t receiveMessage();
+    // Recibe una actualizacion del mundo
+    world_t receiveWorldUpdate();
+
+    // Recibe un listado de items (incluye oro)
+    // TODO: devolver vector de structs
+    void receiveItemsList();
+
+    // Recibe un mensaje del juego
+    const std::string receiveGameMessage();
 };
 
 #endif // CLIENT_PROTOCOL_H

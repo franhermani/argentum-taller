@@ -1,10 +1,12 @@
+#include <string>
 #include <chrono>
 #include "client_sender.h"
 #include "../../common/socket_error.h"
 
 ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
-        int ms_per_send) : protocol(socket), worldMonitor(world_monitor),
-        msPerSend(ms_per_send) {
+        ProtectedQueue<std::string>& messages_queue, int ms_per_send) :
+        protocol(socket), worldMonitor(world_monitor),
+        messagesQueue(messages_queue), msPerSend(ms_per_send) {
     keepRunning = true;
     isRunning = true;
 }
@@ -26,10 +28,26 @@ void ClientSender::run() {
         // Envio la lista de NPCs
         protocol.sendNPCs(worldMonitor);
 
+        std::string game_message;
+
         // Envio actualizaciones del juego
         while (keepRunning) {
             std::this_thread::sleep_for(ms(msPerSend));
-            protocol.sendMessage(worldMonitor, *player);
+            protocol.sendWorldUpdate(worldMonitor, *player);
+
+            // Desencolo de a un mensaje para que el player llegue a verlo
+            if (! messagesQueue.isEmpty()) {
+                try {
+                    game_message = messagesQueue.pop();
+                    protocol.sendGameMessage(game_message, *player);
+                } catch (ClosedQueueException&) {
+                    break;
+                }
+            } else {
+                protocol.sendGameMessage("", *player);
+            }
+            // TODO: desencolar esto de algun lado
+            protocol.sendItemsList(worldMonitor, *player);
         }
     } catch (SocketError&) {
         // Do nothing

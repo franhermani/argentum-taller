@@ -1,19 +1,23 @@
 #ifndef CLIENT_SENDER_H
 #define CLIENT_SENDER_H
 
+#include <string>
 #include "../../common/thread.h"
 #include "protocol.h"
 #include "../game/world_monitor.h"
+#include "../../common/protected_queue.h"
 
 class ClientSender : public Thread {
     ServerProtocol protocol;
     WorldMonitor& worldMonitor;
+    ProtectedQueue<std::string>& messagesQueue;
     int msPerSend;
     Player* player{};
 
 public:
     // Constructor
-    ClientSender(Socket& socket, WorldMonitor& worldMonitor, int ms_per_send);
+    ClientSender(Socket& socket, WorldMonitor& worldMonitor,
+            ProtectedQueue<std::string>& messages_queue, int ms_per_send);
 
     // Constructor y asignacion por copia deshabilitados
     ClientSender(const ClientSender&) = delete;
