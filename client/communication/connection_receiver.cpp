@@ -18,10 +18,9 @@ void ConnectionReceiver::run() {
 
         // TODO: pasarle npcs al initialize
         npcs_t npcs = protocol.receiveNPCs();
-        mapMonitor.updateNpcs(npcs);
 
         // TODO: pasar por referencia
-        mapMonitor.initialize(username_id, blocks_around, std::move(matrix));
+        mapMonitor.initialize(username_id, blocks_around, std::move(matrix), npcs);
 
         while (keepRunning) {
             world_t world = protocol.receiveMessage();

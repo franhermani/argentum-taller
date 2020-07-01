@@ -9,10 +9,10 @@ MapMonitor::~MapMonitor() {}
 
 //inicializa matriz
 void MapMonitor::initialize(int username_id,
-        std::vector<int> blocks_around, matrix_t received_matrix) {
+        std::vector<int> blocks_around, matrix_t received_matrix, npcs_t npcs) {
     std::unique_lock<std::mutex> lk(m);
     //TODO CUIDADO COPIAS CAMBIAR
-    map.initialize(username_id, blocks_around, received_matrix);
+    map.initialize(username_id, blocks_around, received_matrix, npcs);
 }
 
 //actualiza el vector de jugadores
@@ -20,13 +20,6 @@ void MapMonitor::updateWorld(world_t receivedWorld) {
     std::unique_lock<std::mutex> lk(m);
     //TODO CUIDADO COPIAS CAMBIAR
     map.updateWorld(receivedWorld);
-}
-
-//actualiza el vector de npcs
-void MapMonitor::updateNpcs(npcs_t receivedNpcs) {
-    std::unique_lock<std::mutex> lk(m);
-    //TODO CUIDADO COPIAS CAMBIAR
-    map.updateNpcs(receivedNpcs);
 }
 
 
