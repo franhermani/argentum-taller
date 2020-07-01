@@ -39,9 +39,8 @@ void GameManager::run() {
                 try {
                     command->execute(world);
                 } catch (GameException& e) {
-                    // Encolo excepciones para que el sender de cada player
-                    // luego se las envie
-                    messagesQueuePerPlayer[e.getPlayerId()].push(e.what());
+                    std::string message(e.what());
+                    messagesQueuePerPlayer[e.getPlayerId()].push(message);
                 }
                 delete command;
             } catch(ClosedQueueException&) {

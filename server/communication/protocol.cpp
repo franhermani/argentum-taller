@@ -279,7 +279,12 @@ void ServerProtocol::sendItemsList(WorldMonitor &world_monitor,
 
 void ServerProtocol::sendGameMessage(const std::string& message,
         Player &player) {
-    // TODO:
-    // - Enviar 1 byte con la longitud del mensaje
-    // - Enviar N bytes con el mensaje
+    std::vector<char> byte_msg;
+    std::vector<char> msg(message.begin(), message.end());
+    byte_msg.resize(SIZE_8 + msg.size());
+
+    byte_msg[0] = msg.size();
+    memcpy(byte_msg.data() + SIZE_8, msg.data(), msg.size());
+
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
 }

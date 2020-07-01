@@ -449,6 +449,18 @@ void ClientProtocol::receiveItemsList() {
 }
 
 const std::string ClientProtocol::receiveGameMessage() {
-    // TODO: ...
-    return "hola mundo";
+    // Longitud del mensaje
+    std::vector<char> length_buffer(SIZE_8, 0);
+    socket.receiveBytes(length_buffer.data(), SIZE_8);
+
+    int message_length = (int) length_buffer[0];
+    if (message_length == 0) return "";
+
+    // Mensaje
+    std::vector<char> msg_buffer;
+    msg_buffer.resize(message_length);
+    socket.receiveBytes(msg_buffer.data(), message_length);
+
+    std::string message(msg_buffer.data());
+    return message;
 }

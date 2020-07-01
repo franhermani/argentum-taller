@@ -30,7 +30,11 @@ void ConnectionReceiver::run() {
 
             // TODO: mandar estos al mapMonitor o gameRender en un struct
             protocol.receiveItemsList();
+
             game_message = protocol.receiveGameMessage();
+            if (game_message.empty()) {
+                // Do nothing
+            }
         }
     } catch(SocketError&) {
         // Do nothing
