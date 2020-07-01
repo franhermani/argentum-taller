@@ -1,7 +1,8 @@
 #include <iostream>
 #include <utility>
-#include "connection_receiver.h"
+#include <string>
 #include <vector>
+#include "connection_receiver.h"
 #include "../../common/socket_error.h"
 
 ConnectionReceiver::ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor) :
@@ -15,17 +16,21 @@ void ConnectionReceiver::run() {
         int username_id = protocol.receiveUsernameId();
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
         matrix_t matrix = protocol.receiveMatrix();
-
-        // TODO: pasarle npcs al initialize
         npcs_t npcs = protocol.receiveNPCs();
 
         // TODO: pasar por referencia
         mapMonitor.initialize(username_id, blocks_around,
                 std::move(matrix), npcs);
 
+        std::string game_message;
+
         while (keepRunning) {
             world_t world = protocol.receiveWorldUpdate();
             mapMonitor.updateWorld(std::move(world));
+
+            // TODO: ver a donde mandar estos dos
+            protocol.receiveItemsList();
+            game_message = protocol.receiveGameMessage();
         }
     } catch(SocketError&) {
         // Do nothing

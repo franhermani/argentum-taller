@@ -33,6 +33,9 @@ void ClientSender::run() {
 
             // TODO: desencolar mensajes de una cola compartida y enviarlos
             protocol.sendGameMessage(*player);
+
+            // TODO: desencolar esto de algun lado
+            protocol.sendItemsList(worldMonitor, *player);
         }
     } catch (SocketError&) {
         // Do nothing

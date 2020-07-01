@@ -43,8 +43,12 @@ public:
     // Recibe una actualizacion del mundo
     world_t receiveWorldUpdate();
 
+    // Recibe un listado de items (incluye oro)
+    // TODO: devolver vector de structs
+    void receiveItemsList();
+
     // Recibe un mensaje del juego
-    void receiveGameMessage();
+    const std::string receiveGameMessage();
 };
 
 #endif // CLIENT_PROTOCOL_H

@@ -444,6 +444,11 @@ world_t ClientProtocol::receiveWorldUpdate() {
     return std::move(w);
 }
 
-void ClientProtocol::receiveGameMessage() {
+void ClientProtocol::receiveItemsList() {
     // TODO: ...
+}
+
+const std::string ClientProtocol::receiveGameMessage() {
+    // TODO: ...
+    return "hola mundo";
 }

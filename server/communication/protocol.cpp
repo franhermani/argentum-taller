@@ -270,8 +270,15 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 }
 
+void ServerProtocol::sendItemsList(WorldMonitor &world_monitor,
+        Player &player) {
+    // TODO:
+    // - Enviar 1 byte con la cantidad de items
+    // - Enviar N structs listed_item_t
+}
+
 void ServerProtocol::sendGameMessage(Player &player) {
-    // TODO: enviar 1 byte con el tipo:
-    // - Listado de items
-    // - GameException con mensaje
+    // TODO:
+    // - Enviar 1 byte con la longitud del mensaje
+    // - Enviar N bytes con el mensaje
 }

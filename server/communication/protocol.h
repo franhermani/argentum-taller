@@ -44,6 +44,9 @@ public:
     // Envia una actualizacion del mundo a traves del socket
     void sendWorldUpdate(WorldMonitor& world_monitor, Player& player);
 
+    // Envia un listado de items a traves del socket (incluye oro)
+    void sendItemsList(WorldMonitor& world_monitor, Player& player);
+
     // Envia un mensaje del juego a traves del socket
     // TODO: ver que recibir por parametro aparte de player
     void sendGameMessage(Player& player);
