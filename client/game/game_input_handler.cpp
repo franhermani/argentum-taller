@@ -1,6 +1,12 @@
 #include <iostream>
 #include "game_input_handler.h"
 #include "../data_transfer_objects/move_command_dto.h"
+#include "../data_transfer_objects/heal_command_dto.h"
+#include "../data_transfer_objects/take_command_dto.h"
+#include "../data_transfer_objects/throw_command_dto.h"
+#include "../data_transfer_objects/revive_command_dto.h"
+#include "../data_transfer_objects/meditate_command_dto.h"
+#include "../data_transfer_objects/attack_command_dto.h"
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue):
 commandQueue(commandQueue) {}
@@ -28,7 +34,24 @@ void GameInputHandler::play() {
                     // TODO: aca en realidad se va a mandar el comando de salir
                     running = false;
                     continue;
-                } else {
+                } else if (keyEvent.keysym.sym == SDLK_a){
+                    //attack
+                } else if (keyEvent.keysym.sym == SDLK_h) {
+                    //heal
+                }
+                else if (keyEvent.keysym.sym == SDLK_m){
+                    command = new MeditateCommandDTO();
+                }
+                else if (keyEvent.keysym.sym == SDLK_r){
+                    
+                } else if (keyEvent.keysym.sym == SDLK_t) {
+                    //take
+                }
+                else if (keyEvent.keysym.sym == SDLK_d) {
+                    //trow (drop)
+                }
+
+                else {
                     continue;
                 }
                 commandQueue.push(command);
