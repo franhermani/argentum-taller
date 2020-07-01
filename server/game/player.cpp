@@ -121,6 +121,8 @@ void Player::addExperience(int exp) {
 void Player::die() {
     stopMeditating();
     isAlive = false;
+
+    // TODO: dropear oro
 }
 
 void Player::stopMeditating() {
@@ -327,4 +329,32 @@ void Player::dropItemFromInventoryToWorld(const int type) {
     Item* item = inventory.removeItem(type);
     item->updatePosition(posX, posY);
     world.addItem(item);
+}
+
+Item* Player::takeItemFromInventory(const int type) {
+    return inventory.removeItem(type);
+}
+
+void Player::addItemToInventory(Item *item) {
+    inventory.addItem(item);
+}
+
+void Player::addGold(const int quant) {
+    if (actualGold + quant > maxGold)
+        throw GameException(FULL_GOLD);
+
+    actualGold += quant;
+}
+
+void Player::removeGold(const int quant) {
+    if (actualGold < quant)
+        throw GameException(INSUFFICIENT_GOLD);
+
+    actualGold -= quant;
+}
+
+void Player::takeGoldFromWorld(const int pos_x, const int pos_y) {
+    Gold* gold = world.removeGold(pos_x, pos_y);
+    addGold(gold->quantity);
+    delete gold;
 }

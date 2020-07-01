@@ -4,11 +4,15 @@
 #include <vector>
 #include "npc.h"
 #include "../player.h"
+#include "../bank.h"
 
 class Banker : public NPC {
+    Bank& bank;
+
 public:
     // Constructor
-    Banker(const int pos_x, const int pos_y, const int orient);
+    Banker(Bank& bank, const int pos_x, const int pos_y,
+            const int orient);
 
     // Constructor y asignacion por copia deshabilitados
     Banker(const Banker& other) = delete;
@@ -18,16 +22,16 @@ public:
     ~Banker();
 
     // Deposita el item del player en el banco
-    void depositItem(Player& player, int item_type);
+    void depositItem(Player& player, const int type);
 
     // Retira el item del player del banco
-    void withdrawItem(Player& player, int item_type);
+    void withdrawItem(Player& player, const int type);
 
     // Deposita la cantidad recibida de oro del player en el banco
-    void depositGold(Player& player, int quantity);
+    void depositGold(Player& player, const int quant);
 
     // Retira la cantidad recibida de oro del player del banco
-    void withdrawGold(Player& player, int quantity);
+    void withdrawGold(Player& player, const int quant);
 
     // Lista los items que tiene el player en el banco
     // TODO: necesita recibir al player por parametro

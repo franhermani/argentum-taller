@@ -11,6 +11,7 @@
 #include "world_monitor.h"
 #include "../../common/protected_queue.h"
 #include "id_manager.h"
+#include "bank.h"
 
 class ClientHandler;
 
@@ -23,6 +24,7 @@ class GameManager : public Thread {
     WorldMonitor worldMonitor;
     ProtectedQueue<Command*> commandQueue;
     IdManager idManager;
+    Bank bank;
     int msPerSend;
 
     friend class ClientHandler;

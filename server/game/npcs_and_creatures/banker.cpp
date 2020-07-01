@@ -2,7 +2,8 @@
 #include "banker.h"
 #include "../../../common/defines/npcs.h"
 
-Banker::Banker(const int pos_x, const int pos_y, const int orient) {
+Banker::Banker(Bank& bank, const int pos_x, const int pos_y,
+        const int orient) : bank(bank) {
     type = BANKER;
     posX = pos_x;
     posY = pos_y;
@@ -11,20 +12,24 @@ Banker::Banker(const int pos_x, const int pos_y, const int orient) {
 
 Banker::~Banker() = default;
 
-void Banker::depositItem(Player &player, int item_type) {
-    // TODO: ...
+void Banker::depositItem(Player &player, int type) {
+    Item* item = player.takeItemFromInventory(type);
+    bank.depositItem(player.id, item);
 }
 
-void Banker::withdrawItem(Player &player, int item_type) {
-    // TODO: ...
+void Banker::withdrawItem(Player &player, int type) {
+    Item* item = bank.withdrawItem(player.id, type);
+    player.addItemToInventory(item);
 }
 
 void Banker::depositGold(Player &player, int quantity) {
-    // TODO: ...
+    player.removeGold(quantity);
+    bank.depositGold(player.id, quantity);
 }
 
 void Banker::withdrawGold(Player &player, int quantity) {
-    // TODO: ...
+    bank.withdrawGold(player.id, quantity);
+    player.addGold(quantity);
 }
 
 const std::vector<itemType> Banker::listItems() const {

@@ -102,7 +102,7 @@ void GameManager::spawnNPCs() {
     }
     for (i = 0; i < num_bankers; i ++) {
         pos = world.loadNPCPosition();
-        world.addNPC(new Banker(pos[0], pos[1], DOWN));
+        world.addNPC(new Banker(bank, pos[0], pos[1], DOWN));
     }
 }
 
