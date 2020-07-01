@@ -37,10 +37,13 @@ void ClientSender::run() {
 
             // Desencolo de a un mensaje para que el player llegue a verlo
             if (! messagesQueue.isEmpty()) {
-                game_message = messagesQueue.pop();
-                protocol.sendGameMessage(game_message, *player);
+                try {
+                    protocol.sendGameMessage(game_message, *player);
+                    game_message = messagesQueue.pop();
+                } catch (ClosedQueueException&) {
+                    break;
+                }
             }
-
             // TODO: desencolar esto de algun lado
             protocol.sendItemsList(worldMonitor, *player);
         }

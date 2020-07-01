@@ -58,6 +58,7 @@ void GameManager::run() {
 
 void GameManager::stop() {
     commandQueue.close();
+    messagesQueue.close();
     keepRunning = false;
 }
 
