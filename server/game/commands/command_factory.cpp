@@ -79,11 +79,7 @@ Command* CommandFactory::operator()(Player& player, int type,
         return new MoveCommand(player, direction);
 
     } else if (type == CMD_ATTACK) {
-        uint8_t enemy_id_type = arguments[0];
-        uint16_t enemy_id;
-        memcpy(&enemy_id, arguments.data() + SIZE_8,
-                arguments.size() - SIZE_8);
-        return new AttackCommand(player, enemy_id_type, ntohs(enemy_id));
+        return new AttackCommand(player);
 
     } else if (type == CMD_EQUIP) {
         int item_type = arguments[0];

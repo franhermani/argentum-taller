@@ -5,12 +5,9 @@
 #include "command_dto.h"
 
 class AttackCommandDTO : public CommandDTO {
-    uint8_t enemyIdType;
-    uint16_t enemyId;
-
 public:
     // Constructor
-    AttackCommandDTO(const uint8_t enemy_id_type, const uint16_t enemy_id);
+    AttackCommandDTO();
 
     // Constructor y asignacion por copia deshabilitados
     AttackCommandDTO(const AttackCommandDTO&) = delete;
