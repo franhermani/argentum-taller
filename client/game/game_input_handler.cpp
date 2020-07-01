@@ -8,8 +8,8 @@
 #include "../data_transfer_objects/meditate_command_dto.h"
 #include "../data_transfer_objects/attack_command_dto.h"
 
-GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue):
-commandQueue(commandQueue) {}
+GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue, MapMonitor& mapMonitor):
+commandQueue(commandQueue), mapMonitor(mapMonitor) {}
 
 GameInputHandler::~GameInputHandler() = default;
 
@@ -43,7 +43,7 @@ void GameInputHandler::play() {
                     command = new MeditateCommandDTO();
                 }
                 else if (keyEvent.keysym.sym == SDLK_r){
-                    
+                    command = new ReviveCommandDTO();
                 } else if (keyEvent.keysym.sym == SDLK_t) {
                     //take
                 }
