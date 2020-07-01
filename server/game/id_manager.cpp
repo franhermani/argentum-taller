@@ -3,7 +3,7 @@
 #include "id_manager.h"
 #include "../../common/defines/username_confirmation.h"
 
-IdManager::IdManager() : actual_player_id(1), actual_npc_id(1) {}
+IdManager::IdManager() : actual_player_id(1), actual_creature_id(1) {}
 
 const int IdManager::addPlayerByUsername(const std::string &username) {
     if (username_ids.find(username) != username_ids.end())
@@ -16,12 +16,12 @@ const int IdManager::addPlayerByUsername(const std::string &username) {
     return username_ids[username];
 }
 
-const int IdManager::addNPCById() {
-    if (actual_npc_id == USHRT_MAX)
+const int IdManager::addCreatureById() {
+    if (actual_creature_id == USHRT_MAX)
         throw NoMoreAvailableIdsException();
 
-    actual_npc_id ++;
-    return actual_npc_id;
+    actual_creature_id ++;
+    return actual_creature_id;
 }
 
 void IdManager::removeUsername(const std::string& username) {

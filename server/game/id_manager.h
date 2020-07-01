@@ -6,7 +6,7 @@
 
 class IdManager {
     int actual_player_id;
-    int actual_npc_id;
+    int actual_creature_id;
     std::map<std::string, int> username_ids;
 
 public:
@@ -16,8 +16,8 @@ public:
     // Agrega un Player por username y devuelve su ID
     const int addPlayerByUsername(const std::string& username);
 
-    // Agrega un NPC por ID y lo devuelve
-    const int addNPCById();
+    // Agrega una criatura por ID y lo devuelve
+    const int addCreatureById();
 
     // Elimina 'username' del map
     void removeUsername(const std::string& username);

@@ -26,17 +26,19 @@ Command* CommandFactory::operator()(Player& player, int type,
 
     } else if (type == CMD_REVIVE) {
         if (! arguments.empty()) {
-            uint16_t priest_id;
-            memcpy(&priest_id, arguments.data(), arguments.size());
-            return new ReviveCommand(player, ntohs(priest_id));
+            uint16_t pos_x, pos_y;
+            memcpy(&pos_x, arguments.data(), SIZE_16);
+            memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
+            return new ReviveCommand(player, ntohs(pos_x), ntohs(pos_y));
         } else {
             return new ReviveCommand(player);
         }
 
     } else if (type == CMD_HEAL) {
-        uint16_t priest_id;
-        memcpy(&priest_id, arguments.data(), arguments.size());
-        return new HealCommand(player, ntohs(priest_id));
+        uint16_t pos_x, pos_y;
+        memcpy(&pos_x, arguments.data(), SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
+        return new HealCommand(player, ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_DEPOSIT) {
         // TODO:...
@@ -51,9 +53,10 @@ Command* CommandFactory::operator()(Player& player, int type,
         // TODO:...
 
     } else if (type == CMD_LIST) {
-        uint16_t npc_id;
-        memcpy(&npc_id, arguments.data(), arguments.size());
-        return new ListCommand(player, ntohs(npc_id));
+        uint16_t pos_x, pos_y;
+        memcpy(&pos_x, arguments.data(), SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
+        return new ListCommand(player, ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_BUY) {
         // TODO:...

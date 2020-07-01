@@ -1,3 +1,4 @@
+#include <random>
 #include "world.h"
 
 World::World(GameParams& params) : params(params) {
@@ -13,7 +14,12 @@ World::World(GameParams& params) : params(params) {
 }
 
 World::~World() {
-    // TODO: delete npcs
+    for (auto& creature : creatures)
+        delete creature;
+
+    for (auto& npc : npcs)
+        delete npc;
+
     for (auto& item : items)
         delete item;
 }
@@ -42,13 +48,16 @@ void World::loadMatrix() {
     }
 }
 
-// --------------------------------------------- //
-// Metodos accedidos por WorldMonitor unicamente //
-// --------------------------------------------- //
+// -------------------------------------------- //
+// Metodos accedidos por threads (WorldMonitor) //
+// -------------------------------------------- //
 
 void World::update(const int ms) {
-    // TODO: update tmb a los npcs
-    for (auto player : players) player->update(ms);
+    for (auto& player : players)
+        player->update(ms);
+
+    for (auto& creature : creatures)
+        creature->update(ms);
 }
 
 void World::addPlayer(Player* player) {
@@ -74,6 +83,10 @@ std::vector<std::vector<Terrain>> World::getMatrix() const {
     return matrix;
 }
 
+std::vector<NPC *> World::getNPCs() const {
+    return npcs;
+}
+
 std::vector<Player*> World::getPlayersAround(Player &player) {
     std::vector<Player*> players_around;
 
@@ -82,6 +95,26 @@ std::vector<Player*> World::getPlayersAround(Player &player) {
             players_around.push_back(p);
 
     return players_around;
+}
+
+std::vector<Creature*> World::getCreaturesAround(Player &player) {
+    std::vector<Creature*> creatures_around;
+
+    for (auto& c : creatures)
+        if (inPlayerBoundaries(player, c->posX, c->posY))
+            creatures_around.push_back(c);
+
+    return creatures_around;
+}
+
+std::vector<Item*> World::getItemsAround(Player &player) {
+    std::vector<Item*> items_around;
+
+    for (auto& i : items)
+        if (inPlayerBoundaries(player, i->posX, i->posY))
+            items_around.push_back(i);
+
+    return items_around;
 }
 
 const bool World::inPlayerBoundaries(Player &player,
@@ -97,9 +130,17 @@ const bool World::inPlayerBoundaries(Player &player,
     return x_in_boundaries && y_in_boundaries;
 }
 
-// --------------------------------------------- //
-// Metodos accedidos por Player y NPC unicamente //
-// --------------------------------------------- //
+const int World::getWidth() const {
+    return worldWidth;
+}
+
+const int World::getHeight() const {
+    return worldHeight;
+}
+
+// ------------------------------------------- //
+// Metodos accedidos por entidades del dominio //
+// ------------------------------------------- //
 
 const bool World::inMapBoundaries(const int pos_x, const int pos_y) {
     bool x_in_boundaries = (pos_x >= 0) && (pos_x < worldWidth),
@@ -118,12 +159,15 @@ const bool World::inCollision(const int pos_x, const int pos_y) {
         if (player->posX == pos_x && player->posY == pos_y)
             return true;
 
-    // TODO: chequear lista de NPCs
-    /*
+    // NPCs
     for (auto& npc : npcs)
         if (npc->posX == pos_x && npc->posY == pos_y)
             return true;
-    */
+
+    // Criaturas
+    for (auto& creature : creatures)
+        if (creature->posX == pos_x && creature->posY == pos_y)
+            return true;
 
     return false;
 }
@@ -160,26 +204,80 @@ Player* World::getPlayerById(const int id) const {
     return nullptr;
 }
 
+Creature* World::getCreatureById(const int id) const {
+    for (auto& creature : creatures)
+        if (creature->id == id)
+            return creature;
+
+    return nullptr;
+}
+
+NPC* World::getNPCByPos(const int pos_x, const int pos_y) const {
+    for (auto& npc : npcs)
+        if (npc->posX == pos_x && npc->posY == pos_y)
+            return npc;
+
+    return nullptr;
+}
+
 const int World::getInventoryLength() const {
     return params.getConfigParams()["player"]["inventory"]["max_objects"];
 }
 
-const int World::getMinLevelNewbie() const {
+const int World::getMaxLevelNewbie() const {
     return params.getConfigParams()["player"]["fair_play"]["min_level_newbie"];
 }
 
-const int World::getMinLevelDiff() const {
+const int World::getMaxLevelDiff() const {
     return params.getConfigParams()["player"]["fair_play"]["min_level_diff"];
 }
 
-// ------------------------------------------------ //
-// Metodos accedidos por WorldMonitor, Player y NPC //
-// ------------------------------------------------ //
+// --------------------------------- //
+// Metodos accedidos por GameManager //
+// --------------------------------- //
 
-const int World::getWidth() const {
-    return worldWidth;
+void World::addNPC(NPC *npc) {
+    npcs.push_back(npc);
 }
 
-const int World::getHeight() const {
-    return worldHeight;
+void World::addCreature(Creature *creature) {
+    creatures.push_back(creature);
+}
+
+// TODO: dentro de safe zones
+std::vector<int> World::loadNPCPosition() {
+    std::vector<int> pos = {0,0};
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist_x(0, worldWidth - 1);
+    std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
+
+    int new_x = dist_x(mt), new_y = dist_y(mt);
+    while (inCollision(new_x, new_y)) {
+        new_x = dist_x(mt);
+        new_y = dist_y(mt);
+    }
+    pos[0] = new_x;
+    pos[1] = new_y;
+
+    return pos;
+}
+
+// TODO: fuera de safe zones
+std::vector<int> World::loadCreaturePosition() {
+    std::vector<int> pos = {0,0};
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist_x(0, worldWidth - 1);
+    std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
+
+    int new_x = dist_x(mt), new_y = dist_y(mt);
+    while (inCollision(new_x, new_y)) {
+        new_x = dist_x(mt);
+        new_y = dist_y(mt);
+    }
+    pos[0] = new_x;
+    pos[1] = new_y;
+
+    return pos;
 }

@@ -20,7 +20,7 @@ public:
     ~MoveCommand() override;
 
     // Mueve al personaje segun 'direction'
-    void execute() override;
+    void execute(World& world) override;
 };
 
 #endif // MOVE_COMMAND_H

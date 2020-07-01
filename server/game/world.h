@@ -5,6 +5,8 @@
 #include <set>
 #include "params.h"
 #include "player.h"
+#include "npcs_and_creatures/creature.h"
+#include "npcs_and_creatures/npc.h"
 #include "../../common/defines/terrains.h"
 
 class World {
@@ -12,6 +14,8 @@ class World {
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> impenetrableTerrains;
     std::vector<Player*> players;
+    std::vector<Creature*> creatures;
+    std::vector<NPC*> npcs;
     std::vector<Item*> items;
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
@@ -38,9 +42,9 @@ public:
     // Libera la memoria reservada para los items que esten en el mundo
     ~World();
 
-    // --------------------------------------------- //
-    // Metodos accedidos por WorldMonitor unicamente //
-    // --------------------------------------------- //
+    // -------------------------------------------- //
+    // Metodos accedidos por threads (WorldMonitor) //
+    // -------------------------------------------- //
 
     // Actualiza el mundo segun los milisegundos recibidos
     // Simula el paso del tiempo llamando al metodo update()
@@ -62,20 +66,28 @@ public:
     // Devuelve la matriz del mapa completo
     std::vector<std::vector<Terrain>> getMatrix() const;
 
+    // Devuelve un vector de todos los npcs
+    std::vector<NPC*> getNPCs() const;
+
     // Devuelve un vector de todos los players en la sub-matriz de 'player'
     // Incluye al mismo 'player' recibido por parametro
     std::vector<Player*> getPlayersAround(Player& player);
 
-    // Devuelve un vector de todos los npc en la sub-matriz de 'player'
-//    std::vector<NPC*> getNPCsAround(Player& player);
+    // Devuelve un vector de todas las criaturas en la sub-matriz de 'player'
+    std::vector<Creature*> getCreaturesAround(Player& player);
 
     // Devuelve un vector de todos los items en la sub-matriz de 'player'
-//    std::vector<Item*> getItemsAround(Player& player);
+    std::vector<Item*> getItemsAround(Player& player);
 
+    // Devuelve la base del mapa
+    const int getWidth() const;
 
-    // --------------------------------------------- //
-    // Metodos accedidos por Player y NPC unicamente //
-    // --------------------------------------------- //
+    // Devuelve la altura del mapa
+    const int getHeight() const;
+
+    // ------------------------------------------- //
+    // Metodos accedidos por entidades del dominio //
+    // ------------------------------------------- //
 
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     const bool inMapBoundaries(const int pos_x, const int pos_y);
@@ -92,24 +104,39 @@ public:
     // Remueve un item del mundo segun su pos (x,y)
     Item* removeItem(const int pos_x, const int pos_y);
 
+    // Devuelve el player asociado al id
     Player* getPlayerById(const int id) const;
 
+    // Devuelve la criatura asociada al id
+    Creature* getCreatureById(const int id) const;
+
+    // Devuelve el NPC asociado a la posicion (pos_x, pos_y)
+    NPC* getNPCByPos(const int pos_x, const int pos_y) const;
+
+    // Devuelve el largo maximo del inventario
     const int getInventoryLength() const;
 
-    const int getMinLevelNewbie() const;
+    // Devuelve el nivel maximo de un newbie
+    const int getMaxLevelNewbie() const;
 
-    const int getMinLevelDiff() const;
+    // Devuelve la diferencia de niveles maxima para atacar
+    const int getMaxLevelDiff() const;
 
+    // --------------------------------- //
+    // Metodos accedidos por GameManager //
+    // --------------------------------- //
 
-    // ------------------------------------------------ //
-    // Metodos accedidos por WorldMonitor, Player y NPC //
-    // ------------------------------------------------ //
+    // Agrega un NPC al mundo
+    void addNPC(NPC* npc);
 
-    // Devuelve la base del mapa
-    const int getWidth() const;
+    // Agrega una criatura al mundo
+    void addCreature(Creature* creature);
 
-    // Devuelve la altura del mapa
-    const int getHeight() const;
+    // Devuelve una posicion random para un NPC dentro de una zona segura
+    std::vector<int> loadNPCPosition();
+
+    // Devuelve una posicion random para una criatura fuera de una zona segura
+    std::vector<int> loadCreaturePosition();
 };
 
 #endif // GAME_WORLD_H

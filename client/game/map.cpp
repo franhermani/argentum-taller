@@ -10,7 +10,6 @@ Map::Map() {
 // destructor
 Map::~Map() {}
 
-//actualiza el vector de jugadores y manda a renderizar
 void Map::updateWorld(world_t receivedWorld) {
     //actualizo players
     world.players = receivedWorld.players;
@@ -20,7 +19,7 @@ void Map::updateWorld(world_t receivedWorld) {
 }
 
 void Map::initialize(int received_id,
-        std::vector<int> blocks_around, matrix_t received_matrix) {
+        std::vector<int> blocks_around, matrix_t received_matrix, npcs_t received_npcs) {
     int current_index = 0;
     for (int i=0; i<received_matrix.height; i++) {
         std::vector<Terrain> row;
@@ -35,6 +34,7 @@ void Map::initialize(int received_id,
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
+    npcs = received_npcs;
 }
 
 //TODO esto podria devolver una ref
@@ -70,8 +70,6 @@ void Map::printDebugTerrainMatrix(
         std::cout << "\n";
     }
 }
-
-
 
 std::vector<std::vector<Terrain>> Map::getTerrains() {
     printDebugTerrainMatrix(terrainMatrix);
@@ -163,6 +161,40 @@ std::vector<player_t> Map::getRenderablePlayers() {
     }
     return visible_players;
 }
+
+std::vector<npc_t> Map::getRenderableNpcs() {
+    player_t main_player = getMainPlayer();
+
+    //Pedimos los bordes de vision del jugador en
+    // coordenadas de la matriz principal
+    int x_start, y_start, x_finish, y_finish;
+    x_start = getPlayerXStart(main_player);
+    y_start = getPlayerYStart(main_player);
+    x_finish = getPlayerXEnd(main_player);
+    y_finish = getPlayerYEnd(main_player);
+
+    std::vector<npc_t> visible_npcs;
+
+
+    //traducimos posiciones a la vision del jugador y
+    // nos quedamos con los jugadores que esten
+    //dentro del rango de vision del principal
+    for (auto& npc: npcs.npcs) {
+        if ((npc.pos_x < x_start) ||  (npc.pos_x > x_finish)
+            || (npc.pos_y < y_start) || (npc.pos_y > y_finish)) {
+            continue;
+        } else {
+            npc_t converted_npc = npc;
+            converted_npc.pos_x = npc.pos_x - x_start;
+            if (converted_npc.pos_x < 0) converted_npc.pos_x = 0;
+            converted_npc.pos_y = npc.pos_y - y_start;
+            if (converted_npc.pos_y < 0) converted_npc.pos_y = 0;
+            visible_npcs.push_back(converted_npc);
+        }
+    }
+    return visible_npcs;
+}
+
 
 int Map::getPlayerVisionWidth() {
     return playerVisionWidth;

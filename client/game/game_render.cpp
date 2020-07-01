@@ -11,7 +11,8 @@
 #include "../sdl/window.h"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
-
+#include "../../common/defines/creatures.h"
+#include "../../common/defines/npcs.h"
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -26,9 +27,10 @@ GameRender::~GameRender() {
     for (auto const& surface : terrainSurfacesMap) {
         delete surface.second;
     }
-    for (auto const& surface : npcSurfacesMap) {
-        delete surface.second;
-    }
+    //TODO DELETE DE LAS OTRAS SURFACES!!!!!!!!
+//    for (auto const& surface : creatureSurfacesMap) {
+//        delete surface.second;
+//    }
     SDL_Quit();
 }
 
@@ -69,6 +71,7 @@ void GameRender::createNecessaryTerrains(
     }
 }
 
+
 void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
     createNecessaryTerrains(matrix);
     window.renderTerrain(matrix, terrainSurfacesMap);
@@ -92,9 +95,6 @@ void GameRender::createNecessaryPlayers(std::vector<player_t>& players) {
 }
 
 void GameRender::renderPlayers(std::vector<player_t>& players) {
-    //window.renderTerrain(floor, terrainSurfacesMap);
-    // recorro vector y renderizo con su surface correspondiente en el mapa
-
     createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
@@ -104,7 +104,37 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
 }
 
 
+void GameRender::createNecessaryNpcs(std::vector<npc_t>& npcs) {
+    for (auto& npc:npcs) {
+        int type = npc.type;
+        int orientation = npc.orientation;
+        if (npcSurfacesMap[type].find(orientation)
+            == npcSurfacesMap[type].end()) {
+            if (npcSurfacesPaths[type].find(orientation)
+                == npcSurfacesPaths[type].end()) {
+                continue;
+            }
+            Surface* surface = new Surface(
+                    npcSurfacesPaths[type][orientation], window, 1);
+            npcSurfacesMap[type].insert({orientation, surface});
+        }
+    }
+}
+
+void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
+    createNecessaryNpcs(npcs);
+    for (auto it = std::begin(npcs);
+         it != std::end(npcs); ++it) {
+        window.renderNpc(it->pos_x, it->pos_y,
+                         npcSurfacesMap[it->type][it->orientation]);
+    }
+}
+
+
+
 void GameRender::loadSurfacePaths() {
+
+    //PISOS
     terrainSurfacesPaths = {
             {TERRAIN_WATER, "../client/resources/images/24082.png"},
             {TERRAIN_LAND, "../client/resources/images/24086.png"},
@@ -114,6 +144,60 @@ void GameRender::loadSurfacePaths() {
             {TERRAIN_WALL, "../client/resources/images/12017.png"},
             {TERRAIN_OUT_OF_BOUNDARIES,
              "../client/resources/images/12050.png"}};
+
+    //CRIATURAS
+    std::map<int, std::string> skeleton_orientations = {
+            {UP, "../client/resources/images/skeleton_up_t.png"},
+            {DOWN, "../client/resources/images/skeleton_down_t.png"},
+            {LEFT, "../client/resources/images/skeleton_left_t.png"},
+            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+    };
+
+    npcSurfacesPaths = {
+            {SKELETON, skeleton_orientations}
+    };
+
+    std::map<int, Surface*> skeleton_surfaces;
+    npcSurfacesMap = {{SKELETON, skeleton_surfaces}};
+
+
+
+    //npcs
+    std::map<int, std::string> banker_orientations = {
+            {UP, "../client/resources/images/skeleton_up_t.png"},
+            {DOWN, "../client/resources/images/skeleton_down_t.png"},
+            {LEFT, "../client/resources/images/skeleton_left_t.png"},
+            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+    };
+    std::map<int, std::string> priest_orientations = {
+            {UP, "../client/resources/images/priest_up_t.png"},
+            {DOWN, "../client/resources/images/priest_down_t.png"},
+            {LEFT, "../client/resources/images/priest_left_t.png"},
+            {RIGHT, "../client/resources/images/priest_right_t.png"}
+    };
+    std::map<int, std::string> merchant_orientations = {
+            {UP, "../client/resources/images/spider_up_t.png"},
+            {DOWN, "../client/resources/images/spider_down_t.png"},
+            {LEFT, "../client/resources/images/spider_left_t.png"},
+            {RIGHT, "../client/resources/images/spider_right_t.png"}
+    };
+
+    npcSurfacesPaths = {
+            {PRIEST, priest_orientations},
+            {MERCHANT, merchant_orientations},
+            {BANKER, {banker_orientations}}
+    };
+
+    std::map<int, Surface*> priest_surfaces;
+    std::map<int, Surface*> merchant_surfaces;
+    std::map<int, Surface*> banker_surfaces;
+    npcSurfacesMap = {{PRIEST, priest_surfaces},
+                           {MERCHANT, merchant_surfaces},
+                           {BANKER, banker_surfaces}
+    };
+
+
+    //JUGADORES
 
     std::map<int, std::string> human_orientations = {
             {UP, "../client/resources/images/human_up_t.png"},
@@ -153,6 +237,7 @@ void GameRender::loadSurfacePaths() {
                            {ELF, elf_surfaces},
                            {DWARF, dwarf_surfaces},
                            {GNOME, gnome_surfaces}};
+
 }
 
 void GameRender::setTilesSize(int width,int height) {
@@ -174,6 +259,8 @@ void GameRender::run() {
         renderTerrain(terrains);
         std::vector<player_t> players = mapMonitor.getRenderablePlayers();
         renderPlayers(players);
+        std::vector<npc_t> npcs = mapMonitor.getRenderableNpcs();
+        renderNpcs(npcs);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

@@ -5,6 +5,6 @@ player(player), itemType(item_type) {}
 
 ThrowCommand::~ThrowCommand() = default;
 
-void ThrowCommand::execute() {
+void ThrowCommand::execute(World& world) {
     player.dropItemFromInventoryToWorld(itemType);
 }

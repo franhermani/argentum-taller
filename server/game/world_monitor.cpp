@@ -23,6 +23,11 @@ std::vector<std::vector<Terrain>> WorldMonitor::getMatrix() {
     return world.getMatrix();
 }
 
+std::vector<NPC *> WorldMonitor::getNPCs() {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getNPCs();
+}
+
 const int WorldMonitor::getWidth() {
     std::unique_lock<std::mutex> lk(m);
     return world.getWidth();
@@ -46,4 +51,14 @@ const int WorldMonitor::getPlayerHeight() {
 std::vector<Player*> WorldMonitor::getPlayersAround(Player &player) {
     std::unique_lock<std::mutex> lk(m);
     return world.getPlayersAround(player);
+}
+
+std::vector<Creature*> WorldMonitor::getCreaturesAround(Player &player) {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getCreaturesAround(player);
+}
+
+std::vector<Item*> WorldMonitor::getItemsAround(Player &player) {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getItemsAround(player);
 }

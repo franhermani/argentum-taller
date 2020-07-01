@@ -1,15 +1,10 @@
 #ifndef NPCS_H
 #define NPCS_H
 
-enum Npc {
-    WARRIOR_UP,
-    WARRIOR_DOWN,
-    WARRIOR_RIGHT,
-    WARRIOR_LEFT,
-    SKELETON_UP,
-    SKELETON_DOWN,
-    SKELETON_RIGHT,
-    SKELETON_LEFT
+enum npcTypes {
+    PRIEST,
+    MERCHANT,
+    BANKER
 };
 
 #endif // NPCS_H

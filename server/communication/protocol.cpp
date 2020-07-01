@@ -94,22 +94,75 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
+void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
+    std::vector<NPC*> npcs = world_monitor.getNPCs();
+
+    int num_npcs = npcs.size();
+
+    npcs_t n;
+
+    // Longitud total del mensaje
+    uint16_t message_length = SIZE_16 + num_npcs * (2 * SIZE_16 + 2 * SIZE_8);
+    n.length = htons(message_length);
+
+    // Cantidad de NPCs
+    // TODO: si hago htons(num_npcs) lo carga en 0...
+    n.num_npcs = num_npcs;
+    n.npcs.resize(num_npcs * sizeof(npc_t));
+
+    // Lista de NPCs
+    int i;
+    for (i = 0; i < num_npcs; i ++) {
+        n.npcs[i].type = npcs[i]->type;
+        n.npcs[i].pos_x = htons(npcs[i]->posX);
+        n.npcs[i].pos_y = htons(npcs[i]->posY);
+        n.npcs[i].orientation = npcs[i]->orientation;
+    }
+
+    std::vector<char> byte_msg;
+    byte_msg.resize(SIZE_16 + message_length);
+
+    int pos = 0;
+    memcpy(&byte_msg[pos], &n.length, SIZE_16);
+    memcpy(&byte_msg[pos+=SIZE_16], &n.num_npcs, SIZE_16);
+    for (i = 0; i < num_npcs; i ++) {
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].type, SIZE_8);
+        memcpy(&byte_msg[pos+=SIZE_8], &n.npcs[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].orientation, SIZE_8);
+        pos -= SIZE_8;
+    }
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
+
+    if (debug) {
+        std::cout << "NPCs enviados:\n";
+        for (char& c : byte_msg)
+            printf("%02X ", (unsigned) (unsigned char) c);
+        std::cout << "\n";
+    }
+}
+
 void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     world_t w;
-    std::vector<Player*> players = world_monitor.getPlayersAround(player);
+    std::vector<Player*> players = world_monitor.
+            getPlayersAround(player);
+    std::vector<Creature*> creatures = world_monitor.
+            getCreaturesAround(player);
+    std::vector<Item*> items = world_monitor.
+            getItemsAround(player);
 
     // Longitudes variables
-    int inventory_length = player.inventory.numItems;
-    int num_players = players.size();
-//    int num_npcs = npcs.size();
+    uint8_t inventory_length = player.inventory.numItems;
+    uint16_t num_players = players.size();
+//    int num_creatures = creatures.size();
 //    int num_items = items.size();
 
     // Longitud total del mensaje
-    // TODO: completar con npcs e items
+    // TODO: completar con criaturas e items
     size_t message_length =
-            7 * SIZE_16 + SIZE_32 + SIZE_8 +
+            4 * SIZE_16 + SIZE_32 + SIZE_8 +
             SIZE_8 + inventory_length * SIZE_8 +
-            SIZE_16 + num_players * (3 * SIZE_16 + 9 * SIZE_8);
+            SIZE_16 + num_players * (6 * SIZE_16 + 9 * SIZE_8);
 
     // ------------------------ //
     // Carga del struct world_t //
@@ -119,25 +172,26 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     w.length = htons(message_length);
 
     // Info particular del player del cliente
-    w.player_info.actual_life = htons(player.actualLife);
-    w.player_info.max_life = htons(player.maxLife);
     w.player_info.actual_mana = htons(player.actualMana);
     w.player_info.max_mana = htons(player.maxMana);
     w.player_info.actual_gold = htons(player.actualGold);
     w.player_info.max_gold = htons(player.maxGold);
-    w.player_info.level = htons(player.level);
     w.player_info.actual_experience = htonl(player.actualExperience);
     w.player_info.long_distance = player.weapon &&
             player.weapon->isLongDistance ? 1 : 0;
 
     // Info generica de todos los players (incluido el del cliente)
+    // TODO: si hago htons(num_players) lo carga en 0...
     w.num_players = num_players;
-    w.players.resize(num_players);
+    w.players.resize(num_players * sizeof(player_t));
     int i;
     for (i = 0; i < num_players; i ++) {
         w.players[i].id = htons(players[i]->id);
         w.players[i].pos_x = htons(players[i]->posX);
         w.players[i].pos_y = htons(players[i]->posY);
+        w.players[i].actual_life = htons(player.actualLife);
+        w.players[i].max_life = htons(player.maxLife);
+        w.players[i].level = htons(player.level);
         w.players[i].is_alive = players[i]->isAlive ? 1 : 0;
         w.players[i].is_meditating = players[i]->isMeditating ? 1 : 0;
         w.players[i].orientation = players[i]->orientation;
@@ -152,10 +206,6 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
         w.players[i].shield = players[i]->shield ?
                               players[i]->shield->type : NO_ITEM_EQUIPPED;
     }
-
-    // TODO: completar con npcs e items
-//    std::vector<NPC*> npc = world.getNPCsAround(player);
-//    std::vector<Item*> items = world.getItemsAround(player);
 
     // ------------------ //
     // Carga del byte_msg //
@@ -172,13 +222,10 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
     memcpy(&byte_msg[pos+=SIZE_8], &w.length, SIZE_16);
 
     // Info particular del player del cliente
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_life, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_life, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_mana, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_mana, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_gold, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_gold, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.level, SIZE_16);
     memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_experience, SIZE_32);
     memcpy(&byte_msg[pos+=SIZE_32], &w.player_info.long_distance, SIZE_8);
 
@@ -194,6 +241,9 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
         memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].id, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].pos_x, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].actual_life, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].max_life, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].level, SIZE_16);
         byte_msg[pos+=SIZE_16] = w.players[i].is_alive;
         byte_msg[pos+=SIZE_8] = w.players[i].is_meditating;
         byte_msg[pos+=SIZE_8] = w.players[i].orientation;
@@ -205,6 +255,13 @@ void ServerProtocol::sendWorld(WorldMonitor& world_monitor, Player& player) {
         byte_msg[pos+=SIZE_8] = w.players[i].shield;
         pos -= SIZE_8;
     }
+
+    // Lista de criaturas
+    // TODO: ...
+
+    // Lista de items
+    // TODO: ...
+
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
     if (debug) {

@@ -24,9 +24,9 @@ public:
 
     //inicializa matriz
     void initialize(int username_id, std::vector<int> blocks_around,
-            matrix_t received_matrix);
+            matrix_t received_matrix, npcs_t npcs);
 
-    //actualiza el vector de jugadores y manda a renderizar
+    //actualiza el vector de jugadores
     void updateWorld(world_t receivedWorld);
 
     //todo fix devolver referencia
@@ -34,6 +34,9 @@ public:
 
     //todo fix devolver referencia
     std::vector<player_t> getRenderablePlayers();
+
+    //todo fix devolver referencia
+    std::vector<npc_t> getRenderableNpcs();
 
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();

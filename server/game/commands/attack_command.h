@@ -22,7 +22,7 @@ public:
     ~AttackCommand() override;
 
     // Ataca al enemigo segun su 'enemyId'
-    void execute() override;
+    void execute(World& world) override;
 };
 
 #endif // ATTACK_COMMAND_H

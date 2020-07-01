@@ -19,7 +19,7 @@ public:
     ~MeditateCommand() override;
 
     // Entra en estado de meditacion y recupera mana
-    void execute() override;
+    void execute(World& world) override;
 };
 
 #endif // MEDITATE_COMMAND_H

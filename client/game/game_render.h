@@ -22,10 +22,14 @@ class GameRender : public Thread {
     SDLWindow window;
     // TODO arreglar private y public
     std::map<Terrain, Surface *> terrainSurfacesMap;
-    std::map<Npc, Surface *> npcSurfacesMap;
+    // TODO: borrar esto, Npc ya no existe
+    std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
+    std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
     std::map<Terrain, std::string> terrainSurfacesPaths;
-    std::map<Npc, std::string> npcSurfacesPaths;
+    // TODO: borrar esto, Npc ya no existe
+    std::map<int, std::map<int, std::string>> npcSurfacesPaths;
+    std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
     std::vector<std::vector<Terrain>> floor;
 
@@ -37,8 +41,12 @@ private:
     // inicializa en playerSurfacesMap las surfaces necesarias faltantes
     void createNecessaryPlayers(std::vector<player_t>& players);
 
+    // inicializa en npcSurfacesMap las surfaces necesarias faltantes
+    void createNecessaryNpcs(std::vector<npc_t>& npcs);
 
-public:
+
+
+        public:
     //Constructor
     GameRender(const int screenWidth, const int screenHeight,
                MapMonitor &mapMonitor);
@@ -61,6 +69,9 @@ public:
 
     //Renderizador de players
     void renderPlayers(std::vector<player_t> &players);
+
+    //renderizador de npcs
+    void renderNpcs(std::vector<npc_t>& npcs);
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();

@@ -125,6 +125,78 @@ matrix_t ClientProtocol::receiveMatrix() {
     return std::move(m);
 }
 
+npcs_t ClientProtocol::receiveNPCs() {
+    npcs_t n;
+
+    // Recibo longitud del mensaje
+    std::vector<char> length_buffer;
+    length_buffer.resize(SIZE_16);
+    socket.receiveBytes(length_buffer.data(), SIZE_16);
+
+    uint16_t message_length;
+    memcpy(&message_length, length_buffer.data(), SIZE_16);
+    n.length = ntohs(message_length);
+
+    // Recibo el mensaje
+    std::vector<char> npcs_buffer;
+    npcs_buffer.resize(n.length);
+    socket.receiveBytes(npcs_buffer.data(), n.length);
+
+    int bytes_advanced = 0;
+
+    // Cantidad de NPCs
+    uint16_t num_npcs;
+    memcpy(&num_npcs, npcs_buffer.data() + bytes_advanced, SIZE_16);
+    n.num_npcs = ntohs(num_npcs);
+    bytes_advanced += SIZE_16;
+
+    // Lista de NPCs
+    std::vector<npc_t> npcs;
+    npcs.resize(n.num_npcs * sizeof(npc_t));
+
+    int i;
+    for (i = 0; i < num_npcs; i ++) {
+        npc_t npc;
+
+        // Enum type del NPC
+        uint8_t type;
+        memcpy(&type, npcs_buffer.data() + bytes_advanced, SIZE_8);
+        npc.type = type;
+        bytes_advanced += SIZE_8;
+
+        // Pos x en la matriz
+        uint16_t pos_x;
+        memcpy(&pos_x, npcs_buffer.data() + bytes_advanced, SIZE_16);
+        npc.pos_x = ntohs(pos_x);
+        bytes_advanced += SIZE_16;
+
+        // Pos y en la matriz
+        uint16_t pos_y;
+        memcpy(&pos_y, npcs_buffer.data() + bytes_advanced, SIZE_16);
+        npc.pos_y = ntohs(pos_y);
+        bytes_advanced += SIZE_16;
+
+        // Enum type de la orientacion
+        uint8_t orientation;
+        memcpy(&orientation, npcs_buffer.data() + bytes_advanced, SIZE_8);
+        npc.orientation = orientation;
+        bytes_advanced += SIZE_8;
+
+        npcs[i] = npc;
+
+        if (debug) {
+            std::cout << "NPC RECIBIDO:\n" <<
+            "Tipo: " << (int) npc.type << "\n" <<
+            "Pos X: " << npc.pos_x << "\n" <<
+            "Pos Y: " << npc.pos_y << "\n" <<
+            "Orientacion: " << (int) npc.orientation << "\n";
+        }
+    }
+    n.npcs = npcs;
+
+    return std::move(n);
+}
+
 world_t ClientProtocol::receiveMessage() {
     world_t w;
 
@@ -171,18 +243,6 @@ world_t ClientProtocol::receiveMessage() {
     // Player principal //
     // ---------------- //
 
-    // Vida actual
-    uint16_t actual_life;
-    memcpy(&actual_life, world_buffer.data() + bytes_advanced, SIZE_16);
-    w.player_info.actual_life = ntohs(actual_life);
-    bytes_advanced += SIZE_16;
-
-    // Vida maxima
-    uint16_t max_life;
-    memcpy(&max_life, world_buffer.data() + bytes_advanced, SIZE_16);
-    w.player_info.max_life = ntohs(max_life);
-    bytes_advanced += SIZE_16;
-
     // Mana actual
     uint16_t actual_mana;
     memcpy(&actual_mana, world_buffer.data() + bytes_advanced, SIZE_16);
@@ -207,12 +267,6 @@ world_t ClientProtocol::receiveMessage() {
     w.player_info.max_gold = ntohs(max_gold);
     bytes_advanced += SIZE_16;
 
-    // Nivel
-    uint16_t level;
-    memcpy(&level, world_buffer.data() + bytes_advanced, SIZE_16);
-    w.player_info.level = ntohs(level);
-    bytes_advanced += SIZE_16;
-
     // Experiencia actual
     uint32_t actual_experience;
     memcpy(&actual_experience, world_buffer.data() + bytes_advanced, SIZE_32);
@@ -227,13 +281,10 @@ world_t ClientProtocol::receiveMessage() {
 
     if (debug) {
         std::cout << "\nPLAYER PRINCIPAL\n" <<
-        "Vida actual: " << w.player_info.actual_life << "\n" <<
-        "Vida maxima: " << w.player_info.max_life << "\n" <<
         "Mana actual: " << w.player_info.actual_mana << "\n" <<
         "Mana maxima: " << w.player_info.max_mana << "\n" <<
         "Oro actual: " << w.player_info.actual_gold << "\n" <<
         "Oro maximo: " << w.player_info.max_gold << "\n" <<
-        "Nivel: " << w.player_info.level << "\n" <<
         "Experiencia actual: " << w.player_info.actual_experience << "\n" <<
         "Arma a distancia: " << (int) w.player_info.long_distance << "\n" <<
         "Inventario:\n";
@@ -271,7 +322,8 @@ world_t ClientProtocol::receiveMessage() {
 
     // Lista de players
     std::vector<player_t> players;
-    players.resize(w.num_players);
+
+    players.resize(w.num_players * sizeof(player_t));
     for (i = 0; i < w.num_players; i ++) {
         player_t player;
 
@@ -291,6 +343,24 @@ world_t ClientProtocol::receiveMessage() {
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
         player.pos_y = ntohs(pos_y);
+        bytes_advanced += SIZE_16;
+
+        // Vida actual
+        uint16_t actual_life;
+        memcpy(&actual_life, world_buffer.data() + bytes_advanced, SIZE_16);
+        player.actual_life = ntohs(actual_life);
+        bytes_advanced += SIZE_16;
+
+        // Vida maxima
+        uint16_t max_life;
+        memcpy(&max_life, world_buffer.data() + bytes_advanced, SIZE_16);
+        player.max_life = ntohs(max_life);
+        bytes_advanced += SIZE_16;
+
+        // Nivel
+        uint16_t level;
+        memcpy(&level, world_buffer.data() + bytes_advanced, SIZE_16);
+        player.level = ntohs(level);
         bytes_advanced += SIZE_16;
 
         // 1 si esta vivo, 0 si no (fantasma)
@@ -354,6 +424,9 @@ world_t ClientProtocol::receiveMessage() {
             "Id: " << player.id << "\n" <<
             "Pos X: " << player.pos_x << "\n" <<
             "Pos Y: " << player.pos_y << "\n" <<
+            "Vida actual: " << player.actual_life << "\n" <<
+            "Vida maxima: " << player.max_life << "\n" <<
+            "Nivel: " << player.level << "\n" <<
             "Is alive: " << (int) player.is_alive << "\n" <<
             "Is meditating: " << (int) player.is_meditating << "\n" <<
             "Orientacion: " << (int) player.orientation << "\n" <<
@@ -367,9 +440,9 @@ world_t ClientProtocol::receiveMessage() {
     }
     w.players = players;
 
-    // ------------- //
-    // Lista de NPCs //
-    // ------------- //
+    // ------------------ //
+    // Lista de Criaturas //
+    // ------------------ //
 
     // TODO: ...
 

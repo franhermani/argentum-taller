@@ -1,13 +1,22 @@
 #include "revive_command.h"
+#include "../npcs_and_creatures/priest.h"
 
 ReviveCommand::ReviveCommand(Player& player) :
-player(player), priestId(0) {}
+player(player) {}
 
-ReviveCommand::ReviveCommand(Player& player, const uint16_t priest_id) :
-player(player), priestId(priest_id) {}
+ReviveCommand::ReviveCommand(Player& player, const uint16_t priest_pos_x,
+        const uint16_t priest_pos_y) :
+player(player), priestPosX(priest_pos_x), priestPosY(priest_pos_y) {}
 
 ReviveCommand::~ReviveCommand() = default;
 
-void ReviveCommand::execute() {
-    player.revive();
+void ReviveCommand::execute(World& world) {
+    if (priestPosX && priestPosY) {
+        auto* priest = dynamic_cast<Priest*>
+        (world.getNPCByPos(priestPosX, priestPosY));
+        priest->revive(player);
+    } else {
+        // TODO: inmovilizar al jugador
+        player.revive();
+    }
 }
