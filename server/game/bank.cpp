@@ -1,55 +1,55 @@
 #include "bank.h"
 #include "game_exception.h"
-#include "../../common/defines/game_exceptions.h"
 
 Bank::Bank() {}
 
 Bank::~Bank() {
-    for (auto& player_id : itemsPerPlayer) {
-        for (auto& item : player_id.second) {
+    for (auto& kv : itemsPerPlayer) {
+        for (auto& item : kv.second) {
             delete item;
         }
     }
 }
 
-void Bank::depositItem(const int id, Item *item) {
+void Bank::depositItem(const int player_id, Item *item) {
     std::unique_lock<std::mutex> lk(m);
-    itemsPerPlayer[id].push_back(item);
+    itemsPerPlayer[player_id].push_back(item);
 }
 
-Item* Bank::withdrawItem(const int id, const int type) {
+Item* Bank::withdrawItem(const int player_id, const int type) {
     std::unique_lock<std::mutex> lk(m);
 
-    if (itemsPerPlayer.find(id) == itemsPerPlayer.end())
-        throw GameException("No tienes este item en el banco");
+    if (itemsPerPlayer.find(player_id) == itemsPerPlayer.end())
+        throw GameException(player_id, "No tienes este item en el banco");
 
     size_t i;
-    for (i = 0; i < itemsPerPlayer[id].size(); i ++) {
-        if (itemsPerPlayer[id][i]->type == type) {
-            Item *item = itemsPerPlayer[id][i];
-            itemsPerPlayer[id].erase(itemsPerPlayer[id].begin() + i);
+    for (i = 0; i < itemsPerPlayer[player_id].size(); i ++) {
+        if (itemsPerPlayer[player_id][i]->type == type) {
+            Item *item = itemsPerPlayer[player_id][i];
+            itemsPerPlayer[player_id].erase(
+                    itemsPerPlayer[player_id].begin() + i);
             return item;
         }
     }
-    throw GameException("No tienes este item en el banco");
+    throw GameException(player_id, "No tienes este item en el banco");
 }
 
-void Bank::depositGold(const int id, const int quant) {
+void Bank::depositGold(const int player_id, const int quant) {
     std::unique_lock<std::mutex> lk(m);
 
-    if (goldPerPlayer.find(id) == goldPerPlayer.end())
-        goldPerPlayer[id] = 0;
+    if (goldPerPlayer.find(player_id) == goldPerPlayer.end())
+        goldPerPlayer[player_id] = 0;
 
-    goldPerPlayer[id] += quant;
+    goldPerPlayer[player_id] += quant;
 }
 
-void Bank::withdrawGold(const int id, const int quant) {
+void Bank::withdrawGold(const int player_id, const int quant) {
     std::unique_lock<std::mutex> lk(m);
 
-    if (goldPerPlayer.find(id) == goldPerPlayer.end() ||
-            quant > goldPerPlayer[id])
-        throw GameException("No tienes %d de oro para extraer del banco",
-                quant);
+    if (goldPerPlayer.find(player_id) == goldPerPlayer.end() ||
+            quant > goldPerPlayer[player_id])
+        throw GameException(player_id, "No tienes %d de oro para "
+                                       "extraer del banco", quant);
 
-    goldPerPlayer[id] -= quant;
+    goldPerPlayer[player_id] -= quant;
 }

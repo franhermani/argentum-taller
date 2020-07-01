@@ -21,6 +21,7 @@ msPerSend(params.getConfigParams()["ms_per_send"]) {
     isRunning = true;
 
     spawnNPCs();
+    // TODO: descomentar esto cuando ya se rendericen en el cliente
     //spawnCreatures();
 }
 
@@ -38,9 +39,9 @@ void GameManager::run() {
                 try {
                     command->execute(world);
                 } catch (GameException& e) {
-                    // Encolo excepciones para que el sender luego las envie
-                    // TODO: encolar e.what() cuando lo implemente
-                    messagesQueue.push("Mensaje de prueba");
+                    // Encolo excepciones para que el sender de cada player
+                    // luego se las envie
+                    messagesQueuePerPlayer[e.getPlayerId()].push(e.what());
                 }
                 delete command;
             } catch(ClosedQueueException&) {
@@ -58,7 +59,10 @@ void GameManager::run() {
 
 void GameManager::stop() {
     commandQueue.close();
-    messagesQueue.close();
+
+    for (auto& kv : messagesQueuePerPlayer)
+        messagesQueuePerPlayer[kv.first].close();
+
     keepRunning = false;
 }
 

@@ -1,6 +1,5 @@
 #include "inventory.h"
 #include "../game_exception.h"
-#include "../../../common/defines/game_exceptions.h"
 
 Inventory::Inventory(const int max_items) :
 maxItems(max_items), numItems(0) {
@@ -14,15 +13,15 @@ Inventory::~Inventory() {
 
 void Inventory::checkFullness() {
     if (numItems == maxItems)
-        throw GameException("No tienes mas espacio en el inventario");
+        throw GameException(0, "No tienes mas espacio en el inventario");
 }
 
 void Inventory::checkUniqueness(const int type) {
     for (auto& item : items)
         if (item->type == type)
-            throw GameException("Ya tienes este item en el inventario. "
-                                "Solo las pociones pueden tenerse mas "
-                                "de una vez");
+            throw GameException(0, "Ya tienes este item en el inventario. "
+                                   "Solo las pociones pueden tenerse mas "
+                                   "de una vez");
 }
 
 void Inventory::addItem(Item* item) {
@@ -45,5 +44,5 @@ Item* Inventory::removeItem(const int type) {
             return item;
         }
     }
-    throw GameException("No tienes este item en el inventario");
+    return nullptr;
 }

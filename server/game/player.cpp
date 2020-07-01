@@ -131,8 +131,8 @@ void Player::stopMeditating() {
 void Player::equipWeapon(Weapon* new_weapon) {
     if (new_weapon->isMagic && ! ableToUseMagic) {
         inventory.addItem(new_weapon);
-        throw GameException("Eres un guerrero. No puedes utilizar "
-                            "armas magicas");
+        throw GameException(id, "Eres un guerrero. No puedes utilizar "
+                                "armas magicas");
     }
     weapon = new_weapon;
 }
@@ -144,8 +144,8 @@ void Player::equipArmor(Armor* new_armor) {
 void Player::equipHelmet(Helmet* new_helmet) {
     if (new_helmet->isMagic && ! ableToUseMagic) {
         inventory.addItem(new_helmet);
-        throw GameException("Eres un guerrero. No puedes utilizar "
-                            "cascos magicos");
+        throw GameException(id, "Eres un guerrero. No puedes utilizar "
+                                "cascos magicos");
     }
     helmet = new_helmet;
 }
@@ -211,8 +211,8 @@ void Player::heal() {
     stopMeditating();
 
     if (isDead())
-        throw GameException("Eres un fantasma. No puedes curarte "
-                            "antes de revivir");
+        throw GameException(id, "Eres un fantasma. No puedes curarte "
+                                "antes de revivir");
 
     actualLife = maxLife;
     actualMana = maxMana;
@@ -222,7 +222,7 @@ void Player::revive() {
     stopMeditating();
 
     if (! isDead())
-        throw GameException("No eres un fantasma. No puedes revivir");
+        throw GameException(id, "No eres un fantasma. No puedes revivir");
 
     actualLife = maxLife;
     isAlive = true;
@@ -230,7 +230,7 @@ void Player::revive() {
 
 void Player::meditate() {
     if (! ableToUseMagic)
-        throw GameException("Eres un guerrero. No puedes meditar");
+        throw GameException(id, "Eres un guerrero. No puedes meditar");
 
     isMeditating = isAlive;
 }
@@ -239,23 +239,24 @@ void Player::attack(Player& other) {
     stopMeditating();
 
     if (isDead())
-        throw GameException("Eres un fantasma. No puedes atacar");
+        throw GameException(id, "Eres un fantasma. No puedes atacar");
 
     if (isNewbie)
-        throw GameException("Eres un newbie. No puedes atacar "
-                            "a otro jugador");
+        throw GameException(id, "Eres un newbie. No puedes atacar "
+                                "a otro jugador");
 
     if (other.isDead())
-        throw GameException("No puedes atacar a un jugador fantasma");
+        throw GameException(id, "No puedes atacar a un jugador fantasma");
 
     if (other.isNewbie)
-        throw GameException("No puedes atacar a un jugador newbie");
+        throw GameException(id, "No puedes atacar a un jugador newbie");
 
     int level_diff = std::max(level - other.level, other.level - level);
     int max_level_diff = world.getMaxLevelDiff();
     if (level_diff > max_level_diff)
-        throw GameException("No puedes atacar a un jugador con una "
-                            "diferencia de nivel mayor a %d", max_level_diff);
+        throw GameException(id, "No puedes atacar a un jugador con una "
+                                "diferencia de nivel mayor a %d",
+                                max_level_diff);
 
     int damage_caused = other.receiveAttack(equations.eqDamageCaused(*this));
 
@@ -269,7 +270,7 @@ void Player::attack(Creature &creature) {
     stopMeditating();
 
     if (isDead())
-        throw GameException("Eres un fantasma. No puedes atacar");
+        throw GameException(id, "Eres un fantasma. No puedes atacar");
 
     int damage_caused = creature.receiveAttack(
             equations.eqDamageCaused(*this));
@@ -297,10 +298,13 @@ void Player::equipItemFromInventory(const int type) {
     stopMeditating();
 
     if (isDead())
-        throw GameException("Eres un fantasma. No puedes equiparte "
-                            "ningun item");
+        throw GameException(id, "Eres un fantasma. No puedes equiparte "
+                                "ningun item");
 
     Item* item = inventory.removeItem(type);
+    if (! item)
+        return;
+
     if (typeid(item) == typeid(Weapon)) {
         equipWeapon(dynamic_cast<Weapon*>(item));
     } else if (typeid(item) == typeid(Armor)) {
@@ -318,8 +322,8 @@ void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
     stopMeditating();
 
     if (isDead())
-        throw GameException("Eres un fantasma. No puedes tomar items "
-                            "del mundo");
+        throw GameException(id, "Eres un fantasma. No puedes tomar items "
+                                "del mundo");
 
 
     Item* item = world.removeItem(pos_x, pos_y);
@@ -330,7 +334,7 @@ void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
         inventory.addItem(item);
     } catch (GameException& e) {
         world.addItem(item);
-        throw GameException(e.what());
+        throw GameException(id, e.what());
     }
 }
 
@@ -338,13 +342,16 @@ void Player::dropItemFromInventoryToWorld(const int type) {
     stopMeditating();
 
     if (isDead())
-        throw GameException("Eres un fantasma. No puedes tirar items "
-                            "al mundo");
+        throw GameException(id, "Eres un fantasma. No puedes tirar items "
+                                "al mundo");
 
     if (world.itemInPosition(posX, posY))
-        throw GameException("Ya hay un item en esta posicion");
+        throw GameException(id, "Ya hay un item en esta posicion");
 
     Item* item = inventory.removeItem(type);
+    if (! item)
+        return;
+
     item->updatePosition(posX, posY);
     world.addItem(item);
 }
@@ -354,20 +361,24 @@ Item* Player::takeItemFromInventory(const int type) {
 }
 
 void Player::addItemToInventory(Item *item) {
-    inventory.addItem(item);
+    try {
+        inventory.addItem(item);
+    } catch (GameException& e) {
+        throw GameException(id, e.what());
+    }
 }
 
 void Player::addGold(const int quant) {
     if (actualGold + quant > maxGold)
-        throw GameException("No tienes suficiente espacio "
-                            "para guardar el oro");
+        throw GameException(id, "No tienes suficiente espacio "
+                                "para guardar el oro");
 
     actualGold += quant;
 }
 
 void Player::removeGold(const int quant) {
     if (actualGold < quant)
-        throw GameException("No tienes suficiente oro para extraer");
+        throw GameException(id, "No tienes suficiente oro para extraer");
 
     actualGold -= quant;
 }
@@ -379,7 +390,7 @@ void Player::takeGoldFromWorld(const int pos_x, const int pos_y) {
         addGold(gold->quantity);
     } catch (GameException& e) {
         world.addGold(gold);
-        throw GameException(e.what());
+        throw GameException(id, e.what());
     }
     delete gold;
 }

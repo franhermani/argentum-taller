@@ -15,8 +15,6 @@ ClientHandler::ClientHandler(Socket socket_received,
     keepRunning = true;
     isRunning = true;
     clientReceiver = new ClientReceiver(socket, gameManager.commandQueue);
-    clientSender = new ClientSender(socket, gameManager.worldMonitor,
-            gameManager.messagesQueue, gameManager.msPerSend);
 
     checkUsername();
 }
@@ -37,6 +35,8 @@ void ClientHandler::checkUsername() {
 
     try {
         int id = gameManager.addIdByUsername(username);
+        clientSender = new ClientSender(socket, gameManager.worldMonitor,
+                gameManager.messagesQueuePerPlayer[id], gameManager.msPerSend);
         clientSender->sendUsernameConfirmation(USERNAME_OK);
         player = new Player(gameManager.world, gameManager.equations,
                             id, race_type, class_type);
