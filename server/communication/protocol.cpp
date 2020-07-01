@@ -277,7 +277,8 @@ void ServerProtocol::sendItemsList(WorldMonitor &world_monitor,
     // - Enviar N structs listed_item_t
 }
 
-void ServerProtocol::sendGameMessage(Player &player) {
+void ServerProtocol::sendGameMessage(const std::string& message,
+        Player &player) {
     // TODO:
     // - Enviar 1 byte con la longitud del mensaje
     // - Enviar N bytes con el mensaje

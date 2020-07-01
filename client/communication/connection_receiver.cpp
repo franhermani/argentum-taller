@@ -28,7 +28,7 @@ void ConnectionReceiver::run() {
             world_t world = protocol.receiveWorldUpdate();
             mapMonitor.updateWorld(std::move(world));
 
-            // TODO: ver a donde mandar estos dos
+            // TODO: mandar estos al mapMonitor o gameRender en un struct
             protocol.receiveItemsList();
             game_message = protocol.receiveGameMessage();
         }

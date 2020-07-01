@@ -38,9 +38,9 @@ void GameManager::run() {
                 try {
                     command->execute(world);
                 } catch (GameException& e) {
-                    // TODO: encolar e.errorCode en una estructura compartida
-                    // para que luego el sender le envie al cliente el codigo
-                    // de error y este le muestre un mensaje al usuario
+                    // Encolo excepciones para que el sender luego las envie
+                    // TODO: encolar e.what() cuando lo implemente
+                    messagesQueue.push("Mensaje de prueba");
                 }
                 delete command;
             } catch(ClosedQueueException&) {

@@ -23,6 +23,7 @@ class GameManager : public Thread {
     World world;
     WorldMonitor worldMonitor;
     ProtectedQueue<Command*> commandQueue;
+    ProtectedQueue<std::string> messagesQueue;
     IdManager idManager;
     Bank bank;
     int msPerSend;

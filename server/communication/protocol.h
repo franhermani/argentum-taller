@@ -1,6 +1,7 @@
 #ifndef SERVER_PROTOCOL_H
 #define SERVER_PROTOCOL_H
 
+#include <string>
 #include <vector>
 #include "../../common/socket.h"
 #include "../game/commands/command_factory.h"
@@ -48,8 +49,7 @@ public:
     void sendItemsList(WorldMonitor& world_monitor, Player& player);
 
     // Envia un mensaje del juego a traves del socket
-    // TODO: ver que recibir por parametro aparte de player
-    void sendGameMessage(Player& player);
+    void sendGameMessage(const std::string& message, Player& player);
 };
 
 #endif // SERVER_PROTOCOL_H

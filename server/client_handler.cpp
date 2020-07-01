@@ -16,7 +16,7 @@ ClientHandler::ClientHandler(Socket socket_received,
     isRunning = true;
     clientReceiver = new ClientReceiver(socket, gameManager.commandQueue);
     clientSender = new ClientSender(socket, gameManager.worldMonitor,
-            gameManager.msPerSend);
+            gameManager.messagesQueue, gameManager.msPerSend);
 
     checkUsername();
 }

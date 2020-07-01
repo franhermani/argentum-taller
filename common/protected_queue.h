@@ -4,6 +4,7 @@
 #include <exception>
 #include <mutex>
 #include <queue>
+#include <string>
 #include "../server/game/commands/command.h"
 
 struct ClosedQueueException : public std::exception {
@@ -44,5 +45,6 @@ public:
 
 // Definir aca los tipos T que usemos a lo largo del TP
 template class ProtectedQueue<Command*>;
+template class ProtectedQueue<std::string>;
 
 #endif // PROTECTED_QUEUE_H
