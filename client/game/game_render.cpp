@@ -53,7 +53,7 @@ Surface* GameRender::createGameFrameSurface(){
 void GameRender::createNecessaryTerrains(
         std::vector<std::vector<Terrain>>& matrix) {
     int height_size = matrix.size();
-    if(height_size < 1) return;
+    if (height_size < 1) return;
     int width_size = matrix[0].size();
     for (int i=0; i < height_size; i++) {
         for (int j=0; j < width_size; j++){
@@ -133,7 +133,6 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
 
 
 void GameRender::loadSurfacePaths() {
-
     //PISOS
     terrainSurfacesPaths = {
             {TERRAIN_WATER, "../client/resources/images/24082.png"},
@@ -237,7 +236,6 @@ void GameRender::loadSurfacePaths() {
                            {ELF, elf_surfaces},
                            {DWARF, dwarf_surfaces},
                            {GNOME, gnome_surfaces}};
-
 }
 
 void GameRender::setTilesSize(int width,int height) {

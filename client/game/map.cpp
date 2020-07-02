@@ -2,8 +2,10 @@
 #include "map.h"
 #include <vector>
 #include <iostream>
+#include <utility>
 #include "exception.h"
-
+#include "../../common/defines/commands.h"
+#include "../../common/defines/npcs.h"
 // constructor
 Map::Map() {
 }
@@ -19,7 +21,8 @@ void Map::updateWorld(world_t receivedWorld) {
 }
 
 void Map::initialize(int received_id,
-        std::vector<int> blocks_around, matrix_t received_matrix, npcs_t received_npcs) {
+        std::vector<int> blocks_around, matrix_t received_matrix,
+        npcs_t received_npcs) {
     int current_index = 0;
     for (int i=0; i<received_matrix.height; i++) {
         std::vector<Terrain> row;
@@ -201,4 +204,47 @@ int Map::getPlayerVisionWidth() {
 }
 int Map::getPlayerVisionHeight() {
     return playerVisionHeight;
+}
+
+std::vector<int> Map::getPositionLookingAt() {
+    player_t player = getMainPlayer();
+    std::vector<int> position;
+    //TODO agregar chequeo de posiciones.
+    //igualmente el mapa nunca deberia incluir los bordes
+    //pero igual hacer chequeo
+    if (player.orientation == LEFT) {
+        position.push_back(player.pos_x - 1);
+        position.push_back(player.pos_y);
+    } else if (player.orientation == RIGHT) {
+        position.push_back(player.pos_x + 1);
+        position.push_back(player.pos_y);
+    } else if (player.orientation == UP) {
+        position.push_back(player.pos_x);
+        position.push_back(player.pos_y - 1);
+    } else {
+        position.push_back(player.pos_x);
+        position.push_back(player.pos_y + 1);
+    }
+    return std::move(position);
+}
+
+std::vector<int> Map::getPriestLookingAt() {
+    std::vector<int> looking_at = getPositionLookingAt();
+    for (int i=0; i<npcs.length; i++) {
+        if (npcs.npcs[i].type==PRIEST
+            and npcs.npcs[i].pos_x == looking_at[0]
+            and npcs.npcs[i].pos_y == looking_at[1])
+            return looking_at;
+    }
+    return std::move(std::vector<int> {-1, -1});
+}
+
+std::vector<int> Map::getNpcLookingAt() {
+    std::vector<int> looking_at = getPositionLookingAt();
+    for (int i=0; i<npcs.length; i++) {
+        if (npcs.npcs[i].pos_x == looking_at[0]
+            and npcs.npcs[i].pos_y == looking_at[1])
+            return looking_at;
+    }
+    return std::move(std::vector<int> {-1, -1});
 }

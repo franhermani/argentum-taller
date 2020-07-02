@@ -14,7 +14,7 @@ GameHandler::GameHandler(const char *host, const char *port,
     connectionReceiver = new ConnectionReceiver(socket, mapMonitor);
     checkUsername();
     printStartMessage();
-    inputHandler = new GameInputHandler(commandQueue);
+    inputHandler = new GameInputHandler(commandQueue, mapMonitor);
     gameRender = new GameRender(960, 720, mapMonitor);
 }
 

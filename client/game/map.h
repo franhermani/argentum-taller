@@ -31,9 +31,17 @@ public:
     //actualiza el vector de jugadores
     void updateWorld(world_t receivedWorld);
 
+    // devuelve la posicion mas cercana apuntando
+    // a la orientacion del jugador principal
+    std::vector<int> getPositionLookingAt();
+
+    std::vector<int> getPriestLookingAt();
+
+    std::vector<int> getNpcLookingAt();
 
 
-        // devuelve la matriz de pisos
+
+    // devuelve la matriz de pisos
     std::vector<std::vector<Terrain>> getTerrains();
 
     // devuelve los jugadores dentro del rango de vision del jguador principal

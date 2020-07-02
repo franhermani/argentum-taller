@@ -2,6 +2,7 @@
 #include "map_monitor.h"
 #include <vector>
 #include <iostream>
+#include <utility>
 
 MapMonitor::MapMonitor() {}
 
@@ -44,4 +45,21 @@ int MapMonitor::getPlayerVisionWidth() {
 }
 int MapMonitor::getPlayerVisionHeight() {
     return map.getPlayerVisionHeight();
+}
+
+std::vector<int> MapMonitor::getPositionLookingAt() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getPositionLookingAt());
+}
+
+
+std::vector<int> MapMonitor::getPriestLookingAt() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getPriestLookingAt());
+}
+
+
+std::vector<int> MapMonitor::getNpcLookingAt() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getNpcLookingAt());
 }
