@@ -56,3 +56,9 @@ std::vector<int> MapMonitor::getPriestLookingAt() {
     std::unique_lock<std::mutex> lk(m);
     return std::move(map.getPriestLookingAt());
 }
+
+
+std::vector<int> MapMonitor::getNpcLookingAt() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getNpcLookingAt());
+}

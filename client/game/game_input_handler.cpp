@@ -4,6 +4,7 @@
 #include "../data_transfer_objects/move_command_dto.h"
 #include "../data_transfer_objects/heal_command_dto.h"
 #include "../data_transfer_objects/take_command_dto.h"
+#include "../data_transfer_objects/list_command_dto.h"
 #include "../data_transfer_objects/throw_command_dto.h"
 #include "../data_transfer_objects/revive_command_dto.h"
 #include "../data_transfer_objects/meditate_command_dto.h"
@@ -32,29 +33,35 @@ void GameInputHandler::play() {
                 } else if (keyEvent.keysym.sym == SDLK_DOWN) {
                     command = new MoveCommandDTO(DOWN);
                 } else if (keyEvent.keysym.sym == SDLK_ESCAPE) {
-                    // TODO: aca en realidad se va a mandar el comando de salir
                     running = false;
                     continue;
                 } else if (keyEvent.keysym.sym == SDLK_a){
-                    //attack
-                    continue;
+                    command = new AttackCommandDTO();
                 } else if (keyEvent.keysym.sym == SDLK_h) {
-                    //heal
-                    continue;
+                    std::vector<int> priest_position =
+                            mapMonitor.getPriestLookingAt();
+                    if(priest_position[0] == -1) continue;
+                    command = new HealCommandDTO(priest_position[0],
+                            priest_position[1]);
+                }
+                else if (keyEvent.keysym.sym == SDLK_l){
+                    std::vector<int> npc_position = mapMonitor.getNpcLookingAt();
+                    command = new ListCommandDTO(0, 0);
                 }
                 else if (keyEvent.keysym.sym == SDLK_m){
                     command = new MeditateCommandDTO();
                 }
                 else if (keyEvent.keysym.sym == SDLK_r){
-                    std::vector<int> priest_position = mapMonitor.getPriestLookingAt();
+                    std::vector<int> priest_position =
+                            mapMonitor.getPriestLookingAt();
                     if(priest_position[0] == -1) command = new ReviveCommandDTO();
-                    else command = new ReviveCommandDTO(priest_position[0], priest_position[1]);
+                    else command = new ReviveCommandDTO(priest_position[0],
+                            priest_position[1]);
                 } else if (keyEvent.keysym.sym == SDLK_t) {
-                    //take
-                    continue;
+                    //TODO cuando tengamos los items guardados pedirlo al mapa
+                    command = new TakeCommandDTO(0, 0);
                 }
                 else if (keyEvent.keysym.sym == SDLK_d) {
-                    //trow (drop)
                     continue;
                 }
 

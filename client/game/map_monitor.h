@@ -41,8 +41,13 @@ public:
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
 
+    // devuelve la posicion mas cercana apuntando
+    // a la orientacion del jugador principal
     std::vector<int> getPositionLookingAt();
+
     std::vector<int> getPriestLookingAt();
+
+    std::vector<int> getNpcLookingAt();
 
     };
 
