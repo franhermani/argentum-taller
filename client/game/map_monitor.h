@@ -48,7 +48,6 @@ public:
     std::vector<int> getPriestLookingAt();
 
     std::vector<int> getNpcLookingAt();
-
     };
 
 

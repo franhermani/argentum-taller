@@ -2,6 +2,7 @@
 #include "map.h"
 #include <vector>
 #include <iostream>
+#include <utility>
 #include "exception.h"
 #include "../../common/defines/commands.h"
 #include "../../common/defines/npcs.h"
@@ -20,7 +21,8 @@ void Map::updateWorld(world_t receivedWorld) {
 }
 
 void Map::initialize(int received_id,
-        std::vector<int> blocks_around, matrix_t received_matrix, npcs_t received_npcs) {
+        std::vector<int> blocks_around, matrix_t received_matrix,
+        npcs_t received_npcs) {
     int current_index = 0;
     for (int i=0; i<received_matrix.height; i++) {
         std::vector<Terrain> row;
