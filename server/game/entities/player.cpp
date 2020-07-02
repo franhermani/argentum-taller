@@ -160,6 +160,15 @@ void Player::equipPotion(Potion *new_potion) {
     delete new_potion;
 }
 
+void Player::meleeAttack() {
+    // TODO: ...
+}
+
+void Player::distanceAttack() {
+    // TODO: velocidad y rango salen del arma equipada
+    world.addShot(new Shot(*this, orientation, 2, 2));
+}
+
 // -------------- //
 // Public methods //
 // -------------- //
@@ -235,12 +244,21 @@ void Player::meditate() {
     isMeditating = isAlive;
 }
 
-void Player::attack(Player& other) {
+void Player::attack() {
     stopMeditating();
 
     if (isDead())
         throw GameException(id, "Eres un fantasma. No puedes atacar");
 
+    if (weapon->isLongDistance) {
+        distanceAttack();
+    } else {
+        meleeAttack();
+    }
+}
+
+// TODO: unificar esta funcion con la de creature (creo)
+void Player::attack(Player& other) {
     if (isNewbie)
         throw GameException(id, "Eres un newbie. No puedes atacar "
                                 "a otro jugador");
@@ -267,11 +285,6 @@ void Player::attack(Player& other) {
 }
 
 void Player::attack(Creature &creature) {
-    stopMeditating();
-
-    if (isDead())
-        throw GameException(id, "Eres un fantasma. No puedes atacar");
-
     int damage_caused = creature.receiveAttack(
             equations.eqDamageCaused(*this));
 

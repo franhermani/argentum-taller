@@ -83,6 +83,12 @@ class Player {
     // Suma los puntos de vida y mana correspondientes segun la pocion
     void equipPotion(Potion* new_potion);
 
+    // Realiza un ataque cuerpo a cuerpo
+    void meleeAttack();
+
+    // Realiza un ataque a distancia
+    void distanceAttack();
+
     friend class World;
     friend class Equations;
     friend class Banker;
@@ -119,6 +125,9 @@ public:
     // Lanza una excepcion si:
     // - el player no puede usar la magia
     void meditate();
+
+    // Realiza un ataque en la orientacion del player
+    void attack();
 
     // Ataca a otro player
     void attack(Player& other);
