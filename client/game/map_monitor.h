@@ -40,7 +40,11 @@ public:
 
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
-};
+
+    std::vector<int> getPositionLookingAt();
+    std::vector<int> getPriestLookingAt();
+
+    };
 
 
 #endif //ARGENTUM_MAP_MONITOR_H

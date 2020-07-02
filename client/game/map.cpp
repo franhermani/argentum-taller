@@ -3,7 +3,8 @@
 #include <vector>
 #include <iostream>
 #include "exception.h"
-
+#include "../../common/defines/commands.h"
+#include "../../common/defines/npcs.h"
 // constructor
 Map::Map() {
 }
@@ -201,4 +202,35 @@ int Map::getPlayerVisionWidth() {
 }
 int Map::getPlayerVisionHeight() {
     return playerVisionHeight;
+}
+
+std::vector<int> Map::getPositionLookingAt() {
+    player_t player = getMainPlayer();
+    std::vector<int> position;
+    //TODO agregar chequeo de posiciones.
+    //igualmente el mapa nunca deberia incluir los bordes
+    //pero igual hacer chequeo
+    if (player.orientation == LEFT) {
+        position.push_back(player.pos_x - 1);
+        position.push_back(player.pos_y);
+    } else if (player.orientation == RIGHT) {
+        position.push_back(player.pos_x + 1);
+        position.push_back(player.pos_y);
+    } else if (player.orientation == UP) {
+        position.push_back(player.pos_x);
+        position.push_back(player.pos_y - 1);
+    } else {
+        position.push_back(player.pos_x);
+        position.push_back(player.pos_y + 1);
+    }
+    return std::move(position);
+}
+
+std::vector<int> Map::getPriestLookingAt() {
+    std::vector<int> looking_at = getPositionLookingAt();
+    for (int i=0; i<npcs.length; i++) {
+        if (npcs.npcs[i].type==PRIEST and npcs.npcs[i].pos_x == looking_at[0] and npcs.npcs[i].pos_y) return looking_at;
+    }
+    return std::move(std::vector<int> {-1, -1});
+
 }

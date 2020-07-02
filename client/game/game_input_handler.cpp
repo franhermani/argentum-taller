@@ -1,5 +1,6 @@
 #include <iostream>
 #include "game_input_handler.h"
+#include "map_monitor.h"
 #include "../data_transfer_objects/move_command_dto.h"
 #include "../data_transfer_objects/heal_command_dto.h"
 #include "../data_transfer_objects/take_command_dto.h"
@@ -36,19 +37,25 @@ void GameInputHandler::play() {
                     continue;
                 } else if (keyEvent.keysym.sym == SDLK_a){
                     //attack
+                    continue;
                 } else if (keyEvent.keysym.sym == SDLK_h) {
                     //heal
+                    continue;
                 }
                 else if (keyEvent.keysym.sym == SDLK_m){
                     command = new MeditateCommandDTO();
                 }
                 else if (keyEvent.keysym.sym == SDLK_r){
-                    command = new ReviveCommandDTO();
+                    std::vector<int> priest_position = mapMonitor.getPriestLookingAt();
+                    if(priest_position[0] == -1) command = new ReviveCommandDTO();
+                    else command = new ReviveCommandDTO(priest_position[0], priest_position[1]);
                 } else if (keyEvent.keysym.sym == SDLK_t) {
                     //take
+                    continue;
                 }
                 else if (keyEvent.keysym.sym == SDLK_d) {
                     //trow (drop)
+                    continue;
                 }
 
                 else {

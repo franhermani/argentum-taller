@@ -45,3 +45,14 @@ int MapMonitor::getPlayerVisionWidth() {
 int MapMonitor::getPlayerVisionHeight() {
     return map.getPlayerVisionHeight();
 }
+
+std::vector<int> MapMonitor::getPositionLookingAt() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getPositionLookingAt());
+}
+
+
+std::vector<int> MapMonitor::getPriestLookingAt() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getPriestLookingAt());
+}

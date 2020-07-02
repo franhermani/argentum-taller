@@ -31,6 +31,9 @@ public:
     //actualiza el vector de jugadores
     void updateWorld(world_t receivedWorld);
 
+    std::vector<int> getPositionLookingAt();
+
+    std::vector<int> getPriestLookingAt();
 
 
         // devuelve la matriz de pisos
