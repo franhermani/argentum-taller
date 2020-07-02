@@ -35,6 +35,12 @@ std::vector<player_t> MapMonitor::getRenderablePlayers() {
     return map.getRenderablePlayers();
 }
 
+std::vector<creature_t> MapMonitor::getRenderableCreatures() {
+    std::unique_lock<std::mutex> lk(m);
+    return map.getRenderableCreatures();
+}
+
+
 std::vector<npc_t> MapMonitor::getRenderableNpcs() {
     std::unique_lock<std::mutex> lk(m);
     return map.getRenderableNpcs();

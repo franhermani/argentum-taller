@@ -8,6 +8,7 @@ class Map {
     world_t world;
     matrix_t matrix;
     npcs_t npcs;
+
     int username_id;
     std::vector<std::vector<Terrain>> terrainMatrix;
     int terrainMatrixHeight;
@@ -52,7 +53,9 @@ public:
     // con posiciones actualizadas a la submatriz
     std::vector<npc_t> getRenderableNpcs();
 
-    //
+    std::vector<creature_t> getRenderableCreatures();
+
+        //
     int getPlayerVisionWidth();
 
     int getPlayerVisionHeight();
