@@ -155,7 +155,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     // Longitudes variables
     uint8_t inventory_length = player.inventory.numItems;
     uint16_t num_players = players.size();
-//    int num_creatures = creatures.size();
+    uint16_t num_creatures = creatures.size();
 //    int num_items = items.size();
 
     // Longitud total del mensaje
@@ -207,6 +207,21 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         w.players[i].shield = players[i]->shield ?
                               players[i]->shield->type : NO_ITEM_EQUIPPED;
     }
+
+    w.num_creatures = num_creatures;
+    w.creatures.resize(num_creatures * sizeof(creature_t));
+    for (i = 0; i < num_creatures; i ++) {
+        w.creatures[i].id = htons(creatures[i]->id);
+        w.creatures[i].pos_x = htons(creatures[i]->posX);
+        w.creatures[i].pos_y = htons(creatures[i]->posY);
+        w.creatures[i].actual_life = htons(creatures[i]->actualLife);
+        w.creatures[i].max_life = htons(creatures[i]->maxLife);
+        w.creatures[i].level = htons(creatures[i]->level);
+        w.creatures[i].type = creatures[i]->type;
+        w.creatures[i].orientation = creatures[i]->orientation;
+    }
+
+
 
     // ------------------ //
     // Carga del byte_msg //
