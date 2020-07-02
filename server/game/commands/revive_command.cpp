@@ -1,5 +1,5 @@
 #include "revive_command.h"
-#include "../npcs_and_creatures/priest.h"
+#include "../entities/npcs_and_creatures/priest.h"
 
 ReviveCommand::ReviveCommand(Player& player) :
 player(player) {}

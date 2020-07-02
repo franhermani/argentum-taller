@@ -2,7 +2,7 @@
 #define EQUIP_COMMAND_H
 
 #include "command.h"
-#include "../player.h"
+#include "../entities/player.h"
 
 class EquipCommand : public Command {
     Player& player;

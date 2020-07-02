@@ -9,7 +9,8 @@ World::World(GameParams& params) : params(params) {
     js = params.getConfigParams()["blocks_around_player"];
     playerWidth = js["width"], playerHeight = js["height"];
 
-    loadImpenetrableTerrains();
+    loadEntitiesImpenetrableTerrains();
+    loadAttacksImpenetrableTerrains();
     loadMatrix();
 }
 
@@ -25,12 +26,20 @@ World::~World() {
 
     for (auto& gold : golds)
         delete gold;
+
+    for (auto& attack : attacks)
+        delete attack;
 }
 
-void World::loadImpenetrableTerrains() {
-    impenetrableTerrains.insert(TERRAIN_WALL);
-    impenetrableTerrains.insert(TERRAIN_WATER);
-    impenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
+void World::loadEntitiesImpenetrableTerrains() {
+    entitiesImpenetrableTerrains.insert(TERRAIN_WALL);
+    entitiesImpenetrableTerrains.insert(TERRAIN_WATER);
+    entitiesImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
+}
+
+void World::loadAttacksImpenetrableTerrains() {
+    attacksImpenetrableTerrains.insert(TERRAIN_WALL);
+    entitiesImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
 }
 
 void World::loadMatrix() {
@@ -56,11 +65,31 @@ void World::loadMatrix() {
 // -------------------------------------------- //
 
 void World::update(const int ms) {
+    removeRangeReachedAttacks();
+
     for (auto& player : players)
         player->update(ms);
 
     for (auto& creature : creatures)
         creature->update(ms);
+
+    for (auto& attack : attacks) {
+        attack->update(ms);
+        detectAttackCollision(attack);
+    }
+}
+
+void World::removeRangeReachedAttacks() {
+    std::vector<Attack*> tmp;
+    auto iter = attacks.begin();
+    for (; iter != attacks.end(); ++iter) {
+        if ((*iter)->rangeReached()) {
+            delete (*iter);
+        } else {
+            tmp.push_back((*iter));
+        }
+    }
+    attacks.swap(tmp);
 }
 
 void World::addPlayer(Player* player) {
@@ -154,7 +183,7 @@ const bool World::inMapBoundaries(const int pos_x, const int pos_y) {
 
 const bool World::inCollision(const int pos_x, const int pos_y) {
     // Terrenos impenetrables
-    if (impenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
+    if (entitiesImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
         return true;
 
     // Players
@@ -162,17 +191,49 @@ const bool World::inCollision(const int pos_x, const int pos_y) {
         if (player->posX == pos_x && player->posY == pos_y)
             return true;
 
-    // NPCs
-    for (auto& npc : npcs)
-        if (npc->posX == pos_x && npc->posY == pos_y)
-            return true;
-
     // Criaturas
     for (auto& creature : creatures)
         if (creature->posX == pos_x && creature->posY == pos_y)
             return true;
 
+    // NPCs
+    for (auto& npc : npcs)
+        if (npc->posX == pos_x && npc->posY == pos_y)
+            return true;
+
     return false;
+}
+
+void World::detectAttackCollision(Attack* new_attack) {
+    Player* player = new_attack->player;
+    int pos_x = new_attack->posX, pos_y = new_attack->posY;
+
+    // Terrenos impenetrables
+    if (attacksImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0) {
+        new_attack->collision();
+        return;
+    }
+
+    // Players
+    for (auto& p : players)
+        if (p->posX == pos_x && p->posY == pos_y) {
+            new_attack->collision();
+            player->attack(*p);
+        }
+
+    // Criaturas
+    for (auto& c : creatures)
+        if (c->posX == pos_x && c->posY == pos_y) {
+            new_attack->collision();
+            player->attack(*c);
+        }
+
+    // NPCs
+    for (auto& npc : npcs)
+        if (npc->posX == pos_x && npc->posY == pos_y) {
+            new_attack->collision();
+            return;
+        }
 }
 
 const bool World::itemInPosition(const int pos_x, const int pos_y) {
@@ -214,20 +275,8 @@ Gold* World::removeGold(const int pos_x, const int pos_y) {
     return nullptr;
 }
 
-Player* World::getPlayerById(const int id) const {
-    for (auto& player : players)
-        if (player->id == id)
-            return player;
-
-    return nullptr;
-}
-
-Creature* World::getCreatureById(const int id) const {
-    for (auto& creature : creatures)
-        if (creature->id == id)
-            return creature;
-
-    return nullptr;
+void World::addAttack(Attack *new_attack) {
+    attacks.push_back(new_attack);
 }
 
 NPC* World::getNPCByPos(const int pos_x, const int pos_y) const {

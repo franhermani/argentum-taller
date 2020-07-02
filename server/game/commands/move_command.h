@@ -2,7 +2,7 @@
 #define MOVE_COMMAND_H
 
 #include "command.h"
-#include "../player.h"
+#include "../entities/player.h"
 
 class MoveCommand : public Command {
     Player& player;

@@ -2,7 +2,7 @@
 #define LIST_COMMAND_H
 
 #include "command.h"
-#include "../player.h"
+#include "../entities/player.h"
 
 class ListCommand : public Command {
     Player& player;

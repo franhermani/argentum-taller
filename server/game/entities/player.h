@@ -41,6 +41,8 @@ class Player {
     Helmet* helmet;
     Shield* shield;
     Inventory inventory;
+    int recoveryVelocity;
+    int msCounter;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
@@ -119,6 +121,9 @@ public:
     // Lanza una excepcion si:
     // - el player no puede usar la magia
     void meditate();
+
+    // Realiza un ataque en la orientacion del player
+    void attack();
 
     // Ataca a otro player
     void attack(Player& other);

@@ -1,6 +1,6 @@
 #include <vector>
 #include "banker.h"
-#include "../../../common/defines/npcs.h"
+#include "../../../../common/defines/npcs.h"
 
 Banker::Banker(Bank& bank, const int pos_x, const int pos_y,
         const int orient) : bank(bank) {

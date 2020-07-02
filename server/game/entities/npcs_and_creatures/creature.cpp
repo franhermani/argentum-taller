@@ -1,12 +1,12 @@
 #include <random>
 #include "creature.h"
-#include "../world.h"
-#include "../equations.h"
-#include "../player.h"
-#include "../../../common/defines/commands.h"
+#include "../../world.h"
+#include "../../equations.h"
+#include "../../../../common/defines/commands.h"
 
 Creature::Creature(World &world, Equations& equations,
-        const int id, const int type) :
+        const int id, const int type, const int move_velocity,
+        const int attack_velocity) :
 world(world),
 equations(equations),
 id(id),
@@ -15,7 +15,10 @@ level(10),              // TODO: ver de donde cargar esto
 isAlive(true),
 orientation(DOWN),
 maxLife(equations.eqMaxLife(*this)),
-actualLife(maxLife) {
+actualLife(maxLife),
+moveVelocity(move_velocity),
+attackVelocity(attack_velocity),
+msCounter(0) {
     loadInitialPosition();
 }
 
@@ -92,7 +95,12 @@ void Creature::attack(Player& player) {
 // -------------- //
 
 void Creature::update(int ms) {
-    // TODO: moverse en busca de players y atacarlos
+    msCounter += ms;
+
+    if (msCounter >= moveVelocity) {
+        msCounter = 0;
+        // TODO: moverse en busca de players y atacarlos
+    }
 }
 
 const int Creature::receiveAttack(const int damage) {
