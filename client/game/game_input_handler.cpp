@@ -59,9 +59,11 @@ void GameInputHandler::play() {
                             priest_position[1]);
                 } else if (keyEvent.keysym.sym == SDLK_t) {
                     //TODO cuando tengamos los items guardados pedirlo al mapa
-                    command = new TakeCommandDTO(0, 0);
+                    continue;
+                    //command = new TakeCommandDTO(0, 0);
                 }
-                else if (keyEvent.keysym.sym == SDLK_d) {
+                else if (keyEvent.keysym.sym == SDLK_e) {
+                    //TODO  Cuando pueda mostrar inventario esto va a ser equip
                     continue;
                 }
 
