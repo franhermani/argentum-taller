@@ -15,7 +15,7 @@ GameHandler::GameHandler(const char *host, const char *port,
     checkUsername();
     printStartMessage();
     inputHandler = new GameInputHandler(commandQueue);
-    gameRender = new GameRender(640*2, 480*2, mapMonitor);
+    gameRender = new GameRender(960, 720, mapMonitor);
 }
 
 GameHandler::~GameHandler() {
