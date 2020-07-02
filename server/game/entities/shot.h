@@ -16,7 +16,8 @@ class Shot {
 
 public:
     // Constructor
-    Shot(Player& player, const int direction, const double velocity,
+    Shot(Player& player, const int pos_x, const int pos_y,
+            const int direction, const double velocity,
             const int range);
 
     // Constructor y asignacion por copia deshabilitados

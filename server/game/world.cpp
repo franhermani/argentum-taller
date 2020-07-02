@@ -1,5 +1,6 @@
 #include <random>
 #include "world.h"
+#include "../../common/defines/commands.h"
 
 World::World(GameParams& params) : params(params) {
     json js;
@@ -219,7 +220,46 @@ Gold* World::removeGold(const int pos_x, const int pos_y) {
     return nullptr;
 }
 
-void World::addShot(Shot *shot) {
+void World::detectPunchCollision(Punch* punch) {
+    Player* player = punch->player;
+    int new_x = punch->posX, new_y = punch->posY,
+        direction = punch->direction;
+
+    delete punch;
+
+    switch (direction) {
+        case LEFT:
+            new_x -= 1;
+            break;
+        case RIGHT:
+            new_x += 1;
+            break;
+        case DOWN:
+            new_y += 1;
+            break;
+        case UP:
+            new_y -= 1;
+            break;
+        default:
+            break;
+    }
+    if (! inMapBoundaries(new_x, new_y))
+        return;
+
+    // Players
+    for (auto& p : players)
+        if (p->posX == new_x && p->posY == new_y) {
+            player->attack(*p);
+        }
+
+    // Criaturas
+    for (auto& c : creatures)
+        if (c->posX == new_x && c->posY == new_y) {
+            player->attack(*c);
+        }
+}
+
+void World::addShot(Shot* shot) {
     shots.push_back(shot);
 }
 

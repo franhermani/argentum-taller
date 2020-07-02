@@ -9,6 +9,7 @@
 #include "entities/npcs_and_creatures/creature.h"
 #include "entities/npcs_and_creatures/npc.h"
 #include "entities/gold.h"
+#include "entities/punch.h"
 #include "entities/shot.h"
 
 class World {
@@ -113,6 +114,9 @@ public:
 
     // Remueve un oro del mundo segun su pos (x,y)
     Gold* removeGold(const int pos_x, const int pos_y);
+
+    // Detecta una colision de ataque cuerpo y lo ejecuta
+    void detectPunchCollision(Punch* punch);
 
     // Agrega un disparo al mundo
     void addShot(Shot* shot);

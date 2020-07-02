@@ -161,12 +161,12 @@ void Player::equipPotion(Potion *new_potion) {
 }
 
 void Player::meleeAttack() {
-    // TODO: ...
+    world.detectPunchCollision(new Punch(this, posX, posY, orientation));
 }
 
 void Player::distanceAttack() {
     // TODO: velocidad y rango salen del arma equipada
-    world.addShot(new Shot(*this, orientation, 2, 2));
+    world.addShot(new Shot(*this, posX, posY, orientation, 2, 2));
 }
 
 // -------------- //
@@ -257,7 +257,6 @@ void Player::attack() {
     }
 }
 
-// TODO: unificar esta funcion con la de creature (creo)
 void Player::attack(Player& other) {
     if (isNewbie)
         throw GameException(id, "Eres un newbie. No puedes atacar "
