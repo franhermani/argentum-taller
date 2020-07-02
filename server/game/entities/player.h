@@ -41,6 +41,8 @@ class Player {
     Helmet* helmet;
     Shield* shield;
     Inventory inventory;
+    int recoveryVelocity;
+    int msCounter;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();

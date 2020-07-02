@@ -8,14 +8,17 @@ class Attack {
     int posX, posY;
     int direction;
     int range, blocksToRange;
-    double velocity;
+    int moveVelocity;
+    int msCounter;
 
     friend class World;
+
+    void updatePosition();
 
 public:
     // Constructor
     Attack(Player* player, const int pos_x, const int pos_y,
-    const int direction, const int range, const double velocity);
+    const int direction, const int range, const int move_velocity);
 
     // Constructor y asignacion por copia deshabilitados
     Attack(const Attack& other) = delete;

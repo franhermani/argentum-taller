@@ -16,6 +16,8 @@ class Creature {
     int orientation;
     int maxLife;
     int actualLife;
+    int moveVelocity, attackVelocity;
+    int msCounter;
 
     // Genera posiciones iniciales aleatorias para la criatura
     void loadInitialPosition();
@@ -38,7 +40,8 @@ class Creature {
 
 public:
     Creature(World& world, Equations& equations,
-            const int id, const int type);
+            const int id, const int type, const int move_velocity,
+            const int attack_velocity);
 
     // Constructor y asignacion por copia deshabilitados
     Creature(const Creature& other) = delete;

@@ -75,7 +75,6 @@ void World::update(const int ms) {
 
     for (auto& attack : attacks) {
         attack->update(ms);
-        // TODO: ver si conviene llamarlo desde afuera, como con Player
         detectAttackCollision(attack);
     }
 }
@@ -182,7 +181,6 @@ const bool World::inMapBoundaries(const int pos_x, const int pos_y) {
     return x_in_boundaries && y_in_boundaries;
 }
 
-// TODO: renombrar esto a detectEntityCollision
 const bool World::inCollision(const int pos_x, const int pos_y) {
     // Terrenos impenetrables
     if (entitiesImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
@@ -204,6 +202,38 @@ const bool World::inCollision(const int pos_x, const int pos_y) {
             return true;
 
     return false;
+}
+
+void World::detectAttackCollision(Attack* new_attack) {
+    Player* player = new_attack->player;
+    int pos_x = new_attack->posX, pos_y = new_attack->posY;
+
+    // Terrenos impenetrables
+    if (attacksImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0) {
+        new_attack->collision();
+        return;
+    }
+
+    // Players
+    for (auto& p : players)
+        if (p->posX == pos_x && p->posY == pos_y) {
+            new_attack->collision();
+            player->attack(*p);
+        }
+
+    // Criaturas
+    for (auto& c : creatures)
+        if (c->posX == pos_x && c->posY == pos_y) {
+            new_attack->collision();
+            player->attack(*c);
+        }
+
+    // NPCs
+    for (auto& npc : npcs)
+        if (npc->posX == pos_x && npc->posY == pos_y) {
+            new_attack->collision();
+            return;
+        }
 }
 
 const bool World::itemInPosition(const int pos_x, const int pos_y) {
@@ -247,38 +277,6 @@ Gold* World::removeGold(const int pos_x, const int pos_y) {
 
 void World::addAttack(Attack *new_attack) {
     attacks.push_back(new_attack);
-}
-
-void World::detectAttackCollision(Attack* new_attack) {
-    Player* player = new_attack->player;
-    int pos_x = new_attack->posX, pos_y = new_attack->posY;
-
-    // Terrenos impenetrables
-    if (attacksImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0) {
-        new_attack->collision();
-        return;
-    }
-
-    // Players
-    for (auto& p : players)
-        if (p->posX == pos_x && p->posY == pos_y) {
-            new_attack->collision();
-            player->attack(*p);
-        }
-
-    // Criaturas
-    for (auto& c : creatures)
-        if (c->posX == pos_x && c->posY == pos_y) {
-            new_attack->collision();
-            player->attack(*c);
-        }
-
-    // NPCs
-    for (auto& npc : npcs)
-        if (npc->posX == pos_x && npc->posY == pos_y) {
-            new_attack->collision();
-            return;
-        }
 }
 
 NPC* World::getNPCByPos(const int pos_x, const int pos_y) const {

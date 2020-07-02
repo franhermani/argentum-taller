@@ -22,7 +22,7 @@ msPerSend(params.getConfigParams()["ms_per_send"]) {
 
     spawnNPCs();
     // TODO: descomentar esto cuando ya se rendericen en el cliente
-    //spawnCreatures();
+//    spawnCreatures();
 }
 
 void GameManager::run() {
@@ -123,21 +123,29 @@ void GameManager::spawnCreatures() {
     for (i = 0; i < num_goblins; i ++) {
         pos = world.loadCreaturePosition();
         world.addCreature(new Creature(world, equations,
-                idManager.addCreatureById(), GOBLIN));
+                idManager.addCreatureById(), GOBLIN,
+                js["goblin"]["move_velocity"],
+                js["goblin"]["attack_velocity"]));
     }
     for (i = 0; i < num_skeletons; i ++) {
         pos = world.loadCreaturePosition();
         world.addCreature(new Creature(world, equations,
-                idManager.addCreatureById(), SKELETON));
+                idManager.addCreatureById(), SKELETON,
+                js["skeleton"]["move_velocity"],
+                js["skeleton"]["attack_velocity"]));
     }
     for (i = 0; i < num_zombies; i ++) {
         pos = world.loadCreaturePosition();
         world.addCreature(new Creature(world, equations,
-                idManager.addCreatureById(), ZOMBIE));
+                idManager.addCreatureById(), ZOMBIE,
+                js["zombie"]["move_velocity"],
+                js["zombie"]["attack_velocity"]));
     }
     for (i = 0; i < num_spiders; i ++) {
         pos = world.loadCreaturePosition();
         world.addCreature(new Creature(world, equations,
-                idManager.addCreatureById(), SPIDER));
+                idManager.addCreatureById(), SPIDER,
+                js["spider"]["move_velocity"],
+                js["spider"]["attack_velocity"]));
     }
 }

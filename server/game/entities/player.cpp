@@ -9,6 +9,11 @@
 #include "../../../common/defines/classes.h"
 #include "../game_exception.h"
 
+// TODO: ver si vale la pena mover esto a un param de la clase en el json
+#define RECOVERY_VELOCITY   1000
+#define NO_WEAPON_VELOCITY  600
+#define NO_WEAPON_RANGE     1
+
 Player::Player(World& world, Equations& equations, const int id,
         const int race_type, const int class_type) :
 world(world),
@@ -30,8 +35,11 @@ maxMana(equations.eqMaxMana(*this)),
 actualMana(equations.eqInitialMana(*this)),
 maxGold(equations.eqMaxSafeGold(*this)),
 actualGold(equations.eqInitialGold(*this)),
-inventory(world.getInventoryLength()) {
+inventory(world.getInventoryLength()),
+recoveryVelocity(RECOVERY_VELOCITY),
+msCounter(0) {
     loadInitialPosition();
+
     weapon = nullptr;
     armor = nullptr;
     helmet = nullptr;
@@ -165,17 +173,15 @@ void Player::equipPotion(Potion *new_potion) {
 // -------------- //
 
 void Player::update(int ms) {
-    addLife(equations.eqLifeRecovery(*this, ms));
-    addMana(equations.eqManaRecovery(*this, ms));
+    msCounter += ms;
 
-    if (isMeditating)
-        addMana(equations.eqManaMeditation(*this, ms));
+    if (msCounter >= recoveryVelocity) {
+        msCounter = 0;
+        addLife(equations.eqLifeRecovery(*this));
+        addMana(equations.eqManaRecovery(*this));
 
-    bool debug = false;
-    if (debug) {
-        std::cout << "Ms transcurridos: " << ms << "\n" <<
-                     "Vida actual: " << actualLife << "\n" <<
-                     "Mana actual: " << actualMana << "\n";
+        if (isMeditating)
+            addMana(equations.eqManaMeditation(*this));
     }
 }
 
@@ -243,8 +249,11 @@ void Player::attack() {
 
     // TODO: chequear safe zones!!!
 
+    int weapon_range = weapon ? weapon->range : NO_WEAPON_RANGE,
+        weapon_velocity = weapon ? weapon->moveVelocity : NO_WEAPON_VELOCITY;
+
     world.addAttack(new Attack(this, posX, posY, orientation,
-            weapon->range, weapon->velocity));
+            weapon_range, weapon_velocity));
 }
 
 void Player::attack(Player& other) {
