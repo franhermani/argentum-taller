@@ -1,6 +1,7 @@
 #include <string>
 #include <thread>
 #include <chrono>
+#include <iostream>
 #include "game_manager.h"
 #include "game_exception.h"
 #include "npcs_and_creatures/priest.h"
@@ -21,7 +22,6 @@ msPerSend(params.getConfigParams()["ms_per_send"]) {
     isRunning = true;
 
     spawnNPCs();
-    // TODO: descomentar esto cuando ya se rendericen en el cliente
     spawnCreatures();
 }
 

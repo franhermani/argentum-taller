@@ -438,7 +438,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
     memcpy(&num_creatures, world_buffer.data() + bytes_advanced, SIZE_16);
     w.num_creatures = ntohs(num_creatures);
     bytes_advanced += SIZE_16;
-
     // Lista de creatures
     std::vector<creature_t> creatures;
 
@@ -494,16 +493,16 @@ world_t ClientProtocol::receiveWorldUpdate() {
         creature.orientation = orientation;
         bytes_advanced += SIZE_8;
 
-
         creatures[i] = creature;
+        bytes_advanced -= SIZE_8;
 
         if (debug) {
             std::cout << "\nLISTA DE creatures\n" <<
-                      "Id: " << creature.id << "\n" <<
-                      "Pos X: " << creature.pos_x << "\n" <<
-                      "Pos Y: " << creature.pos_y << "\n" <<
-                      "Vida actual: " << creature.actual_life << "\n" <<
-                      "Vida maxima: " << creature.max_life << "\n" <<
+                      "Id: " << (int) creature.id << "\n" <<
+                      "Pos X: " << (int) creature.pos_x << "\n" <<
+                      "Pos Y: " << (int) creature.pos_y << "\n" <<
+                      "Vida actual: " << (int) creature.actual_life << "\n" <<
+                      "Vida maxima: " << (int) creature.max_life << "\n" <<
                       "Orientacion: " << (int) creature.orientation << "\n" <<
                       "Tipo: " << (int) creature.type << "\n" ;
         }

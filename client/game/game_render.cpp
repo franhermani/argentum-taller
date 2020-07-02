@@ -191,18 +191,25 @@ void GameRender::loadSurfacePaths() {
             {LEFT, "../client/resources/images/zombie_left_t.png"},
             {RIGHT, "../client/resources/images/zombie_right_t.png"}
     };
+    std::map<int, std::string> spider_orientations = {
+            {UP, "../client/resources/images/spider_up_t.png"},
+            {DOWN, "../client/resources/images/spider_down_t.png"},
+            {LEFT, "../client/resources/images/spider_left_t.png"},
+            {RIGHT, "../client/resources/images/spider_right_t.png"}
+    };
 
 
-    npcSurfacesPaths = {
+    creatureSurfacesPaths = {
             {SKELETON, skeleton_orientations},
             {ZOMBIE, zombie_orientations},
-            {GOBLIN, goblin_orientations}
+            {GOBLIN, goblin_orientations},
+            {SPIDER, spider_orientations}
     };
 
     std::map<int, Surface*> skeleton_surfaces;
     std::map<int, Surface*> zombie_surfaces;
     std::map<int, Surface*> goblin_surfaces;
-    npcSurfacesMap = {{SKELETON, skeleton_surfaces},
+    creatureSurfacesMap = {{SKELETON, skeleton_surfaces},
                       {ZOMBIE,   zombie_surfaces},
                       {GOBLIN,   goblin_surfaces}
     };
@@ -307,8 +314,8 @@ void GameRender::run() {
         renderPlayers(players);
         std::vector<npc_t> npcs = mapMonitor.getRenderableNpcs();
         renderNpcs(npcs);
-        //std::vector<creature_t> creatures = mapMonitor.getRenderableCreatures();
-        //renderCreatures(creatures);
+        std::vector<creature_t> creatures = mapMonitor.getRenderableCreatures();
+        renderCreatures(creatures);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

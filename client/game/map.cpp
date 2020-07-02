@@ -17,6 +17,8 @@ void Map::updateWorld(world_t receivedWorld) {
     world.players = receivedWorld.players;
     world.num_players = receivedWorld.num_players;
     world.player_info = receivedWorld.player_info;
+    world.creatures = receivedWorld.creatures;
+    world.num_creatures = receivedWorld.num_creatures;
     //el resto falta recibirlo
 }
 
@@ -75,7 +77,7 @@ void Map::printDebugTerrainMatrix(
 }
 
 std::vector<std::vector<Terrain>> Map::getTerrains() {
-    printDebugTerrainMatrix(terrainMatrix);
+    //printDebugTerrainMatrix(terrainMatrix);
     player_t player = getMainPlayer();
 
     std::vector<std::vector<Terrain>> sub_matrix;
@@ -104,7 +106,7 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
         sub_matrix[current_column_index] = row;
         ++current_column_index;
     }
-    printDebugTerrainMatrix(sub_matrix);
+    //printDebugTerrainMatrix(sub_matrix);
     return sub_matrix;
 }
 

@@ -267,7 +267,6 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         byte_msg[pos+=SIZE_8] = w.players[i].armor;
         byte_msg[pos+=SIZE_8] = w.players[i].helmet;
         byte_msg[pos+=SIZE_8] = w.players[i].shield;
-        pos -= SIZE_8;
     }
 
     // Lista de criaturas
@@ -280,7 +279,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].actual_life, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].max_life, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].level, SIZE_16);
-        byte_msg[pos+=SIZE_8] = w.creatures[i].type;
+        byte_msg[pos+=SIZE_16] = w.creatures[i].type;
         byte_msg[pos+=SIZE_8] = w.creatures[i].orientation;
         pos -= SIZE_8;
     }
