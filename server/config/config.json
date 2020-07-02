@@ -224,47 +224,65 @@
         "espada": {
           "min_damage": 2,
           "max_damage": 5,
+          "velocity": 500,
+          "range": 1,
           "price": 200
         },
         "hacha": {
           "min_damage": 4,
           "max_damage": 5,
+          "velocity": 1000,
+          "range": 1,
           "price": 300
         },
         "martillo": {
           "min_damage": 1,
           "max_damage": 9,
+          "velocity": 700,
+          "range": 1,
           "price": 500
         },
         "vara_fresno": {
           "min_damage": 2,
           "max_damage": 4,
           "mana_consumption": 5,
+          "velocity": 500,
+          "range": 10,
           "price": 350
         },
         "flauta_elfica": {
           "mana_consumption": 100,
+          "velocity": 500,
+          "range": 10,
           "price": 400
         },
         "baculo_nudoso": {
           "min_damage": 4,
           "max_damage": 8,
           "mana_consumption": 15,
+          "velocity": 500,
+          "range": 10,
           "price": 500
         },
         "baculo_engarzado": {
           "min_damage": 8,
           "max_damage": 20,
+          "velocity": 500,
+          "range": 10,
           "price": 700
         },
         "arco_simple": {
           "min_damage": 1,
           "max_damage": 4,
+          "velocity": 700,
+          "range": 8,
           "price": 150
         },
         "arco_compuesto": {
           "min_damage": 4,
           "max_damage": 16,
+          "velocity": 600,
+          "range": 9,
           "price": 300
         }
       },
@@ -315,12 +333,12 @@
         }
       },
       "potion": {
-        "life_potion": {
+        "pocion_vida": {
           "life_recovery": 50,
           "mana_recovery": 0,
           "price": 75
         },
-        "mana_potion": {
+        "pocion_mana": {
           "life_recovery": 0,
           "mana_recovery": 50,
           "price": 75
