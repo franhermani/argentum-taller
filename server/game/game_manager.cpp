@@ -22,7 +22,7 @@ msPerSend(params.getConfigParams()["ms_per_send"]) {
 
     spawnNPCs();
     // TODO: descomentar esto cuando ya se rendericen en el cliente
-    //spawnCreatures();
+    spawnCreatures();
 }
 
 void GameManager::run() {

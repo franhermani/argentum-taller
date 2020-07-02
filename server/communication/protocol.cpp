@@ -163,7 +163,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     size_t message_length =
             4 * SIZE_16 + SIZE_32 + SIZE_8 +
             SIZE_8 + inventory_length * SIZE_8 +
-            SIZE_16 + num_players * (6 * SIZE_16 + 9 * SIZE_8);
+            SIZE_16 + num_players * (6 * SIZE_16 + 9 * SIZE_8) +
+            SIZE_16 + num_creatures * (6*SIZE_16 + 2 * SIZE_8);
 
     // ------------------------ //
     // Carga del struct world_t //
@@ -190,9 +191,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         w.players[i].id = htons(players[i]->id);
         w.players[i].pos_x = htons(players[i]->posX);
         w.players[i].pos_y = htons(players[i]->posY);
-        w.players[i].actual_life = htons(player.actualLife);
-        w.players[i].max_life = htons(player.maxLife);
-        w.players[i].level = htons(player.level);
+        w.players[i].actual_life = htons(players[i]->actualLife);
+        w.players[i].max_life = htons(players[i]->maxLife);
+        w.players[i].level = htons(players[i]->level);
         w.players[i].is_alive = players[i]->isAlive ? 1 : 0;
         w.players[i].is_meditating = players[i]->isMeditating ? 1 : 0;
         w.players[i].orientation = players[i]->orientation;
@@ -270,10 +271,21 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de criaturas
-    // TODO: ...
-
+    memcpy(&byte_msg[pos+=SIZE_16], &w.num_creatures, SIZE_16);
+    pos -= SIZE_8;
+    for (i = 0; i < num_creatures; i ++) {
+        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].id, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].actual_life, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].max_life, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].level, SIZE_16);
+        byte_msg[pos+=SIZE_8] = w.creatures[i].type;
+        byte_msg[pos+=SIZE_8] = w.creatures[i].orientation;
+        pos -= SIZE_8;
+    }
     // Lista de items
-    // TODO: ...
+
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
