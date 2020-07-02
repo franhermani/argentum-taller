@@ -151,13 +151,34 @@ void GameRender::loadSurfacePaths() {
             {LEFT, "../client/resources/images/skeleton_left_t.png"},
             {RIGHT, "../client/resources/images/skeleton_right_t.png"}
     };
+    std::map<int, std::string> goblin_orientations = {
+            {UP, "../client/resources/images/goblin_up_t.png"},
+            {DOWN, "../client/resources/images/goblin_down_t.png"},
+            {LEFT, "../client/resources/images/goblin_left_t.png"},
+            {RIGHT, "../client/resources/images/goblin_right_t.png"}
+    };
+
+    std::map<int, std::string> zombie_orientations = {
+            {UP, "../client/resources/images/zombie_up_t.png"},
+            {DOWN, "../client/resources/images/zombie_down_t.png"},
+            {LEFT, "../client/resources/images/zombie_left_t.png"},
+            {RIGHT, "../client/resources/images/zombie_right_t.png"}
+    };
+
 
     npcSurfacesPaths = {
-            {SKELETON, skeleton_orientations}
+            {SKELETON, skeleton_orientations},
+            {ZOMBIE, zombie_orientations},
+            {GOBLIN, goblin_orientations}
     };
 
     std::map<int, Surface*> skeleton_surfaces;
-    npcSurfacesMap = {{SKELETON, skeleton_surfaces}};
+    std::map<int, Surface*> zombie_surfaces;
+    std::map<int, Surface*> goblin_surfaces;
+    npcSurfacesMap = {{SKELETON, skeleton_surfaces},
+                      {ZOMBIE,   zombie_surfaces},
+                      {GOBLIN,   goblin_surfaces}
+    };
 
 
 
@@ -172,7 +193,7 @@ void GameRender::loadSurfacePaths() {
             {UP, "../client/resources/images/priest_up_t.png"},
             {DOWN, "../client/resources/images/priest_down_t.png"},
             {LEFT, "../client/resources/images/priest_left_t.png"},
-            {RIGHT, "../client/resources/images/priest_right_t.png"}
+            {RIGHT, "../client/resources/images/priest_rightskeleton_t.png"}
     };
     std::map<int, std::string> merchant_orientations = {
             {UP, "../client/resources/images/spider_up_t.png"},
