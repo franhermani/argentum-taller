@@ -433,7 +433,83 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Lista de Criaturas //
     // ------------------ //
 
-    // TODO: ...
+    // Cantidad de creatures
+    uint16_t num_creatures;
+    memcpy(&num_creatures, world_buffer.data() + bytes_advanced, SIZE_16);
+    w.num_creatures = ntohs(num_creatures);
+    bytes_advanced += SIZE_16;
+
+    // Lista de creatures
+    std::vector<creature_t> creatures;
+
+    creatures.resize(w.num_creatures * sizeof(creature_t));
+    for (i = 0; i < w.num_creatures; i ++) {
+        creature_t creature;
+
+        // Id
+        uint16_t id;
+        memcpy(&id, world_buffer.data() + bytes_advanced, SIZE_16);
+        creature.id = ntohs(id);
+        bytes_advanced += SIZE_16;
+
+        // Pos x en la matriz
+        uint16_t pos_x;
+        memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
+        creature.pos_x = ntohs(pos_x);
+        bytes_advanced += SIZE_16;
+
+        // Pos y en la matriz
+        uint16_t pos_y;
+        memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
+        creature.pos_y = ntohs(pos_y);
+        bytes_advanced += SIZE_16;
+
+        // Vida actual
+        uint16_t actual_life;
+        memcpy(&actual_life, world_buffer.data() + bytes_advanced, SIZE_16);
+        creature.actual_life = ntohs(actual_life);
+        bytes_advanced += SIZE_16;
+
+        // Vida maxima
+        uint16_t max_life;
+        memcpy(&max_life, world_buffer.data() + bytes_advanced, SIZE_16);
+        creature.max_life = ntohs(max_life);
+        bytes_advanced += SIZE_16;
+
+        // Nivel
+        uint16_t level;
+        memcpy(&level, world_buffer.data() + bytes_advanced, SIZE_16);
+        creature.level = ntohs(level);
+        bytes_advanced += SIZE_16;
+
+        // Enum type de la raza
+        uint8_t type;
+        memcpy(&type, world_buffer.data() + bytes_advanced, SIZE_8);
+        creature.type = type;
+        bytes_advanced += SIZE_8;
+
+        // Enum type de la orientacion
+        uint8_t orientation;
+        memcpy(&orientation, world_buffer.data() + bytes_advanced, SIZE_8);
+        creature.orientation = orientation;
+        bytes_advanced += SIZE_8;
+
+
+        creatures[i] = creature;
+
+        if (debug) {
+            std::cout << "\nLISTA DE creatures\n" <<
+                      "Id: " << creature.id << "\n" <<
+                      "Pos X: " << creature.pos_x << "\n" <<
+                      "Pos Y: " << creature.pos_y << "\n" <<
+                      "Vida actual: " << creature.actual_life << "\n" <<
+                      "Vida maxima: " << creature.max_life << "\n" <<
+                      "Orientacion: " << (int) creature.orientation << "\n" <<
+                      "Tipo: " << (int) creature.type << "\n" ;
+        }
+    }
+    w.creatures = creatures;
+
 
     // -------------- //
     // Lista de Items //
