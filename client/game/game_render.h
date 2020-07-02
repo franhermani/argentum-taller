@@ -44,9 +44,10 @@ private:
     // inicializa en npcSurfacesMap las surfaces necesarias faltantes
     void createNecessaryNpcs(std::vector<npc_t>& npcs);
 
+    void createNecessaryCreatures(std::vector<creature_t>& creatures);
 
 
-        public:
+public:
     //Constructor
     GameRender(const int screenWidth, const int screenHeight,
                MapMonitor &mapMonitor);
@@ -73,7 +74,9 @@ private:
     //renderizador de npcs
     void renderNpcs(std::vector<npc_t>& npcs);
 
-    //Inicializa paths a archivos de imagenes para surfaces
+    void renderCreatures(std::vector<creature_t>& creatures);
+
+        //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();
 
     //Inicializador de SDL
@@ -82,6 +85,7 @@ private:
     void setTilesSize(int width, int height);
 
     Surface* createGameFrameSurface();
+
 };
 
 #endif //ARGENTUM_GAME_RENDER_H

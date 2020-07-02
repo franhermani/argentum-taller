@@ -103,6 +103,33 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     }
 }
 
+void GameRender::createNecessaryCreatures(std::vector<creature_t>& creatures) {
+    for (auto& creature:creatures) {
+        int type = creature.type;
+        int orientation = creature.orientation;
+        if (creatureSurfacesMap[type].find(orientation)
+            == creatureSurfacesMap[type].end()) {
+            if (creatureSurfacesPaths[type].find(orientation)
+                == creatureSurfacesPaths[type].end()) {
+                continue;
+            }
+            Surface* surface = new Surface(
+                    creatureSurfacesPaths[type][orientation], window, 1);
+            creatureSurfacesMap[type].insert({orientation, surface});
+        }
+    }
+}
+
+
+void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
+    createNecessaryCreatures(creatures);
+    for (auto it = std::begin(creatures);
+         it != std::end(creatures); ++it) {
+        window.renderNpc(it->pos_x, it->pos_y,
+                         creatureSurfacesMap[it->type][it->orientation]);
+    }
+}
+
 
 void GameRender::createNecessaryNpcs(std::vector<npc_t>& npcs) {
     for (auto& npc:npcs) {
@@ -184,22 +211,22 @@ void GameRender::loadSurfacePaths() {
 
     //npcs
     std::map<int, std::string> banker_orientations = {
-            {UP, "../client/resources/images/skeleton_up_t.png"},
-            {DOWN, "../client/resources/images/skeleton_down_t.png"},
-            {LEFT, "../client/resources/images/skeleton_left_t.png"},
-            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+            {UP, "../client/resources/images/banker_up_t.png"},
+            {DOWN, "../client/resources/images/banker_down_t.png"},
+            {LEFT, "../client/resources/images/banker_left_t.png"},
+            {RIGHT, "../client/resources/images/banker_right_t.png"}
     };
     std::map<int, std::string> priest_orientations = {
             {UP, "../client/resources/images/priest_up_t.png"},
             {DOWN, "../client/resources/images/priest_down_t.png"},
             {LEFT, "../client/resources/images/priest_left_t.png"},
-            {RIGHT, "../client/resources/images/priest_rightskeleton_t.png"}
+            {RIGHT, "../client/resources/images/priest_right_t.png"}
     };
     std::map<int, std::string> merchant_orientations = {
-            {UP, "../client/resources/images/spider_up_t.png"},
-            {DOWN, "../client/resources/images/spider_down_t.png"},
-            {LEFT, "../client/resources/images/spider_left_t.png"},
-            {RIGHT, "../client/resources/images/spider_right_t.png"}
+            {UP, "../client/resources/images/merchant_up_t.png"},
+            {DOWN, "../client/resources/images/merchant_down_t.png"},
+            {LEFT, "../client/resources/images/merchant_left_t.png"},
+            {RIGHT, "../client/resources/images/merchant_right_t.png"}
     };
 
     npcSurfacesPaths = {
