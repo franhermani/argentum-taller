@@ -8,8 +8,7 @@ class Weapon : public Item {
     int manaConsumption;
     int range;
     int moveVelocity;
-    // TODO: eliminar isLongDistance
-    bool isLongDistance, isMagic;
+    bool isMagic;
 
     friend class Player;
     friend class Equations;
@@ -20,8 +19,8 @@ public:
     Weapon(const int new_type, const int pos_x, const int pos_y,
             const int min_damage, const int max_damage,
             const int mana_consumption, const int range,
-            const int move_velocity, const bool is_long_distance,
-            const bool is_magic, const int new_price);
+            const int move_velocity, const bool is_magic,
+            const int new_price);
 
     // Constructor y asignacion por copia deshabilitados
     Weapon(const Weapon& other) = delete;
@@ -29,6 +28,10 @@ public:
 
     // Destructor
     ~Weapon();
+
+    // Devuelve true si el arma es de larga distancia (range > 1)
+    // False en caso contrario
+    const bool isLongDistance();
 };
 
 #endif // WEAPON_H

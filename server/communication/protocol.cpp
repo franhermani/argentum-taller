@@ -179,7 +179,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.player_info.max_gold = htons(player.maxGold);
     w.player_info.actual_experience = htonl(player.actualExperience);
     w.player_info.long_distance = player.weapon &&
-            player.weapon->isLongDistance ? 1 : 0;
+            player.weapon->isLongDistance() ? 1 : 0;
 
     // Info generica de todos los players (incluido el del cliente)
     // TODO: si hago htons(num_players) lo carga en 0...
