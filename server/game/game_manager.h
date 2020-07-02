@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "../../common/thread.h"
 #include "../utilities/json_parser.h"
 #include "params.h"
@@ -23,6 +24,7 @@ class GameManager : public Thread {
     World world;
     WorldMonitor worldMonitor;
     ProtectedQueue<Command*> commandQueue;
+    std::map<int, ProtectedQueue<std::string>> messagesQueuePerPlayer;
     IdManager idManager;
     Bank bank;
     int msPerSend;

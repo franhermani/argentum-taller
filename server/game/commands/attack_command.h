@@ -6,13 +6,9 @@
 
 class AttackCommand : public Command {
     Player& player;
-    uint8_t enemyIdType;
-    uint16_t enemyId;
-
 public:
     // Constructor
-    AttackCommand(Player& player, const uint8_t enemy_id_type,
-            const uint16_t enemy_id);
+    explicit AttackCommand(Player& player);
 
     // Constructor y asignacion por copia deshabilitados
     AttackCommand(const AttackCommand&) = delete;
@@ -21,7 +17,7 @@ public:
     // Destructor
     ~AttackCommand() override;
 
-    // Ataca al enemigo segun su 'enemyId'
+    // Ataca en la orientacion del player
     void execute(World& world) override;
 };
 
