@@ -160,15 +160,6 @@ void Player::equipPotion(Potion *new_potion) {
     delete new_potion;
 }
 
-void Player::meleeAttack() {
-    world.detectPunchCollision(new Punch(this, posX, posY, orientation));
-}
-
-void Player::distanceAttack() {
-    // TODO: velocidad y rango salen del arma equipada
-    world.addShot(new Shot(*this, posX, posY, orientation, 2, 2));
-}
-
 // -------------- //
 // Public methods //
 // -------------- //
@@ -250,11 +241,10 @@ void Player::attack() {
     if (isDead())
         throw GameException(id, "Eres un fantasma. No puedes atacar");
 
-    if (weapon->isLongDistance) {
-        distanceAttack();
-    } else {
-        meleeAttack();
-    }
+    // TODO: chequear safe zones!!!
+
+    world.addAttack(new Attack(this, posX, posY, orientation,
+            weapon->range, weapon->velocity));
 }
 
 void Player::attack(Player& other) {

@@ -6,6 +6,9 @@
 class Weapon : public Item {
     int minDamage, maxDamage;
     int manaConsumption;
+    int range;
+    double velocity;
+    // TODO: eliminar isLongDistance
     bool isLongDistance, isMagic;
 
     friend class Player;
@@ -16,7 +19,8 @@ public:
     // Constructor
     Weapon(const int new_type, const int pos_x, const int pos_y,
             const int min_damage, const int max_damage,
-            const int mana_consumption, const bool is_long_distance,
+            const int mana_consumption, const int range,
+            const double velocity, const bool is_long_distance,
             const bool is_magic, const int new_price);
 
     // Constructor y asignacion por copia deshabilitados
