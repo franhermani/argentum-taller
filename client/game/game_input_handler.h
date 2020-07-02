@@ -13,7 +13,8 @@ class GameInputHandler : public Thread {
 
 public:
     // Constructor
-    GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue, MapMonitor& mapMonitor);
+    GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
+            MapMonitor& mapMonitor);
 
     // Destructor
     ~GameInputHandler();
