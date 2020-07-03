@@ -504,7 +504,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
                       "Vida actual: " << (int) creature.actual_life << "\n" <<
                       "Vida maxima: " << (int) creature.max_life << "\n" <<
                       "Orientacion: " << (int) creature.orientation << "\n" <<
-                      "Tipo: " << (int) creature.type << "\n" ;
+                      "Tipo: " << (int) creature.type << "\n";
         }
     }
     w.creatures = creatures;

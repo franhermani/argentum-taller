@@ -85,7 +85,6 @@ public:
     void setTilesSize(int width, int height);
 
     Surface* createGameFrameSurface();
-
 };
 
 #endif //ARGENTUM_GAME_RENDER_H
