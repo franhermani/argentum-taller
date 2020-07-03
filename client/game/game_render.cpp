@@ -13,6 +13,7 @@
 #include "../../common/defines/races.h"
 #include "../../common/defines/creatures.h"
 #include "../../common/defines/npcs.h"
+#include "../../common/defines/items.h"
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -158,6 +159,32 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
 }
 
 
+void GameRender::createNecessaryFloorItems(std::vector<item_t> &items) {
+    for (auto& item:items) {
+        int type = item.type;
+        if (floorItemSurfacesMap.find(type)
+            == floorItemSurfacesMap.end()) {
+            if (floorItemSurfacesPaths.find(type)
+                == floorItemSurfacesPaths.end()) {
+                continue;
+            }
+            Surface* surface = new Surface(
+                    floorItemSurfacesPaths[type], window, 1);
+            floorItemSurfacesMap.insert({type, surface});
+        }
+    }
+}
+
+void GameRender::renderItems(std::vector<item_t> &items) {
+    createNecessaryFloorItems(items);
+    for (auto it = std::begin(items);
+         it != std::end(items); ++it) {
+        window.renderNpc(it->pos_x, it->pos_y,
+                         floorItemSurfacesMap[it->type]);
+    }
+}
+
+
 
 void GameRender::loadSurfacePaths() {
     //PISOS
@@ -291,6 +318,10 @@ void GameRender::loadSurfacePaths() {
                            {ELF, elf_surfaces},
                            {DWARF, dwarf_surfaces},
                            {GNOME, gnome_surfaces}};
+
+    floorItemSurfacesPaths = {
+            {ESPADA_STRING:}
+    };
 }
 
 void GameRender::setTilesSize(int width,int height) {
