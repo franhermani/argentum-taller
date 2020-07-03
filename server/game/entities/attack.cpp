@@ -27,6 +27,7 @@ void Attack::updatePosition() {
     }
     posX = new_x;
     posY = new_y;
+    blocksToRange --;
 }
 
 void Attack::update(const int ms) {
