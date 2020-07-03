@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include "player.h"
+#include "entities/player.h"
 #include "../utilities/json.hpp"
 
 using json = nlohmann::json;
@@ -38,7 +38,7 @@ public:
     const int eqInitialLife(Player& player);
 
     // Recuperacion de vida por el paso del tiempo
-    const int eqLifeRecovery(Player& player, int ms);
+    const int eqLifeRecovery(Player& player);
 
     // Mana maxima
     const int eqMaxMana(Player& player);
@@ -47,10 +47,10 @@ public:
     const int eqInitialMana(Player& player);
 
     // Recuperacion de mana por el paso del tiempo
-    const int eqManaRecovery(Player& player, int ms);
+    const int eqManaRecovery(Player& player);
 
     // Recuperacion de mana por meditar
-    const int eqManaMeditation(Player& player, int ms);
+    const int eqManaMeditation(Player& player);
 
     // Oro seguro en mano maximo
     const int eqMaxSafeGold(Player& player);

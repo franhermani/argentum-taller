@@ -4,7 +4,7 @@
 #include <mutex>
 #include <vector>
 #include <map>
-#include "items/item.h"
+#include "entities/items/item.h"
 
 class Bank {
     std::mutex m;

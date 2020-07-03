@@ -1,5 +1,5 @@
 #include "inventory.h"
-#include "../game_exception.h"
+#include "../../game_exception.h"
 
 Inventory::Inventory(const int max_items) :
 maxItems(max_items), numItems(0) {

@@ -4,26 +4,32 @@
 #include <vector>
 #include <set>
 #include "params.h"
-#include "player.h"
-#include "npcs_and_creatures/creature.h"
-#include "npcs_and_creatures/npc.h"
 #include "../../common/defines/terrains.h"
-#include "gold.h"
+#include "entities/player.h"
+#include "entities/npcs_and_creatures/creature.h"
+#include "entities/npcs_and_creatures/npc.h"
+#include "entities/gold.h"
+#include "entities/attack.h"
 
 class World {
     GameParams& params;
     std::vector<std::vector<Terrain>> matrix;
-    std::set<Terrain> impenetrableTerrains;
+    std::set<Terrain> entitiesImpenetrableTerrains;
+    std::set<Terrain> attacksImpenetrableTerrains;
     std::vector<Player*> players;
     std::vector<Creature*> creatures;
     std::vector<NPC*> npcs;
     std::vector<Item*> items;
     std::vector<Gold*> golds;
+    std::vector<Attack*> attacks;
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
 
-    // Llena el vector de terrenos impenetrables
-    void loadImpenetrableTerrains();
+    // Llena el vector de terrenos impenetrables por un player o criatura
+    void loadEntitiesImpenetrableTerrains();
+
+    // Llena el vector de terrenos impenetrables por un ataque
+    void loadAttacksImpenetrableTerrains();
 
     // Llena la matriz (mapa) segun el json generado por Tiled
     void loadMatrix();
@@ -31,6 +37,12 @@ class World {
     // Determina si una posicion (x,y) esta dentro de los limites de 'player'
     const bool inPlayerBoundaries(Player& player,
             const int pos_x, const int pos_y);
+
+    // Detecta una colision de ataque y lo ejecuta en caso de colisionar
+    void detectAttackCollision(Attack* new_attack);
+
+    // Elimina los ataques que llegaron a su rango de alcance
+    void removeRangeReachedAttacks();
 
 public:
     // Constructor
@@ -112,11 +124,8 @@ public:
     // Remueve un oro del mundo segun su pos (x,y)
     Gold* removeGold(const int pos_x, const int pos_y);
 
-    // Devuelve el player asociado al id
-    Player* getPlayerById(const int id) const;
-
-    // Devuelve la criatura asociada al id
-    Creature* getCreatureById(const int id) const;
+    // Agrega un ataque al mundo
+    void addAttack(Attack* new_attack);
 
     // Devuelve el NPC asociado a la posicion (pos_x, pos_y)
     NPC* getNPCByPos(const int pos_x, const int pos_y) const;

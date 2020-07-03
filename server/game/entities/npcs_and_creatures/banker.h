@@ -4,7 +4,7 @@
 #include <vector>
 #include "npc.h"
 #include "../player.h"
-#include "../bank.h"
+#include "../../bank.h"
 
 class Banker : public NPC {
     Bank& bank;

@@ -100,7 +100,9 @@
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 5,
-        "max_attack": 10
+        "max_attack": 10,
+        "move_velocity": 600,
+        "attack_velocity": 400
       },
       "skeleton": {
         "quantity": 5,
@@ -108,7 +110,9 @@
         "min_defense": 7,
         "max_defense": 12,
         "min_attack": 8,
-        "max_attack": 13
+        "max_attack": 13,
+        "move_velocity": 800,
+        "attack_velocity": 500
       },
       "zombie": {
         "quantity": 5,
@@ -116,7 +120,9 @@
         "min_defense": 3,
         "max_defense": 8,
         "min_attack": 2,
-        "max_attack": 7
+        "max_attack": 7,
+        "move_velocity": 1500,
+        "attack_velocity": 800
       },
       "spider": {
         "quantity": 5,
@@ -124,7 +130,9 @@
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 10,
-        "max_attack": 20
+        "max_attack": 20,
+        "move_velocity": 500,
+        "attack_velocity": 200
       }
     },
     "races": {
@@ -224,47 +232,65 @@
         "espada": {
           "min_damage": 2,
           "max_damage": 5,
+          "move_velocity": 500,
+          "range": 1,
           "price": 200
         },
         "hacha": {
           "min_damage": 4,
           "max_damage": 5,
+          "move_velocity": 1000,
+          "range": 1,
           "price": 300
         },
         "martillo": {
           "min_damage": 1,
           "max_damage": 9,
+          "move_velocity": 700,
+          "range": 1,
           "price": 500
         },
         "vara_fresno": {
           "min_damage": 2,
           "max_damage": 4,
           "mana_consumption": 5,
+          "move_velocity": 500,
+          "range": 10,
           "price": 350
         },
         "flauta_elfica": {
           "mana_consumption": 100,
+          "move_velocity": 500,
+          "range": 10,
           "price": 400
         },
         "baculo_nudoso": {
           "min_damage": 4,
           "max_damage": 8,
           "mana_consumption": 15,
+          "move_velocity": 500,
+          "range": 10,
           "price": 500
         },
         "baculo_engarzado": {
           "min_damage": 8,
           "max_damage": 20,
+          "move_velocity": 500,
+          "range": 10,
           "price": 700
         },
         "arco_simple": {
           "min_damage": 1,
           "max_damage": 4,
+          "move_velocity": 700,
+          "range": 8,
           "price": 150
         },
         "arco_compuesto": {
           "min_damage": 4,
           "max_damage": 16,
+          "move_velocity": 600,
+          "range": 9,
           "price": 300
         }
       },
@@ -315,12 +341,12 @@
         }
       },
       "potion": {
-        "life_potion": {
+        "pocion_vida": {
           "life_recovery": 50,
           "mana_recovery": 0,
           "price": 75
         },
-        "mana_potion": {
+        "pocion_mana": {
           "life_recovery": 0,
           "mana_recovery": 50,
           "price": 75

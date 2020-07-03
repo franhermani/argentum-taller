@@ -30,7 +30,7 @@ typedef struct {
     uint16_t max_life;          // Vida maxima
     uint16_t level;             // Nivel
     uint8_t is_alive;           // 1 si esta vivo, 0 si no (fantasma)
-    uint8_t is_meditating;      // 1 si esta vivo, 0 si no
+    uint8_t is_meditating;      // 1 si esta meditando, 0 si no
     uint8_t orientation;        // Enum type de la orientacion
     uint8_t race_type;          // Enum type de la raza
     uint8_t class_type;         // Enum type de la clase
@@ -85,5 +85,8 @@ typedef struct {
     uint16_t height;                // Alto de la matriz
     std::vector<Terrain> terrains;  // Lista de structs 'terrain_t'
 } matrix_t;
+
+// TODO: agregar struct lista de items --> enum y precio
+// - si es oro enum y cantidad
 
 #endif // WORLD_STRUCTS_H

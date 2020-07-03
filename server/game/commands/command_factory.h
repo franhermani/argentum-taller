@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "command.h"
-#include "../../game/player.h"
+#include "../entities/player.h"
 
 class CommandFactory {
 public:
