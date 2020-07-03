@@ -306,7 +306,7 @@ std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
 const int World::distance(const int x1, const int y1,
         const int x2, const int y2) {
     int dist_x = abs(x1 - x2), dist_y = abs(y1 - y2);
-    return dist_x + dist_y - 1;
+    return dist_x + dist_y;
 }
 
 const int World::getInventoryLength() const {

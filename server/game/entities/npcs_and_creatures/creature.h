@@ -39,7 +39,7 @@ class Creature {
     // en orden de conveniencia
     std::queue<int> getMovementPriorities(std::vector<int>& player_pos);
 
-    // Mueve a la criatura segun la direccion de 'getMovementDirection'
+    // Mueve a la criatura
     void moveTo(std::vector<int>& player_pos);
 
     friend class World;

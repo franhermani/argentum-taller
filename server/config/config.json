@@ -101,7 +101,7 @@
         "max_defense": 10,
         "min_attack": 5,
         "max_attack": 10,
-        "move_velocity": 600,
+        "move_velocity": 1000,
         "attack_velocity": 400
       },
       "skeleton": {
@@ -111,7 +111,7 @@
         "max_defense": 12,
         "min_attack": 8,
         "max_attack": 13,
-        "move_velocity": 800,
+        "move_velocity": 1200,
         "attack_velocity": 500
       },
       "zombie": {
@@ -121,7 +121,7 @@
         "max_defense": 8,
         "min_attack": 2,
         "max_attack": 7,
-        "move_velocity": 1500,
+        "move_velocity": 2000,
         "attack_velocity": 800
       },
       "spider": {
@@ -131,7 +131,7 @@
         "max_defense": 10,
         "min_attack": 10,
         "max_attack": 20,
-        "move_velocity": 500,
+        "move_velocity": 900,
         "attack_velocity": 200
       }
     },
