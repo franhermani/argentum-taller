@@ -35,6 +35,10 @@ public:
     //todo fix devolver referencia
     std::vector<player_t> getRenderablePlayers();
 
+    //fix devolver referencia
+    std::vector<creature_t> getRenderableCreatures();
+
+
     //todo fix devolver referencia
     std::vector<npc_t> getRenderableNpcs();
 

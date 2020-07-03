@@ -103,6 +103,33 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     }
 }
 
+void GameRender::createNecessaryCreatures(std::vector<creature_t>& creatures) {
+    for (auto& creature:creatures) {
+        int type = creature.type;
+        int orientation = creature.orientation;
+        if (creatureSurfacesMap[type].find(orientation)
+            == creatureSurfacesMap[type].end()) {
+            if (creatureSurfacesPaths[type].find(orientation)
+                == creatureSurfacesPaths[type].end()) {
+                continue;
+            }
+            Surface* surface = new Surface(
+                    creatureSurfacesPaths[type][orientation], window, 1);
+            creatureSurfacesMap[type].insert({orientation, surface});
+        }
+    }
+}
+
+
+void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
+    createNecessaryCreatures(creatures);
+    for (auto it = std::begin(creatures);
+         it != std::end(creatures); ++it) {
+        window.renderNpc(it->pos_x, it->pos_y,
+                         creatureSurfacesMap[it->type][it->orientation]);
+    }
+}
+
 
 void GameRender::createNecessaryNpcs(std::vector<npc_t>& npcs) {
     for (auto& npc:npcs) {
@@ -151,22 +178,50 @@ void GameRender::loadSurfacePaths() {
             {LEFT, "../client/resources/images/skeleton_left_t.png"},
             {RIGHT, "../client/resources/images/skeleton_right_t.png"}
     };
+    std::map<int, std::string> goblin_orientations = {
+            {UP, "../client/resources/images/goblin_up_t.png"},
+            {DOWN, "../client/resources/images/goblin_down_t.png"},
+            {LEFT, "../client/resources/images/goblin_left_t.png"},
+            {RIGHT, "../client/resources/images/goblin_right_t.png"}
+    };
 
-    npcSurfacesPaths = {
-            {SKELETON, skeleton_orientations}
+    std::map<int, std::string> zombie_orientations = {
+            {UP, "../client/resources/images/zombie_up_t.png"},
+            {DOWN, "../client/resources/images/zombie_down_t.png"},
+            {LEFT, "../client/resources/images/zombie_left_t.png"},
+            {RIGHT, "../client/resources/images/zombie_right_t.png"}
+    };
+    std::map<int, std::string> spider_orientations = {
+            {UP, "../client/resources/images/spider_up_t.png"},
+            {DOWN, "../client/resources/images/spider_down_t.png"},
+            {LEFT, "../client/resources/images/spider_left_t.png"},
+            {RIGHT, "../client/resources/images/spider_right_t.png"}
+    };
+
+
+    creatureSurfacesPaths = {
+            {SKELETON, skeleton_orientations},
+            {ZOMBIE, zombie_orientations},
+            {GOBLIN, goblin_orientations},
+            {SPIDER, spider_orientations}
     };
 
     std::map<int, Surface*> skeleton_surfaces;
-    npcSurfacesMap = {{SKELETON, skeleton_surfaces}};
+    std::map<int, Surface*> zombie_surfaces;
+    std::map<int, Surface*> goblin_surfaces;
+    creatureSurfacesMap = {{SKELETON, skeleton_surfaces},
+                      {ZOMBIE,   zombie_surfaces},
+                      {GOBLIN,   goblin_surfaces}
+    };
 
 
 
     //npcs
     std::map<int, std::string> banker_orientations = {
-            {UP, "../client/resources/images/skeleton_up_t.png"},
-            {DOWN, "../client/resources/images/skeleton_down_t.png"},
-            {LEFT, "../client/resources/images/skeleton_left_t.png"},
-            {RIGHT, "../client/resources/images/skeleton_right_t.png"}
+            {UP, "../client/resources/images/banker_up_t.png"},
+            {DOWN, "../client/resources/images/banker_down_t.png"},
+            {LEFT, "../client/resources/images/banker_left_t.png"},
+            {RIGHT, "../client/resources/images/banker_right_t.png"}
     };
     std::map<int, std::string> priest_orientations = {
             {UP, "../client/resources/images/priest_up_t.png"},
@@ -175,10 +230,10 @@ void GameRender::loadSurfacePaths() {
             {RIGHT, "../client/resources/images/priest_right_t.png"}
     };
     std::map<int, std::string> merchant_orientations = {
-            {UP, "../client/resources/images/spider_up_t.png"},
-            {DOWN, "../client/resources/images/spider_down_t.png"},
-            {LEFT, "../client/resources/images/spider_left_t.png"},
-            {RIGHT, "../client/resources/images/spider_right_t.png"}
+            {UP, "../client/resources/images/merchant_up_t.png"},
+            {DOWN, "../client/resources/images/merchant_down_t.png"},
+            {LEFT, "../client/resources/images/merchant_left_t.png"},
+            {RIGHT, "../client/resources/images/merchant_right_t.png"}
     };
 
     npcSurfacesPaths = {
@@ -259,6 +314,8 @@ void GameRender::run() {
         renderPlayers(players);
         std::vector<npc_t> npcs = mapMonitor.getRenderableNpcs();
         renderNpcs(npcs);
+        std::vector<creature_t> creatures = mapMonitor.getRenderableCreatures();
+        renderCreatures(creatures);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }
