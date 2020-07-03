@@ -66,13 +66,13 @@
     },
     "npcs": {
       "priest": {
-        "quantity": 10
+        "quantity": 3
       },
       "merchant": {
-        "quantity": 10
+        "quantity": 3
       },
       "banker": {
-        "quantity": 10
+        "quantity": 3
       }
     },
     "creatures": {
@@ -95,7 +95,7 @@
         }
       },
       "goblin": {
-        "quantity": 5,
+        "quantity": 3,
         "max_life": 100,
         "min_defense": 5,
         "max_defense": 10,
@@ -105,7 +105,7 @@
         "attack_velocity": 400
       },
       "skeleton": {
-        "quantity": 5,
+        "quantity": 3,
         "max_life": 200,
         "min_defense": 7,
         "max_defense": 12,
@@ -115,7 +115,7 @@
         "attack_velocity": 500
       },
       "zombie": {
-        "quantity": 5,
+        "quantity": 3,
         "max_life": 250,
         "min_defense": 3,
         "max_defense": 8,
@@ -125,7 +125,7 @@
         "attack_velocity": 800
       },
       "spider": {
-        "quantity": 5,
+        "quantity": 3,
         "max_life": 150,
         "min_defense": 5,
         "max_defense": 10,

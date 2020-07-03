@@ -1,4 +1,6 @@
 #include <random>
+#include <vector>
+#include <queue>
 #include "creature.h"
 #include "../../world.h"
 #include "../../equations.h"
@@ -16,6 +18,7 @@ isAlive(true),
 orientation(DOWN),
 maxLife(equations.eqMaxLife(*this)),
 actualLife(maxLife),
+attackRange(1),
 moveVelocity(move_velocity),
 attackVelocity(attack_velocity),
 msCounter(0) {
@@ -41,30 +44,84 @@ void Creature::loadInitialPosition() {
     posY = new_y;
 }
 
-void Creature::moveTo(int direction) {
-    int new_x = posX, new_y = posY;
+std::queue<int> Creature::getMovementPriorities(std::vector<int>& player_pos) {
+    std::queue<int> priorities;
+    int x_player = player_pos[0], y_player = player_pos[1];
+
+    if (posX != x_player) {
+        if (posX < x_player) {
+            priorities.push(RIGHT);
+            priorities.push(DOWN);
+            priorities.push(UP);
+            priorities.push(LEFT);
+        } else {
+            priorities.push(LEFT);
+            priorities.push(DOWN);
+            priorities.push(UP);
+            priorities.push(RIGHT);
+        }
+    } else {
+        if (posY < y_player) {
+            priorities.push(DOWN);
+            priorities.push(LEFT);
+            priorities.push(RIGHT);
+            priorities.push(UP);
+        } else {
+            priorities.push(UP);
+            priorities.push(LEFT);
+            priorities.push(RIGHT);
+            priorities.push(DOWN);
+        }
+    }
+    return priorities;
+}
+
+std::vector<int> Creature::getMovementPosition(const int direction) {
+    std::vector<int> pos = {posX, posY};
+
     switch (direction) {
         case LEFT:
-            new_x -= 1;
+            pos[0] -= 1;
             break;
         case RIGHT:
-            new_x += 1;
+            pos[0] += 1;
             break;
         case DOWN:
-            new_y += 1;
+            pos[1] += 1;
             break;
         case UP:
-            new_y -= 1;
+            pos[1] -= 1;
             break;
         default:
             break;
     }
-    if ((world.inMapBoundaries(new_x, new_y)) &&
-        (! world.inCollision(new_x, new_y))) {
-        posX = new_x;
-        posY = new_y;
+    return pos;
+}
+
+void Creature::moveTo(std::vector<int>& player_pos) {
+    std::queue<int> tries_remaining = getMovementPriorities(player_pos);
+
+    int direction = tries_remaining.front();
+    tries_remaining.pop();
+
+    std::vector<int> pos = getMovementPosition(direction);
+    bool move_available = true;
+
+    while ((! world.inMapBoundaries(pos[0], pos[1])) ||
+           (world.inCollision(pos[0], pos[1]))) {
+        if (tries_remaining.empty()) {
+            move_available = false;
+            break;
+        }
+        direction = tries_remaining.front();
+        tries_remaining.pop();
+        pos = getMovementPosition(direction);
     }
-    orientation = direction;
+    if (move_available) {
+        posX = pos[0];
+        posY = pos[1];
+        orientation = direction;
+    }
 }
 
 void Creature::subtractLife(int life) {
@@ -83,13 +140,6 @@ void Creature::die() {
     // TODO: respawnear en otra posicion (puede ser en un cementerio)
 }
 
-void Creature::attack(Player& player) {
-    if (isDead())
-        return;
-
-    player.receiveAttack(equations.eqDamageCaused(*this));
-}
-
 // -------------- //
 // Public methods //
 // -------------- //
@@ -97,10 +147,26 @@ void Creature::attack(Player& player) {
 void Creature::update(int ms) {
     msCounter += ms;
 
-    if (msCounter >= moveVelocity) {
-        msCounter = 0;
-        // TODO: moverse en busca de players y atacarlos
+    if (msCounter < moveVelocity)
+        return;
+
+    msCounter = 0;
+    std::vector<int> player_pos = world.getClosestPlayerPos(posX, posY);
+    bool in_attack_range = world.distance(posX, posY,
+            player_pos[0], player_pos[1]) <= attackRange;
+
+    if (in_attack_range) {
+//        world.addAttack(new Attack(...));
+    } else {
+        moveTo(player_pos);
     }
+}
+
+void Creature::attack(Player& player) {
+    if (isDead())
+        return;
+
+    player.receiveAttack(equations.eqDamageCaused(*this));
 }
 
 const int Creature::receiveAttack(const int damage) {

@@ -130,6 +130,12 @@ public:
     // Devuelve el NPC asociado a la posicion (pos_x, pos_y)
     NPC* getNPCByPos(const int pos_x, const int pos_y) const;
 
+    // Devuelve la posicion del player mas cercano a la posicion (pos_x, pos_y)
+    std::vector<int> getClosestPlayerPos(const int pos_x, const int pos_y);
+
+    // Devuelve la distancia (en bloques) de una posicion (x,y) a otra
+    const int distance(const int x1, const int y1, const int x2, const int y2);
+
     // Devuelve el largo maximo del inventario
     const int getInventoryLength() const;
 

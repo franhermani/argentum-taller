@@ -10,6 +10,7 @@ class Attack {
     int range, blocksToRange;
     int moveVelocity;
     int msCounter;
+    bool isColliding;
 
     friend class World;
 

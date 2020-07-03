@@ -1,6 +1,9 @@
 #ifndef CREATURE_H
 #define CREATURE_H
 
+#include <vector>
+#include <queue>
+
 class World;
 class Player;
 class Equations;
@@ -16,6 +19,7 @@ class Creature {
     int orientation;
     int maxLife;
     int actualLife;
+    int attackRange;
     int moveVelocity, attackVelocity;
     int msCounter;
 
@@ -28,11 +32,15 @@ class Creature {
     // TODO: ...
     void die();
 
-    // Mueve a la criatura segun la direccion dada
-    void moveTo(int direction);
+    // Devuelve la nueva pos (x,y) a la cual se moveria segun una direccion
+    std::vector<int> getMovementPosition(const int direction);
 
-    // Ataca a otro player segun su ID
-    void attack(Player& player);
+    // Devuelve las direcciones a moverse para acercarse al player
+    // en orden de conveniencia
+    std::queue<int> getMovementPriorities(std::vector<int>& player_pos);
+
+    // Mueve a la criatura segun la direccion de 'getMovementDirection'
+    void moveTo(std::vector<int>& player_pos);
 
     friend class World;
     friend class Equations;
@@ -49,6 +57,9 @@ public:
 
     // Mueve a la criatura en busca de players para atacarlos
     void update(int ms);
+
+    // Ataca a un player
+    void attack(Player& player);
 
     // Recibe el ataque de otro player
     // Devuelve la cantidad de daño realmente recibido

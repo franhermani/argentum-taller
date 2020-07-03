@@ -175,14 +175,15 @@ void Player::equipPotion(Potion *new_potion) {
 void Player::update(int ms) {
     msCounter += ms;
 
-    if (msCounter >= recoveryVelocity) {
-        msCounter = 0;
-        addLife(equations.eqLifeRecovery(*this));
-        addMana(equations.eqManaRecovery(*this));
+    if (msCounter < recoveryVelocity)
+        return;
 
-        if (isMeditating)
-            addMana(equations.eqManaMeditation(*this));
-    }
+    msCounter = 0;
+    addLife(equations.eqLifeRecovery(*this));
+    addMana(equations.eqManaRecovery(*this));
+
+    if (isMeditating)
+        addMana(equations.eqManaMeditation(*this));
 }
 
 void Player::moveTo(int direction) {

@@ -1,4 +1,5 @@
 #include <random>
+#include <cstdlib>
 #include "world.h"
 
 World::World(GameParams& params) : params(params) {
@@ -285,6 +286,27 @@ NPC* World::getNPCByPos(const int pos_x, const int pos_y) const {
             return npc;
 
     return nullptr;
+}
+
+std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
+    std::vector<int> pos = {0,0};
+    int min_distance = 2 * worldHeight, actual_distance;
+
+    for (auto& player : players) {
+        actual_distance = distance(pos_x, pos_y, player->posX, player->posY);
+        if (actual_distance < min_distance) {
+            min_distance = actual_distance;
+            pos[0] = player->posX;
+            pos[1] = player->posY;
+        }
+    }
+    return pos;
+}
+
+const int World::distance(const int x1, const int y1,
+        const int x2, const int y2) {
+    int dist_x = abs(x1 - x2), dist_y = abs(y1 - y2);
+    return dist_x + dist_y - 1;
 }
 
 const int World::getInventoryLength() const {
