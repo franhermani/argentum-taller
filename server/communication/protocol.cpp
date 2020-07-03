@@ -283,8 +283,12 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         byte_msg[pos+=SIZE_8] = w.creatures[i].orientation;
         pos -= SIZE_8;
     }
-    // Lista de items
 
+    // Lista de items
+    // TODO: ...
+
+    // Lista de ataques (no incluye ataques cuerpo a cuerpo)
+    // TODO: usar el bool isLongDistance()
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
