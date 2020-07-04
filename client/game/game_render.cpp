@@ -320,7 +320,25 @@ void GameRender::loadSurfacePaths() {
                            {GNOME, gnome_surfaces}};
 
     floorItemSurfacesPaths = {
-            {ESPADA_STRING:}
+            {ESPADA, "../client/resources/images/espada_t.png"},
+            {HACHA, "../client/resources/images/hacha_t.png"},
+            {MARTILLO, "../client/resources/images/martillo_t.png"},
+            {VARA_FRESNO, "../client/resources/images/vara_fresno_t.png"},
+            {FLAUTA_ELFICA, "../client/resources/images/flauta_elfica_t.png"},
+            {BACULO_NUDOSO, "../client/resources/images/baculo_nudoso_t.png"},
+            {BACULO_ENGARZADO, "../client/resources/images/baculo_engarzado_t.png"},
+            {ARCO_SIMPLE, "../client/resources/images/arco_simple_t.png"},
+            {ARCO_COMPUESTO, "../client/resources/images/arco_compuesto_t.png"},
+            {ARMADURA_CUERO, "../client/resources/images/armadura_cuero_t.png"},
+            {ARMADURA_PLACAS, "../client/resources/images/armadura_placas_t.png"},
+            {TUNICA_AZUL, "../client/resources/images/tunica_azul_t.png"},
+            {CAPUCHA, "../client/resources/images/capucha_t.png"},
+            {CASCO_HIERRO, "../client/resources/images/casco_hierro_t.png"},
+            {SOMBRERO_MAGICO, "../client/resources/images/sombrero_magico_t.png"},
+            {ESCUDO_TORTUGA, "../client/resources/images/escudo_tortuga_t.png"},
+            {ESCUDO_HIERRO, "../client/resources/images/escudo_hierro_t.png"},
+            {LIFE_POTION, "../client/resources/images/life_potion_t.png"},
+            {MANA_POTION, "../client/resources/images/mana_potion_t.png"},
     };
 }
 
