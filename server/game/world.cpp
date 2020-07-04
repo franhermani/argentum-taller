@@ -284,7 +284,7 @@ Gold* World::removeGold(const int pos_x, const int pos_y) {
     return nullptr;
 }
 
-void World::addAttack(Attack *new_attack) {
+void World::addAttack(Attack* new_attack) {
     attacks.push_back(new_attack);
 }
 

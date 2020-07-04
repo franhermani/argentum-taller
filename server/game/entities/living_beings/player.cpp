@@ -24,11 +24,6 @@ maxExperience(LONG_MAX),
 actualExperience(0),
 isMeditating(false),
 ableToUseMagic(classType != WARRIOR),
-maxMana(equations.eqMaxMana(*this)),
-actualMana(equations.eqInitialMana(*this)),
-maxSafeGold(equations.eqMaxSafeGold(*this)),
-maxExcessGold(equations.eqMaxExcessGold(*this)),
-actualGold(equations.eqInitialGold(*this)),
 weapon(nullptr),
 armor(nullptr),
 helmet(nullptr),
@@ -42,6 +37,11 @@ recoveryVelocity(RECOVERY_VELOCITY) {
     orientation = DOWN;
     maxLife = equations.eqMaxLife(*this);
     actualLife = equations.eqInitialLife(*this);
+    maxMana = equations.eqMaxMana(*this);
+    actualMana = equations.eqInitialMana(*this);
+    maxSafeGold = equations.eqMaxSafeGold(*this);
+    maxExcessGold = equations.eqMaxExcessGold(*this);
+    actualGold = equations.eqInitialGold(*this);
     msCounter = 0;
 
     loadInitialPosition();
