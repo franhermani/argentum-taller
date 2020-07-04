@@ -367,6 +367,8 @@ void GameRender::run() {
         renderCreatures(creatures);
         //std::vector<item_t> floor_items = mapMonitor.;
         //renderItems(floor_items);
+        player_info_t player_info = mapMonitor.getPlayerInfo();
+        window.renderPlayerInfo(player_info);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

@@ -131,6 +131,47 @@ void SDLWindow::renderGameFrame(Surface* surface) {
                    getSurface(), &stretchRect);
 }
 
+void SDLWindow::renderPlayerInfo(player_info_t player_info) {
+    std::cout << "'\n\n\n\n\n me llaman a renderizar player info" << lifeXPixelBegin << " " << lifeXPixelEnd << " " << lifeYPixelBegin << " " << lifeYPixelEnd ;
+    Surface* black_bar = new Surface("../client/resources/images/black_bar.png", *this, 0);
+    SDL_Rect stretchRect;
+    stretchRect.x = lifeXPixelBegin;
+    stretchRect.y = lifeYPixelBegin;
+    stretchRect.w = lifeXPixelEnd - lifeXPixelBegin;
+    stretchRect.h = lifeYPixelEnd - lifeYPixelBegin;
+    //std::cout << "'\n\n\n\n\n me llaman a renderizar player info" << stretchRect.x << " " << stretchRect.y << " " << stretchRect.w << " " << stretchRect.h ;
+    SDL_BlitScaled(black_bar->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    float life_percentage = 0.8;
+    stretchRect.x = lifeXPixelBegin;
+    stretchRect.y = lifeYPixelBegin;
+    stretchRect.w = (int) ((float)(lifeXPixelEnd - lifeXPixelBegin))*life_percentage;
+    stretchRect.h = lifeYPixelEnd - lifeYPixelBegin;
+
+    Surface* life_bar = new Surface("../client/resources/images/life_bar.png", *this, 0);
+    SDL_BlitScaled(life_bar->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    stretchRect.x = manaXPixelBegin;
+    stretchRect.y = manaYPixelBegin;
+    stretchRect.w = manaXPixelEnd - manaXPixelBegin;
+    stretchRect.h = manaYPixelEnd - manaYPixelBegin;
+    SDL_BlitScaled(black_bar->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    float mana_percentage = 0.6;
+    stretchRect.x = manaXPixelBegin;
+    stretchRect.y = manaYPixelBegin;
+    stretchRect.w = (int) ((float)(manaXPixelEnd - manaXPixelBegin))*mana_percentage;
+    stretchRect.h = manaYPixelEnd - manaYPixelBegin;
+    Surface* mana_bar = new Surface("../client/resources/images/mana_bar.png", *this, 0);
+    SDL_BlitScaled(mana_bar->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+
+}
+
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     numberOfTilesInWidth = tileWidth;
     numberOfTilesInHeight = tileHeight;
@@ -142,4 +183,16 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
             numberOfTilesInWidth;
     yHeightTileSize = (frameYPixelEnd - frameYPixelBegin) /
             numberOfTilesInHeight;
+    lifeXPixelBegin = (int)  (((float) screenWidth/100) * 78.8);
+    lifeXPixelEnd =  (int) (((float) screenWidth/100) * 86.5);
+    lifeYPixelBegin = (int) (((float) screenHeight/100) * 87);
+    lifeYPixelEnd = (int) (((float) screenHeight/100) * 88.5);
+    manaXPixelBegin = (int)  (((float) screenWidth/100) * 78.8);
+    manaXPixelEnd =  (int) (((float) screenWidth/100) * 86.5);
+    manaYPixelBegin = (int) (((float) screenHeight/100) * 84.1);
+    manaYPixelEnd = (int) (((float) screenHeight/100) * 85.6);
+    //(int) (806/1024)
+    // (882/1024)
+    // (668/768)
+    //(677/768)
 }

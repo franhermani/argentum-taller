@@ -8,6 +8,7 @@
 #include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
 #include "area.h"
+#include "../../common/defines/world_structs.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE
 
@@ -28,6 +29,15 @@ class SDLWindow {
     int frameXPixelEnd;
     int frameYPixelBegin;
     int frameYPixelEnd;
+    int lifeXPixelBegin;
+    int lifeXPixelEnd;
+    int lifeYPixelBegin;
+    int lifeYPixelEnd;
+    int manaXPixelBegin;
+    int manaXPixelEnd;
+    int manaYPixelBegin;
+    int manaYPixelEnd;
+
 
 public:
     // Constructor
@@ -79,5 +89,7 @@ public:
     void setTilesSize(int tileWidth, int tileHeight);
 
     void renderGameFrame(Surface *surface);
+
+    void renderPlayerInfo(player_info_t player_info);
 };
 #endif // SDL_WINDOW_H
