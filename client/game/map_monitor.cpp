@@ -78,3 +78,8 @@ player_info_t MapMonitor::getPlayerInfo() {
     return map.getPlayerInfo();
 }
 
+player_t MapMonitor::getMainPlayer() {
+    std::unique_lock<std::mutex> lk(m);
+    return map.getMainPlayer();
+}
+
