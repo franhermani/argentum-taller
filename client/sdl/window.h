@@ -90,5 +90,7 @@ public:
 
     void renderGameFrame(Surface *surface);
     void renderInventory(std::vector<Surface*>& surfaces);
+    void renderEquipped(player_t player,
+                                   std::map<int, Surface*>& surfaces_map);
     };
 #endif // SDL_WINDOW_H

@@ -116,7 +116,23 @@ void SDLWindow::renderEquipped(player_t player,
     stretchRect.y = equippedYPixelBegin;
     stretchRect.w = equipped_width;
     stretchRect.h = equippedYPixelEnd-equippedYPixelBegin;
-    SDL_BlitScaled(surfaces_map.at(ITEm)->
+    //weapon
+    SDL_BlitScaled(surfaces_map.at(player.weapon)->
+                           getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+    //armor
+    stretchRect.x = stretchRect.x + equipped_width;
+    SDL_BlitScaled(surfaces_map.at(player.armor)->
+                           getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+    //helmet
+    stretchRect.x = stretchRect.x + equipped_width;
+    SDL_BlitScaled(surfaces_map.at(player.helmet)->
+                           getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+    //shield
+    stretchRect.x = stretchRect.x + equipped_width;
+    SDL_BlitScaled(surfaces_map.at(player.shield)->
                            getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
 }

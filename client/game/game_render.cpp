@@ -377,8 +377,8 @@ void GameRender::run() {
                                             //new Surface("../client/resources/images/vara_fresno_t.png", window, 0),
                                             new Surface("../client/resources/images/capucha_t.png", window, 0)};
         //renderItems(floor_items);
-
         window.renderInventory(floor_items);
+        renderEquipped()
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }
