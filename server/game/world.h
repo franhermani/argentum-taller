@@ -6,9 +6,9 @@
 #include "params.h"
 #include "entities/items/item_factory.h"
 #include "../../common/defines/terrains.h"
-#include "entities/player.h"
-#include "entities/npcs_and_creatures/creature.h"
-#include "entities/npcs_and_creatures/npc.h"
+#include "entities/living_beings/player.h"
+#include "entities/living_beings/creature.h"
+#include "entities/npcs/npc.h"
 #include "entities/gold.h"
 #include "entities/attack.h"
 

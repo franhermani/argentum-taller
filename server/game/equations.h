@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "entities/player.h"
+#include "entities/living_beings/player.h"
 #include "../utilities/json.hpp"
 
 using json = nlohmann::json;
@@ -68,19 +68,12 @@ public:
     // Limite de experiencia del nivel actual
     const long eqExperienceLimit(Player& player);
 
-    // Experiencia obtenida por ataque realizado a otro player
-    const long eqExperienceAttack(Player& player, Player& other,
+    // Experiencia obtenida por ataque realizado a otro player o criatura
+    const long eqExperienceAttack(Player& player, LivingBeing& other,
             const int damage);
 
-    // Experiencia obtenida por ataque realizado a una criatura
-    const long eqExperienceAttack(Player& player, Creature& creature,
-            const int damage);
-
-    // Experiencia obtenida por matar a otro player
-    const long eqExperienceKill(Player& player, Player& other);
-
-    // Experiencia obtenida por matar a una criatura
-    const long eqExperienceKill(Player& player, Creature& creature);
+    // Experiencia obtenida por matar a otro player o criatura
+    const long eqExperienceKill(Player& player, LivingBeing& other);
 
     // Daño producido por ataque realizado de un player
     const int eqDamageCaused(Player& player);

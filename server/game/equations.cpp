@@ -137,7 +137,7 @@ const long Equations::eqExperienceLimit(Player &player) {
     return experience;
 }
 
-const long Equations::eqExperienceAttack(Player &player, Player &other,
+const long Equations::eqExperienceAttack(Player &player, LivingBeing &other,
         const int damage) {
     json exp_params = configParams["player"]["experience"]["attack_eq"];
     int c1 = exp_params["c1"];
@@ -145,29 +145,12 @@ const long Equations::eqExperienceAttack(Player &player, Player &other,
     return experience;
 }
 
-const long Equations::eqExperienceAttack(Player &player, Creature &creature,
-        const int damage) {
-    json exp_params = configParams["player"]["experience"]["attack_eq"];
-    int c1 = exp_params["c1"];
-    long experience = damage * std::max(creature.level - player.level + c1, 0);
-    return experience;
-}
-
-const long Equations::eqExperienceKill(Player &player, Player &other) {
+const long Equations::eqExperienceKill(Player &player, LivingBeing &other) {
     json exp_params = configParams["player"]["experience"]["kill_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
     int c3 = exp_params["c3"];
     long experience = randomDouble(c1, c2) * other.maxLife *
                       std::max(other.level - player.level + c3, 0);
-    return experience;
-}
-
-const long Equations::eqExperienceKill(Player &player, Creature &creature) {
-    json exp_params = configParams["player"]["experience"]["kill_eq"];
-    double c1 = exp_params["c1"], c2 = exp_params["c2"];
-    int c3 = exp_params["c3"];
-    long experience = randomDouble(c1, c2) * creature.maxLife *
-                      std::max(creature.level - player.level + c3, 0);
     return experience;
 }
 

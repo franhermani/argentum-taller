@@ -337,8 +337,8 @@ void GameRender::loadSurfacePaths() {
             {SOMBRERO_MAGICO, "../client/resources/images/sombrero_magico_t.png"},
             {ESCUDO_TORTUGA, "../client/resources/images/escudo_tortuga_t.png"},
             {ESCUDO_HIERRO, "../client/resources/images/escudo_hierro_t.png"},
-            {LIFE_POTION, "../client/resources/images/life_potion_t.png"},
-            {MANA_POTION, "../client/resources/images/mana_potion_t.png"},
+            {POCION_VIDA, "../client/resources/images/life_potion_t.png"},
+            {POCION_MANA, "../client/resources/images/mana_potion_t.png"},
     };
 }
 

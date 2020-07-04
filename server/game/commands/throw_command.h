@@ -2,7 +2,7 @@
 #define THROW_COMMAND_H
 
 #include "command.h"
-#include "../entities/player.h"
+#include "../entities/living_beings/player.h"
 
 class ThrowCommand : public Command{
     Player& player;

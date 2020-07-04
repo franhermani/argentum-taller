@@ -6,26 +6,28 @@
 #include "../../equations.h"
 #include "../../../../common/defines/commands.h"
 #include "../../../defines/creatures_death_drop.h"
-#include "../items/potion.h"
 
 Creature::Creature(World &world, Equations& equations,
-        const int id, const int type, const int move_velocity,
+        const int new_id, const int type, const int move_velocity,
         const int attack_velocity) :
 world(world),
 equations(equations),
-id(id),
 type(type),
-level(10),              // TODO: ver de donde cargar esto
-isAlive(true),
-orientation(DOWN),
-maxLife(equations.eqMaxLife(*this)),
-actualLife(maxLife),
 attackRange(1),
 moveVelocity(move_velocity),
-attackVelocity(attack_velocity),
-msCounter(0) {
+attackVelocity(attack_velocity) {
+    id = new_id;
+    level = 10;     // TODO: ver de donde cargar esto
+    isAlive = true;
+    orientation = DOWN;
+    maxLife = equations.eqMaxLife(*this);
+    actualLife = maxLife;
+    msCounter = 0;
+
     loadInitialPosition();
 }
+
+Creature::~Creature() = default;
 
 // --------------- //
 // Private methods //
@@ -126,16 +128,6 @@ void Creature::moveTo(std::vector<int>& player_pos) {
     }
 }
 
-void Creature::subtractLife(int life) {
-    actualLife -= life;
-
-    if (actualLife < 0)
-        actualLife = 0;
-
-    if (actualLife == 0)
-        die();
-}
-
 void Creature::die() {
     isAlive = false;
     std::vector<int> death_drop = equations.eqCreatureDeathDrop(*this);
@@ -189,12 +181,12 @@ void Creature::attack(Player& player) {
     player.receiveAttack(equations.eqDamageCaused(*this));
 }
 
+void Creature::attack(Creature &creature) {
+    // Do nothing
+}
+
 const int Creature::receiveAttack(const int damage) {
     int damage_received = equations.eqDamageReceived(*this, damage);
     subtractLife(damage_received);
     return damage_received;
-}
-
-const bool Creature::isDead() const {
-    return (! isAlive);
 }

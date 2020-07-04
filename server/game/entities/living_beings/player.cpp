@@ -3,48 +3,48 @@
 #include <climits>
 #include <algorithm>
 #include "player.h"
-#include "../world.h"
-#include "../equations.h"
-#include "../../../common/defines/commands.h"
-#include "../../../common/defines/classes.h"
-#include "../game_exception.h"
+#include "../../world.h"
+#include "../../equations.h"
+#include "../../../../common/defines/commands.h"
+#include "../../../../common/defines/classes.h"
+#include "../../game_exception.h"
 
 // TODO: ver si vale la pena mover esto a un param de la clase en el json
 #define RECOVERY_VELOCITY   1000
 #define NO_WEAPON_VELOCITY  600
 #define NO_WEAPON_RANGE     1
 
-Player::Player(World& world, Equations& equations, const int id,
+Player::Player(World& world, Equations& equations, const int new_id,
         const int race_type, const int class_type) :
 world(world),
 equations(equations),
-id(id),
 raceType(race_type),
 classType(class_type),
-level(1),
 maxExperience(LONG_MAX),
 actualExperience(0),
-isAlive(true),
 isMeditating(false),
-isNewbie(level <= world.getMaxLevelNewbie()),
 ableToUseMagic(classType != WARRIOR),
-orientation(DOWN),
-maxLife(equations.eqMaxLife(*this)),
-actualLife(equations.eqInitialLife(*this)),
 maxMana(equations.eqMaxMana(*this)),
 actualMana(equations.eqInitialMana(*this)),
 maxSafeGold(equations.eqMaxSafeGold(*this)),
 maxExcessGold(equations.eqMaxExcessGold(*this)),
 actualGold(equations.eqInitialGold(*this)),
+weapon(nullptr),
+armor(nullptr),
+helmet(nullptr),
+shield(nullptr),
 inventory(world.getInventoryLength()),
-recoveryVelocity(RECOVERY_VELOCITY),
-msCounter(0) {
-    loadInitialPosition();
+recoveryVelocity(RECOVERY_VELOCITY) {
+    id = new_id;
+    level = 1;
+    isAlive = true;
+    isNewbie = (level <= world.getMaxLevelNewbie());
+    orientation = DOWN;
+    maxLife = equations.eqMaxLife(*this);
+    actualLife = equations.eqInitialLife(*this);
+    msCounter = 0;
 
-    weapon = nullptr;
-    armor = nullptr;
-    helmet = nullptr;
-    shield = nullptr;
+    loadInitialPosition();
 
     bool debug = true;
     if (debug) {
@@ -87,16 +87,6 @@ void Player::loadInitialPosition() {
     }
     posX = new_x;
     posY = new_y;
-}
-
-void Player::subtractLife(int life) {
-    actualLife -= life;
-
-    if (actualLife < 0)
-        actualLife = 0;
-
-    if (actualLife == 0)
-        die();
 }
 
 void Player::addLife(int life) {
@@ -340,10 +330,6 @@ const int Player::receiveAttack(const int damage) {
     int damage_received = equations.eqDamageReceived(*this, damage);
     subtractLife(damage_received);
     return damage_received;
-}
-
-const bool Player::isDead() const {
-    return (! isAlive);
 }
 
 void Player::equipItemFromInventory(const int type) {

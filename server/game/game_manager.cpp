@@ -1,12 +1,11 @@
 #include <string>
 #include <thread>
 #include <chrono>
-#include <iostream>
 #include "game_manager.h"
 #include "game_exception.h"
-#include "entities/npcs_and_creatures/priest.h"
-#include "entities/npcs_and_creatures/merchant.h"
-#include "entities/npcs_and_creatures/banker.h"
+#include "entities/npcs/priest.h"
+#include "entities/npcs/merchant.h"
+#include "entities/npcs/banker.h"
 #include "../../common/defines/commands.h"
 #include "../../common/defines/creatures.h"
 

@@ -3,34 +3,24 @@
 
 #include <vector>
 #include <queue>
+#include "living_being.h"
 
 class World;
 class Player;
 class Equations;
 
-class Creature {
+class Creature : public LivingBeing{
     World& world;
     Equations& equations;
-    int id;
     int type;
-    int posX{}, posY{};
-    int level;
-    bool isAlive;
-    int orientation;
-    int maxLife;
-    int actualLife;
     int attackRange;
     int moveVelocity, attackVelocity;
-    int msCounter;
 
     // Genera posiciones iniciales aleatorias para la criatura
     void loadInitialPosition();
 
-    // Resta puntos de vida a la criatura
-    void subtractLife(int life);
-
     // TODO: ...
-    void die();
+    void die() override;
 
     // Devuelve la nueva pos (x,y) a la cual se moveria segun una direccion
     std::vector<int> getMovementPosition(const int direction);
@@ -48,25 +38,29 @@ class Creature {
 
 public:
     Creature(World& world, Equations& equations,
-            const int id, const int type, const int move_velocity,
+            const int new_id, const int type, const int move_velocity,
             const int attack_velocity);
 
     // Constructor y asignacion por copia deshabilitados
     Creature(const Creature& other) = delete;
     Creature& operator=(const Creature& other) = delete;
 
+    // Destructor
+    ~Creature();
+
     // Mueve a la criatura en busca de players para atacarlos
-    void update(int ms);
+    void update(int ms) override;
 
     // Ataca a un player
-    void attack(Player& player);
+    void attack(Player& player) override;
+
+    // Ataca a una criatura
+    // No hace nada
+    void attack(Creature& creature) override;
 
     // Recibe el ataque de otro player
     // Devuelve la cantidad de daño realmente recibido
-    const int receiveAttack(const int damage);
-
-    // Devuelve true si esta muerto, false en caso contrario
-    const bool isDead() const;
+    const int receiveAttack(const int damage) override;
 };
 
 #endif // CREATURE_H
