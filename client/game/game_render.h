@@ -6,18 +6,13 @@
 #include <map>
 #include <SDL2/SDL_image.h>
 #include "../sdl/window.h"
+#include "../sdl/player_info_bars.h"
 #include "../../common/thread.h"
 #include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"
 
-enum playerInfoBars {
-    LIFE,
-    MANA,
-    EXPERIENCE,
-    BACKGROUND
-};
 
 class GameRender : public Thread {
     const int screenWidth;
@@ -98,6 +93,8 @@ public:
     void setTilesSize(int width, int height);
 
     Surface* createGameFrameSurface();
+
+    std::map<int, float> getRenderablePlayerInfo();
 };
 
 #endif //ARGENTUM_GAME_RENDER_H

@@ -360,6 +360,18 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
+std::map<int, float> GameRender::getRenderablePlayerInfo() {
+    player_info_t player_info = mapMonitor.getPlayerInfo();
+    player_t main_player = mapMonitor.getMainPlayer();
+    std::map<int, float> playerInfo = {
+            //TODO RECIBIR EXPERIENCE max
+            {LIFE, main_player.actual_life/main_player.max_life},
+            {MANA, player_info.actual_mana/player_info.max_mana},
+            {EXPERIENCE, player_info.actual_experience/player_info.actual_experience}
+    };
+    return std::move(playerInfo);
+}
+
 void GameRender::run() {
     using ms = std::chrono::milliseconds;
     std::this_thread::sleep_for(ms(500));
@@ -379,8 +391,8 @@ void GameRender::run() {
         renderCreatures(creatures);
         //std::vector<item_t> floor_items = mapMonitor.;
         //renderItems(floor_items);
-        player_info_t player_info = mapMonitor.getPlayerInfo();
-        window.renderPlayerInfo(player_info);
+        std::map<int, float> infoPercentages = getRenderablePlayerInfo();
+        window.renderPlayerInfo(infoPercentages, infoSurfacesMap);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }
