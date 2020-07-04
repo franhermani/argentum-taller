@@ -1,9 +1,9 @@
 #include "attack.h"
 #include "../../../common/defines/commands.h"
 
-Attack::Attack(Player *player, const int pos_x, const int pos_y,
+Attack::Attack(LivingBeing *owner, const int pos_x, const int pos_y,
         const int direction, const int range, const int move_velocity) :
-        player(player), posX(pos_x), posY(pos_y), direction(direction),
+        owner(owner), posX(pos_x), posY(pos_y), direction(direction),
         range(range), blocksToRange(range), moveVelocity(move_velocity),
         msCounter(0), isColliding(false) {}
 

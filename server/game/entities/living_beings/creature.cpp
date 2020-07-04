@@ -150,6 +150,7 @@ void Creature::die() {
             break;
     }
     // TODO: respawnear en otra posicion (puede ser en un cementerio)
+    // y setear isAlive = true de nuevo
 }
 
 // -------------- //
@@ -163,12 +164,14 @@ void Creature::update(int ms) {
         return;
 
     msCounter = 0;
+
     std::vector<int> player_pos = world.getClosestPlayerPos(posX, posY);
     bool in_attack_range = world.distance(posX, posY,
             player_pos[0], player_pos[1]) <= attackRange;
 
     if (in_attack_range) {
-//        world.addAttack(new Attack(...));
+        world.addAttack(new Attack(this, posX, posY, orientation,
+                attackRange, attackVelocity));
     } else {
         moveTo(player_pos);
     }

@@ -207,7 +207,7 @@ const bool World::inCollision(const int pos_x, const int pos_y) {
 }
 
 void World::detectAttackCollision(Attack* new_attack) {
-    Player* player = new_attack->player;
+    LivingBeing* owner = new_attack->owner;
     int pos_x = new_attack->posX, pos_y = new_attack->posY;
 
     // Terrenos impenetrables
@@ -220,14 +220,16 @@ void World::detectAttackCollision(Attack* new_attack) {
     for (auto& p : players)
         if (p->posX == pos_x && p->posY == pos_y) {
             new_attack->collision();
-            player->attack(*p);
+            owner->attack(*p);
+            return;
         }
 
     // Criaturas
     for (auto& c : creatures)
         if (c->posX == pos_x && c->posY == pos_y) {
             new_attack->collision();
-            player->attack(*c);
+            owner->attack(*c);
+            return;
         }
 
     // NPCs
