@@ -90,6 +90,6 @@ public:
 
     void renderGameFrame(Surface *surface);
 
-    void renderPlayerInfo(player_info_t player_info);
+    void renderPlayerInfo(std::map<int, float> player_info, std::map<int, Surface *> info_surfaces_map);
 };
 #endif // SDL_WINDOW_H
