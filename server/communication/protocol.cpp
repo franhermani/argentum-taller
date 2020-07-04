@@ -177,7 +177,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.player_info.actual_mana = htons(player.actualMana);
     w.player_info.max_mana = htons(player.maxMana);
     w.player_info.actual_gold = htons(player.actualGold);
-    w.player_info.max_gold = htons(player.maxGold);
+    w.player_info.max_gold = htons(player.maxSafeGold);
     w.player_info.actual_experience = htonl(player.actualExperience);
     w.player_info.long_distance = player.weapon &&
             player.weapon->isLongDistance() ? 1 : 0;

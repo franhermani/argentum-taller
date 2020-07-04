@@ -34,7 +34,8 @@ class Player {
     int actualLife;
     int maxMana;
     int actualMana;
-    int maxGold;
+    int maxSafeGold;
+    int maxExcessGold;
     int actualGold;
     Weapon* weapon;
     Armor* armor;
@@ -53,6 +54,9 @@ class Player {
     // Suma puntos de vida al player
     void addLife(int life);
 
+    // Resta puntos de mana al player
+    void subtractMana(int mana);
+
     // Suma puntos de mana al player
     void addMana(int mana);
 
@@ -62,6 +66,12 @@ class Player {
 
     // Setea 'isAlive' en false
     void die();
+
+    // Dropea el oro en exceso al mundo
+    void dropExcessGold();
+
+    // Dropea los items del inventario al mundo
+    void dropInventoryItems();
 
     // Setea 'isMeditating' en false
     void stopMeditating();

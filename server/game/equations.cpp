@@ -113,13 +113,20 @@ const int Equations::eqManaMeditation(Player &player) {
 const int Equations::eqMaxSafeGold(Player &player) {
     json gold_params = configParams["player"]["gold"]["max_safe_eq"];
     double c1 = gold_params["c1"], c2 = gold_params["c2"];
-    int max_gold = c1 * pow(player.level, c2);
-    return max_gold;
+    int max_safe_gold = c1 * pow(player.level, c2);
+    return max_safe_gold;
+}
+
+const int Equations::eqMaxExcessGold(Player &player) {
+    double percentage = configParams["player"]["gold"]
+            ["additional_percentage"];
+    int max_excess_gold = player.maxSafeGold * percentage;
+    return max_excess_gold;
 }
 
 const int Equations::eqInitialGold(Player &player) {
     double percentage = configParams["player"]["gold"]["initial_percentage"];
-    int initial_gold = percentage * player.maxGold;
+    int initial_gold = percentage * player.maxSafeGold;
     return initial_gold;
 }
 

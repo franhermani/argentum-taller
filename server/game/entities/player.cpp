@@ -33,7 +33,8 @@ maxLife(equations.eqMaxLife(*this)),
 actualLife(equations.eqInitialLife(*this)),
 maxMana(equations.eqMaxMana(*this)),
 actualMana(equations.eqInitialMana(*this)),
-maxGold(equations.eqMaxSafeGold(*this)),
+maxSafeGold(equations.eqMaxSafeGold(*this)),
+maxExcessGold(equations.eqMaxExcessGold(*this)),
 actualGold(equations.eqInitialGold(*this)),
 inventory(world.getInventoryLength()),
 recoveryVelocity(RECOVERY_VELOCITY),
@@ -56,7 +57,8 @@ msCounter(0) {
         "- Vida inicial: " << actualLife << "\n" <<
         "- Mana maxima: " << maxMana << "\n" <<
         "- Mana inicial: " << actualMana << "\n" <<
-        "- Oro maximo: " << maxGold << "\n" <<
+        "- Oro seguro maximo: " << maxSafeGold << "\n" <<
+        "- Oro en exceso maximo: " << maxExcessGold << "\n" <<
         "- Oro actual: " << actualGold << "\n";
     }
 }
@@ -104,6 +106,13 @@ void Player::addLife(int life) {
         actualLife = maxLife;
 }
 
+void Player::subtractMana(int mana) {
+    actualMana -= mana;
+
+    if (actualMana < 0)
+        actualMana = 0;
+}
+
 void Player::addMana(int mana) {
     actualMana += mana;
 
@@ -129,7 +138,19 @@ void Player::die() {
     stopMeditating();
     isAlive = false;
 
-    // TODO: dropear oro
+    dropExcessGold();
+    dropInventoryItems();
+}
+
+void Player::dropExcessGold() {
+    int excess_gold = actualGold - maxSafeGold;
+
+    if (excess_gold > 0)
+        world.addGold(new Gold(excess_gold, posX, posY));
+}
+
+void Player::dropInventoryItems() {
+    // TODO: armar algun algoritmo que recorra en espiral
 }
 
 void Player::stopMeditating() {
@@ -142,10 +163,12 @@ void Player::equipWeapon(Weapon* new_weapon) {
         throw GameException(id, "Eres un guerrero. No puedes utilizar "
                                 "armas magicas");
     }
+    inventory.addItem(weapon);
     weapon = new_weapon;
 }
 
 void Player::equipArmor(Armor* new_armor) {
+    inventory.addItem(armor);
     armor = new_armor;
 }
 
@@ -155,10 +178,12 @@ void Player::equipHelmet(Helmet* new_helmet) {
         throw GameException(id, "Eres un guerrero. No puedes utilizar "
                                 "cascos magicos");
     }
+    inventory.addItem(helmet);
     helmet = new_helmet;
 }
 
 void Player::equipShield(Shield* new_shield) {
+    inventory.addItem(shield);
     shield = new_shield;
 }
 
@@ -245,13 +270,25 @@ void Player::meditate() {
 void Player::attack() {
     stopMeditating();
 
+    // TODO: chequear safe zones!!!
+
     if (isDead())
         throw GameException(id, "Eres un fantasma. No puedes atacar");
 
-    // TODO: chequear safe zones!!!
+    int mana_consumption = weapon ? weapon->manaConsumption : 0;
+    bool is_life_restorer = weapon ? weapon->isLifeRestorer : false;
 
-    // TODO: consuminar mana --> mana_consumption
-    // si no tiene suficiente mana --> GameException!!!
+    if (mana_consumption > actualMana) {
+        throw GameException(id, "No tienes suficiente mana para utilizar "
+                                "esta arma (requiere %d)", mana_consumption);
+    } else {
+        subtractMana(mana_consumption);
+    }
+
+    if (is_life_restorer) {
+        addLife(maxLife);
+        return;
+    }
 
     int weapon_range = weapon ? weapon->range : NO_WEAPON_RANGE,
         weapon_velocity = weapon ? weapon->moveVelocity : NO_WEAPON_VELOCITY;
@@ -384,7 +421,7 @@ void Player::addItemToInventory(Item *item) {
 }
 
 void Player::addGold(const int quant) {
-    if (actualGold + quant > maxGold)
+    if (actualGold + quant > maxExcessGold)
         throw GameException(id, "No tienes suficiente espacio "
                                 "para guardar el oro");
 
@@ -399,6 +436,12 @@ void Player::removeGold(const int quant) {
 }
 
 void Player::takeGoldFromWorld(const int pos_x, const int pos_y) {
+    stopMeditating();
+
+    if (isDead())
+        throw GameException(id, "Eres un fantasma. No puedes tomar oro "
+                                "del mundo");
+
     Gold* gold = world.removeGold(pos_x, pos_y);
 
     try {

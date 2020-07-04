@@ -59,6 +59,9 @@ public:
     // Oro seguro en mano maximo
     const int eqMaxSafeGold(Player& player);
 
+    // Oro en exceso maximo
+    const int eqMaxExcessGold(Player& player);
+
     // Oro inicial
     const int eqInitialGold(Player& player);
 
