@@ -78,20 +78,20 @@
     "creatures": {
       "death_prob_eq": {
         "nothing": {
-          "p": 0.8
+          "p": 0.5
         },
         "gold": {
-          "p": 0.1,
+          "p": 0.2,
           "quantity_eq": {
             "c1": 0.01,
             "c2": 0.2
           }
         },
         "potion": {
-          "p": 0.08
+          "p": 0.2
         },
         "other": {
-          "p": 0.02
+          "p": 0.1
         }
       },
       "goblin": {

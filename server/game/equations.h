@@ -14,8 +14,11 @@ class Equations {
     std::map<int, std::string> creatures_map;
     json configParams;
 
-    // Devuelve un numero aleatorio entre 'a' y 'b'
-    const double randomNumber(const double a, const double b);
+    // Devuelve un numero entero aleatorio entre 'a' y 'b'
+    const int randomInt(const int a, const int b);
+
+    // Devuelve un numero double aleatorio entre 'a' y 'b'
+    const double randomDouble(const double a, const double b);
 
     // Devuelve el promedio entre 'a' y 'b'
     const double average(const double a, const double b);
@@ -58,9 +61,6 @@ public:
     // Oro inicial
     const int eqInitialGold(Player& player);
 
-    // Oro que dropea una criatura al morir
-//    const int eqGoldDrop(NPC& npc);
-
     // Limite de experiencia del nivel actual
     const long eqExperienceLimit(Player& player);
 
@@ -91,6 +91,10 @@ public:
     // Daño recibido de criatura por ataque recibido
     // Incluye la posibilidad de esquivarlo
     const int eqDamageReceived(Creature& creature, const int damage);
+
+    // Item o cantidad de oro que dropea una criatura al morir
+    // Devuelve un vector<enum creatureDeathDrop, cant o enum itemType>
+    std::vector<int> eqCreatureDeathDrop(Creature& creature);
 };
 
 #endif // EQUATIONS_H

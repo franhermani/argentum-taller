@@ -5,6 +5,8 @@
 #include "../../world.h"
 #include "../../equations.h"
 #include "../../../../common/defines/commands.h"
+#include "../../../defines/creatures_death_drop.h"
+#include "../items/potion.h"
 
 Creature::Creature(World &world, Equations& equations,
         const int id, const int type, const int move_velocity,
@@ -136,6 +138,29 @@ void Creature::subtractLife(int life) {
 
 void Creature::die() {
     isAlive = false;
+    std::vector<int> death_drop = equations.eqCreatureDeathDrop(*this);
+
+    int enum_drop = death_drop[0], param_drop = death_drop[1];
+
+    // TODO: world.addItem(item_type, pos_x, pos_y)
+    // y ahi world llama a ItemFactory
+    // Crear itemFactory en el constructor de world pasandole el json
+
+    switch (enum_drop) {
+        case DROP_NOTHING:
+            break;
+        case DROP_GOLD:
+            world.addGold(new Gold(param_drop, posX, posY));
+            break;
+        case DROP_POTION:
+//            world.addItem(new Potion(param_drop, ))
+            break;
+        case DROP_ITEM:
+            // TODO: ...
+            break;
+        default:
+            break;
+    }
     // TODO: dropear item u oro
     // TODO: respawnear en otra posicion (puede ser en un cementerio)
 }

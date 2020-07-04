@@ -6,6 +6,8 @@
 #include "../../common/defines/races.h"
 #include "../../common/defines/classes.h"
 #include "../../common/defines/creatures.h"
+#include "../defines/creatures_death_drop.h"
+#include "../../common/defines/items.h"
 
 Equations::Equations(const json& config_params) :
 configParams(config_params) {
@@ -19,7 +21,14 @@ configParams(config_params) {
                      {ZOMBIE, ZOMBIE_STRING}, {SPIDER, SPIDER_STRING}};
 }
 
-const double Equations::randomNumber(const double a, const double b) {
+const int Equations::randomInt(const int a, const int b) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(a, b);
+    return dist(mt);
+}
+
+const double Equations::randomDouble(const double a, const double b) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(a, b);
@@ -140,7 +149,7 @@ const long Equations::eqExperienceKill(Player &player, Player &other) {
     json exp_params = configParams["player"]["experience"]["kill_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
     int c3 = exp_params["c3"];
-    long experience = randomNumber(c1, c2) * other.maxLife *
+    long experience = randomDouble(c1, c2) * other.maxLife *
                       std::max(other.level - player.level + c3, 0);
     return experience;
 }
@@ -149,7 +158,7 @@ const long Equations::eqExperienceKill(Player &player, Creature &creature) {
     json exp_params = configParams["player"]["experience"]["kill_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
     int c3 = exp_params["c3"];
-    long experience = randomNumber(c1, c2) * creature.maxLife *
+    long experience = randomDouble(c1, c2) * creature.maxLife *
                       std::max(creature.level - player.level + c3, 0);
     return experience;
 }
@@ -162,8 +171,8 @@ const int Equations::eqDamageCaused(Player &player) {
     json attack_params = configParams["player"]["attack"]["no_weapon_eq"];
 
     double weapon_damage = player.weapon ?
-    randomNumber(player.weapon->minDamage, player.weapon->maxDamage) :
-    randomNumber(attack_params["c1"], attack_params["c2"]);
+    randomDouble(player.weapon->minDamage, player.weapon->maxDamage) :
+    randomDouble(attack_params["c1"], attack_params["c2"]);
 
     double strength = average(race_params["strength"],
                               class_params["strength"]);
@@ -176,7 +185,7 @@ const int Equations::eqDamageCaused(Creature &creature) {
     std::string type = creatures_map[creature.type];
     json type_params = configParams["creatures"][type];
 
-    int damage = randomNumber(type_params["min_attack"],
+    int damage = randomDouble(type_params["min_attack"],
                               type_params["max_attack"]);
     return damage;
 }
@@ -192,18 +201,18 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
     double c1 = dodge_params["c1"], c2 = dodge_params["c2"],
            c3 = dodge_params["c3"];
 
-    bool avoid_attack = pow(randomNumber(c1, c2), agility) < c3;
+    bool avoid_attack = pow(randomDouble(c1, c2), agility) < c3;
     if (avoid_attack)
         return 0;
 
     double armor_defense = player.armor ?
-    randomNumber(player.armor->minDefense, player.armor->maxDefense) : 0;
+    randomDouble(player.armor->minDefense, player.armor->maxDefense) : 0;
 
     double helmet_defense = player.helmet ?
-    randomNumber(player.helmet->minDefense, player.helmet->maxDefense) : 0;
+    randomDouble(player.helmet->minDefense, player.helmet->maxDefense) : 0;
 
     double shield_defense = player.shield ?
-    randomNumber(player.shield->minDefense, player.shield->maxDefense) : 0;
+    randomDouble(player.shield->minDefense, player.shield->maxDefense) : 0;
 
     int defense = armor_defense + helmet_defense + shield_defense;
     int damage_received = std::max(damage - defense, 0);
@@ -214,9 +223,45 @@ const int Equations::eqDamageReceived(Creature &creature, const int damage) {
     std::string type = creatures_map[creature.type];
     json type_params = configParams["creatures"][type];
 
-    int defense = randomNumber(type_params["min_defense"],
+    int defense = randomDouble(type_params["min_defense"],
                                type_params["max_defense"]);
 
     int damage_received = std::max(damage - defense, 0);
     return damage_received;
+}
+
+std::vector<int> Equations::eqCreatureDeathDrop(Creature &creature) {
+    std::vector<int> death_drop = {0,0};
+    
+    json js = configParams["creatures"]["death_prob_eq"];
+    std::vector<double> p = {js["nothing"]["p"], js["gold"]["p"],
+                             js["potion"]["p"], js["other"]["p"]};
+    
+    double c1 = js["gold"]["quantity_eq"]["c1"],
+           c2 = js["gold"]["quantity_eq"]["c2"];
+    
+    std::default_random_engine generator;
+    std::discrete_distribution<int> dist = {p.begin(), p.end()};
+    
+    int enum_drop = dist(generator), quantity_drop = 0;
+    
+    switch (enum_drop) {
+        case DROP_NOTHING:
+            quantity_drop = 0;
+            break;
+        case DROP_GOLD:
+            quantity_drop = randomDouble(c1, c2) * creature.maxLife;
+            break;
+        case DROP_POTION:
+            quantity_drop = randomInt(LIFE_POTION, MANA_POTION);
+            break;
+        case DROP_ITEM:
+            quantity_drop = randomInt(ESPADA, ESCUDO_HIERRO);
+            break;
+        default:
+            break;
+    }
+    death_drop[0] = enum_drop;
+    death_drop[1] = quantity_drop;
+    return death_drop;
 }

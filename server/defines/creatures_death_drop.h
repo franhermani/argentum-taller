@@ -1,0 +1,11 @@
+#ifndef CREATURES_DEATH_DROP_H
+#define CREATURES_DEATH_DROP_H
+
+enum creatureDeathDrop {
+    DROP_NOTHING,
+    DROP_GOLD,
+    DROP_POTION,
+    DROP_ITEM
+};
+
+#endif // CREATURES_DEATH_DROP_H
