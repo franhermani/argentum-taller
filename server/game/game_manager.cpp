@@ -129,7 +129,8 @@ void GameManager::spawnCreatures() {
         world.addCreature(new Creature(world, equations,
                 idManager.addCreatureById(), GOBLIN, level,
                 js["goblin"]["move_velocity"],
-                js["goblin"]["attack_velocity"]));
+                js["goblin"]["attack_velocity"],
+                js["goblin"]["respawn_velocity"]));
     }
     for (i = 0; i < num_skeletons; i ++) {
         pos = world.loadCreaturePosition();
@@ -138,7 +139,8 @@ void GameManager::spawnCreatures() {
         world.addCreature(new Creature(world, equations,
                 idManager.addCreatureById(), SKELETON, level,
                 js["skeleton"]["move_velocity"],
-                js["skeleton"]["attack_velocity"]));
+                js["skeleton"]["attack_velocity"],
+                js["skeleton"]["respawn_velocity"]));
     }
     for (i = 0; i < num_zombies; i ++) {
         pos = world.loadCreaturePosition();
@@ -147,7 +149,8 @@ void GameManager::spawnCreatures() {
         world.addCreature(new Creature(world, equations,
                 idManager.addCreatureById(), ZOMBIE, level,
                 js["zombie"]["move_velocity"],
-                js["zombie"]["attack_velocity"]));
+                js["zombie"]["attack_velocity"],
+                js["zombie"]["respawn_velocity"]));
     }
     for (i = 0; i < num_spiders; i ++) {
         pos = world.loadCreaturePosition();
@@ -156,6 +159,7 @@ void GameManager::spawnCreatures() {
         world.addCreature(new Creature(world, equations,
                 idManager.addCreatureById(), SPIDER, level,
                 js["spider"]["move_velocity"],
-                js["spider"]["attack_velocity"]));
+                js["spider"]["attack_velocity"],
+                js["spider"]["respawn_velocity"]));
     }
 }

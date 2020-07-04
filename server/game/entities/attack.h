@@ -8,9 +8,9 @@ class Attack {
     int posX, posY;
     int direction;
     int range, blocksToRange;
-    int moveVelocity;
-    int msCounter;
     bool isColliding;
+    int moveVelocity;
+    int msMoveCounter;
 
     friend class World;
 

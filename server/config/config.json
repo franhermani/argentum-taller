@@ -107,7 +107,8 @@
         "min_attack": 5,
         "max_attack": 10,
         "move_velocity": 1000,
-        "attack_velocity": 400
+        "attack_velocity": 400,
+        "respawn_velocity": 2000
       },
       "skeleton": {
         "quantity": 3,
@@ -117,7 +118,8 @@
         "min_attack": 8,
         "max_attack": 13,
         "move_velocity": 1200,
-        "attack_velocity": 500
+        "attack_velocity": 500,
+        "respawn_velocity": 2000
       },
       "zombie": {
         "quantity": 3,
@@ -127,7 +129,8 @@
         "min_attack": 2,
         "max_attack": 7,
         "move_velocity": 2000,
-        "attack_velocity": 800
+        "attack_velocity": 800,
+        "respawn_velocity": 2000
       },
       "spider": {
         "quantity": 3,
@@ -137,7 +140,8 @@
         "min_attack": 10,
         "max_attack": 20,
         "move_velocity": 900,
-        "attack_velocity": 200
+        "attack_velocity": 200,
+        "respawn_velocity": 2000
       }
     },
     "races": {

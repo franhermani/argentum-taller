@@ -37,6 +37,7 @@ class Player : public LivingBeing {
     Shield* shield;
     Inventory inventory;
     int recoveryVelocity;
+    int msRecoveryCounter;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
@@ -65,6 +66,9 @@ class Player : public LivingBeing {
 
     // Setea 'isMeditating' en false
     void stopMeditating();
+
+    // Recupera vida y mana por el paso del tiempo
+    void recoverLifeAndMana();
 
     // Asigna 'new_weapon' a 'weapon'
     // Lanza una excepcion si:

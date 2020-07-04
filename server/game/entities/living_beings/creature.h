@@ -14,13 +14,23 @@ class Creature : public LivingBeing{
     Equations& equations;
     int type;
     int attackRange;
-    int moveVelocity, attackVelocity;
+    int moveVelocity, attackVelocity, respawnVelocity;
+    int msMoveCounter, msRespawnCounter;
 
-    // Genera posiciones iniciales aleatorias para la criatura
-    void loadInitialPosition();
+    // Genera una posicion aleatoria para la criatura
+    void loadPosition();
 
-    // TODO: ...
+    // Setea 'isAlive' en false
     void die() override;
+
+    // Reaparece en una nueva posicion aleatoria luego de morir
+    void respawn();
+
+    // Dropea un item u oro de forma aleatorio
+    void dropItemOrGold();
+
+    // Se mueve en busca de players y los ataca si estan dentro de su rango
+    void moveAndAttackPlayers();
 
     // Devuelve la nueva pos (x,y) a la cual se moveria segun una direccion
     std::vector<int> getMovementPosition(const int direction);
@@ -39,7 +49,7 @@ class Creature : public LivingBeing{
 public:
     Creature(World& world, Equations& equations, const int new_id,
             const int type, const int new_level, const int move_velocity,
-            const int attack_velocity);
+            const int attack_velocity, const int respawn_velocity);
 
     // Constructor y asignacion por copia deshabilitados
     Creature(const Creature& other) = delete;
