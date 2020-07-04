@@ -55,6 +55,7 @@ public:
 
     std::vector<creature_t> getRenderableCreatures();
 
+    std::vector<item_t> getRenderableItems();
         //
     int getPlayerVisionWidth();
 

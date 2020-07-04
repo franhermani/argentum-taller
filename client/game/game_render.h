@@ -26,11 +26,13 @@ class GameRender : public Thread {
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
+    std::map<int, Surface *> floorItemSurfacesMap;
     std::map<Terrain, std::string> terrainSurfacesPaths;
     // TODO: borrar esto, Npc ya no existe
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
+    std::map<int, std::string> floorItemSurfacesPaths;
     std::vector<std::vector<Terrain>> floor;
 
 
@@ -45,6 +47,8 @@ private:
     void createNecessaryNpcs(std::vector<npc_t>& npcs);
 
     void createNecessaryCreatures(std::vector<creature_t>& creatures);
+
+    void createNecessaryFloorItems(std::vector<item_t>& items);
 
 
 public:
@@ -75,6 +79,8 @@ public:
     void renderNpcs(std::vector<npc_t>& npcs);
 
     void renderCreatures(std::vector<creature_t>& creatures);
+
+    void renderItems(std::vector<item_t>& items);
 
         //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();
