@@ -37,6 +37,10 @@ class SDLWindow {
     int manaXPixelEnd;
     int manaYPixelBegin;
     int manaYPixelEnd;
+    int experienceXPixelBegin;
+    int experienceXPixelEnd;
+    int experienceYPixelBegin;
+    int experienceYPixelEnd;
 
 
 public:

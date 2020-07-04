@@ -167,6 +167,22 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info, std::map<int,
     SDL_BlitScaled(info_surfaces_map[MANA]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
 
+    stretchRect.x = experienceXPixelBegin;
+    stretchRect.y = experienceYPixelBegin;
+    stretchRect.w = experienceXPixelEnd - experienceXPixelBegin;
+    stretchRect.h = experienceYPixelEnd - experienceYPixelBegin;
+    SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    //TODO usar player info
+    float experience_percentage = 0.3;
+    stretchRect.x = experienceXPixelBegin;
+    stretchRect.y = experienceYPixelBegin;
+    stretchRect.w = (int) ((float)(experienceXPixelEnd - experienceXPixelBegin))*experience_percentage;
+    stretchRect.h = experienceYPixelEnd - experienceYPixelBegin;
+    SDL_BlitScaled(info_surfaces_map[EXPERIENCE]->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
 
 }
 
@@ -189,4 +205,8 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     manaXPixelEnd =  (int) (((float) screenWidth/100) * 86.5);
     manaYPixelBegin = (int) (((float) screenHeight/100) * 84.1);
     manaYPixelEnd = (int) (((float) screenHeight/100) * 85.6);
+    experienceXPixelBegin = (int)  (((float) screenWidth/100) * 78.8);
+    experienceXPixelEnd =  (int) (((float) screenWidth/100) * 86.5);
+    experienceYPixelBegin = (int) (((float) screenHeight/100) * 89.9);
+    experienceYPixelEnd = (int) (((float) screenHeight/100) * 91.4);
 }
