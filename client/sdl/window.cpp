@@ -163,6 +163,7 @@ void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
 
 
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
+    //estos calculos podrian ir en una clase, no?
     numberOfTilesInWidth = tileWidth;
     numberOfTilesInHeight = tileHeight;
     frameXPixelBegin = screenWidth / 50;
