@@ -402,7 +402,7 @@ void GameRender::run() {
         player_t player;
         player.shield = ESCUDO_HIERRO;
         player.armor = ARMADURA_CUERO;
-        player.helmet = CASCO_HIERRO;
+        player.helmet = NO_ITEM_EQUIPPED;
         player.weapon = ARCO_COMPUESTO;
         window.renderEquipped(player, floorItemSurfacesMap);
         window.UpdateWindowSurface();
