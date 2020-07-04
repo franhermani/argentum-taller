@@ -29,7 +29,8 @@ armor(nullptr),
 helmet(nullptr),
 shield(nullptr),
 inventory(world.getInventoryLength()),
-recoveryVelocity(RECOVERY_VELOCITY) {
+recoveryVelocity(RECOVERY_VELOCITY),
+msRecoveryCounter(0) {
     id = new_id;
     level = 1;
     isAlive = true;
@@ -42,7 +43,6 @@ recoveryVelocity(RECOVERY_VELOCITY) {
     maxSafeGold = equations.eqMaxSafeGold(*this);
     maxExcessGold = equations.eqMaxExcessGold(*this);
     actualGold = equations.eqInitialGold(*this);
-    msCounter = 0;
 
     loadInitialPosition();
 
@@ -147,6 +147,14 @@ void Player::stopMeditating() {
     isMeditating = false;
 }
 
+void Player::recoverLifeAndMana() {
+    addLife(equations.eqLifeRecovery(*this));
+    addMana(equations.eqManaRecovery(*this));
+
+    if (isMeditating)
+        addMana(equations.eqManaMeditation(*this));
+}
+
 void Player::equipWeapon(Weapon* new_weapon) {
     if (new_weapon->isMagic && ! ableToUseMagic) {
         inventory.addItem(new_weapon);
@@ -188,17 +196,12 @@ void Player::equipPotion(Potion *new_potion) {
 // -------------- //
 
 void Player::update(int ms) {
-    msCounter += ms;
+    msRecoveryCounter += ms;
 
-    if (msCounter < recoveryVelocity)
-        return;
-
-    msCounter = 0;
-    addLife(equations.eqLifeRecovery(*this));
-    addMana(equations.eqManaRecovery(*this));
-
-    if (isMeditating)
-        addMana(equations.eqManaMeditation(*this));
+    if (msRecoveryCounter >= recoveryVelocity) {
+        msRecoveryCounter = 0;
+        recoverLifeAndMana();
+    }
 }
 
 void Player::moveTo(int direction) {

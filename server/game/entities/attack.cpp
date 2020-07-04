@@ -4,8 +4,8 @@
 Attack::Attack(LivingBeing *owner, const int pos_x, const int pos_y,
         const int direction, const int range, const int move_velocity) :
         owner(owner), posX(pos_x), posY(pos_y), direction(direction),
-        range(range), blocksToRange(range), moveVelocity(move_velocity),
-        msCounter(0), isColliding(false) {}
+        range(range), blocksToRange(range), isColliding(false),
+        moveVelocity(move_velocity), msMoveCounter(0) {}
 
 void Attack::updatePosition() {
     int new_x = posX, new_y = posY;
@@ -31,13 +31,12 @@ void Attack::updatePosition() {
 }
 
 void Attack::update(const int ms) {
-    msCounter += ms;
+    msMoveCounter += ms;
 
-    if (msCounter < moveVelocity)
-        return;
-
-    msCounter = 0;
-    updatePosition();
+    if (msMoveCounter >= moveVelocity) {
+        msMoveCounter = 0;
+        updatePosition();
+    }
 }
 
 const bool Attack::rangeReached() const {

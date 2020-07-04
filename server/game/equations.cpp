@@ -57,7 +57,7 @@ const int Equations::eqMaxLife(Creature &creature) {
     std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
-    int max_life = type_params["max_life"];
+    int max_life = (int) type_params["max_life"] + creature.level;
     return max_life;
 }
 
@@ -177,7 +177,7 @@ const int Equations::eqDamageCaused(Creature &creature) {
     json type_params = configParams["creatures"][type];
 
     int damage = randomDouble(type_params["min_attack"],
-                              type_params["max_attack"]);
+            type_params["max_attack"]) + creature.level;
     return damage;
 }
 

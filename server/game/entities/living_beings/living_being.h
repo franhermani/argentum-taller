@@ -13,7 +13,6 @@ protected:
     int orientation{};
     int maxLife{};
     int actualLife{};
-    int msCounter{};
 
     friend class Equations;
 

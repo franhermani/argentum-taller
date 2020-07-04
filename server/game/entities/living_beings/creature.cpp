@@ -9,22 +9,25 @@
 
 Creature::Creature(World &world, Equations& equations,
         const int new_id, const int type, const int new_level,
-        const int move_velocity, const int attack_velocity) :
+        const int move_velocity, const int attack_velocity,
+        const int respawn_velocity) :
 world(world),
 equations(equations),
 type(type),
 attackRange(1),
 moveVelocity(move_velocity),
-attackVelocity(attack_velocity) {
+attackVelocity(attack_velocity),
+respawnVelocity(respawn_velocity),
+msMoveCounter(0),
+msRespawnCounter(0) {
     id = new_id;
     level = new_level;
     isAlive = true;
     orientation = DOWN;
     maxLife = equations.eqMaxLife(*this);
     actualLife = maxLife;
-    msCounter = 0;
 
-    loadInitialPosition();
+    loadPosition();
 }
 
 Creature::~Creature() = default;
@@ -33,7 +36,7 @@ Creature::~Creature() = default;
 // Private methods //
 // --------------- //
 
-void Creature::loadInitialPosition() {
+void Creature::loadPosition() {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_int_distribution<int> dist_x(0, world.getWidth() - 1);
@@ -130,8 +133,17 @@ void Creature::moveTo(std::vector<int>& player_pos) {
 
 void Creature::die() {
     isAlive = false;
-    std::vector<int> death_drop = equations.eqCreatureDeathDrop(*this);
+}
 
+// TODO: enviarlos a un cementerio, no a una posicion aleatoria
+void Creature::respawn() {
+    dropItemOrGold();
+    loadPosition();
+    isAlive = true;
+}
+
+void Creature::dropItemOrGold() {
+    std::vector<int> death_drop = equations.eqCreatureDeathDrop(*this);
     int enum_drop = death_drop[0], param_drop = death_drop[1];
 
     switch (enum_drop) {
@@ -149,22 +161,9 @@ void Creature::die() {
         default:
             break;
     }
-    // TODO: respawnear en otra posicion (puede ser en un cementerio)
-    // y setear isAlive = true de nuevo
 }
 
-// -------------- //
-// Public methods //
-// -------------- //
-
-void Creature::update(int ms) {
-    msCounter += ms;
-
-    if (msCounter < moveVelocity)
-        return;
-
-    msCounter = 0;
-
+void Creature::moveAndAttackPlayers() {
     std::vector<int> player_pos = world.getClosestPlayerPos(posX, posY);
     bool in_attack_range = world.distance(posX, posY,
             player_pos[0], player_pos[1]) <= attackRange;
@@ -174,6 +173,26 @@ void Creature::update(int ms) {
                 attackRange, attackVelocity));
     } else {
         moveTo(player_pos);
+    }
+}
+
+// -------------- //
+// Public methods //
+// -------------- //
+
+void Creature::update(int ms) {
+    if (isDead()) {
+        msRespawnCounter += ms;
+        if (msRespawnCounter >= respawnVelocity) {
+            msRespawnCounter = 0;
+            respawn();
+        }
+    } else {
+        msMoveCounter += ms;
+        if (msMoveCounter >= moveVelocity) {
+            msMoveCounter = 0;
+            moveAndAttackPlayers();
+        }
     }
 }
 
