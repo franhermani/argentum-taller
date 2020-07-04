@@ -2,6 +2,7 @@
 #define EQUATIONS_H
 
 #include <string>
+#include <vector>
 #include <map>
 #include "entities/player.h"
 #include "../utilities/json.hpp"
@@ -9,9 +10,9 @@
 using json = nlohmann::json;
 
 class Equations {
-    std::map<int, std::string> races_map;
-    std::map<int, std::string> classes_map;
-    std::map<int, std::string> creatures_map;
+    std::map<int, std::string> racesMap;
+    std::map<int, std::string> classesMap;
+    std::map<int, std::string> creaturesMap;
     json configParams;
 
     // Devuelve un numero entero aleatorio entre 'a' y 'b'

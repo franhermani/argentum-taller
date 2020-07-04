@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 #include <cmath>
 #include <algorithm>
 #include <random>
@@ -11,13 +12,13 @@
 
 Equations::Equations(const json& config_params) :
 configParams(config_params) {
-    races_map = {{HUMAN, HUMAN_STRING}, {ELF, ELF_STRING},
+    racesMap = {{HUMAN, HUMAN_STRING}, {ELF, ELF_STRING},
                  {DWARF, DWARF_STRING}, {GNOME, GNOME_STRING}};
 
-    classes_map = {{MAGICIAN, MAGICIAN_STRING}, {CLERIC, CLERIC_STRING},
+    classesMap = {{MAGICIAN, MAGICIAN_STRING}, {CLERIC, CLERIC_STRING},
                    {PALADIN, PALADIN_STRING}, {WARRIOR, WARRIOR_STRING}};
 
-    creatures_map = {{GOBLIN, GOBLIN_STRING}, {SKELETON, SKELETON_STRING},
+    creaturesMap = {{GOBLIN, GOBLIN_STRING}, {SKELETON, SKELETON_STRING},
                      {ZOMBIE, ZOMBIE_STRING}, {SPIDER, SPIDER_STRING}};
 }
 
@@ -40,8 +41,8 @@ const double Equations::average(const double a, const double b) {
 }
 
 const int Equations::eqMaxLife(Player &player) {
-    std::string race_type = races_map[player.raceType],
-                class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+                class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
@@ -53,7 +54,7 @@ const int Equations::eqMaxLife(Player &player) {
 }
 
 const int Equations::eqMaxLife(Creature &creature) {
-    std::string type = creatures_map[creature.type];
+    std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
     int max_life = type_params["max_life"];
@@ -67,14 +68,14 @@ const int Equations::eqInitialLife(Player &player) {
 }
 
 const int Equations::eqLifeRecovery(Player &player) {
-    std::string race_type = races_map[player.raceType];
+    std::string race_type = racesMap[player.raceType];
     int life_recovery = (int) configParams["races"][race_type]["recovery"];
     return life_recovery;
 }
 
 const int Equations::eqMaxMana(Player &player) {
-    std::string race_type = races_map[player.raceType],
-                class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+                class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
@@ -92,14 +93,14 @@ const int Equations::eqInitialMana(Player &player) {
 }
 
 const int Equations::eqManaRecovery(Player &player) {
-    std::string race_type = races_map[player.raceType];
+    std::string race_type = racesMap[player.raceType];
     int mana_recovery = (int) configParams["races"][race_type]["recovery"];
     return mana_recovery;
 }
 
 const int Equations::eqManaMeditation(Player &player) {
-    std::string race_type = races_map[player.raceType],
-            class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+            class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
 
@@ -164,8 +165,8 @@ const long Equations::eqExperienceKill(Player &player, Creature &creature) {
 }
 
 const int Equations::eqDamageCaused(Player &player) {
-    std::string race_type = races_map[player.raceType],
-            class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+            class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
     json attack_params = configParams["player"]["attack"]["no_weapon_eq"];
@@ -182,7 +183,7 @@ const int Equations::eqDamageCaused(Player &player) {
 }
 
 const int Equations::eqDamageCaused(Creature &creature) {
-    std::string type = creatures_map[creature.type];
+    std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
     int damage = randomDouble(type_params["min_attack"],
@@ -191,8 +192,8 @@ const int Equations::eqDamageCaused(Creature &creature) {
 }
 
 const int Equations::eqDamageReceived(Player &player, const int damage) {
-    std::string race_type = races_map[player.raceType],
-            class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+            class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
 
@@ -220,7 +221,7 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
 }
 
 const int Equations::eqDamageReceived(Creature &creature, const int damage) {
-    std::string type = creatures_map[creature.type];
+    std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
     int defense = randomDouble(type_params["min_defense"],
@@ -243,25 +244,25 @@ std::vector<int> Equations::eqCreatureDeathDrop(Creature &creature) {
     std::default_random_engine generator;
     std::discrete_distribution<int> dist = {p.begin(), p.end()};
     
-    int enum_drop = dist(generator), quantity_drop = 0;
+    int enum_drop = dist(generator), param_drop = 0;
     
     switch (enum_drop) {
         case DROP_NOTHING:
-            quantity_drop = 0;
+            param_drop = 0;
             break;
         case DROP_GOLD:
-            quantity_drop = randomDouble(c1, c2) * creature.maxLife;
+            param_drop = randomDouble(c1, c2) * creature.maxLife;
             break;
         case DROP_POTION:
-            quantity_drop = randomInt(LIFE_POTION, MANA_POTION);
+            param_drop = randomInt(POCION_VIDA, POCION_MANA);
             break;
         case DROP_ITEM:
-            quantity_drop = randomInt(ESPADA, ESCUDO_HIERRO);
+            param_drop = randomInt(ESPADA, ESCUDO_HIERRO);
             break;
         default:
             break;
     }
     death_drop[0] = enum_drop;
-    death_drop[1] = quantity_drop;
+    death_drop[1] = param_drop;
     return death_drop;
 }

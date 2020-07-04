@@ -2,7 +2,8 @@
 #include <cstdlib>
 #include "world.h"
 
-World::World(GameParams& params) : params(params) {
+World::World(GameParams& params) : params(params),
+itemFactory(params.getConfigParams()["items"]) {
     json js;
     js = params.getWorldParams()["layers"][0];
     worldWidth = js["width"], worldHeight = js["height"];
@@ -246,7 +247,12 @@ const bool World::itemInPosition(const int pos_x, const int pos_y) {
     return false;
 }
 
-void World::addItem(Item* item) {
+void World::addItem(Item *item) {
+    items.push_back(item);
+}
+
+void World::addItem(const int type, const int pos_x, const int pos_y) {
+    Item *item = itemFactory(type, pos_x, pos_y);
     items.push_back(item);
 }
 

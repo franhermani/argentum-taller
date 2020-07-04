@@ -250,6 +250,9 @@ void Player::attack() {
 
     // TODO: chequear safe zones!!!
 
+    // TODO: consuminar mana --> mana_consumption
+    // si no tiene suficiente mana --> GameException!!!
+
     int weapon_range = weapon ? weapon->range : NO_WEAPON_RANGE,
         weapon_velocity = weapon ? weapon->moveVelocity : NO_WEAPON_VELOCITY;
 

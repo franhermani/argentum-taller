@@ -232,69 +232,95 @@
         "espada": {
           "min_damage": 2,
           "max_damage": 5,
-          "move_velocity": 500,
+          "mana_consumption": 0,
           "range": 1,
+          "move_velocity": 500,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 200
         },
         "hacha": {
           "min_damage": 4,
           "max_damage": 5,
-          "move_velocity": 1000,
+          "mana_consumption": 0,
           "range": 1,
+          "move_velocity": 1000,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 300
         },
         "martillo": {
           "min_damage": 1,
           "max_damage": 9,
-          "move_velocity": 700,
+          "mana_consumption": 0,
           "range": 1,
+          "move_velocity": 700,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 500
         },
         "vara_fresno": {
           "min_damage": 2,
           "max_damage": 4,
           "mana_consumption": 5,
-          "move_velocity": 500,
           "range": 10,
+          "move_velocity": 500,
+          "is_magic": true,
+          "is_life_restorer": false,
           "price": 350
         },
         "flauta_elfica": {
+          "min_damage": 0,
+          "max_damage": 0,
           "mana_consumption": 100,
-          "move_velocity": 500,
           "range": 10,
+          "move_velocity": 500,
+          "is_magic": true,
+          "is_life_restorer": true,
           "price": 400
         },
         "baculo_nudoso": {
           "min_damage": 4,
           "max_damage": 8,
           "mana_consumption": 15,
-          "move_velocity": 500,
           "range": 10,
+          "move_velocity": 500,
+          "is_magic": true,
+          "is_life_restorer": false,
           "price": 500
         },
         "baculo_engarzado": {
           "min_damage": 8,
           "max_damage": 20,
-          "move_velocity": 500,
+          "mana_consumption": 30,
           "range": 10,
+          "move_velocity": 500,
+          "is_magic": true,
+          "is_life_restorer": false,
           "price": 700
         },
         "arco_simple": {
           "min_damage": 1,
           "max_damage": 4,
-          "move_velocity": 700,
+          "mana_consumption": 0,
           "range": 8,
+          "move_velocity": 700,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 150
         },
         "arco_compuesto": {
           "min_damage": 4,
           "max_damage": 16,
-          "move_velocity": 600,
+          "mana_consumption": 0,
           "range": 9,
+          "move_velocity": 600,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 300
         }
       },
-      "armor": {
+      "armors": {
         "armadura_cuero": {
           "min_defense": 2,
           "max_defense": 6,
@@ -311,24 +337,27 @@
           "price": 250
         }
       },
-      "helmet": {
+      "helmets": {
         "capucha": {
           "min_defense": 1,
           "max_defense": 4,
+          "is_magic": false,
           "price": 150
         },
         "casco_hierro": {
           "min_defense": 4,
           "max_defense": 8,
+          "is_magic": false,
           "price": 300
         },
         "sombrero_magico": {
           "min_defense": 4,
           "max_defense": 12,
+          "is_magic": true,
           "price": 450
         }
       },
-      "shield": {
+      "shields": {
         "escudo_tortuga": {
           "min_defense": 1,
           "max_defense": 2,
@@ -340,15 +369,15 @@
           "price": 200
         }
       },
-      "potion": {
+      "potions": {
         "pocion_vida": {
-          "life_recovery": 50,
-          "mana_recovery": 0,
+          "life_points": 50,
+          "mana_points": 0,
           "price": 75
         },
         "pocion_mana": {
-          "life_recovery": 0,
-          "mana_recovery": 50,
+          "life_points": 0,
+          "mana_points": 50,
           "price": 75
         }
       }

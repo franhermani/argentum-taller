@@ -142,10 +142,6 @@ void Creature::die() {
 
     int enum_drop = death_drop[0], param_drop = death_drop[1];
 
-    // TODO: world.addItem(item_type, pos_x, pos_y)
-    // y ahi world llama a ItemFactory
-    // Crear itemFactory en el constructor de world pasandole el json
-
     switch (enum_drop) {
         case DROP_NOTHING:
             break;
@@ -153,15 +149,14 @@ void Creature::die() {
             world.addGold(new Gold(param_drop, posX, posY));
             break;
         case DROP_POTION:
-//            world.addItem(new Potion(param_drop, ))
+            world.addItem(param_drop, posX, posY);
             break;
         case DROP_ITEM:
-            // TODO: ...
+            world.addItem(param_drop, posX, posY);
             break;
         default:
             break;
     }
-    // TODO: dropear item u oro
     // TODO: respawnear en otra posicion (puede ser en un cementerio)
 }
 

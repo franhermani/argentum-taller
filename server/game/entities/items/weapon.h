@@ -8,7 +8,7 @@ class Weapon : public Item {
     int manaConsumption;
     int range;
     int moveVelocity;
-    bool isMagic;
+    bool isMagic, isLifeRestorer;
 
     friend class Player;
     friend class Equations;
@@ -20,7 +20,7 @@ public:
             const int min_damage, const int max_damage,
             const int mana_consumption, const int range,
             const int move_velocity, const bool is_magic,
-            const int new_price);
+            const bool is_life_restorer, const int new_price);
 
     // Constructor y asignacion por copia deshabilitados
     Weapon(const Weapon& other) = delete;

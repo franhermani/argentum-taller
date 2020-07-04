@@ -4,6 +4,7 @@
 #include <vector>
 #include <set>
 #include "params.h"
+#include "entities/items/item_factory.h"
 #include "../../common/defines/terrains.h"
 #include "entities/player.h"
 #include "entities/npcs_and_creatures/creature.h"
@@ -13,6 +14,7 @@
 
 class World {
     GameParams& params;
+    ItemFactory itemFactory;
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> entitiesImpenetrableTerrains;
     std::set<Terrain> attacksImpenetrableTerrains;
@@ -114,6 +116,9 @@ public:
 
     // Agrega un item al mundo
     void addItem(Item* item);
+
+    // Agrega un item al mundo segun 'type'
+    void addItem(const int type, const int pos_x, const int pos_y);
 
     // Remueve un item del mundo segun su pos (x,y)
     Item* removeItem(const int pos_x, const int pos_y);

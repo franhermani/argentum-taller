@@ -18,8 +18,8 @@
 #define SOMBRERO_MAGICO_STRING      "sombrero_magico"
 #define ESCUDO_TORTUGA_STRING       "escudo_tortuga"
 #define ESCUDO_HIERRO_STRING        "escudo_hierro"
-#define LIFE_POTION_STRING          "pocion_vida"
-#define MANA_POTION_STRING          "pocion_mana"
+#define POCION_VIDA_STRING          "pocion_vida"
+#define POCION_MANA_STRING          "pocion_mana"
 
 enum itemType {
     // No item equipped
@@ -51,8 +51,8 @@ enum itemType {
     ESCUDO_HIERRO,
 
     // Potion
-    LIFE_POTION,
-    MANA_POTION
+    POCION_VIDA,
+    POCION_MANA
 };
 
 #endif // ITEMS_H
