@@ -131,6 +131,37 @@ void SDLWindow::renderGameFrame(Surface* surface) {
                    getSurface(), &stretchRect);
 }
 
+void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
+    int x,y, w, h;
+    w = (inventoryXPixelEnd-inventoryXPixelBegin)/2;
+    h = (inventoryYPixelEnd-inventoryYPixelBegin)/5;
+    x = inventoryXPixelBegin;
+    y = inventoryYPixelBegin;
+    for (int i=0; i<5; i++) {
+        SDL_Rect stretchRect;
+        stretchRect.x = x;
+        stretchRect.y = y;
+        stretchRect.w = w;
+        stretchRect.h = h;
+        SDL_BlitScaled(surfaces[i]->getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+        y = y + h;
+    }
+    x = x + w;
+    y = inventoryYPixelBegin;
+    for (int i=5; i<10; i++) {
+        SDL_Rect stretchRect;
+        stretchRect.x = x;
+        stretchRect.y = y;
+        stretchRect.w = w;
+        stretchRect.h = h;
+        SDL_BlitScaled(surfaces[i]->getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+        y = y + h;
+    }
+}
+
+
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     numberOfTilesInWidth = tileWidth;
     numberOfTilesInHeight = tileHeight;
@@ -142,4 +173,8 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
             numberOfTilesInWidth;
     yHeightTileSize = (frameYPixelEnd - frameYPixelBegin) /
             numberOfTilesInHeight;
+    inventoryXPixelBegin =  (screenWidth / 100) * 84;
+    inventoryXPixelEnd =  (screenWidth / 100) * 104;
+    inventoryYPixelBegin = screenHeight / 4;
+    inventoryYPixelEnd = (screenHeight /100) * 64;
 }

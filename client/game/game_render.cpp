@@ -337,9 +337,10 @@ void GameRender::loadSurfacePaths() {
             {SOMBRERO_MAGICO, "../client/resources/images/sombrero_magico_t.png"},
             {ESCUDO_TORTUGA, "../client/resources/images/escudo_tortuga_t.png"},
             {ESCUDO_HIERRO, "../client/resources/images/escudo_hierro_t.png"},
-            {LIFE_POTION, "../client/resources/images/life_potion_t.png"},
-            {MANA_POTION, "../client/resources/images/mana_potion_t.png"},
+            {LIFE_POTION, "../client/resources/images/pocion_vida_t.png"},
+            {MANA_POTION, "../client/resources/images/pocion_mana_t.png"},
     };
+
 }
 
 void GameRender::setTilesSize(int width,int height) {
@@ -365,8 +366,19 @@ void GameRender::run() {
         renderNpcs(npcs);
         std::vector<creature_t> creatures = mapMonitor.getRenderableCreatures();
         renderCreatures(creatures);
-        //std::vector<item_t> floor_items = mapMonitor.;
+        std::vector<Surface*> floor_items = {new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
+                                            new Surface("../client/resources/images/armadura_cuero_t.png", window, 0),
+                                            new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
+                                            new Surface("../client/resources/images/arco_compuesto_t.png", window, 0),
+                                            new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
+                                            new Surface("../client/resources/images/escudo_tortuga_t.png", window, 0),
+                                            new Surface("../client/resources/images/tunica_azul_t.png", window, 0),
+                                            new Surface("../client/resources/images/pocion_vida_t.png", window, 0),
+                                            new Surface("../client/resources/images/vara_fresno_t.png", window, 0),
+                                            new Surface("../client/resources/images/capucha_t.png", window, 0)};
         //renderItems(floor_items);
+
+        window.renderInventory(floor_items);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

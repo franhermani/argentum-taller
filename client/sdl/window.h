@@ -28,6 +28,10 @@ class SDLWindow {
     int frameXPixelEnd;
     int frameYPixelBegin;
     int frameYPixelEnd;
+    int inventoryXPixelBegin;
+    int inventoryXPixelEnd;
+    int inventoryYPixelBegin;
+    int inventoryYPixelEnd;
 
 public:
     // Constructor
@@ -79,5 +83,6 @@ public:
     void setTilesSize(int tileWidth, int tileHeight);
 
     void renderGameFrame(Surface *surface);
-};
+    void renderInventory(std::vector<Surface*>& surfaces);
+    };
 #endif // SDL_WINDOW_H
