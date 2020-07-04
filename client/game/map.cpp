@@ -215,7 +215,7 @@ std::vector<creature_t> Map::getRenderableCreatures() {
 
 
     //traducimos posiciones a la vision del jugador y
-    // nos quedamos con los jugadores que esten
+    // nos quedamos con las criaturas que esten
     //dentro del rango de vision del principal
     for (auto& creature: world.creatures) {
         if ((creature.pos_x < x_start) ||  (creature.pos_x > x_finish)
@@ -231,6 +231,40 @@ std::vector<creature_t> Map::getRenderableCreatures() {
         }
     }
     return visible_creatures;
+}
+
+
+std::vector<item_t> Map::getRenderableItems() {
+    player_t main_player = getMainPlayer();
+
+    //Pedimos los bordes de vision del jugador en
+    // coordenadas de la matriz principal
+    int x_start, y_start, x_finish, y_finish;
+    x_start = getPlayerXStart(main_player);
+    y_start = getPlayerYStart(main_player);
+    x_finish = getPlayerXEnd(main_player);
+    y_finish = getPlayerYEnd(main_player);
+
+    std::vector<item_t> visible_items;
+
+
+    //traducimos posiciones a la vision del jugador y
+    // nos quedamos con los items que esten
+    //dentro del rango de vision del principal
+    for (auto& item: world.items) {
+        if ((item.pos_x < x_start) ||  (item.pos_x > x_finish)
+            || (item.pos_y < y_start) || (item.pos_y > y_finish)) {
+            continue;
+        } else {
+            item_t converted_item = item;
+            converted_item.pos_x = item.pos_x - x_start;
+            if (converted_item.pos_x < 0) converted_item.pos_x = 0;
+            converted_item.pos_y = item.pos_y - y_start;
+            if (converted_item.pos_y < 0) converted_item.pos_y = 0;
+            visible_items.push_back(converted_item);
+        }
+    }
+    return visible_items;
 }
 
 

@@ -38,6 +38,7 @@ public:
     //fix devolver referencia
     std::vector<creature_t> getRenderableCreatures();
 
+    std::vector<item_t> getRenderableItems();
 
     //todo fix devolver referencia
     std::vector<npc_t> getRenderableNpcs();
