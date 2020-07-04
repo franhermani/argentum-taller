@@ -340,6 +340,27 @@ void GameRender::loadSurfacePaths() {
             {LIFE_POTION, "../client/resources/images/pocion_vida_t.png"},
             {MANA_POTION, "../client/resources/images/pocion_mana_t.png"},
     };
+    floorItemSurfacesMap = {
+            {ESPADA, new Surface("../client/resources/images/espada_t.png", window, 0)},
+            {HACHA, new Surface("../client/resources/images/hacha_t.png", window, 0)},
+            {MARTILLO, new Surface("../client/resources/images/martillo_t.png", window, 0)},
+            {VARA_FRESNO, new Surface("../client/resources/images/vara_fresno_t.png", window, 0)},
+            {FLAUTA_ELFICA, new Surface("../client/resources/images/flauta_elfica_t.png", window, 0)},
+            {BACULO_NUDOSO, new Surface("../client/resources/images/baculo_nudoso_t.png", window, 0)},
+            {BACULO_ENGARZADO, new Surface("../client/resources/images/baculo_engarzado_t.png", window, 0)},
+            {ARCO_SIMPLE, new Surface("../client/resources/images/arco_simple_t.png", window, 0)},
+            {ARCO_COMPUESTO, new Surface("../client/resources/images/arco_compuesto_t.png", window, 0)},
+            {ARMADURA_CUERO, new Surface("../client/resources/images/armadura_cuero_t.png", window, 0)},
+            {ARMADURA_PLACAS, new Surface("../client/resources/images/armadura_placas_t.png", window, 0)},
+            {TUNICA_AZUL, new Surface("../client/resources/images/tunica_azul_t.png", window, 0)},
+            {CAPUCHA, new Surface("../client/resources/images/capucha_t.png", window, 0)},
+            {CASCO_HIERRO, new Surface("../client/resources/images/casco_hierro_t.png", window, 0)},
+            {SOMBRERO_MAGICO, new Surface("../client/resources/images/sombrero_magico_t.png", window, 0)},
+            {ESCUDO_TORTUGA, new Surface("../client/resources/images/escudo_tortuga_t.png", window, 0)},
+            {ESCUDO_HIERRO, new Surface("../client/resources/images/escudo_hierro_t.png", window, 0)},
+            {LIFE_POTION, new Surface("../client/resources/images/pocion_vida_t.png", window, 0)},
+            {MANA_POTION, new Surface("../client/resources/images/pocion_mana_t.png", window, 0)},
+    };
 
 }
 
@@ -378,7 +399,12 @@ void GameRender::run() {
                                             new Surface("../client/resources/images/capucha_t.png", window, 0)};
         //renderItems(floor_items);
         window.renderInventory(floor_items);
-        renderEquipped()
+        player_t player;
+        player.shield = ESCUDO_HIERRO;
+        player.armor = ARMADURA_CUERO;
+        player.helmet = CASCO_HIERRO;
+        player.weapon = ARCO_COMPUESTO;
+        window.renderEquipped(player, floorItemSurfacesMap);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }
