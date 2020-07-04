@@ -73,3 +73,8 @@ std::vector<int> MapMonitor::getNpcLookingAt() {
     std::unique_lock<std::mutex> lk(m);
     return std::move(map.getNpcLookingAt());
 }
+player_info_t MapMonitor::getPlayerInfo() {
+    std::unique_lock<std::mutex> lk(m);
+    return map.getPlayerInfo();
+}
+
