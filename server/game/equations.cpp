@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 #include <cmath>
 #include <algorithm>
 #include <random>
@@ -6,20 +7,29 @@
 #include "../../common/defines/races.h"
 #include "../../common/defines/classes.h"
 #include "../../common/defines/creatures.h"
+#include "../defines/creatures_death_drop.h"
+#include "../../common/defines/items.h"
 
 Equations::Equations(const json& config_params) :
 configParams(config_params) {
-    races_map = {{HUMAN, HUMAN_STRING}, {ELF, ELF_STRING},
+    racesMap = {{HUMAN, HUMAN_STRING}, {ELF, ELF_STRING},
                  {DWARF, DWARF_STRING}, {GNOME, GNOME_STRING}};
 
-    classes_map = {{MAGICIAN, MAGICIAN_STRING}, {CLERIC, CLERIC_STRING},
+    classesMap = {{MAGICIAN, MAGICIAN_STRING}, {CLERIC, CLERIC_STRING},
                    {PALADIN, PALADIN_STRING}, {WARRIOR, WARRIOR_STRING}};
 
-    creatures_map = {{GOBLIN, GOBLIN_STRING}, {SKELETON, SKELETON_STRING},
+    creaturesMap = {{GOBLIN, GOBLIN_STRING}, {SKELETON, SKELETON_STRING},
                      {ZOMBIE, ZOMBIE_STRING}, {SPIDER, SPIDER_STRING}};
 }
 
-const double Equations::randomNumber(const double a, const double b) {
+const int Equations::randomInt(const int a, const int b) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(a, b);
+    return dist(mt);
+}
+
+const double Equations::randomDouble(const double a, const double b) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(a, b);
@@ -31,8 +41,8 @@ const double Equations::average(const double a, const double b) {
 }
 
 const int Equations::eqMaxLife(Player &player) {
-    std::string race_type = races_map[player.raceType],
-                class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+                class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
@@ -44,7 +54,7 @@ const int Equations::eqMaxLife(Player &player) {
 }
 
 const int Equations::eqMaxLife(Creature &creature) {
-    std::string type = creatures_map[creature.type];
+    std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
     int max_life = type_params["max_life"];
@@ -58,14 +68,14 @@ const int Equations::eqInitialLife(Player &player) {
 }
 
 const int Equations::eqLifeRecovery(Player &player) {
-    std::string race_type = races_map[player.raceType];
+    std::string race_type = racesMap[player.raceType];
     int life_recovery = (int) configParams["races"][race_type]["recovery"];
     return life_recovery;
 }
 
 const int Equations::eqMaxMana(Player &player) {
-    std::string race_type = races_map[player.raceType],
-                class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+                class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
@@ -83,14 +93,14 @@ const int Equations::eqInitialMana(Player &player) {
 }
 
 const int Equations::eqManaRecovery(Player &player) {
-    std::string race_type = races_map[player.raceType];
+    std::string race_type = racesMap[player.raceType];
     int mana_recovery = (int) configParams["races"][race_type]["recovery"];
     return mana_recovery;
 }
 
 const int Equations::eqManaMeditation(Player &player) {
-    std::string race_type = races_map[player.raceType],
-            class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+            class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
 
@@ -103,13 +113,20 @@ const int Equations::eqManaMeditation(Player &player) {
 const int Equations::eqMaxSafeGold(Player &player) {
     json gold_params = configParams["player"]["gold"]["max_safe_eq"];
     double c1 = gold_params["c1"], c2 = gold_params["c2"];
-    int max_gold = c1 * pow(player.level, c2);
-    return max_gold;
+    int max_safe_gold = c1 * pow(player.level, c2);
+    return max_safe_gold;
+}
+
+const int Equations::eqMaxExcessGold(Player &player) {
+    double percentage = configParams["player"]["gold"]
+            ["additional_percentage"];
+    int max_excess_gold = player.maxSafeGold * percentage;
+    return max_excess_gold;
 }
 
 const int Equations::eqInitialGold(Player &player) {
     double percentage = configParams["player"]["gold"]["initial_percentage"];
-    int initial_gold = percentage * player.maxGold;
+    int initial_gold = percentage * player.maxSafeGold;
     return initial_gold;
 }
 
@@ -120,7 +137,7 @@ const long Equations::eqExperienceLimit(Player &player) {
     return experience;
 }
 
-const long Equations::eqExperienceAttack(Player &player, Player &other,
+const long Equations::eqExperienceAttack(Player &player, LivingBeing &other,
         const int damage) {
     json exp_params = configParams["player"]["experience"]["attack_eq"];
     int c1 = exp_params["c1"];
@@ -128,42 +145,25 @@ const long Equations::eqExperienceAttack(Player &player, Player &other,
     return experience;
 }
 
-const long Equations::eqExperienceAttack(Player &player, Creature &creature,
-        const int damage) {
-    json exp_params = configParams["player"]["experience"]["attack_eq"];
-    int c1 = exp_params["c1"];
-    long experience = damage * std::max(creature.level - player.level + c1, 0);
-    return experience;
-}
-
-const long Equations::eqExperienceKill(Player &player, Player &other) {
+const long Equations::eqExperienceKill(Player &player, LivingBeing &other) {
     json exp_params = configParams["player"]["experience"]["kill_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
     int c3 = exp_params["c3"];
-    long experience = randomNumber(c1, c2) * other.maxLife *
+    long experience = randomDouble(c1, c2) * other.maxLife *
                       std::max(other.level - player.level + c3, 0);
     return experience;
 }
 
-const long Equations::eqExperienceKill(Player &player, Creature &creature) {
-    json exp_params = configParams["player"]["experience"]["kill_eq"];
-    double c1 = exp_params["c1"], c2 = exp_params["c2"];
-    int c3 = exp_params["c3"];
-    long experience = randomNumber(c1, c2) * creature.maxLife *
-                      std::max(creature.level - player.level + c3, 0);
-    return experience;
-}
-
 const int Equations::eqDamageCaused(Player &player) {
-    std::string race_type = races_map[player.raceType],
-            class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+            class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
     json attack_params = configParams["player"]["attack"]["no_weapon_eq"];
 
     double weapon_damage = player.weapon ?
-    randomNumber(player.weapon->minDamage, player.weapon->maxDamage) :
-    randomNumber(attack_params["c1"], attack_params["c2"]);
+    randomDouble(player.weapon->minDamage, player.weapon->maxDamage) :
+    randomDouble(attack_params["c1"], attack_params["c2"]);
 
     double strength = average(race_params["strength"],
                               class_params["strength"]);
@@ -173,17 +173,17 @@ const int Equations::eqDamageCaused(Player &player) {
 }
 
 const int Equations::eqDamageCaused(Creature &creature) {
-    std::string type = creatures_map[creature.type];
+    std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
-    int damage = randomNumber(type_params["min_attack"],
+    int damage = randomDouble(type_params["min_attack"],
                               type_params["max_attack"]);
     return damage;
 }
 
 const int Equations::eqDamageReceived(Player &player, const int damage) {
-    std::string race_type = races_map[player.raceType],
-            class_type = classes_map[player.classType];
+    std::string race_type = racesMap[player.raceType],
+            class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
 
@@ -192,18 +192,18 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
     double c1 = dodge_params["c1"], c2 = dodge_params["c2"],
            c3 = dodge_params["c3"];
 
-    bool avoid_attack = pow(randomNumber(c1, c2), agility) < c3;
+    bool avoid_attack = pow(randomDouble(c1, c2), agility) < c3;
     if (avoid_attack)
         return 0;
 
     double armor_defense = player.armor ?
-    randomNumber(player.armor->minDefense, player.armor->maxDefense) : 0;
+    randomDouble(player.armor->minDefense, player.armor->maxDefense) : 0;
 
     double helmet_defense = player.helmet ?
-    randomNumber(player.helmet->minDefense, player.helmet->maxDefense) : 0;
+    randomDouble(player.helmet->minDefense, player.helmet->maxDefense) : 0;
 
     double shield_defense = player.shield ?
-    randomNumber(player.shield->minDefense, player.shield->maxDefense) : 0;
+    randomDouble(player.shield->minDefense, player.shield->maxDefense) : 0;
 
     int defense = armor_defense + helmet_defense + shield_defense;
     int damage_received = std::max(damage - defense, 0);
@@ -211,12 +211,48 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
 }
 
 const int Equations::eqDamageReceived(Creature &creature, const int damage) {
-    std::string type = creatures_map[creature.type];
+    std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
-    int defense = randomNumber(type_params["min_defense"],
+    int defense = randomDouble(type_params["min_defense"],
                                type_params["max_defense"]);
 
     int damage_received = std::max(damage - defense, 0);
     return damage_received;
+}
+
+std::vector<int> Equations::eqCreatureDeathDrop(Creature &creature) {
+    std::vector<int> death_drop = {0,0};
+    
+    json js = configParams["creatures"]["death_prob_eq"];
+    std::vector<double> p = {js["nothing"]["p"], js["gold"]["p"],
+                             js["potion"]["p"], js["other"]["p"]};
+    
+    double c1 = js["gold"]["quantity_eq"]["c1"],
+           c2 = js["gold"]["quantity_eq"]["c2"];
+    
+    std::default_random_engine generator;
+    std::discrete_distribution<int> dist = {p.begin(), p.end()};
+    
+    int enum_drop = dist(generator), param_drop = 0;
+    
+    switch (enum_drop) {
+        case DROP_NOTHING:
+            param_drop = 0;
+            break;
+        case DROP_GOLD:
+            param_drop = randomDouble(c1, c2) * creature.maxLife;
+            break;
+        case DROP_POTION:
+            param_drop = randomInt(POCION_VIDA, POCION_MANA);
+            break;
+        case DROP_ITEM:
+            param_drop = randomInt(ESPADA, ESCUDO_HIERRO);
+            break;
+        default:
+            break;
+    }
+    death_drop[0] = enum_drop;
+    death_drop[1] = param_drop;
+    return death_drop;
 }

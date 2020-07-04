@@ -1,5 +1,5 @@
 #include "heal_command.h"
-#include "../entities/npcs_and_creatures/priest.h"
+#include "../entities/npcs/priest.h"
 
 HealCommand::HealCommand(Player& player, const uint16_t priest_pos_x,
         const uint16_t priest_pos_y) :

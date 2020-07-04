@@ -4,15 +4,17 @@
 #include <vector>
 #include <set>
 #include "params.h"
+#include "entities/items/item_factory.h"
 #include "../../common/defines/terrains.h"
-#include "entities/player.h"
-#include "entities/npcs_and_creatures/creature.h"
-#include "entities/npcs_and_creatures/npc.h"
+#include "entities/living_beings/player.h"
+#include "entities/living_beings/creature.h"
+#include "entities/npcs/npc.h"
 #include "entities/gold.h"
 #include "entities/attack.h"
 
 class World {
     GameParams& params;
+    ItemFactory itemFactory;
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> entitiesImpenetrableTerrains;
     std::set<Terrain> attacksImpenetrableTerrains;
@@ -115,6 +117,9 @@ public:
     // Agrega un item al mundo
     void addItem(Item* item);
 
+    // Agrega un item al mundo segun 'type'
+    void addItem(const int type, const int pos_x, const int pos_y);
+
     // Remueve un item del mundo segun su pos (x,y)
     Item* removeItem(const int pos_x, const int pos_y);
 
@@ -129,6 +134,12 @@ public:
 
     // Devuelve el NPC asociado a la posicion (pos_x, pos_y)
     NPC* getNPCByPos(const int pos_x, const int pos_y) const;
+
+    // Devuelve la posicion del player mas cercano a la posicion (pos_x, pos_y)
+    std::vector<int> getClosestPlayerPos(const int pos_x, const int pos_y);
+
+    // Devuelve la distancia (en bloques) de una posicion (x,y) a otra
+    const int distance(const int x1, const int y1, const int x2, const int y2);
 
     // Devuelve el largo maximo del inventario
     const int getInventoryLength() const;

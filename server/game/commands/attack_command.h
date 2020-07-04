@@ -2,7 +2,7 @@
 #define ATTACK_COMMAND_H
 
 #include "command.h"
-#include "../entities/player.h"
+#include "../entities/living_beings/player.h"
 
 class AttackCommand : public Command {
     Player& player;

@@ -1,12 +1,11 @@
 #include <string>
 #include <thread>
 #include <chrono>
-#include <iostream>
 #include "game_manager.h"
 #include "game_exception.h"
-#include "entities/npcs_and_creatures/priest.h"
-#include "entities/npcs_and_creatures/merchant.h"
-#include "entities/npcs_and_creatures/banker.h"
+#include "entities/npcs/priest.h"
+#include "entities/npcs/merchant.h"
+#include "entities/npcs/banker.h"
 #include "../../common/defines/commands.h"
 #include "../../common/defines/creatures.h"
 
@@ -112,6 +111,9 @@ void GameManager::spawnNPCs() {
 
 void GameManager::spawnCreatures() {
     json js = params.getConfigParams()["creatures"];
+    json js_level = js["level"];
+    int min_level = js_level["min"], max_level = js_level["max"],
+        interval = js_level["interval"], level;
 
     int num_goblins = js["goblin"]["quantity"],
         num_skeletons = js["skeleton"]["quantity"],
@@ -122,29 +124,37 @@ void GameManager::spawnCreatures() {
     int i;
     for (i = 0; i < num_goblins; i ++) {
         pos = world.loadCreaturePosition();
+        level = (i * interval) % max_level;
+        if (level < min_level) level = min_level;
         world.addCreature(new Creature(world, equations,
-                idManager.addCreatureById(), GOBLIN,
+                idManager.addCreatureById(), GOBLIN, level,
                 js["goblin"]["move_velocity"],
                 js["goblin"]["attack_velocity"]));
     }
     for (i = 0; i < num_skeletons; i ++) {
         pos = world.loadCreaturePosition();
+        level = (i * interval) % max_level;
+        if (level < min_level) level = min_level;
         world.addCreature(new Creature(world, equations,
-                idManager.addCreatureById(), SKELETON,
+                idManager.addCreatureById(), SKELETON, level,
                 js["skeleton"]["move_velocity"],
                 js["skeleton"]["attack_velocity"]));
     }
     for (i = 0; i < num_zombies; i ++) {
         pos = world.loadCreaturePosition();
+        level = (i * interval) % max_level;
+        if (level < min_level) level = min_level;
         world.addCreature(new Creature(world, equations,
-                idManager.addCreatureById(), ZOMBIE,
+                idManager.addCreatureById(), ZOMBIE, level,
                 js["zombie"]["move_velocity"],
                 js["zombie"]["attack_velocity"]));
     }
     for (i = 0; i < num_spiders; i ++) {
         pos = world.loadCreaturePosition();
+        level = (i * interval) % max_level;
+        if (level < min_level) level = min_level;
         world.addCreature(new Creature(world, equations,
-                idManager.addCreatureById(), SPIDER,
+                idManager.addCreatureById(), SPIDER, level,
                 js["spider"]["move_velocity"],
                 js["spider"]["attack_velocity"]));
     }

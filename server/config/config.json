@@ -19,7 +19,7 @@
       },
       "gold": {
         "initial_percentage": 0.25,
-        "additional_percentage": 0.5,
+        "additional_percentage": 1.5,
         "drop_eq": {
           "c1": 0,
           "c2": 0.2
@@ -66,72 +66,77 @@
     },
     "npcs": {
       "priest": {
-        "quantity": 10
+        "quantity": 3
       },
       "merchant": {
-        "quantity": 10
+        "quantity": 3
       },
       "banker": {
-        "quantity": 10
+        "quantity": 3
       }
     },
     "creatures": {
+      "level": {
+        "min": 1,
+        "max": 110,
+        "interval": 10
+      },
       "death_prob_eq": {
         "nothing": {
-          "p": 0.8
+          "p": 0.5
         },
         "gold": {
-          "p": 0.1,
+          "p": 0.2,
           "quantity_eq": {
             "c1": 0.01,
             "c2": 0.2
           }
         },
         "potion": {
-          "p": 0.08
+          "p": 0.2
         },
         "other": {
-          "p": 0.02
+          "p": 0.1
         }
       },
       "goblin": {
-        "quantity": 5,
+        "quantity": 3,
         "max_life": 100,
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 5,
         "max_attack": 10,
-        "move_velocity": 600,
+        "move_velocity": 1000,
         "attack_velocity": 400
       },
       "skeleton": {
-        "quantity": 5,
+        "quantity": 3,
         "max_life": 200,
         "min_defense": 7,
         "max_defense": 12,
         "min_attack": 8,
         "max_attack": 13,
-        "move_velocity": 800,
+        "move_velocity": 1200,
         "attack_velocity": 500
       },
       "zombie": {
-        "quantity": 5,
+        "quantity": 3,
         "max_life": 250,
         "min_defense": 3,
         "max_defense": 8,
         "min_attack": 2,
         "max_attack": 7,
-        "move_velocity": 1500,
+        "move_velocity": 2000,
         "attack_velocity": 800
       },
       "spider": {
-        "quantity": 5,
+        "quantity": 3,
         "max_life": 150,
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 10,
         "max_attack": 20,
-        "move_velocity": 500,
+        "move_velocity": 900,
         "attack_velocity": 200
       }
     },
@@ -232,69 +237,95 @@
         "espada": {
           "min_damage": 2,
           "max_damage": 5,
-          "move_velocity": 500,
+          "mana_consumption": 0,
           "range": 1,
+          "move_velocity": 500,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 200
         },
         "hacha": {
           "min_damage": 4,
           "max_damage": 5,
-          "move_velocity": 1000,
+          "mana_consumption": 0,
           "range": 1,
+          "move_velocity": 1000,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 300
         },
         "martillo": {
           "min_damage": 1,
           "max_damage": 9,
-          "move_velocity": 700,
+          "mana_consumption": 0,
           "range": 1,
+          "move_velocity": 700,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 500
         },
         "vara_fresno": {
           "min_damage": 2,
           "max_damage": 4,
           "mana_consumption": 5,
-          "move_velocity": 500,
           "range": 10,
+          "move_velocity": 500,
+          "is_magic": true,
+          "is_life_restorer": false,
           "price": 350
         },
         "flauta_elfica": {
+          "min_damage": 0,
+          "max_damage": 0,
           "mana_consumption": 100,
-          "move_velocity": 500,
           "range": 10,
+          "move_velocity": 500,
+          "is_magic": true,
+          "is_life_restorer": true,
           "price": 400
         },
         "baculo_nudoso": {
           "min_damage": 4,
           "max_damage": 8,
           "mana_consumption": 15,
-          "move_velocity": 500,
           "range": 10,
+          "move_velocity": 500,
+          "is_magic": true,
+          "is_life_restorer": false,
           "price": 500
         },
         "baculo_engarzado": {
           "min_damage": 8,
           "max_damage": 20,
-          "move_velocity": 500,
+          "mana_consumption": 30,
           "range": 10,
+          "move_velocity": 500,
+          "is_magic": true,
+          "is_life_restorer": false,
           "price": 700
         },
         "arco_simple": {
           "min_damage": 1,
           "max_damage": 4,
-          "move_velocity": 700,
+          "mana_consumption": 0,
           "range": 8,
+          "move_velocity": 700,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 150
         },
         "arco_compuesto": {
           "min_damage": 4,
           "max_damage": 16,
-          "move_velocity": 600,
+          "mana_consumption": 0,
           "range": 9,
+          "move_velocity": 600,
+          "is_magic": false,
+          "is_life_restorer": false,
           "price": 300
         }
       },
-      "armor": {
+      "armors": {
         "armadura_cuero": {
           "min_defense": 2,
           "max_defense": 6,
@@ -311,24 +342,27 @@
           "price": 250
         }
       },
-      "helmet": {
+      "helmets": {
         "capucha": {
           "min_defense": 1,
           "max_defense": 4,
+          "is_magic": false,
           "price": 150
         },
         "casco_hierro": {
           "min_defense": 4,
           "max_defense": 8,
+          "is_magic": false,
           "price": 300
         },
         "sombrero_magico": {
           "min_defense": 4,
           "max_defense": 12,
+          "is_magic": true,
           "price": 450
         }
       },
-      "shield": {
+      "shields": {
         "escudo_tortuga": {
           "min_defense": 1,
           "max_defense": 2,
@@ -340,15 +374,15 @@
           "price": 200
         }
       },
-      "potion": {
+      "potions": {
         "pocion_vida": {
-          "life_recovery": 50,
-          "mana_recovery": 0,
+          "life_points": 50,
+          "mana_points": 0,
           "price": 75
         },
         "pocion_mana": {
-          "life_recovery": 0,
-          "mana_recovery": 50,
+          "life_points": 0,
+          "mana_points": 50,
           "price": 75
         }
       }

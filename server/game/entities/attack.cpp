@@ -1,12 +1,11 @@
 #include "attack.h"
 #include "../../../common/defines/commands.h"
 
-Attack::Attack(Player *player, const int pos_x, const int pos_y,
+Attack::Attack(LivingBeing *owner, const int pos_x, const int pos_y,
         const int direction, const int range, const int move_velocity) :
-        player(player), posX(pos_x), posY(pos_y), direction(direction),
+        owner(owner), posX(pos_x), posY(pos_y), direction(direction),
         range(range), blocksToRange(range), moveVelocity(move_velocity),
-        msCounter(0) {}
-
+        msCounter(0), isColliding(false) {}
 
 void Attack::updatePosition() {
     int new_x = posX, new_y = posY;
@@ -28,15 +27,17 @@ void Attack::updatePosition() {
     }
     posX = new_x;
     posY = new_y;
+    blocksToRange --;
 }
 
 void Attack::update(const int ms) {
     msCounter += ms;
 
-    if (msCounter >= moveVelocity) {
-        msCounter = 0;
-        updatePosition();
-    }
+    if (msCounter < moveVelocity)
+        return;
+
+    msCounter = 0;
+    updatePosition();
 }
 
 const bool Attack::rangeReached() const {
@@ -45,4 +46,5 @@ const bool Attack::rangeReached() const {
 
 void Attack::collision() {
     blocksToRange = 0;
+    isColliding = true;
 }
