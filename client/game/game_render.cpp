@@ -365,6 +365,8 @@ void GameRender::run() {
         renderNpcs(npcs);
         std::vector<creature_t> creatures = mapMonitor.getRenderableCreatures();
         renderCreatures(creatures);
+        //std::vector<item_t> floor_items = mapMonitor.;
+        //renderItems(floor_items);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }
