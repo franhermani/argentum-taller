@@ -137,6 +137,12 @@ void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
     h = (inventoryYPixelEnd-inventoryYPixelBegin)/5;
     x = inventoryXPixelBegin;
     y = inventoryYPixelBegin;
+    int first_col_length, second_col_length;
+    int first_col_max_index = 5, second_col_max_index=10;
+    int surfaces_size = surfaces.size();
+    if (surfaces_size>5) {
+        
+    }
     for (int i=0; i<5; i++) {
         SDL_Rect stretchRect;
         stretchRect.x = x;
