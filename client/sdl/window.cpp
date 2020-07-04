@@ -108,6 +108,18 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
         }
     }
 }
+void SDLWindow::renderEquipped(player_t player,
+                              std::map<int, Surface*>& surfaces_map) {
+    int equipped_width = (equippedXPixelEnd-equippedXPixelBegin) / 4;
+    SDL_Rect stretchRect;
+    stretchRect.x = equippedXPixelBegin;
+    stretchRect.y = equippedYPixelBegin;
+    stretchRect.w = equipped_width;
+    stretchRect.h = equippedYPixelEnd-equippedYPixelBegin;
+    SDL_BlitScaled(surfaces_map.at(ITEm)->
+                           getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+}
 
 int SDLWindow::getXPixelPos(int x_tile_position) {
     return frameXPixelBegin + x_tile_position * xWidthTileSize;
@@ -174,4 +186,8 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     inventoryXPixelEnd =  (screenWidth / 100) * 102;
     inventoryYPixelBegin = screenHeight / 4;
     inventoryYPixelEnd = (screenHeight /100) * 64;
+    equippedXPixelBegin =  (screenWidth / 100) * 1;
+    equippedXPixelEnd =  (screenWidth / 100) * 45;
+    equippedYPixelBegin = (screenHeight / 100) * 4;
+    equippedYPixelEnd = (screenHeight /100) * 15;
 }
