@@ -362,12 +362,36 @@ void GameRender::loadSurfacePaths() {
             {MANA_POTION, new Surface("../client/resources/images/pocion_mana_t.png", window, 0)},
     };
 
+
+    Surface* life_bar = new Surface("../client/resources/images/life_bar.png", window, 0);
+    Surface* black_bar = new Surface("../client/resources/images/black_bar.png", window, 0);
+    Surface* mana_bar = new Surface("../client/resources/images/mana_bar.png", window, 0);
+    Surface* experience_bar = new Surface("../client/resources/images/experience_bar.png", window, 0);
+
+    infoSurfacesMap = {
+            {LIFE, life_bar},
+            {MANA, mana_bar},
+            {EXPERIENCE, experience_bar},
+            {BACKGROUND,black_bar},
+    };
 }
 
 void GameRender::setTilesSize(int width,int height) {
     blocksWidth = width;
     blocksHeight = height;
     window.setTilesSize(width,height);
+}
+
+std::map<int, float> GameRender::getRenderablePlayerInfo() {
+    player_info_t player_info = mapMonitor.getPlayerInfo();
+    player_t main_player = mapMonitor.getMainPlayer();
+    std::map<int, float> playerInfo = {
+            //TODO RECIBIR EXPERIENCE max
+            {LIFE, main_player.actual_life/main_player.max_life},
+            {MANA, player_info.actual_mana/player_info.max_mana},
+            {EXPERIENCE, player_info.actual_experience/player_info.actual_experience}
+    };
+    return std::move(playerInfo);
 }
 
 void GameRender::run() {
@@ -405,6 +429,8 @@ void GameRender::run() {
         player.helmet = NO_ITEM_EQUIPPED;
         player.weapon = ARCO_COMPUESTO;
         window.renderEquipped(player, floorItemSurfacesMap);
+        std::map<int, float> infoPercentages = getRenderablePlayerInfo();
+        window.renderPlayerInfo(infoPercentages, infoSurfacesMap);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

@@ -2,6 +2,7 @@
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
 #include <iostream>
+#include "player_info_bars.h"
 #include "window.h"
 #include "exception.h"
 
@@ -163,6 +164,7 @@ void SDLWindow::renderGameFrame(Surface* surface) {
                    getSurface(), &stretchRect);
 }
 
+
 void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
     int x,y, w, h;
     //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
@@ -189,6 +191,59 @@ void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
     }
 }
 
+void SDLWindow::renderPlayerInfo(std::map<int, float> player_info, std::map<int, Surface *> info_surfaces_map) {
+    SDL_Rect stretchRect;
+    stretchRect.x = lifeXPixelBegin;
+    stretchRect.y = lifeYPixelBegin;
+    stretchRect.w = lifeXPixelEnd - lifeXPixelBegin;
+    stretchRect.h = lifeYPixelEnd - lifeYPixelBegin;
+    SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    //TODO usar player info
+    float life_percentage = 0.8;
+    stretchRect.x = lifeXPixelBegin;
+    stretchRect.y = lifeYPixelBegin;
+    stretchRect.w = (int) ((float)(lifeXPixelEnd - lifeXPixelBegin))*life_percentage;
+    stretchRect.h = lifeYPixelEnd - lifeYPixelBegin;
+
+    SDL_BlitScaled(info_surfaces_map[LIFE]->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    stretchRect.x = manaXPixelBegin;
+    stretchRect.y = manaYPixelBegin;
+    stretchRect.w = manaXPixelEnd - manaXPixelBegin;
+    stretchRect.h = manaYPixelEnd - manaYPixelBegin;
+    SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    //TODO usar player info
+    float mana_percentage = 0.6;
+    stretchRect.x = manaXPixelBegin;
+    stretchRect.y = manaYPixelBegin;
+    stretchRect.w = (int) ((float)(manaXPixelEnd - manaXPixelBegin))*mana_percentage;
+    stretchRect.h = manaYPixelEnd - manaYPixelBegin;
+    SDL_BlitScaled(info_surfaces_map[MANA]->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    stretchRect.x = experienceXPixelBegin;
+    stretchRect.y = experienceYPixelBegin;
+    stretchRect.w = experienceXPixelEnd - experienceXPixelBegin;
+    stretchRect.h = experienceYPixelEnd - experienceYPixelBegin;
+    SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+    //TODO usar player info
+    float experience_percentage = 0.3;
+    stretchRect.x = experienceXPixelBegin;
+    stretchRect.y = experienceYPixelBegin;
+    stretchRect.w = (int) ((float)(experienceXPixelEnd - experienceXPixelBegin))*experience_percentage;
+    stretchRect.h = experienceYPixelEnd - experienceYPixelBegin;
+    SDL_BlitScaled(info_surfaces_map[EXPERIENCE]->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+
+
+}
 
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     //estos calculos podrian ir en una clase, no?
@@ -210,4 +265,16 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     equippedXPixelEnd =  (screenWidth / 100) * 45;
     equippedYPixelBegin = (screenHeight / 100) * 4;
     equippedYPixelEnd = (screenHeight /100) * 15;
+    lifeXPixelBegin = (int)  (((float) screenWidth/100) * 78.8);
+    lifeXPixelEnd =  (int) (((float) screenWidth/100) * 86.5);
+    lifeYPixelBegin = (int) (((float) screenHeight/100) * 87);
+    lifeYPixelEnd = (int) (((float) screenHeight/100) * 88.5);
+    manaXPixelBegin = (int)  (((float) screenWidth/100) * 78.8);
+    manaXPixelEnd =  (int) (((float) screenWidth/100) * 86.5);
+    manaYPixelBegin = (int) (((float) screenHeight/100) * 84.1);
+    manaYPixelEnd = (int) (((float) screenHeight/100) * 85.6);
+    experienceXPixelBegin = (int)  (((float) screenWidth/100) * 78.8);
+    experienceXPixelEnd =  (int) (((float) screenWidth/100) * 86.5);
+    experienceYPixelBegin = (int) (((float) screenHeight/100) * 89.9);
+    experienceYPixelEnd = (int) (((float) screenHeight/100) * 91.4);
 }

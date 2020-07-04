@@ -317,3 +317,7 @@ std::vector<int> Map::getNpcLookingAt() {
     }
     return std::move(std::vector<int> {-1, -1});
 }
+
+player_info_t Map::getPlayerInfo() {
+    return world.player_info;
+}

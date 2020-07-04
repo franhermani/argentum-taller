@@ -10,6 +10,7 @@
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/items.h"
 #include "area.h"
+#include "../../common/defines/world_structs.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE
 
@@ -38,6 +39,19 @@ class SDLWindow {
     int equippedXPixelEnd;
     int equippedYPixelBegin;
     int equippedYPixelEnd;
+    int lifeXPixelBegin;
+    int lifeXPixelEnd;
+    int lifeYPixelBegin;
+    int lifeYPixelEnd;
+    int manaXPixelBegin;
+    int manaXPixelEnd;
+    int manaYPixelBegin;
+    int manaYPixelEnd;
+    int experienceXPixelBegin;
+    int experienceXPixelEnd;
+    int experienceYPixelBegin;
+    int experienceYPixelEnd;
+
 
 public:
     // Constructor
@@ -92,5 +106,6 @@ public:
     void renderInventory(std::vector<Surface*>& surfaces);
     void renderEquipped(player_t player,
                                    std::map<int, Surface*>& surfaces_map);
-    };
+    void renderPlayerInfo(std::map<int, float> player_info, std::map<int, Surface *> info_surfaces_map);
+};
 #endif // SDL_WINDOW_H

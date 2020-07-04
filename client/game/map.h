@@ -83,7 +83,12 @@ public:
     //Dada la posicion de un jugador, devuelve la posicion donde
     // terminaria en Y su submatriz dentro de la matriz principal
     int getPlayerYEnd(player_t& player);
-    };
+
+    player_info_t getPlayerInfo();
+
+};
+
+
 
 
 #endif //ARGENTUM_MAP_H
