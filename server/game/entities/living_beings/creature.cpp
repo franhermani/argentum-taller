@@ -8,8 +8,8 @@
 #include "../../../defines/creatures_death_drop.h"
 
 Creature::Creature(World &world, Equations& equations,
-        const int new_id, const int type, const int move_velocity,
-        const int attack_velocity) :
+        const int new_id, const int type, const int new_level,
+        const int move_velocity, const int attack_velocity) :
 world(world),
 equations(equations),
 type(type),
@@ -17,7 +17,7 @@ attackRange(1),
 moveVelocity(move_velocity),
 attackVelocity(attack_velocity) {
     id = new_id;
-    level = 10;     // TODO: ver de donde cargar esto
+    level = new_level;
     isAlive = true;
     orientation = DOWN;
     maxLife = equations.eqMaxLife(*this);

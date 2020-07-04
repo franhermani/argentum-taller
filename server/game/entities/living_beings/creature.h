@@ -37,8 +37,8 @@ class Creature : public LivingBeing{
     friend class ServerProtocol;
 
 public:
-    Creature(World& world, Equations& equations,
-            const int new_id, const int type, const int move_velocity,
+    Creature(World& world, Equations& equations, const int new_id,
+            const int type, const int new_level, const int move_velocity,
             const int attack_velocity);
 
     // Constructor y asignacion por copia deshabilitados

@@ -76,6 +76,11 @@
       }
     },
     "creatures": {
+      "level": {
+        "min": 1,
+        "max": 110,
+        "interval": 10
+      },
       "death_prob_eq": {
         "nothing": {
           "p": 0.5

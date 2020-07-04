@@ -301,6 +301,9 @@ std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& player : players) {
+        if (player->isDead())
+            continue;
+
         actual_distance = distance(pos_x, pos_y, player->posX, player->posY);
         if (actual_distance < min_distance) {
             min_distance = actual_distance;
