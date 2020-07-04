@@ -12,6 +12,12 @@
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"
 
+enum playerInfoBars {
+    LIFE,
+    MANA,
+    EXPERIENCE,
+    BACKGROUND
+};
 
 class GameRender : public Thread {
     const int screenWidth;
@@ -22,13 +28,14 @@ class GameRender : public Thread {
     SDLWindow window;
     // TODO arreglar private y public
     std::map<Terrain, Surface *> terrainSurfacesMap;
-    // TODO: borrar esto, Npc ya no existe
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
     std::map<int, Surface *> floorItemSurfacesMap;
+    std::map<int, Surface *> infoSurfacesMap;
+
+
     std::map<Terrain, std::string> terrainSurfacesPaths;
-    // TODO: borrar esto, Npc ya no existe
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;

@@ -340,6 +340,18 @@ void GameRender::loadSurfacePaths() {
             {LIFE_POTION, "../client/resources/images/life_potion_t.png"},
             {MANA_POTION, "../client/resources/images/mana_potion_t.png"},
     };
+
+    Surface* life_bar = new Surface("../client/resources/images/life_bar.png", window, 0);
+    Surface* black_bar = new Surface("../client/resources/images/black_bar.png", window, 0);
+    Surface* mana_bar = new Surface("../client/resources/images/mana_bar.png", window, 0);
+    Surface* experience_bar = new Surface("../client/resources/images/experience_bar.png", window, 0);
+
+    infoSurfacesMap = {
+            {LIFE, life_bar},
+            {MANA, mana_bar},
+            {EXPERIENCE, experience_bar},
+            {BACKGROUND,black_bar},
+    };
 }
 
 void GameRender::setTilesSize(int width,int height) {
