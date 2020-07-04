@@ -372,9 +372,9 @@ void GameRender::run() {
                                             new Surface("../client/resources/images/arco_compuesto_t.png", window, 0),
                                             new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
                                             new Surface("../client/resources/images/escudo_tortuga_t.png", window, 0),
-                                            new Surface("../client/resources/images/tunica_azul_t.png", window, 0),
-                                            new Surface("../client/resources/images/pocion_vida_t.png", window, 0),
-                                            new Surface("../client/resources/images/vara_fresno_t.png", window, 0),
+                                           //new Surface("../client/resources/images/tunica_azul_t.png", window, 0),
+                                            //new Surface("../client/resources/images/pocion_vida_t.png", window, 0),
+                                            //new Surface("../client/resources/images/vara_fresno_t.png", window, 0),
                                             new Surface("../client/resources/images/capucha_t.png", window, 0)};
         //renderItems(floor_items);
 

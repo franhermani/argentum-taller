@@ -133,37 +133,27 @@ void SDLWindow::renderGameFrame(Surface* surface) {
 
 void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
     int x,y, w, h;
+    //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
     w = (inventoryXPixelEnd-inventoryXPixelBegin)/2;
     h = (inventoryYPixelEnd-inventoryYPixelBegin)/5;
     x = inventoryXPixelBegin;
     y = inventoryYPixelBegin;
-    int first_col_length, second_col_length;
-    int first_col_max_index = 5, second_col_max_index=10;
     int surfaces_size = surfaces.size();
-    if (surfaces_size>5) {
-        
-    }
-    for (int i=0; i<5; i++) {
+    int current_index = 0;
+    while (current_index < surfaces_size) {
         SDL_Rect stretchRect;
         stretchRect.x = x;
         stretchRect.y = y;
         stretchRect.w = w;
         stretchRect.h = h;
-        SDL_BlitScaled(surfaces[i]->getRenderableSurface(), NULL,
+        SDL_BlitScaled(surfaces[current_index]->getRenderableSurface(), NULL,
                        getSurface(), &stretchRect);
         y = y + h;
-    }
-    x = x + w;
-    y = inventoryYPixelBegin;
-    for (int i=5; i<10; i++) {
-        SDL_Rect stretchRect;
-        stretchRect.x = x;
-        stretchRect.y = y;
-        stretchRect.w = w;
-        stretchRect.h = h;
-        SDL_BlitScaled(surfaces[i]->getRenderableSurface(), NULL,
-                       getSurface(), &stretchRect);
-        y = y + h;
+        current_index ++;
+        if(current_index == 5){
+            x = x + w;
+            y = inventoryYPixelBegin;
+        }
     }
 }
 
@@ -181,7 +171,7 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     yHeightTileSize = (frameYPixelEnd - frameYPixelBegin) /
             numberOfTilesInHeight;
     inventoryXPixelBegin =  (screenWidth / 100) * 84;
-    inventoryXPixelEnd =  (screenWidth / 100) * 104;
+    inventoryXPixelEnd =  (screenWidth / 100) * 102;
     inventoryYPixelBegin = screenHeight / 4;
     inventoryYPixelEnd = (screenHeight /100) * 64;
 }
