@@ -16,7 +16,6 @@ void ReviveCommand::execute(World& world) {
         (world.getNPCByPos(priestPosX, priestPosY));
         priest->revive(player);
     } else {
-        // TODO: inmovilizar al jugador
-        player.revive();
+        player.longTermRevive();
     }
 }

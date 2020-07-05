@@ -46,3 +46,13 @@ Item* Inventory::removeItem(const int type) {
     }
     return nullptr;
 }
+
+Item* Inventory::removeLastItem() {
+    Item* item = items.back();
+    items.pop_back();
+    return item;
+}
+
+const bool Inventory::isEmpty() const {
+    return items.empty();
+}

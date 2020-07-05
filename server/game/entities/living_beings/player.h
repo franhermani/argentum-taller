@@ -24,6 +24,7 @@ class Player : public LivingBeing {
     long maxExperience;
     long actualExperience;
     bool isMeditating;
+    bool isReviving;
     bool isNewbie;
     bool ableToUseMagic;
     int maxMana;
@@ -36,8 +37,9 @@ class Player : public LivingBeing {
     Helmet* helmet;
     Shield* shield;
     Inventory inventory;
-    int recoveryVelocity;
-    int msRecoveryCounter;
+    int moveVelocity, recoveryVelocity;
+    int msMoveCounter, msRecoveryCounter;
+    int distanceInMsToPriest;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
@@ -72,6 +74,9 @@ class Player : public LivingBeing {
 
     // Recupera vida y mana por el paso del tiempo
     void recoverLifeAndMana();
+
+    // Mueve al player al lado de la posicion (pos_x, pos_y)
+    void moveNextTo(const int pos_x, const int pos_y);
 
     // Asigna 'new_weapon' a 'weapon'
     // Lanza una excepcion si:
@@ -121,8 +126,11 @@ public:
     // Recupera todos los puntos de vida y mana del player
     void heal();
 
-    // Revive al player
-    void revive();
+    // Revive al player de forma inmediata
+    void shortTermRevive();
+
+    // Setea 'isReviving' en true
+    void longTermRevive();
 
     // El player entra en estado de meditacion
     // Lanza una excepcion si:
