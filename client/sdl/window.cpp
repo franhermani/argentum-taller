@@ -261,6 +261,32 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
                    getSurface(), &stretchRect);
 }
 
+
+
+void SDLWindow::renderList(std::vector<Surface*>& surfaces) {
+    game_area_t& list_area = measurements.list;
+    int x,y, w, h;
+    //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
+    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/10;
+    h = (list_area.y_pixel_end-list_area.y_pixel_begin);
+    x = list_area.x_pixel_begin;
+    y = list_area.y_pixel_begin;
+    int surfaces_size = surfaces.size();
+    int current_index = 0;
+    while (current_index < surfaces_size) {
+        SDL_Rect stretchRect;
+        stretchRect.x = x;
+        stretchRect.y = y;
+        stretchRect.w = w;
+        stretchRect.h = h;
+        SDL_BlitScaled(surfaces[current_index]->getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+        x = x + w;
+        current_index ++;
+    }
+}
+
+
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     measurements.initialize(tileWidth,
                             tileHeight, screenWidth, screenHeight);

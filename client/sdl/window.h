@@ -81,5 +81,8 @@ public:
                                    std::map<int, Surface*>& surfaces_map);
     void renderPlayerInfo(std::map<int, float> player_info,
             std::map<int, Surface *> info_surfaces_map);
+
+    void renderList(std::vector<Surface*>& surfaces);
+
 };
 #endif // SDL_WINDOW_H

@@ -488,6 +488,7 @@ void GameRender::run() {
         window.renderEquipped(player, floorItemSurfacesMap);
         window.renderPlayerInfo(getRenderablePlayerInfo(current_world),
                 infoSurfacesMap);
+        window.renderList(inventory_items);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }
