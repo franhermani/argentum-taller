@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "npc.h"
-#include "../player.h"
+#include "../living_beings/player.h"
 
 class Merchant : public NPC {
 public:

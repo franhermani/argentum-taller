@@ -1,7 +1,9 @@
 #include <random>
+#include <cstdlib>
 #include "world.h"
 
-World::World(GameParams& params) : params(params) {
+World::World(GameParams& params) : params(params),
+itemFactory(params.getConfigParams()["items"]) {
     json js;
     js = params.getWorldParams()["layers"][0];
     worldWidth = js["width"], worldHeight = js["height"];
@@ -205,7 +207,7 @@ const bool World::inCollision(const int pos_x, const int pos_y) {
 }
 
 void World::detectAttackCollision(Attack* new_attack) {
-    Player* player = new_attack->player;
+    LivingBeing* owner = new_attack->owner;
     int pos_x = new_attack->posX, pos_y = new_attack->posY;
 
     // Terrenos impenetrables
@@ -218,14 +220,16 @@ void World::detectAttackCollision(Attack* new_attack) {
     for (auto& p : players)
         if (p->posX == pos_x && p->posY == pos_y) {
             new_attack->collision();
-            player->attack(*p);
+            owner->attack(*p);
+            return;
         }
 
     // Criaturas
     for (auto& c : creatures)
         if (c->posX == pos_x && c->posY == pos_y) {
             new_attack->collision();
-            player->attack(*c);
+            owner->attack(*c);
+            return;
         }
 
     // NPCs
@@ -245,7 +249,12 @@ const bool World::itemInPosition(const int pos_x, const int pos_y) {
     return false;
 }
 
-void World::addItem(Item* item) {
+void World::addItem(Item *item) {
+    items.push_back(item);
+}
+
+void World::addItem(const int type, const int pos_x, const int pos_y) {
+    Item *item = itemFactory(type, pos_x, pos_y);
     items.push_back(item);
 }
 
@@ -275,7 +284,7 @@ Gold* World::removeGold(const int pos_x, const int pos_y) {
     return nullptr;
 }
 
-void World::addAttack(Attack *new_attack) {
+void World::addAttack(Attack* new_attack) {
     attacks.push_back(new_attack);
 }
 
@@ -285,6 +294,30 @@ NPC* World::getNPCByPos(const int pos_x, const int pos_y) const {
             return npc;
 
     return nullptr;
+}
+
+std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
+    std::vector<int> pos = {0,0};
+    int min_distance = 2 * worldHeight, actual_distance;
+
+    for (auto& player : players) {
+        if (player->isDead())
+            continue;
+
+        actual_distance = distance(pos_x, pos_y, player->posX, player->posY);
+        if (actual_distance < min_distance) {
+            min_distance = actual_distance;
+            pos[0] = player->posX;
+            pos[1] = player->posY;
+        }
+    }
+    return pos;
+}
+
+const int World::distance(const int x1, const int y1,
+        const int x2, const int y2) {
+    int dist_x = abs(x1 - x2), dist_y = abs(y1 - y2);
+    return dist_x + dist_y;
 }
 
 const int World::getInventoryLength() const {

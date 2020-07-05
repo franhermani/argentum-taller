@@ -2,7 +2,7 @@
 #define HEAL_COMMAND_H
 
 #include "command.h"
-#include "../entities/player.h"
+#include "../entities/living_beings/player.h"
 
 class HealCommand : public Command {
     Player& player;

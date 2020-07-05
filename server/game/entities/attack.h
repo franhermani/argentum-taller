@@ -1,15 +1,16 @@
 #ifndef ATTACK_H
 #define ATTACK_H
 
-class Player;
+class LivingBeing;
 
 class Attack {
-    Player* player;
+    LivingBeing* owner;
     int posX, posY;
     int direction;
     int range, blocksToRange;
+    bool isColliding;
     int moveVelocity;
-    int msCounter;
+    int msMoveCounter;
 
     friend class World;
 
@@ -17,7 +18,7 @@ class Attack {
 
 public:
     // Constructor
-    Attack(Player* player, const int pos_x, const int pos_y,
+    Attack(LivingBeing* owner, const int pos_x, const int pos_y,
     const int direction, const int range, const int move_velocity);
 
     // Constructor y asignacion por copia deshabilitados

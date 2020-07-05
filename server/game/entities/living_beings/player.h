@@ -2,39 +2,34 @@
 #define GAME_PLAYER_H
 
 #include <string>
-#include "items/weapon.h"
-#include "items/armor.h"
-#include "items/helmet.h"
-#include "items/shield.h"
-#include "items/potion.h"
-#include "items/inventory.h"
-#include "npcs_and_creatures/creature.h"
+#include "living_being.h"
+#include "../items/weapon.h"
+#include "../items/armor.h"
+#include "../items/helmet.h"
+#include "../items/shield.h"
+#include "../items/potion.h"
+#include "../items/inventory.h"
+#include "creature.h"
 
 class World;
 class Equations;
 class ClientHandler;
 class ServerProtocol;
 
-class Player {
+class Player : public LivingBeing {
     World& world;
     Equations& equations;
-    int id;
     int raceType;
     int classType;
-    int posX{}, posY{};
-    int level;
     long maxExperience;
     long actualExperience;
-    bool isAlive;
     bool isMeditating;
     bool isNewbie;
     bool ableToUseMagic;
-    int orientation;
-    int maxLife;
-    int actualLife;
     int maxMana;
     int actualMana;
-    int maxGold;
+    int maxSafeGold;
+    int maxExcessGold;
     int actualGold;
     Weapon* weapon;
     Armor* armor;
@@ -42,16 +37,16 @@ class Player {
     Shield* shield;
     Inventory inventory;
     int recoveryVelocity;
-    int msCounter;
+    int msRecoveryCounter;
 
     // Genera posiciones iniciales aleatorias para el player
     void loadInitialPosition();
 
-    // Resta puntos de vida al player
-    void subtractLife(int life);
-
     // Suma puntos de vida al player
     void addLife(int life);
+
+    // Resta puntos de mana al player
+    void subtractMana(int mana);
 
     // Suma puntos de mana al player
     void addMana(int mana);
@@ -60,11 +55,23 @@ class Player {
     // Si llega al limite, sube de nivel
     void addExperience(int exp);
 
-    // Setea 'isAlive' en false
-    void die();
+    // Setea 'isAlive' en false y dropea oro e items del inventario
+    virtual void die() override;
+
+    // Dropea el oro en exceso al mundo
+    void dropExcessGold();
+
+    // Resta 'gold' cantidad de oro al player
+    void subtractGold(int gold);
+
+    // Dropea los items del inventario al mundo
+    void dropInventoryItems();
 
     // Setea 'isMeditating' en false
     void stopMeditating();
+
+    // Recupera vida y mana por el paso del tiempo
+    void recoverLifeAndMana();
 
     // Asigna 'new_weapon' a 'weapon'
     // Lanza una excepcion si:
@@ -93,7 +100,7 @@ class Player {
 
 public:
     // Constructor
-    Player(World& world, Equations& equations, const int id,
+    Player(World& world, Equations& equations, const int new_id,
             const int race_type, const int class_type);
 
     // Constructor y asignacion por copia deshabilitados
@@ -106,7 +113,7 @@ public:
 
     // Recupera vida y mana con el paso del tiempo
     // Recupera mana con el estado de meditacion
-    void update(int ms);
+    virtual void update(int ms) override;
 
     // Mueve el player segun la direccion dada
     void moveTo(int direction);
@@ -126,17 +133,14 @@ public:
     void attack();
 
     // Ataca a otro player
-    void attack(Player& other);
+    void attack(Player& other) override;
 
     // Ataca a una criatura
-    void attack(Creature& creature);
+    void attack(Creature& creature) override;
 
-    // Recibe el ataque de otro player o NPC
+    // Recibe el ataque de otro player o criatura
     // Devuelve la cantidad de daño realmente recibido
-    const int receiveAttack(const int damage);
-
-    // Devuelve true si esta muerto, false en caso contrario
-    const bool isDead() const;
+    const int receiveAttack(const int damage) override;
 
     // Saca un item del inventario segun 'type' y lo equipa
     void equipItemFromInventory(const int type);

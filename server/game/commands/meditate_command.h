@@ -2,7 +2,7 @@
 #define MEDITATE_COMMAND_H
 
 #include "command.h"
-#include "../entities/player.h"
+#include "../entities/living_beings/player.h"
 
 class MeditateCommand : public Command {
     Player& player;

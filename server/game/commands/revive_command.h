@@ -2,7 +2,7 @@
 #define REVIVE_COMMAND_H
 
 #include "command.h"
-#include "../entities/player.h"
+#include "../entities/living_beings/player.h"
 
 class ReviveCommand : public Command {
     Player& player;

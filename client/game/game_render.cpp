@@ -337,8 +337,8 @@ void GameRender::loadSurfacePaths() {
             {SOMBRERO_MAGICO, "../client/resources/images/sombrero_magico_t.png"},
             {ESCUDO_TORTUGA, "../client/resources/images/escudo_tortuga_t.png"},
             {ESCUDO_HIERRO, "../client/resources/images/escudo_hierro_t.png"},
-            {LIFE_POTION, "../client/resources/images/pocion_vida_t.png"},
-            {MANA_POTION, "../client/resources/images/pocion_mana_t.png"},
+            {POCION_VIDA, "../client/resources/images/pocion_vida_t.png"},
+            {POCION_MANA, "../client/resources/images/pocion_mana_t.png"},
     };
     floorItemSurfacesMap = {
             {ESPADA, new Surface("../client/resources/images/espada_t.png", window, 0)},
@@ -358,8 +358,8 @@ void GameRender::loadSurfacePaths() {
             {SOMBRERO_MAGICO, new Surface("../client/resources/images/sombrero_magico_t.png", window, 0)},
             {ESCUDO_TORTUGA, new Surface("../client/resources/images/escudo_tortuga_t.png", window, 0)},
             {ESCUDO_HIERRO, new Surface("../client/resources/images/escudo_hierro_t.png", window, 0)},
-            {LIFE_POTION, new Surface("../client/resources/images/pocion_vida_t.png", window, 0)},
-            {MANA_POTION, new Surface("../client/resources/images/pocion_mana_t.png", window, 0)},
+            {POCION_VIDA, new Surface("../client/resources/images/pocion_vida_t.png", window, 0)},
+            {POCION_MANA, new Surface("../client/resources/images/pocion_mana_t.png", window, 0)},
     };
 
 
@@ -372,7 +372,7 @@ void GameRender::loadSurfacePaths() {
             {LIFE, life_bar},
             {MANA, mana_bar},
             {EXPERIENCE, experience_bar},
-            {BACKGROUND,black_bar},
+            {BACKGROUND,black_bar}
     };
 }
 
