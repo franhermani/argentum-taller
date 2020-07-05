@@ -14,6 +14,8 @@
 #include "../data_transfer_objects/deposit_gold_command_dto.h"
 #include "../data_transfer_objects/deposit_item_command_dto.h"
 #include "../data_transfer_objects/attack_command_dto.h"
+#include "../data_transfer_objects/sell_item_command_dto.h"
+#include "../data_transfer_objects/buy_item_command_dto.h"
 #include "exception.h"
 #include <vector>
 
@@ -46,20 +48,20 @@ void GameInputHandler::play() {
                 } else if (key == SDLK_ESCAPE) {
                     running = false;
                     continue;
-                } else if (key == SDLK_a){
+                } else if (key == SDLK_a) {
                     command = new AttackCommandDTO();
                 } else if (key == SDLK_h) {
                     std::vector<int> priest_position =
                             mapMonitor.getPriestLookingAt();
                     if (priest_position[0] == -1) continue;
                     command = new HealCommandDTO(priest_position[0],
-                            priest_position[1]);
+                                                 priest_position[1]);
                 } else if (key == SDLK_l) {
                     try {
                         std::vector<int> npc_position =
                                 mapMonitor.getNpcLookingAt();
                         command = new ListCommandDTO(npc_position[0], npc_position[1]);
-                    } catch (MapException& e) {
+                    } catch (MapException &e) {
                         continue;
                     }
                 } else if (key == SDLK_m) {
@@ -71,14 +73,22 @@ void GameInputHandler::play() {
                         command = new ReviveCommandDTO();
                     } else {
                         command = new ReviveCommandDTO(priest_position[0],
-                            priest_position[1]);}
+                                                       priest_position[1]);
+                    }
                 } else if (key == SDLK_t) {
                     //TODO cuando tengamos los items guardados pedirlo al mapa
-                    continue;
                     //command = new TakeCommandDTO(0, 0);
-                } else if (key == SDLK_e) {
-                    //TODO  Cuando pueda mostrar inventario esto va a ser equip
+                } else if (key == SDLK_y) {
+                    //throw
+                    //TODO cuando tengamos los items guardados pedirlo al mapa
                     continue;
+                } else if (key == SDLK_e) {
+                    SDL_WaitEvent(&event);
+                    if (isLeftClick(event)) {
+                        SDL_GetMouseState(&x, &y);
+                        command = new EquipCommandDTO(
+                                gameRender->getInventoryItemByPosition(x, y));
+                    }
                 } else if (key == SDLK_d) {
                     SDL_WaitEvent(&event);
                     if (isLeftClick(event)) {
@@ -86,7 +96,7 @@ void GameInputHandler::play() {
                         if (gameRender->isClickingInventoryItems(x, y))
                             command = new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
                         else if (gameRender->isClickingInventoryGold(x, y))
-                            command = new DepositGoldCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
+                            command = new DepositGoldCommandDTO(1, x, y);
                     } else continue;
                 } else if (key == SDLK_w) {
                     SDL_WaitEvent(&event);
@@ -95,72 +105,25 @@ void GameInputHandler::play() {
                         if (gameRender->isClickingListItems(x, y))
                             command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
                         else if (gameRender->isClickingListGold(x, y))
-                            command = new WithdrawGoldCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
+                            command = new WithdrawGoldCommandDTO(1, x, y);
                     } else continue;
                 } else if (key == SDLK_s) {
                     SDL_WaitEvent(&event);
                     if (isLeftClick(event)) {
                         SDL_GetMouseState(&x, &y);
                         if (gameRender->isClickingInventoryItems(x, y))
-                            command = new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
-                        else if (gameRender->isClickingInventoryGold(x, y))
-                            command = new DepositGoldCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
+                            command = new SellItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
                     } else continue;
                 } else if (key == SDLK_b) {
                     SDL_WaitEvent(&event);
                     if (isLeftClick(event)) {
                         SDL_GetMouseState(&x, &y);
                         if (gameRender->isClickingListItems(x, y))
-                            command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
-                        else if (gameRender->isClickingListGold(x, y))
-                            command = new WithdrawGoldCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
+                            command = new BuyItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
                     } else continue;
                 } else {
                     continue;
                 }
-                commandQueue.push(command);
-            } else if (isLeftClick(event)) {
-                if (not interacting_with_npc) {
-                    try {
-                        command = new EquipCommandDTO(
-                                gameRender->getInventoryItemByPosition(x, y));
-                    } catch (ItemException &e) {
-                        continue;
-                    }
-                } else {
-                    //Chequeamos si estamos frente a un npc
-                    try {
-                        mapMonitor.getNpcLookingAt();
-                    } catch (MapException& e) {
-                        continue;
-                    }
-                    try {
-                        command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
-                    } catch (ItemException &e) {
-                        continue;
-                    }
-                    try {
-                        command = new WithdrawGoldCommandDTO(
-                                gameRender->getListItemByPosition(x, y), x, y);
-                    } catch (ItemException &e) {
-                        continue;
-                    }
-                    try {
-                        command = new DepositItemCommandDTO(
-                                gameRender->getInventoryItemByPosition(x, y), x, y);
-                    } catch (ItemException &e) {
-                        continue;
-                    }
-                    try {
-                        command = new DepositGoldCommandDTO(
-                                gameRender->getListItemByPosition(x, y), x, y);
-                    } catch (ItemException &e) {
-                        continue;
-                    }
-                }
-                commandQueue.push(command);
-
-
             } else if (event.type == SDL_QUIT) {
                 running = false;
             } else if (event.type == SDL_KEYUP) {
@@ -169,6 +132,7 @@ void GameInputHandler::play() {
                 continue;
             }
         }
+
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
