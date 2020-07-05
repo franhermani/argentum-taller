@@ -320,6 +320,31 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
     return -1;
 }
 
+
+int SDLWindow::getRenderedListIndexByPosition(int xClicked,
+                                              int yClicked, size_t list_length) {
+    //codigo repetido con render list, sacarlo afuera
+    game_area_t& list_area = measurements.list;
+    int x,y, w, h;
+    //TODO 10 es el maximo de items en la lista , sacar AFUERA A CONSTANTES
+    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/10;
+    h = w;
+    x = list_area.x_pixel_begin;
+    y = list_area.y_pixel_begin;
+    int current_index = 0;
+    SDL_Rect stretchRect;
+    while (current_index < list_length) {
+        stretchRect.x = x;
+        stretchRect.y = y;
+        stretchRect.w = w;
+        stretchRect.h = h;
+        if (isInsideArea(stretchRect, xClicked, yClicked)) return current_index;
+        x = x + w;
+        current_index ++;
+    }
+    return -1;
+}
+
 int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {
     return (((x >= stretchRect.x) and (x < (stretchRect.x + stretchRect.w)))
         and

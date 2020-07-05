@@ -505,6 +505,19 @@ int GameRender::getInventoryItemByPosition(int x, int y) {
     return current_world.player_info.inventory.items[position];
 }
 
+
+int GameRender::getListItemByPosition(int x, int y) {
+    //size_t inventory_length = current_world.player_info.list.length;
+    int position = window.getRenderedListIndexByPosition(x, y, inventory_length);
+    if (position < 0) throw InventoryException(
+                "El inventario no tiene items en la posicion clickeada");
+    if (current_world.player_info.inventory.length < position) throw
+                InventoryException("El inventario ya no tiene ese item");
+
+    return current_world.player_info.inventory.items[position];
+}
+
+
 void GameRender::stop() {
     keepRunning = false;
 }
