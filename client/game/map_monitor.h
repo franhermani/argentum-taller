@@ -53,6 +53,12 @@ public:
     std::vector<int> getPriestLookingAt();
 
     std::vector<int> getNpcLookingAt();
+
+    player_info_t getPlayerInfo();
+
+    player_t getMainPlayer();
+
+    client_world_t getCurrentWorld();
     };
 
 

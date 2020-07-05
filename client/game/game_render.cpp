@@ -73,7 +73,7 @@ void GameRender::createNecessaryTerrains(
 }
 
 
-void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
+void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
     createNecessaryTerrains(matrix);
     window.renderTerrain(matrix, terrainSurfacesMap);
 }
@@ -337,8 +337,42 @@ void GameRender::loadSurfacePaths() {
             {SOMBRERO_MAGICO, "../client/resources/images/sombrero_magico_t.png"},
             {ESCUDO_TORTUGA, "../client/resources/images/escudo_tortuga_t.png"},
             {ESCUDO_HIERRO, "../client/resources/images/escudo_hierro_t.png"},
-            {POCION_VIDA, "../client/resources/images/life_potion_t.png"},
-            {POCION_MANA, "../client/resources/images/mana_potion_t.png"},
+            {POCION_VIDA, "../client/resources/images/pocion_vida_t.png"},
+            {POCION_MANA, "../client/resources/images/pocion_mana_t.png"},
+    };
+    floorItemSurfacesMap = {
+            {ESPADA, new Surface("../client/resources/images/espada_t.png", window, 0)},
+            {HACHA, new Surface("../client/resources/images/hacha_t.png", window, 0)},
+            {MARTILLO, new Surface("../client/resources/images/martillo_t.png", window, 0)},
+            {VARA_FRESNO, new Surface("../client/resources/images/vara_fresno_t.png", window, 0)},
+            {FLAUTA_ELFICA, new Surface("../client/resources/images/flauta_elfica_t.png", window, 0)},
+            {BACULO_NUDOSO, new Surface("../client/resources/images/baculo_nudoso_t.png", window, 0)},
+            {BACULO_ENGARZADO, new Surface("../client/resources/images/baculo_engarzado_t.png", window, 0)},
+            {ARCO_SIMPLE, new Surface("../client/resources/images/arco_simple_t.png", window, 0)},
+            {ARCO_COMPUESTO, new Surface("../client/resources/images/arco_compuesto_t.png", window, 0)},
+            {ARMADURA_CUERO, new Surface("../client/resources/images/armadura_cuero_t.png", window, 0)},
+            {ARMADURA_PLACAS, new Surface("../client/resources/images/armadura_placas_t.png", window, 0)},
+            {TUNICA_AZUL, new Surface("../client/resources/images/tunica_azul_t.png", window, 0)},
+            {CAPUCHA, new Surface("../client/resources/images/capucha_t.png", window, 0)},
+            {CASCO_HIERRO, new Surface("../client/resources/images/casco_hierro_t.png", window, 0)},
+            {SOMBRERO_MAGICO, new Surface("../client/resources/images/sombrero_magico_t.png", window, 0)},
+            {ESCUDO_TORTUGA, new Surface("../client/resources/images/escudo_tortuga_t.png", window, 0)},
+            {ESCUDO_HIERRO, new Surface("../client/resources/images/escudo_hierro_t.png", window, 0)},
+            {POCION_VIDA, new Surface("../client/resources/images/pocion_vida_t.png", window, 0)},
+            {POCION_MANA, new Surface("../client/resources/images/pocion_mana_t.png", window, 0)},
+    };
+
+
+    Surface* life_bar = new Surface("../client/resources/images/life_bar.png", window, 0);
+    Surface* black_bar = new Surface("../client/resources/images/black_bar.png", window, 0);
+    Surface* mana_bar = new Surface("../client/resources/images/mana_bar.png", window, 0);
+    Surface* experience_bar = new Surface("../client/resources/images/experience_bar.png", window, 0);
+
+    infoSurfacesMap = {
+            {LIFE, life_bar},
+            {MANA, mana_bar},
+            {EXPERIENCE, experience_bar},
+            {BACKGROUND,black_bar}
     };
 }
 
@@ -346,6 +380,16 @@ void GameRender::setTilesSize(int width,int height) {
     blocksWidth = width;
     blocksHeight = height;
     window.setTilesSize(width,height);
+}
+
+std::map<int, float> GameRender::getRenderablePlayerInfo(client_world_t& current_world) {
+    std::map<int, float> playerInfo = {
+            //TODO RECIBIR EXPERIENCE max
+            {LIFE, current_world.main_player.actual_life/current_world.main_player.max_life},
+            {MANA, current_world.player_info.actual_mana/current_world.player_info.max_mana},
+            {EXPERIENCE, current_world.player_info.actual_experience/current_world.player_info.actual_experience}
+    };
+    return std::move(playerInfo);
 }
 
 void GameRender::run() {
@@ -357,16 +401,39 @@ void GameRender::run() {
     window.renderGameFrame(createGameFrameSurface());
 
     while (keepRunning) {
-        std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
-        renderTerrain(terrains);
-        std::vector<player_t> players = mapMonitor.getRenderablePlayers();
-        renderPlayers(players);
-        std::vector<npc_t> npcs = mapMonitor.getRenderableNpcs();
-        renderNpcs(npcs);
-        std::vector<creature_t> creatures = mapMonitor.getRenderableCreatures();
-        renderCreatures(creatures);
-        //std::vector<item_t> floor_items = mapMonitor.;
+        client_world_t current_world = mapMonitor.getCurrentWorld();
+        renderTerrain(current_world.terrains);
+        renderPlayers(current_world.players);
+        renderNpcs(current_world.npcs);
+        renderCreatures(current_world.creatures);
+        //simulamos inventario recibido de server
+        std::vector<Surface*> inventory_items =
+                {new Surface("../client/resources/images/pocion_mana_t.png",
+                 window, 0),
+                 new Surface("../client/resources/images/armadura_cuero_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/pocion_mana_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/arco_compuesto_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/pocion_mana_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/escudo_tortuga_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/capucha_t.png",
+                         window, 0)};
+        window.renderInventory(inventory_items);
+        //cuando lleguen los items del server los renderizamos
         //renderItems(floor_items);
+        //simulamos un player, despues poner el posta sacado de current_world
+        player_t player;
+        player.shield = ESCUDO_HIERRO;
+        player.armor = ARMADURA_CUERO;
+        player.helmet = NO_ITEM_EQUIPPED;
+        player.weapon = ARCO_COMPUESTO;
+        window.renderEquipped(player, floorItemSurfacesMap);
+        window.renderPlayerInfo(getRenderablePlayerInfo(current_world),
+                infoSurfacesMap);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

@@ -20,34 +20,34 @@ void MapMonitor::initialize(int username_id,
 void MapMonitor::updateWorld(world_t receivedWorld) {
     std::unique_lock<std::mutex> lk(m);
     //TODO CUIDADO COPIAS CAMBIAR
-    map.updateWorld(receivedWorld);
+    map.updateWorld(std::move(receivedWorld));
 }
 
 
 std::vector<std::vector<Terrain>> MapMonitor::getTerrains() {
     std::unique_lock<std::mutex> lk(m);
-    return map.getTerrains();
+    return std::move(map.getTerrains());
 }
 
 
 std::vector<player_t> MapMonitor::getRenderablePlayers() {
     std::unique_lock<std::mutex> lk(m);
-    return map.getRenderablePlayers();
+    return std::move(map.getRenderablePlayers());
 }
 
 std::vector<creature_t> MapMonitor::getRenderableCreatures() {
     std::unique_lock<std::mutex> lk(m);
-    return map.getRenderableCreatures();
+    return std::move(map.getRenderableCreatures());
 }
 
 std::vector<item_t> MapMonitor::getRenderableItems() {
     std::unique_lock<std::mutex> lk(m);
-    return map.getRenderableItems();
+    return std::move(map.getRenderableItems());
 }
 
 std::vector<npc_t> MapMonitor::getRenderableNpcs() {
     std::unique_lock<std::mutex> lk(m);
-    return map.getRenderableNpcs();
+    return std::move(map.getRenderableNpcs());
 }
 
 int MapMonitor::getPlayerVisionWidth() {
@@ -73,3 +73,17 @@ std::vector<int> MapMonitor::getNpcLookingAt() {
     std::unique_lock<std::mutex> lk(m);
     return std::move(map.getNpcLookingAt());
 }
+player_info_t MapMonitor::getPlayerInfo() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getPlayerInfo());
+}
+
+player_t MapMonitor::getMainPlayer() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getMainPlayer());
+}
+client_world_t MapMonitor::getCurrentWorld() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getCurrentWorld());
+}
+

@@ -2,6 +2,7 @@
 #ifndef ARGENTUM_MAP_H
 #define ARGENTUM_MAP_H
 #include "../../common/defines/world_structs.h"
+#include "map_structs.h"
 #include <vector>
 
 class Map {
@@ -83,7 +84,14 @@ public:
     //Dada la posicion de un jugador, devuelve la posicion donde
     // terminaria en Y su submatriz dentro de la matriz principal
     int getPlayerYEnd(player_t& player);
-    };
+
+    player_info_t getPlayerInfo();
+
+    client_world_t getCurrentWorld();
+
+};
+
+
 
 
 #endif //ARGENTUM_MAP_H
