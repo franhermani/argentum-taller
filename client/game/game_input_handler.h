@@ -6,15 +6,17 @@
 #include "../../common/blocking_queue.h"
 #include "../../common/defines/commands.h"
 #include "map_monitor.h"
+#include "game_render.h"
 
 class GameInputHandler : public Thread {
     BlockingQueue<CommandDTO*>& commandQueue;
     MapMonitor& mapMonitor;
+    GameRender* gameRender;
 
 public:
     // Constructor
     GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
-            MapMonitor& mapMonitor);
+            MapMonitor& mapMonitor, GameRender* gameRender);
 
     // Destructor
     ~GameInputHandler();

@@ -12,8 +12,8 @@
 #include <vector>
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
-            MapMonitor& mapMonitor):
-commandQueue(commandQueue), mapMonitor(mapMonitor) {}
+            MapMonitor& mapMonitor, GameRender* gameRender):
+commandQueue(commandQueue), mapMonitor(mapMonitor), gameRender(gameRender) {}
 
 GameInputHandler::~GameInputHandler() = default;
 
@@ -74,6 +74,8 @@ void GameInputHandler::play() {
             }else if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == SDL_BUTTON_LEFT)) {
                 int x,y;
                 SDL_GetMouseState( &x, &y );
+                gameRender->getInventoryItemByPosition(x, y);
+
 
             } else if (event.type == SDL_QUIT) {
                 running = false;

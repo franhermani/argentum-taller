@@ -282,7 +282,7 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
         stretchRect.y = y;
         stretchRect.w = w;
         stretchRect.h = h;
-        if (isInsideArea(stretchRect, xClicked, yClicked)) return true;
+        if (isInsideArea(stretchRect, xClicked, yClicked)) return current_index;
         y = y + h;
         current_index ++;
         //new column
@@ -291,10 +291,11 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
             y = inventory_area.y_pixel_begin;
         }
     }
-    return false;
+    return -1;
 }
 
 int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {
     return (((x >= stretchRect.x) and (x < (stretchRect.x + stretchRect.w)))
-        || ((y >= stretchRect.y) and (y < (stretchRect.y + stretchRect.h))));
+        and
+        ((y >= stretchRect.y) and (y < (stretchRect.y + stretchRect.h))));
 }

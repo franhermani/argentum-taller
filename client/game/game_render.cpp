@@ -493,9 +493,11 @@ void GameRender::run() {
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {
-    size_t inventory_length = current_world.player_info.inventory.length;
+    //size_t inventory_length = current_world.player_info.inventory.length;
+    size_t inventory_length = 7;
     int position = window.getRenderedItemIndexByPosition(x, y, inventory_length);
     std::cout << "\n\n\n\n\n\n\n CLICKEARON EN LA POSICION "<< position<< "\n\n\n\n AAAAAAA";
+    std::cout << " esto es x" << x << " esto es y "<<y << "\n\n\n";
     return position;
 }
 
