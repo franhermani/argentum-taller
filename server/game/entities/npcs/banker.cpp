@@ -35,7 +35,12 @@ void Banker::depositGold(Player &player, int quantity) {
 
 void Banker::withdrawGold(Player &player, int quantity) {
     bank.withdrawGold(player.id, quantity);
-    player.addGold(quantity);
+    try {
+        player.addGold(quantity);
+    } catch (GameException& e) {
+        depositGold(player, quantity);
+        throw GameException(player.id, e.what());
+    }
 }
 
 const std::vector<itemType> Banker::listItems() const {

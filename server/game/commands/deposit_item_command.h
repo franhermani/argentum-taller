@@ -6,12 +6,12 @@
 
 class DepositItemCommand : public Command {
     Player& player;
-    int itemType;
+    uint8_t itemType;
     uint16_t bankerPosX, bankerPosY;
 
 public:
     // Constructor
-    DepositItemCommand(Player& player, const int item_type,
+    DepositItemCommand(Player& player, const uint8_t item_type,
             const uint16_t banker_pos_x, const uint16_t banker_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
@@ -21,7 +21,7 @@ public:
     // Destructor
     ~DepositItemCommand() override;
 
-    // Toma un objeto del inventario y lo tira al piso
+    // Retira un item del inventario y lo deposita en el banco
     void execute(World& world) override;
 };
 

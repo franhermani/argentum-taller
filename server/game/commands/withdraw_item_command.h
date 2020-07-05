@@ -6,12 +6,12 @@
 
 class WithdrawItemCommand : public Command {
     Player& player;
-    int itemType;
+    uint8_t itemType;
     uint16_t bankerPosX, bankerPosY;
 
 public:
     // Constructor
-    WithdrawItemCommand(Player& player, const int item_type,
+    WithdrawItemCommand(Player& player, const uint8_t item_type,
             const uint16_t banker_pos_x, const uint16_t banker_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
@@ -21,7 +21,7 @@ public:
     // Destructor
     ~WithdrawItemCommand() override;
 
-    // Toma un objeto del inventario y lo tira al piso
+    // Retira un item del banco y lo agrega al inventario
     void execute(World& world) override;
 };
 

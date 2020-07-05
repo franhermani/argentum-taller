@@ -9,6 +9,7 @@
 #include "heal_command.h"
 #include "deposit_item_command.h"
 #include "withdraw_item_command.h"
+#include "deposit_gold_command.h"
 #include "list_command.h"
 #include "take_command.h"
 #include "throw_command.h"
@@ -61,7 +62,13 @@ Command* CommandFactory::operator()(Player& player, int type,
                 ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_DEPOSIT_GOLD) {
-        // TODO:...
+        uint16_t quantity;
+        uint16_t pos_x, pos_y;
+        memcpy(&quantity, arguments.data(), SIZE_16);
+        memcpy(&pos_x, arguments.data() + SIZE_16, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_16 + SIZE_16, SIZE_16);
+        return new DepositGoldCommand(player, quantity,
+                ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_WITHDRAW_GOLD) {
         // TODO:...
