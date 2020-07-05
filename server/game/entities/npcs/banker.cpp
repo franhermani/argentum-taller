@@ -1,6 +1,7 @@
 #include <vector>
 #include "banker.h"
 #include "../../../../common/defines/npcs.h"
+#include "../../game_exception.h"
 
 Banker::Banker(Bank& bank, const int pos_x, const int pos_y,
         const int orient) : bank(bank) {
@@ -19,7 +20,12 @@ void Banker::depositItem(Player &player, int type) {
 
 void Banker::withdrawItem(Player &player, int type) {
     Item* item = bank.withdrawItem(player.id, type);
-    player.addItemToInventory(item);
+    try {
+        player.addItemToInventory(item);
+    } catch (GameException& e) {
+        depositItem(player, type);
+        throw GameException(player.id, e.what());
+    }
 }
 
 void Banker::depositGold(Player &player, int quantity) {
