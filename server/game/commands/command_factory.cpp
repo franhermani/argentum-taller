@@ -13,6 +13,7 @@
 #include "withdraw_gold_command.h"
 #include "list_command.h"
 #include "buy_item_command.h"
+#include "sell_item_command.h"
 #include "take_command.h"
 #include "throw_command.h"
 #include "move_command.h"
@@ -97,7 +98,13 @@ Command* CommandFactory::operator()(Player& player, int type,
                 ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_SELL) {
-        // TODO:...
+        uint8_t item_type;
+        uint16_t pos_x, pos_y;
+        memcpy(&item_type, arguments.data(), SIZE_8);
+        memcpy(&pos_x, arguments.data() + SIZE_8, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_8 + SIZE_16, SIZE_16);
+        return new SellItemCommand(player, item_type,
+                ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_TAKE) {
         uint8_t take_type;

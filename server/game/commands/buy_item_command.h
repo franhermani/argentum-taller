@@ -1,5 +1,5 @@
-#ifndef ARGENTUM_BUY_ITEM_COMMAND_H
-#define ARGENTUM_BUY_ITEM_COMMAND_H
+#ifndef BUY_ITEM_COMMAND_H
+#define BUY_ITEM_COMMAND_H
 
 #include "command.h"
 #include "../entities/living_beings/player.h"
@@ -25,5 +25,4 @@ public:
     void execute(World& world) override;
 };
 
-
-#endif //ARGENTUM_BUY_ITEM_COMMAND_H
+#endif // BUY_ITEM_COMMAND_H
