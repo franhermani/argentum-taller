@@ -3,10 +3,13 @@
 //
 
 #include "window_measurements.h"
-WindowMeasurements::WindowMeasurements(int numberOfTilesInWidth, int numberOfTilesInHeight,
-                                       int screenWidth, int screenHeight) :
-                                       numberOfTilesInWidth(numberOfTilesInWidth),
-                                       numberOfTilesInHeight(numberOfTilesInHeight){
+
+WindowMeasurements::WindowMeasurements() {}
+void WindowMeasurements::initialize(int numberOfTilesInWidth,
+        int numberOfTilesInHeight, int screenWidth, int screenHeight) {
+    //todo separar en varias funciones
+    numberOfTilesInWidth = numberOfTilesInWidth;
+    numberOfTilesInHeight = numberOfTilesInHeight;
     frame.x_pixel_begin = screenWidth / 50;
     frame.x_pixel_end = (screenWidth / 4) * 3;
     frame.y_pixel_begin = screenHeight / 5;

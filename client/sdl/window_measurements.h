@@ -7,7 +7,7 @@
 #include "render_structs.h"
 
 
-class WindowMeasurements {
+struct WindowMeasurements {
     int numberOfTilesInWidth;
     int numberOfTilesInHeight;
     int xWidthTileSize;
@@ -20,10 +20,10 @@ class WindowMeasurements {
     game_area_t life;
     game_area_t mana;
     game_area_t experience;
-
-    WindowMeasurements(int numberOfTilesInWidth, int numberOfTilesInHeight,
-                       int screenWidth, int screenHeight);
+    WindowMeasurements();
     ~WindowMeasurements();
+    void initialize(int numberOfTilesInWidth, int numberOfTilesInHeight,
+                    int screenWidth, int screenHeight);
 };
 
 

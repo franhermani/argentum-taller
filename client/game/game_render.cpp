@@ -406,26 +406,34 @@ void GameRender::run() {
         renderPlayers(current_world.players);
         renderNpcs(current_world.npcs);
         renderCreatures(current_world.creatures);
-        std::vector<Surface*> floor_items = {new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
-                                            new Surface("../client/resources/images/armadura_cuero_t.png", window, 0),
-                                            new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
-                                            new Surface("../client/resources/images/arco_compuesto_t.png", window, 0),
-                                            new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
-                                            new Surface("../client/resources/images/escudo_tortuga_t.png", window, 0),
-                                           //new Surface("../client/resources/images/tunica_azul_t.png", window, 0),
-                                            //new Surface("../client/resources/images/pocion_vida_t.png", window, 0),
-                                            //new Surface("../client/resources/images/vara_fresno_t.png", window, 0),
-                                            new Surface("../client/resources/images/capucha_t.png", window, 0)};
-        //todo cuando esten los pisos
+        //simulamos inventario recibido de server
+        std::vector<Surface*> inventory_items =
+                {new Surface("../client/resources/images/pocion_mana_t.png",
+                 window, 0),
+                 new Surface("../client/resources/images/armadura_cuero_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/pocion_mana_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/arco_compuesto_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/pocion_mana_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/escudo_tortuga_t.png",
+                         window, 0),
+                 new Surface("../client/resources/images/capucha_t.png",
+                         window, 0)};
+        window.renderInventory(inventory_items);
+        //cuando lleguen los items del server los renderizamos
         //renderItems(floor_items);
-        window.renderInventory(floor_items);
+        //simulamos un player, despues poner el posta sacado de current_world
         player_t player;
         player.shield = ESCUDO_HIERRO;
         player.armor = ARMADURA_CUERO;
         player.helmet = NO_ITEM_EQUIPPED;
         player.weapon = ARCO_COMPUESTO;
         window.renderEquipped(player, floorItemSurfacesMap);
-        window.renderPlayerInfo(getRenderablePlayerInfo(current_world), infoSurfacesMap);
+        window.renderPlayerInfo(getRenderablePlayerInfo(current_world),
+                infoSurfacesMap);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

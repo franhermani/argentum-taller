@@ -6,7 +6,6 @@
 #include <map>
 #include <SDL2/SDL_image.h>
 #include "../sdl/window.h"
-#include "../sdl/player_info_bars.h"
 #include "../../common/thread.h"
 #include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"

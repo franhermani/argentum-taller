@@ -10,7 +10,7 @@
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/items.h"
 #include "area.h"
-#include "../../common/defines/world_structs.h"
+#include "window_measurements.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE
 
@@ -19,38 +19,11 @@ class SDL_Surface;
 class SDL_Renderer;
 
 class SDLWindow {
-    int numberOfTilesInWidth;
-    int numberOfTilesInHeight;
-    int xWidthTileSize;
-    int yHeightTileSize;
     int screenHeight;
     int screenWidth;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    int frameXPixelBegin;
-    int frameXPixelEnd;
-    int frameYPixelBegin;
-    int frameYPixelEnd;
-    int inventoryXPixelBegin;
-    int inventoryXPixelEnd;
-    int inventoryYPixelBegin;
-    int inventoryYPixelEnd;
-    int equippedXPixelBegin;
-    int equippedXPixelEnd;
-    int equippedYPixelBegin;
-    int equippedYPixelEnd;
-    int lifeXPixelBegin;
-    int lifeXPixelEnd;
-    int lifeYPixelBegin;
-    int lifeYPixelEnd;
-    int manaXPixelBegin;
-    int manaXPixelEnd;
-    int manaYPixelBegin;
-    int manaYPixelEnd;
-    int experienceXPixelBegin;
-    int experienceXPixelEnd;
-    int experienceYPixelBegin;
-    int experienceYPixelEnd;
+    WindowMeasurements measurements;
 
 
 public:
