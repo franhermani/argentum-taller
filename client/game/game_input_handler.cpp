@@ -5,6 +5,7 @@
 #include "../data_transfer_objects/heal_command_dto.h"
 #include "../data_transfer_objects/take_command_dto.h"
 #include "../data_transfer_objects/list_command_dto.h"
+#include "../data_transfer_objects/equip_command_dto.h"
 #include "../data_transfer_objects/throw_command_dto.h"
 #include "../data_transfer_objects/revive_command_dto.h"
 #include "../data_transfer_objects/meditate_command_dto.h"
@@ -78,7 +79,8 @@ void GameInputHandler::play() {
                 SDL_GetMouseState(&x, &y);
                 if (not interacting_with_npc) {
                     try {
-                        gameRender->getInventoryItemByPosition(x, y);
+                        command = new EquipCommandDTO(
+                                gameRender->getInventoryItemByPosition(x, y));
                     } catch (InventoryException &e) {
                         continue;
                     }
