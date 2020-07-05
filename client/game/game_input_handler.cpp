@@ -81,28 +81,45 @@ void GameInputHandler::play() {
                     continue;
                 } else if (key == SDLK_d) {
                     SDL_WaitEvent(&event);
-                    if ((event.type == SDL_MOUSEBUTTONDOWN) &&
-                    (event.button.button == SDL_BUTTON_LEFT)) {
+                    if (isLeftClick(event)) {
                         SDL_GetMouseState(&x, &y);
                         if (gameRender->isClickingInventoryItems(x, y))
                             command = new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
                         else if (gameRender->isClickingInventoryGold(x, y))
                             command = new DepositGoldCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
-                    }
-                } else if (key == SDLK_e) {
-                    //TODO  Cuando pueda mostrar inventario esto va a ser equip
-                    continue;
-                } else if (key == SDLK_e) {
-                    //TODO  Cuando pueda mostrar inventario esto va a ser equip
-                    continue;
-                } else if (key == SDLK_e) {
-                    //TODO  Cuando pueda mostrar inventario esto va a ser equip
-                    continue;
+                    } else continue;
+                } else if (key == SDLK_w) {
+                    SDL_WaitEvent(&event);
+                    if (isLeftClick(event)) {
+                        SDL_GetMouseState(&x, &y);
+                        if (gameRender->isClickingListItems(x, y))
+                            command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
+                        else if (gameRender->isClickingListGold(x, y))
+                            command = new WithdrawGoldCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
+                    } else continue;
+                } else if (key == SDLK_s) {
+                    SDL_WaitEvent(&event);
+                    if (isLeftClick(event)) {
+                        SDL_GetMouseState(&x, &y);
+                        if (gameRender->isClickingInventoryItems(x, y))
+                            command = new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
+                        else if (gameRender->isClickingInventoryGold(x, y))
+                            command = new DepositGoldCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
+                    } else continue;
+                } else if (key == SDLK_b) {
+                    SDL_WaitEvent(&event);
+                    if (isLeftClick(event)) {
+                        SDL_GetMouseState(&x, &y);
+                        if (gameRender->isClickingListItems(x, y))
+                            command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
+                        else if (gameRender->isClickingListGold(x, y))
+                            command = new WithdrawGoldCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
+                    } else continue;
                 } else {
                     continue;
                 }
                 commandQueue.push(command);
-            } else if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == SDL_BUTTON_LEFT)) {
+            } else if (isLeftClick(event)) {
                 if (not interacting_with_npc) {
                     try {
                         command = new EquipCommandDTO(
@@ -155,6 +172,10 @@ void GameInputHandler::play() {
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
+}
+
+int GameInputHandler::isLeftClick(SDL_Event& event) {
+    return ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == SDL_BUTTON_LEFT));
 }
 
 void GameInputHandler::run() {
