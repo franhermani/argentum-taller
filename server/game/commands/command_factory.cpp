@@ -7,6 +7,7 @@
 #include "meditate_command.h"
 #include "revive_command.h"
 #include "heal_command.h"
+#include "deposit_item_command.h"
 #include "list_command.h"
 #include "take_command.h"
 #include "throw_command.h"
@@ -40,10 +41,16 @@ Command* CommandFactory::operator()(Player& player, int type,
         memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
         return new HealCommand(player, ntohs(pos_x), ntohs(pos_y));
 
-    } else if (type == CMD_DEPOSIT) {
-        // TODO:...
+    } else if (type == CMD_DEPOSIT_ITEM) {
+        uint8_t item_type;
+        uint16_t pos_x, pos_y;
+        memcpy(&item_type, arguments.data(), SIZE_8);
+        memcpy(&pos_x, arguments.data() + SIZE_8, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_8 + SIZE_16, SIZE_16);
+        return new DepositItemCommand(player, item_type,
+                ntohs(pos_x), ntohs(pos_y));
 
-    } else if (type == CMD_WITHDRAW) {
+    } else if (type == CMD_WITHDRAW_ITEM) {
         // TODO:...
 
     } else if (type == CMD_DEPOSIT_GOLD) {
@@ -84,9 +91,6 @@ Command* CommandFactory::operator()(Player& player, int type,
     } else if (type == CMD_EQUIP) {
         int item_type = arguments[0];
         return new EquipCommand(player, item_type);
-
-    } else if (type == CMD_TRICK) {
-        // TODO:...
     }
     return nullptr;
 }

@@ -6,8 +6,8 @@ enum commandType {
     CMD_MEDITATE,
     CMD_REVIVE,
     CMD_HEAL,
-    CMD_DEPOSIT,
-    CMD_WITHDRAW,
+    CMD_DEPOSIT_ITEM,
+    CMD_WITHDRAW_ITEM,
     CMD_DEPOSIT_GOLD,
     CMD_WITHDRAW_GOLD,
     CMD_LIST,
@@ -17,8 +17,7 @@ enum commandType {
     CMD_THROW,
     CMD_MOVE,
     CMD_ATTACK,
-    CMD_EQUIP,
-    CMD_TRICK
+    CMD_EQUIP
 };
 
 // Move Command

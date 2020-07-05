@@ -4,7 +4,7 @@
 #include "command.h"
 #include "../entities/living_beings/player.h"
 
-class ThrowCommand : public Command{
+class ThrowCommand : public Command {
     Player& player;
     int itemType;
 
