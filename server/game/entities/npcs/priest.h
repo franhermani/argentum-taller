@@ -22,13 +22,28 @@ public:
     ~Priest();
 
     // Revive al player
-    void revive(Player& player);
+    void revive(Player& player) override;
 
     // Cura al player
-    void heal(Player& player);
+    void heal(Player& player) override;
+
+    // Lanza una excepcion
+    void buyItem(Player& player, const int type) override;
 
     // Vende un item al player segun 'item_type'
-    void sellItem(Player& player, const int type);
+    void sellItem(Player& player, const int type) override;
+
+    // Lanza una excepcion
+    void depositItem(Player& player, const int type) override;
+
+    // Lanza una excepcion
+    void withdrawItem(Player& player, const int type) override;
+
+    // Lanza una excepcion
+    void depositGold(Player& player, const int quant) override;
+
+    // Lanza una excepcion
+    void withdrawGold(Player& player, const int quant) override;
 
     // Lista los items que tiene para vender
     const std::vector<int> listItems() const override;

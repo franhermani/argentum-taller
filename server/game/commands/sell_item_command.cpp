@@ -10,7 +10,6 @@ NPCPosX(npc_pos_x), NPCPosY(npc_pos_y) {}
 SellItemCommand::~SellItemCommand() = default;
 
 void SellItemCommand::execute(World& world) {
-//    auto* banker = dynamic_cast<Banker*>
-//    (world.getNPCByPos(bankerPosX, bankerPosY));
-//    banker->withdrawItem(player, itemType);
+    NPC* npc = world.getNPCByPos(NPCPosX, NPCPosY);
+    npc->sellItem(player, itemType);
 }

@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "merchant.h"
 #include "../../../../common/defines/npcs.h"
+#include "../../game_exception.h"
 
 Merchant::Merchant(ItemFactory& item_factory, const int pos_x,
         const int pos_y, const int orient) : itemFactory(item_factory) {
@@ -18,6 +19,16 @@ Merchant::Merchant(ItemFactory& item_factory, const int pos_x,
 }
 
 Merchant::~Merchant() = default;
+
+void Merchant::revive(Player &player) {
+    throw GameException(player.id, "Un comerciante no tiene "
+                                   "la habilidad de revivir al jugador");
+}
+
+void Merchant::heal(Player &player) {
+    throw GameException(player.id, "Un comerciante no tiene "
+                                   "la habilidad de curar al jugador");
+}
 
 void Merchant::buyItem(Player &player, int type) {
     Item* item = player.sellItem(type);
@@ -41,6 +52,26 @@ void Merchant::sellItem(Player &player, int type) {
         return;
 
     player.buyItem(item);
+}
+
+void Merchant::depositItem(Player &player, const int type) {
+    throw GameException(player.id, "Un comerciante no tiene"
+                                   "acceso al banco");
+}
+
+void Merchant::withdrawItem(Player &player, const int type) {
+    throw GameException(player.id, "Un comerciante no tiene"
+                                   "acceso al banco");
+}
+
+void Merchant::depositGold(Player &player, const int quant) {
+    throw GameException(player.id, "Un comerciante no tiene"
+                                   "acceso al banco");
+}
+
+void Merchant::withdrawGold(Player &player, const int quant) {
+    throw GameException(player.id, "Un comerciante no tiene"
+                                   "acceso al banco");
 }
 
 const std::vector<int> Merchant::listItems() const {

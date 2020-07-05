@@ -10,7 +10,6 @@ NPCPosX(npc_pos_x), NPCPosY(npc_pos_y) {}
 BuyItemCommand::~BuyItemCommand() = default;
 
 void BuyItemCommand::execute(World& world) {
-//    auto* banker = dynamic_cast<Banker*>
-//    (world.getNPCByPos(bankerPosX, bankerPosY));
-//    banker->withdrawItem(player, itemType);
+    NPC* npc = world.getNPCByPos(NPCPosX, NPCPosY);
+    npc->buyItem(player, itemType);
 }

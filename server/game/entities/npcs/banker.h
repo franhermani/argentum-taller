@@ -21,17 +21,29 @@ public:
     // Destructor
     ~Banker();
 
+    // Lanza una excepcion
+    void revive(Player& player) override;
+
+    // Lanza una excepcion
+    void heal(Player& player) override;
+
+    // Lanza una excepcion
+    void buyItem(Player& player, const int type) override;
+
+    // Lanza una excepcion
+    void sellItem(Player& player, const int type) override;
+
     // Deposita el item del player en el banco
-    void depositItem(Player& player, const int type);
+    void depositItem(Player& player, const int type) override;
 
     // Retira el item del player del banco
-    void withdrawItem(Player& player, const int type);
+    void withdrawItem(Player& player, const int type) override;
 
     // Deposita la cantidad recibida de oro del player en el banco
-    void depositGold(Player& player, const int quant);
+    void depositGold(Player& player, const int quant) override;
 
     // Retira la cantidad recibida de oro del player del banco
-    void withdrawGold(Player& player, const int quant);
+    void withdrawGold(Player& player, const int quant) override;
 
     // Lista los items que tiene el player en el banco
     // TODO: necesita recibir al player por parametro

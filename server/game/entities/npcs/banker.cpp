@@ -13,6 +13,26 @@ Banker::Banker(Bank& bank, const int pos_x, const int pos_y,
 
 Banker::~Banker() = default;
 
+void Banker::revive(Player &player) {
+    throw GameException(player.id, "Un banquero no tiene "
+                                   "la habilidad de revivir al jugador");
+}
+
+void Banker::heal(Player &player) {
+    throw GameException(player.id, "Un banquero no tiene "
+                                   "la habilidad de curar al jugador");
+}
+
+void Banker::buyItem(Player &player, int type) {
+    throw GameException(player.id, "Un banquero no puede "
+                                   "comprar items");
+}
+
+void Banker::sellItem(Player &player, const int type) {
+    throw GameException(player.id, "Un banquero no puede "
+                                   "vender items");
+}
+
 void Banker::depositItem(Player &player, int type) {
     Item* item = player.takeItemFromInventory(type);
     bank.depositItem(player.id, item);
