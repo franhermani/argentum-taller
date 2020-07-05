@@ -2,7 +2,7 @@
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
 #include <iostream>
-#include "player_info_bars.h"
+#include "render_structs.h"
 #include "window.h"
 #include "exception.h"
 
