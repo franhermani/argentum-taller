@@ -265,3 +265,37 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     measurements.initialize(tileWidth,
                             tileHeight, screenWidth, screenHeight);
 }
+
+int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
+        int yClicked, size_t inventory_length) {
+
+    game_area_t& inventory_area = measurements.inventory;
+    int x,y, w, h;
+    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/2;
+    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/5;
+    x = inventory_area.x_pixel_begin;
+    y = inventory_area.y_pixel_begin;
+    size_t current_index = 0;
+    SDL_Rect stretchRect;
+    while (current_index < inventory_length) {
+        stretchRect.x = x;
+        stretchRect.y = y;
+        stretchRect.w = w;
+        stretchRect.h = h;
+        if (isInsideArea(stretchRect, xClicked, yClicked)) return current_index;
+        y = y + h;
+        current_index ++;
+        //new column
+        if (current_index == 5){
+            x = x + w;
+            y = inventory_area.y_pixel_begin;
+        }
+    }
+    return -1;
+}
+
+int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {
+    return (((x >= stretchRect.x) and (x < (stretchRect.x + stretchRect.w)))
+        and
+        ((y >= stretchRect.y) and (y < (stretchRect.y + stretchRect.h))));
+}
