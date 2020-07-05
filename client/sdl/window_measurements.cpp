@@ -23,7 +23,7 @@ void WindowMeasurements::initialize(int numberOfTilesInWidth,
                 (screenHeight / 100) * 4, (screenHeight /100) * 15};
 
     life = {(int) ((screenWidth/100.0) * 78.8),
-            (int) (( screenWidth/100.0) * 86.5),
+            (int) ((screenWidth/100.0) * 86.5),
             (int) ((screenHeight/100.0) * 87),
             (int) ((screenHeight/100.0) * 88.5)};
 
