@@ -266,9 +266,9 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
 void SDLWindow::renderList(std::vector<Surface*>& surfaces) {
     game_area_t& list_area = measurements.list;
     int x,y, w, h;
-    //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
+    //TODO 10 es el maximo de items en la lista , sacar AFUERA A CONSTANTES
     w = (list_area.x_pixel_end-list_area.x_pixel_begin)/10;
-    h = (list_area.y_pixel_end-list_area.y_pixel_begin);
+    h = w;
     x = list_area.x_pixel_begin;
     y = list_area.y_pixel_begin;
     int surfaces_size = surfaces.size();
