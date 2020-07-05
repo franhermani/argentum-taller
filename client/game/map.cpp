@@ -6,6 +6,7 @@
 #include "exception.h"
 #include "../../common/defines/commands.h"
 #include "../../common/defines/npcs.h"
+
 // constructor
 Map::Map() {
 }
@@ -14,11 +15,11 @@ Map::~Map() {}
 
 void Map::updateWorld(world_t receivedWorld) {
     //actualizo players
-    world.players = receivedWorld.players;
-    world.num_players = receivedWorld.num_players;
-    world.player_info = receivedWorld.player_info;
-    world.creatures = receivedWorld.creatures;
-    world.num_creatures = receivedWorld.num_creatures;
+    world.players = std::move(receivedWorld.players);
+    world.num_players = std::move(receivedWorld.num_players);
+    world.player_info = std::move(receivedWorld.player_info);
+    world.creatures = std::move(receivedWorld.creatures);
+    world.num_creatures = std::move(receivedWorld.num_creatures);
     //el resto falta recibirlo
 }
 
@@ -316,4 +317,20 @@ std::vector<int> Map::getNpcLookingAt() {
             return looking_at;
     }
     return std::move(std::vector<int> {-1, -1});
+}
+
+player_info_t Map::getPlayerInfo() {
+    return world.player_info;
+}
+
+client_world_t Map::getCurrentWorld() {
+    client_world_t current_world;
+    current_world.player_info = world.player_info;
+    current_world.main_player = getMainPlayer();
+    current_world.players = getRenderablePlayers();
+    current_world.items = getRenderableItems();
+    current_world.creatures = getRenderableCreatures();
+    current_world.npcs = getRenderableNpcs();
+    current_world.terrains = getTerrains();
+    return std::move(current_world);
 }

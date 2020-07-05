@@ -7,7 +7,10 @@
 #include "surface.h"
 #include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
+#include "../../common/defines/world_structs.h"
+#include "../../common/defines/items.h"
 #include "area.h"
+#include "window_measurements.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE
 
@@ -16,18 +19,12 @@ class SDL_Surface;
 class SDL_Renderer;
 
 class SDLWindow {
-    int numberOfTilesInWidth;
-    int numberOfTilesInHeight;
-    int xWidthTileSize;
-    int yHeightTileSize;
     int screenHeight;
     int screenWidth;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    int frameXPixelBegin;
-    int frameXPixelEnd;
-    int frameYPixelBegin;
-    int frameYPixelEnd;
+    WindowMeasurements measurements;
+
 
 public:
     // Constructor
@@ -79,5 +76,9 @@ public:
     void setTilesSize(int tileWidth, int tileHeight);
 
     void renderGameFrame(Surface *surface);
+    void renderInventory(std::vector<Surface*>& surfaces);
+    void renderEquipped(player_t player,
+                                   std::map<int, Surface*>& surfaces_map);
+    void renderPlayerInfo(std::map<int, float> player_info, std::map<int, Surface *> info_surfaces_map);
 };
 #endif // SDL_WINDOW_H
