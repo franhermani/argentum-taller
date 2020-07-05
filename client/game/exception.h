@@ -15,11 +15,11 @@ public:
     const char * what() const noexcept;
 };
 
-class InventoryException :  public std::exception{
+class ItemException : public std::exception{
     std::string message;
 public:
     // Constructor
-    explicit InventoryException(const char *message);
+    explicit ItemException(const char *message);
 
     // Devuelve el mensaje de error
     const char * what() const noexcept;

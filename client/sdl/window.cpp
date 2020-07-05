@@ -331,7 +331,7 @@ int SDLWindow::getRenderedListIndexByPosition(int xClicked,
     h = w;
     x = list_area.x_pixel_begin;
     y = list_area.y_pixel_begin;
-    int current_index = 0;
+    size_t current_index = 0;
     SDL_Rect stretchRect;
     while (current_index < list_length) {
         stretchRect.x = x;
@@ -349,4 +349,29 @@ int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {
     return (((x >= stretchRect.x) and (x < (stretchRect.x + stretchRect.w)))
         and
         ((y >= stretchRect.y) and (y < (stretchRect.y + stretchRect.h))));
+}
+
+
+int SDLWindow::isInsideGameArea(game_area_t& area, int x, int y) {
+    return (((x >= area.x_pixel_begin) and (x < area.x_pixel_end))
+            and
+            ((y >= area.y_pixel_begin) and (y < (area.y_pixel_end))));
+}
+
+
+
+int SDLWindow::isClickingListItems(int x, int y) {
+    return isInsideGameArea(measurements.list, x, y);
+}
+
+int SDLWindow::isClickingListGold(int x, int y) {
+    return isInsideGameArea(measurements.list, x, y);
+}
+int SDLWindow::isClickingInventoryItems(int x, int y) {
+    return isInsideGameArea(measurements.inventory, x, y);
+
+}
+
+int SDLWindow::isClickingInventoryGold(int x, int y) {
+    return isInsideGameArea(measurements.inventory, x, y);
 }

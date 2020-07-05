@@ -9,6 +9,10 @@
 #include "../data_transfer_objects/throw_command_dto.h"
 #include "../data_transfer_objects/revive_command_dto.h"
 #include "../data_transfer_objects/meditate_command_dto.h"
+#include "../data_transfer_objects/withdraw_gold_command_dto.h"
+#include "../data_transfer_objects/withdraw_item_command_dto.h"
+#include "../data_transfer_objects/deposit_gold_command_dto.h"
+#include "../data_transfer_objects/deposit_item_command_dto.h"
 #include "../data_transfer_objects/attack_command_dto.h"
 #include "exception.h"
 #include <vector>
@@ -22,7 +26,7 @@ GameInputHandler::~GameInputHandler() = default;
 void GameInputHandler::play() {
     try {
         bool running = true;
-        bool interacting_with_npc = false;
+        bool interacting_with_npc = true;
         while (running) {
             SDL_Event event;
             SDL_WaitEvent(&event);
@@ -50,9 +54,13 @@ void GameInputHandler::play() {
                     command = new HealCommandDTO(priest_position[0],
                             priest_position[1]);
                 } else if (key == SDLK_l) {
-                    std::vector<int> npc_position =
-                            mapMonitor.getNpcLookingAt();
-                    command = new ListCommandDTO(0, 0);
+                    try {
+                        std::vector<int> npc_position =
+                                mapMonitor.getNpcLookingAt();
+                        command = new ListCommandDTO(npc_position[0], npc_position[1]);
+                    } catch (MapException& e) {
+                        continue;
+                    }
                 } else if (key == SDLK_m) {
                     command = new MeditateCommandDTO();
                 } else if (key == SDLK_r) {
@@ -81,13 +89,41 @@ void GameInputHandler::play() {
                     try {
                         command = new EquipCommandDTO(
                                 gameRender->getInventoryItemByPosition(x, y));
-                    } catch (InventoryException &e) {
+                    } catch (ItemException &e) {
                         continue;
                     }
                 } else {
-                    //caso interactuar con npc, estamos dentro de comando list
-                    continue;
+                    //Chequeamos si estamos frente a un npc
+                    try {
+                        mapMonitor.getNpcLookingAt();
+                    } catch (MapException& e) {
+                        continue;
+                    }
+                    try {
+                        command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
+                    } catch (ItemException &e) {
+                        continue;
+                    }
+                    try {
+                        command = new WithdrawGoldCommandDTO(
+                                gameRender->getListItemByPosition(x, y), x, y);
+                    } catch (ItemException &e) {
+                        continue;
+                    }
+                    try {
+                        command = new DepositItemCommandDTO(
+                                gameRender->getInventoryItemByPosition(x, y), x, y);
+                    } catch (ItemException &e) {
+                        continue;
+                    }
+                    try {
+                        command = new DepositGoldCommandDTO(
+                                gameRender->getListItemByPosition(x, y), x, y);
+                    } catch (ItemException &e) {
+                        continue;
+                    }
                 }
+                commandQueue.push(command);
 
 
             } else if (event.type == SDL_QUIT) {

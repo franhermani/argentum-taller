@@ -99,6 +99,12 @@ public:
     std::map<int, float> getRenderablePlayerInfo();
 
     int getInventoryItemByPosition(int x, int y);
+    int getListItemByPosition(int x, int y);
+
+    int isClickingListItems(int x, int y);
+    int isClickingListGold(int x, int y);
+    int isClickingInventoryItems(int x, int y);
+    int isClickingInventoryGold(int x, int y);
     };
 
 #endif //ARGENTUM_GAME_RENDER_H

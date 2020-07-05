@@ -88,6 +88,11 @@ public:
     int getRenderedListIndexByPosition(int x, int y, size_t inventory_length);
 
     int isInsideArea(SDL_Rect& stretchRect, int x, int y);
+    int isInsideGameArea(game_area_t& area, int x, int y);
+    int isClickingListItems(int x, int y);
+    int isClickingListGold(int x, int y);
+    int isClickingInventoryItems(int x, int y);
+    int isClickingInventoryGold(int x, int y);
 
     };
 #endif // SDL_WINDOW_H

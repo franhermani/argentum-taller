@@ -495,12 +495,12 @@ void GameRender::run() {
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {
-    size_t inventory_length = current_world.player_info.inventory.length;
-    int position = window.getRenderedItemIndexByPosition(x, y, inventory_length);
-    if (position < 0) throw InventoryException(
+    //size_t inventory_length = current_world.player_info.inventory.length;
+    int position = window.getRenderedItemIndexByPosition(x, y, 7);
+    if (position < 0) throw ItemException(
             "El inventario no tiene items en la posicion clickeada");
     if (current_world.player_info.inventory.length < position) throw
-            InventoryException("El inventario ya no tiene ese item");
+            ItemException("El inventario ya no tiene ese item");
 
     return current_world.player_info.inventory.items[position];
 }
@@ -508,13 +508,28 @@ int GameRender::getInventoryItemByPosition(int x, int y) {
 
 int GameRender::getListItemByPosition(int x, int y) {
     //size_t inventory_length = current_world.player_info.list.length;
-    int position = window.getRenderedListIndexByPosition(x, y, inventory_length);
-    if (position < 0) throw InventoryException(
-                "El inventario no tiene items en la posicion clickeada");
-    if (current_world.player_info.inventory.length < position) throw
-                InventoryException("El inventario ya no tiene ese item");
+    int position = window.getRenderedListIndexByPosition(x, y, 7);
+    if (position < 0) throw ItemException(
+                "la lista no tiene items en la posicion clickeada");
+    /*if (current_world.player_info.inventory.length < position) throw
+                ItemException("la lista ya no tiene ese item");*/
+    //return current_world.player_info.inventory.items[position];
+    return 1;
+}
 
-    return current_world.player_info.inventory.items[position];
+int GameRender::isClickingListItems(int x, int y) {
+    return window.isClickingListItems(x, y);
+}
+
+int GameRender::isClickingListGold(int x, int y) {
+    return window.isClickingListGold(x, y);
+}
+int GameRender::isClickingInventoryItems(int x, int y) {
+    return window.isClickingInventoryItems(x, y);
+}
+
+int GameRender::isClickingInventoryGold(int x, int y) {
+    return window.isClickingInventoryGold(x, y);
 }
 
 
