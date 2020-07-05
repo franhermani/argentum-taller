@@ -65,8 +65,10 @@ void SDLWindow::renderNpc(int x, int y, Surface* character_surface) {
     stretchRect.y = getYPixelPos(y);
     stretchRect.w = measurements.xWidthTileSize;
     stretchRect.h = measurements.yHeightTileSize;
-    if ((stretchRect.x+measurements.xWidthTileSize >= frame_area.x_pixel_end) ||
-    (stretchRect.y+measurements.yHeightTileSize >= frame_area.y_pixel_end)) return;
+    if ((stretchRect.x+measurements.xWidthTileSize
+        >= frame_area.x_pixel_end) ||
+        (stretchRect.y+measurements.yHeightTileSize
+        >= frame_area.y_pixel_end)) return;
     SDL_BlitScaled(character_surface->getRenderableSurface(), NULL,
             getSurface(), &stretchRect);
 }
@@ -113,7 +115,8 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
 void SDLWindow::renderEquipped(player_t player,
                               std::map<int, Surface*>& surfaces_map) {
     game_area_t& equipped_area = measurements.equipped;
-    int equipped_width = (equipped_area.x_pixel_end-equipped_area.x_pixel_begin) / 4;
+    int equipped_width = (equipped_area.x_pixel_end -
+            equipped_area.x_pixel_begin) / 4;
     SDL_Rect stretchRect;
     stretchRect.x = equipped_area.x_pixel_begin;
     stretchRect.y = equipped_area.y_pixel_begin;
@@ -146,11 +149,13 @@ void SDLWindow::renderEquipped(player_t player,
 
 int SDLWindow::getXPixelPos(int x_tile_position) {
     game_area_t& frame_area = measurements.frame;
-    return frame_area.x_pixel_begin + x_tile_position * measurements.xWidthTileSize;
+    return frame_area.x_pixel_begin + x_tile_position *
+        measurements.xWidthTileSize;
 }
 int SDLWindow::getYPixelPos(int y_tile_position) {
     game_area_t& frame_area = measurements.frame;
-    return frame_area.y_pixel_begin + y_tile_position * measurements.yHeightTileSize;
+    return frame_area.y_pixel_begin + y_tile_position *
+        measurements.yHeightTileSize;
 }
 
 
@@ -189,14 +194,15 @@ void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
                        getSurface(), &stretchRect);
         y = y + h;
         current_index ++;
-        if(current_index == 5){
+        if (current_index == 5){
             x = x + w;
             y = inventory_area.y_pixel_begin;
         }
     }
 }
 
-void SDLWindow::renderPlayerInfo(std::map<int, float> player_info, std::map<int, Surface *> info_surfaces_map) {
+void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
+        std::map<int, Surface *> info_surfaces_map) {
     game_area_t& life_area = measurements.life;
     SDL_Rect stretchRect;
     stretchRect.x = life_area.x_pixel_begin;
@@ -210,7 +216,8 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info, std::map<int,
     float life_percentage = 0.8;
     stretchRect.x = life_area.x_pixel_begin;
     stretchRect.y = life_area.y_pixel_begin;
-    stretchRect.w = (int) ((float)(life_area.x_pixel_end - life_area.x_pixel_begin))*life_percentage;
+    stretchRect.w = (int) ((float)(life_area.x_pixel_end -
+            life_area.x_pixel_begin))*life_percentage;
     stretchRect.h = life_area.y_pixel_end - life_area.y_pixel_begin;
 
     SDL_BlitScaled(info_surfaces_map[LIFE]->getRenderableSurface(), NULL,
@@ -227,7 +234,8 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info, std::map<int,
     float mana_percentage = 0.6;
     stretchRect.x = mana_area.x_pixel_begin;
     stretchRect.y = mana_area.y_pixel_begin;
-    stretchRect.w = (int) ((float)(mana_area.x_pixel_end - mana_area.x_pixel_begin))*mana_percentage;
+    stretchRect.w = (int) ((float)(mana_area.x_pixel_end -
+            mana_area.x_pixel_begin))*mana_percentage;
     stretchRect.h = mana_area.y_pixel_end - mana_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[MANA]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
@@ -245,12 +253,12 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info, std::map<int,
     float experience_percentage = 0.3;
     stretchRect.x = experience_area.x_pixel_begin;
     stretchRect.y = experience_area.y_pixel_begin;
-    stretchRect.w = (int) ((float)(experience_area.x_pixel_end - experience_area.x_pixel_begin))*experience_percentage;
-    stretchRect.h = experience_area.y_pixel_end - experience_area.y_pixel_begin;
+    stretchRect.w = (int) ((float)(experience_area.x_pixel_end -
+            experience_area.x_pixel_begin))*experience_percentage;
+    stretchRect.h = experience_area.y_pixel_end -
+            experience_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[EXPERIENCE]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
-
-
 }
 
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {

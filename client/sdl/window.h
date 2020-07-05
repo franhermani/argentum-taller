@@ -79,6 +79,7 @@ public:
     void renderInventory(std::vector<Surface*>& surfaces);
     void renderEquipped(player_t player,
                                    std::map<int, Surface*>& surfaces_map);
-    void renderPlayerInfo(std::map<int, float> player_info, std::map<int, Surface *> info_surfaces_map);
+    void renderPlayerInfo(std::map<int, float> player_info,
+            std::map<int, Surface *> info_surfaces_map);
 };
 #endif // SDL_WINDOW_H

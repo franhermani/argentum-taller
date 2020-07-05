@@ -1,12 +1,6 @@
-//
-// Created by martinrosas on 4/7/20.
-//
-
 #ifndef ARGENTUM_MAP_STRUCTS_H
 #define ARGENTUM_MAP_STRUCTS_H
-
-#endif //ARGENTUM_MAP_STRUCTS_H
-
+#include <vector>
 typedef struct {
     std::vector<std::vector<Terrain>> terrains;
     std::vector<player_t> players;
@@ -16,3 +10,5 @@ typedef struct {
     player_info_t player_info;
     player_t main_player;
 } client_world_t;
+
+#endif //ARGENTUM_MAP_STRUCTS_H
