@@ -1,4 +1,5 @@
 #include <vector>
+#include <algorithm>
 #include "merchant.h"
 #include "../../../../common/defines/npcs.h"
 
@@ -24,14 +25,15 @@ void Merchant::buyItem(Player &player, int type) {
         return;
 
     int item_type = item->type;
-    if (items.count(item_type) == 0)
-        items.insert(item_type);
+    if (std::find(items.begin(), items.end(), item_type) != items.end()) {
+        items.push_back(item_type);
+    }
 
     delete item;
 }
 
 void Merchant::sellItem(Player &player, int type) {
-    if (items.count(type) == 0)
+    if (std::find(items.begin(), items.end(), type) != items.end())
         return;
 
     Item* item = itemFactory(type, player.posX, player.posY);
@@ -41,7 +43,7 @@ void Merchant::sellItem(Player &player, int type) {
     player.buyItem(item);
 }
 
-const std::vector<itemType> Merchant::listItems() const {
+const std::vector<int> Merchant::listItems() const {
     // TODO: ...
-    return std::vector<itemType>();
+    return std::vector<int>();
 }

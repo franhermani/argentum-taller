@@ -35,7 +35,7 @@ public:
 
     // Lista los items que tiene el player en el banco
     // TODO: necesita recibir al player por parametro
-    const std::vector<itemType> listItems() const override;
+    const std::vector<int> listItems() const override;
 };
 
 #endif // BANKER_H

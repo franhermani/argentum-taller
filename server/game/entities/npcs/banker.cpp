@@ -43,7 +43,7 @@ void Banker::withdrawGold(Player &player, int quantity) {
     }
 }
 
-const std::vector<itemType> Banker::listItems() const {
+const std::vector<int> Banker::listItems() const {
     // TODO: ...
-    return std::vector<itemType>();
+    return std::vector<int>();
 }

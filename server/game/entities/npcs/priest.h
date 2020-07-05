@@ -2,14 +2,12 @@
 #define PRIEST_H
 
 #include <vector>
-#include <set>
 #include "npc.h"
 #include "../items/item_factory.h"
 #include "../living_beings/player.h"
 
 class Priest : public NPC {
     ItemFactory& itemFactory;
-    std::set<int> items;
 
 public:
     // Constructor
@@ -33,7 +31,7 @@ public:
     void sellItem(Player& player, const int type);
 
     // Lista los items que tiene para vender
-    const std::vector<itemType> listItems() const override;
+    const std::vector<int> listItems() const override;
 };
 
 #endif // PRIEST_H

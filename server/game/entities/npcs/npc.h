@@ -9,7 +9,7 @@ protected:
     int type;
     int posX, posY;
     int orientation;
-    std::vector<itemType> items;
+    std::vector<int> items;
 
     friend class World;
     friend class ServerProtocol;
@@ -20,7 +20,7 @@ public:
 
     // Lista los items que tiene para ofrecer
     // Metodo a definir por las clases derivadas
-    virtual const std::vector<itemType> listItems() const = 0;
+    virtual const std::vector<int> listItems() const = 0;
 };
 
 #endif // NPC_H

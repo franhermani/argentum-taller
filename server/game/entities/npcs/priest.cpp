@@ -25,7 +25,7 @@ void Priest::heal(Player &player) {
 }
 
 void Priest::sellItem(Player &player, const int type) {
-    if (items.count(type) == 0)
+    if (std::find(items.begin(), items.end(), type) != items.end())
         return;
 
     Item* item = itemFactory(type, player.posX, player.posY);
@@ -35,6 +35,6 @@ void Priest::sellItem(Player &player, const int type) {
     player.buyItem(item);
 }
 
-const std::vector<itemType> Priest::listItems() const {
-    return std::vector<itemType>();
+const std::vector<int> Priest::listItems() const {
+    return std::vector<int>();
 }

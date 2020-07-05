@@ -2,14 +2,12 @@
 #define MERCHANT_H
 
 #include <vector>
-#include <set>
 #include "npc.h"
 #include "../living_beings/player.h"
 #include "../items/item_factory.h"
 
 class Merchant : public NPC {
     ItemFactory& itemFactory;
-    std::set<int> items;
 
 public:
     // Constructor
@@ -30,7 +28,7 @@ public:
     void sellItem(Player& player, int item_type);
 
     // Lista los items que tiene para vender
-    const std::vector<itemType> listItems() const override;
+    const std::vector<int> listItems() const override;
 };
 
 #endif // MERCHANT_H
