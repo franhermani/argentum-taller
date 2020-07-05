@@ -88,7 +88,6 @@ public:
     player_info_t getPlayerInfo();
 
     client_world_t getCurrentWorld();
-
 };
 
 

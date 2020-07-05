@@ -8,6 +8,7 @@
 #include "../sdl/texture.h"
 #include "vector"
 #include "map"
+#include <utility>
 #include "../sdl/window.h"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
@@ -326,47 +327,96 @@ void GameRender::loadSurfacePaths() {
             {VARA_FRESNO, "../client/resources/images/vara_fresno_t.png"},
             {FLAUTA_ELFICA, "../client/resources/images/flauta_elfica_t.png"},
             {BACULO_NUDOSO, "../client/resources/images/baculo_nudoso_t.png"},
-            {BACULO_ENGARZADO, "../client/resources/images/baculo_engarzado_t.png"},
+            {BACULO_ENGARZADO,
+                "../client/resources/images/baculo_engarzado_t.png"},
             {ARCO_SIMPLE, "../client/resources/images/arco_simple_t.png"},
-            {ARCO_COMPUESTO, "../client/resources/images/arco_compuesto_t.png"},
-            {ARMADURA_CUERO, "../client/resources/images/armadura_cuero_t.png"},
-            {ARMADURA_PLACAS, "../client/resources/images/armadura_placas_t.png"},
-            {TUNICA_AZUL, "../client/resources/images/tunica_azul_t.png"},
+            {ARCO_COMPUESTO,
+                "../client/resources/images/arco_compuesto_t.png"},
+            {ARMADURA_CUERO,
+                "../client/resources/images/armadura_cuero_t.png"},
+            {ARMADURA_PLACAS,
+                "../client/resources/images/armadura_placas_t.png"},
+            {TUNICA_AZUL,
+                "../client/resources/images/tunica_azul_t.png"},
             {CAPUCHA, "../client/resources/images/capucha_t.png"},
             {CASCO_HIERRO, "../client/resources/images/casco_hierro_t.png"},
-            {SOMBRERO_MAGICO, "../client/resources/images/sombrero_magico_t.png"},
-            {ESCUDO_TORTUGA, "../client/resources/images/escudo_tortuga_t.png"},
+            {SOMBRERO_MAGICO,
+                "../client/resources/images/sombrero_magico_t.png"},
+            {ESCUDO_TORTUGA,
+                "../client/resources/images/escudo_tortuga_t.png"},
             {ESCUDO_HIERRO, "../client/resources/images/escudo_hierro_t.png"},
             {POCION_VIDA, "../client/resources/images/pocion_vida_t.png"},
             {POCION_MANA, "../client/resources/images/pocion_mana_t.png"},
     };
     floorItemSurfacesMap = {
-            {ESPADA, new Surface("../client/resources/images/espada_t.png", window, 0)},
-            {HACHA, new Surface("../client/resources/images/hacha_t.png", window, 0)},
-            {MARTILLO, new Surface("../client/resources/images/martillo_t.png", window, 0)},
-            {VARA_FRESNO, new Surface("../client/resources/images/vara_fresno_t.png", window, 0)},
-            {FLAUTA_ELFICA, new Surface("../client/resources/images/flauta_elfica_t.png", window, 0)},
-            {BACULO_NUDOSO, new Surface("../client/resources/images/baculo_nudoso_t.png", window, 0)},
-            {BACULO_ENGARZADO, new Surface("../client/resources/images/baculo_engarzado_t.png", window, 0)},
-            {ARCO_SIMPLE, new Surface("../client/resources/images/arco_simple_t.png", window, 0)},
-            {ARCO_COMPUESTO, new Surface("../client/resources/images/arco_compuesto_t.png", window, 0)},
-            {ARMADURA_CUERO, new Surface("../client/resources/images/armadura_cuero_t.png", window, 0)},
-            {ARMADURA_PLACAS, new Surface("../client/resources/images/armadura_placas_t.png", window, 0)},
-            {TUNICA_AZUL, new Surface("../client/resources/images/tunica_azul_t.png", window, 0)},
-            {CAPUCHA, new Surface("../client/resources/images/capucha_t.png", window, 0)},
-            {CASCO_HIERRO, new Surface("../client/resources/images/casco_hierro_t.png", window, 0)},
-            {SOMBRERO_MAGICO, new Surface("../client/resources/images/sombrero_magico_t.png", window, 0)},
-            {ESCUDO_TORTUGA, new Surface("../client/resources/images/escudo_tortuga_t.png", window, 0)},
-            {ESCUDO_HIERRO, new Surface("../client/resources/images/escudo_hierro_t.png", window, 0)},
-            {POCION_VIDA, new Surface("../client/resources/images/pocion_vida_t.png", window, 0)},
-            {POCION_MANA, new Surface("../client/resources/images/pocion_mana_t.png", window, 0)},
+            {ESPADA, new Surface(
+                    "../client/resources/images/espada_t.png",
+                    window, 0)},
+            {HACHA, new Surface(
+                    "../client/resources/images/hacha_t.png",
+                    window, 0)},
+            {MARTILLO, new Surface(
+                    "../client/resources/images/martillo_t.png",
+                    window, 0)},
+            {VARA_FRESNO, new Surface(
+                    "../client/resources/images/vara_fresno_t.png",
+                    window, 0)},
+            {FLAUTA_ELFICA, new Surface(
+                    "../client/resources/images/flauta_elfica_t.png",
+                    window, 0)},
+            {BACULO_NUDOSO, new Surface(
+                    "../client/resources/images/baculo_nudoso_t.png",
+                    window, 0)},
+            {BACULO_ENGARZADO, new Surface(
+                    "../client/resources/images/baculo_engarzado_t.png",
+                    window, 0)},
+            {ARCO_SIMPLE, new Surface(
+                    "../client/resources/images/arco_simple_t.png",
+                    window, 0)},
+            {ARCO_COMPUESTO, new Surface(
+                    "../client/resources/images/arco_compuesto_t.png",
+                    window, 0)},
+            {ARMADURA_CUERO, new Surface(
+                    "../client/resources/images/armadura_cuero_t.png",
+                    window, 0)},
+            {ARMADURA_PLACAS, new Surface(
+                    "../client/resources/images/armadura_placas_t.png",
+                    window, 0)},
+            {TUNICA_AZUL, new Surface(
+                    "../client/resources/images/tunica_azul_t.png",
+                    window, 0)},
+            {CAPUCHA, new Surface(
+                    "../client/resources/images/capucha_t.png",
+                    window, 0)},
+            {CASCO_HIERRO, new Surface(
+                    "../client/resources/images/casco_hierro_t.png",
+                    window, 0)},
+            {SOMBRERO_MAGICO, new Surface(
+                    "../client/resources/images/sombrero_magico_t.png",
+                    window, 0)},
+            {ESCUDO_TORTUGA, new Surface(
+                    "../client/resources/images/escudo_tortuga_t.png",
+                    window, 0)},
+            {ESCUDO_HIERRO, new Surface(
+                    "../client/resources/images/escudo_hierro_t.png",
+                    window, 0)},
+            {POCION_VIDA, new Surface(
+                    "../client/resources/images/pocion_vida_t.png",
+                    window, 0)},
+            {POCION_MANA, new Surface(
+                    "../client/resources/images/pocion_mana_t.png",
+                    window, 0)},
     };
 
 
-    Surface* life_bar = new Surface("../client/resources/images/life_bar.png", window, 0);
-    Surface* black_bar = new Surface("../client/resources/images/black_bar.png", window, 0);
-    Surface* mana_bar = new Surface("../client/resources/images/mana_bar.png", window, 0);
-    Surface* experience_bar = new Surface("../client/resources/images/experience_bar.png", window, 0);
+    Surface* life_bar = new Surface("../client/resources/images/life_bar.png",
+            window, 0);
+    Surface* black_bar = new Surface(
+            "../client/resources/images/black_bar.png", window, 0);
+    Surface* mana_bar = new Surface(
+            "../client/resources/images/mana_bar.png", window, 0);
+    Surface* experience_bar = new Surface(
+            "../client/resources/images/experience_bar.png", window, 0);
 
     infoSurfacesMap = {
             {LIFE, life_bar},
@@ -382,12 +432,16 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
-std::map<int, float> GameRender::getRenderablePlayerInfo(client_world_t& current_world) {
+std::map<int, float> GameRender::getRenderablePlayerInfo(
+        client_world_t& current_world) {
     std::map<int, float> playerInfo = {
             //TODO RECIBIR EXPERIENCE max
-            {LIFE, current_world.main_player.actual_life/current_world.main_player.max_life},
-            {MANA, current_world.player_info.actual_mana/current_world.player_info.max_mana},
-            {EXPERIENCE, current_world.player_info.actual_experience/current_world.player_info.actual_experience}
+            {LIFE, current_world.main_player.actual_life/
+                            current_world.main_player.max_life},
+            {MANA, current_world.player_info.actual_mana/
+                            current_world.player_info.max_mana},
+            {EXPERIENCE, current_world.player_info.actual_experience/
+                            current_world.player_info.actual_experience}
     };
     return std::move(playerInfo);
 }
