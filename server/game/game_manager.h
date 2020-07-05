@@ -20,6 +20,7 @@ class GameManager : public Thread {
     JsonParser jsonParser;
     File worldFile;
     GameParams params;
+    ItemFactory itemFactory;
     Equations equations;
     World world;
     WorldMonitor worldMonitor;

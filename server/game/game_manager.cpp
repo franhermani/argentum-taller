@@ -13,8 +13,9 @@ GameManager::GameManager(File& config_file) :
 worldFile(jsonParser.getConfigParams(config_file)["world_path"]),
 params(jsonParser.getConfigParams(config_file),
         jsonParser.getWorldParams(worldFile)),
+itemFactory(params.getConfigParams()["items"]),
 equations(params.getConfigParams()),
-world(params),
+world(params, itemFactory),
 worldMonitor(world),
 msPerSend(params.getConfigParams()["ms_per_send"]) {
     keepRunning = true;
@@ -97,11 +98,11 @@ void GameManager::spawnNPCs() {
     int i;
     for (i = 0; i < num_priests; i ++) {
         pos = world.loadNPCPosition();
-        world.addNPC(new Priest(pos[0], pos[1], DOWN));
+        world.addNPC(new Priest(itemFactory, pos[0], pos[1], DOWN));
     }
     for (i = 0; i < num_merchants; i ++) {
         pos = world.loadNPCPosition();
-        world.addNPC(new Merchant(pos[0], pos[1], DOWN));
+        world.addNPC(new Merchant(itemFactory, pos[0], pos[1], DOWN));
     }
     for (i = 0; i < num_bankers; i ++) {
         pos = world.loadNPCPosition();

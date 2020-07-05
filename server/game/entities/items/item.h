@@ -15,6 +15,7 @@ protected:
     friend class Player;
     friend class Inventory;
     friend class Bank;
+    friend class Merchant;
     friend class ServerProtocol;
 
 public:

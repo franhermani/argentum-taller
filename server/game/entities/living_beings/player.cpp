@@ -518,3 +518,28 @@ void Player::takeGoldFromWorld(const int pos_x, const int pos_y) {
     }
     delete gold;
 }
+
+void Player::buyItem(Item* item) {
+    int item_price = item->price;
+    if (item_price > actualGold) {
+        delete item;
+        throw GameException(id, "No tienes suficiente oro para comprar "
+                                "este item");
+    }
+    try {
+        inventory.addItem(item);
+        actualGold -= item_price;
+    } catch (GameException& e) {
+        delete item;
+        throw GameException(id, e.what());
+    }
+}
+
+Item* Player::sellItem(const int type) {
+    Item* item = inventory.removeItem(type);
+    if (! item)
+        return nullptr;
+
+    addGold(item->price);
+    return item;
+}
