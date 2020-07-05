@@ -30,6 +30,7 @@ void GameInputHandler::play() {
         while (running) {
             SDL_Event event;
             SDL_WaitEvent(&event);
+            int x, y;
             CommandDTO *command;
             if (event.type == SDL_KEYDOWN) {
                 auto &keyEvent = (SDL_KeyboardEvent &) event;
@@ -78,13 +79,30 @@ void GameInputHandler::play() {
                 } else if (key == SDLK_e) {
                     //TODO  Cuando pueda mostrar inventario esto va a ser equip
                     continue;
+                } else if (key == SDLK_d) {
+                    SDL_WaitEvent(&event);
+                    if ((event.type == SDL_MOUSEBUTTONDOWN) &&
+                    (event.button.button == SDL_BUTTON_LEFT)) {
+                        SDL_GetMouseState(&x, &y);
+                        if (gameRender->isClickingInventoryItems(x, y))
+                            command = new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
+                        else if (gameRender->isClickingInventoryGold(x, y))
+                            command = new DepositGoldCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
+                    }
+                } else if (key == SDLK_e) {
+                    //TODO  Cuando pueda mostrar inventario esto va a ser equip
+                    continue;
+                } else if (key == SDLK_e) {
+                    //TODO  Cuando pueda mostrar inventario esto va a ser equip
+                    continue;
+                } else if (key == SDLK_e) {
+                    //TODO  Cuando pueda mostrar inventario esto va a ser equip
+                    continue;
                 } else {
                     continue;
                 }
                 commandQueue.push(command);
             } else if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == SDL_BUTTON_LEFT)) {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
                 if (not interacting_with_npc) {
                     try {
                         command = new EquipCommandDTO(

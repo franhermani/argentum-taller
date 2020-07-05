@@ -369,7 +369,6 @@ int SDLWindow::isClickingListGold(int x, int y) {
 }
 int SDLWindow::isClickingInventoryItems(int x, int y) {
     return isInsideGameArea(measurements.inventory, x, y);
-
 }
 
 int SDLWindow::isClickingInventoryGold(int x, int y) {
