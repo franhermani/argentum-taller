@@ -72,7 +72,7 @@ public:
     bool isDead() override;
 
     //Renderizador de pisos
-    void renderTerrain(std::vector<std::vector<Terrain>> matrix);
+    void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
 
     //Renderizador de players
     void renderPlayers(std::vector<player_t> &players);
@@ -94,7 +94,7 @@ public:
 
     Surface* createGameFrameSurface();
 
-    std::map<int, float> getRenderablePlayerInfo();
+    std::map<int, float> getRenderablePlayerInfo(client_world_t& current_world);
 };
 
 #endif //ARGENTUM_GAME_RENDER_H

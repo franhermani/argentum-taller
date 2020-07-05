@@ -73,7 +73,7 @@ void GameRender::createNecessaryTerrains(
 }
 
 
-void GameRender::renderTerrain(std::vector<std::vector<Terrain>> matrix) {
+void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
     createNecessaryTerrains(matrix);
     window.renderTerrain(matrix, terrainSurfacesMap);
 }
@@ -382,14 +382,12 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
-std::map<int, float> GameRender::getRenderablePlayerInfo() {
-    player_info_t player_info = mapMonitor.getPlayerInfo();
-    player_t main_player = mapMonitor.getMainPlayer();
+std::map<int, float> GameRender::getRenderablePlayerInfo(client_world_t& current_world) {
     std::map<int, float> playerInfo = {
             //TODO RECIBIR EXPERIENCE max
-            {LIFE, main_player.actual_life/main_player.max_life},
-            {MANA, player_info.actual_mana/player_info.max_mana},
-            {EXPERIENCE, player_info.actual_experience/player_info.actual_experience}
+            {LIFE, current_world.main_player.actual_life/current_world.main_player.max_life},
+            {MANA, current_world.player_info.actual_mana/current_world.player_info.max_mana},
+            {EXPERIENCE, current_world.player_info.actual_experience/current_world.player_info.actual_experience}
     };
     return std::move(playerInfo);
 }
@@ -403,14 +401,11 @@ void GameRender::run() {
     window.renderGameFrame(createGameFrameSurface());
 
     while (keepRunning) {
-        std::vector<std::vector<Terrain>> terrains = mapMonitor.getTerrains();
-        renderTerrain(terrains);
-        std::vector<player_t> players = mapMonitor.getRenderablePlayers();
-        renderPlayers(players);
-        std::vector<npc_t> npcs = mapMonitor.getRenderableNpcs();
-        renderNpcs(npcs);
-        std::vector<creature_t> creatures = mapMonitor.getRenderableCreatures();
-        renderCreatures(creatures);
+        client_world_t current_world = mapMonitor.getCurrentWorld();
+        renderTerrain(current_world.terrains);
+        renderPlayers(current_world.players);
+        renderNpcs(current_world.npcs);
+        renderCreatures(current_world.creatures);
         std::vector<Surface*> floor_items = {new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
                                             new Surface("../client/resources/images/armadura_cuero_t.png", window, 0),
                                             new Surface("../client/resources/images/pocion_mana_t.png", window, 0),
@@ -421,6 +416,7 @@ void GameRender::run() {
                                             //new Surface("../client/resources/images/pocion_vida_t.png", window, 0),
                                             //new Surface("../client/resources/images/vara_fresno_t.png", window, 0),
                                             new Surface("../client/resources/images/capucha_t.png", window, 0)};
+        //todo cuando esten los pisos
         //renderItems(floor_items);
         window.renderInventory(floor_items);
         player_t player;
@@ -429,8 +425,7 @@ void GameRender::run() {
         player.helmet = NO_ITEM_EQUIPPED;
         player.weapon = ARCO_COMPUESTO;
         window.renderEquipped(player, floorItemSurfacesMap);
-        std::map<int, float> infoPercentages = getRenderablePlayerInfo();
-        window.renderPlayerInfo(infoPercentages, infoSurfacesMap);
+        window.renderPlayerInfo(getRenderablePlayerInfo(current_world), infoSurfacesMap);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

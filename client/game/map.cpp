@@ -326,6 +326,7 @@ player_info_t Map::getPlayerInfo() {
 client_world_t Map::getCurrentWorld() {
     client_world_t current_world;
     current_world.player_info = world.player_info;
+    current_world.main_player = getMainPlayer();
     current_world.players = getRenderablePlayers();
     current_world.items = getRenderableItems();
     current_world.creatures = getRenderableCreatures();
