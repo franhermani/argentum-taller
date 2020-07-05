@@ -28,7 +28,7 @@ GameInputHandler::~GameInputHandler() = default;
 void GameInputHandler::play() {
     try {
         bool running = true;
-        bool interacting_with_npc = true;
+        //bool interacting_with_npc = true;
         while (running) {
             SDL_Event event;
             SDL_WaitEvent(&event);
@@ -76,10 +76,9 @@ void GameInputHandler::play() {
                                                        priest_position[1]);
                     }
                 } else if (key == SDLK_t) {
-                    //TODO cuando tengamos los items guardados pedirlo al mapa
-                    //command = new TakeCommandDTO(0, 0);
+                    std::vector<int> item_pos = mapMonitor.getItemLookingAt();
+                    new TakeCommandDTO(0, item_pos[0], item_pos[1]);
                 } else if (key == SDLK_y) {
-                    //throw
                     SDL_WaitEvent(&event);
                     if (isLeftClick(event)) {
                         SDL_GetMouseState(&x, &y);
@@ -128,6 +127,7 @@ void GameInputHandler::play() {
                 } else {
                     continue;
                 }
+                commandQueue.push(command);
             } else if (event.type == SDL_QUIT) {
                 running = false;
             } else if (event.type == SDL_KEYUP) {

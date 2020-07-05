@@ -52,6 +52,8 @@ public:
 
     std::vector<int> getPriestLookingAt();
 
+    std::vector<int> getItemLookingAt();
+
     std::vector<int> getNpcLookingAt();
 
     player_info_t getPlayerInfo();

@@ -499,10 +499,12 @@ int GameRender::getInventoryItemByPosition(int x, int y) {
     int position = window.getRenderedItemIndexByPosition(x, y, 7);
     if (position < 0) throw ItemException(
             "El inventario no tiene items en la posicion clickeada");
-    if (current_world.player_info.inventory.length < position) throw
-            ItemException("El inventario ya no tiene ese item");
+    /*if (current_world.player_info.inventory.length < position) throw
+            ItemException("El inventario ya no tiene ese item");*/
+    std::cout << "\n\nESTA ES LA POSITION DE INVENTARIO" << position;
 
-    return current_world.player_info.inventory.items[position];
+//    return current_world.player_info.inventory.items[position];
+    return 1;
 }
 
 
@@ -513,6 +515,7 @@ int GameRender::getListItemByPosition(int x, int y) {
                 "la lista no tiene items en la posicion clickeada");
     /*if (current_world.player_info.inventory.length < position) throw
                 ItemException("la lista ya no tiene ese item");*/
+    std::cout << "\n\nESTA ES LA POSITION DE list" << position;
     //return current_world.player_info.inventory.items[position];
     return 1;
 }

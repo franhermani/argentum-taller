@@ -304,10 +304,23 @@ std::vector<int> Map::getPriestLookingAt() {
         if (npcs.npcs[i].type==PRIEST
             and npcs.npcs[i].pos_x == looking_at[0]
             and npcs.npcs[i].pos_y == looking_at[1])
-            return looking_at;
+            return std::move(looking_at);
     }
     return std::move(std::vector<int> {-1, -1});
 }
+
+
+std::vector<int> Map::getItemStandingAt() {
+    player_t player = getMainPlayer();
+    std::vector<int> player_position = {player.pos_x, player.pos_y};
+    for (int i=0; i<world.num_items; i++) {
+        if ((world.items[i].pos_x == player_position[0])
+            && (world.items[i].pos_y == player_position[1]))
+            return std::move(player_position);
+    }
+    return std::move(std::vector<int> {-1, -1});
+}
+
 
 std::vector<int> Map::getNpcLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();
