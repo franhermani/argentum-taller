@@ -71,6 +71,10 @@ void GameInputHandler::play() {
                     continue;
                 }
                 commandQueue.push(command);
+            }else if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == SDL_BUTTON_LEFT)) {
+                int x,y;
+                SDL_GetMouseState( &x, &y );
+
             } else if (event.type == SDL_QUIT) {
                 running = false;
             } else if (event.type == SDL_KEYUP) {

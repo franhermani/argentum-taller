@@ -36,6 +36,9 @@ class GameRender : public Thread {
     std::map<int, std::string> floorItemSurfacesPaths;
     std::vector<std::vector<Terrain>> floor;
 
+    //conservamos mundo renderizado en el momento
+    // para poder trabajar estructuras interactivas con usuario
+    client_world_t current_world;
 
 private:
     // inicializa en terrainSurfacesMap las surfaces necesarias faltantes
@@ -93,7 +96,9 @@ public:
 
     Surface* createGameFrameSurface();
 
-    std::map<int, float> getRenderablePlayerInfo(client_world_t& current_world);
-};
+    std::map<int, float> getRenderablePlayerInfo();
+
+    int getInventoryItemByPosition(int x, int y);
+    };
 
 #endif //ARGENTUM_GAME_RENDER_H
