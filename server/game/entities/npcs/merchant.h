@@ -2,13 +2,19 @@
 #define MERCHANT_H
 
 #include <vector>
+#include <set>
 #include "npc.h"
 #include "../living_beings/player.h"
+#include "../items/item_factory.h"
 
 class Merchant : public NPC {
+    ItemFactory& itemFactory;
+    std::set<int> items;
+
 public:
     // Constructor
-    Merchant(const int pos_x, const int pos_y, const int orient);
+    Merchant(ItemFactory& item_factory, const int pos_x,
+            const int pos_y, const int orient);
 
     // Constructor y asignacion por copia deshabilitados
     Merchant(const Merchant& other) = delete;
@@ -17,11 +23,11 @@ public:
     // Destructor
     ~Merchant();
 
-    // Compra el item al player
-    void buy(Player& player, int item_type);
+    // Compra un item al player segun 'item_type'
+    void buyItem(Player& player, int item_type);
 
-    // Vende el item al player
-    void sell(Player& player, int item_type);
+    // Vende un item al player segun 'item_type'
+    void sellItem(Player& player, int item_type);
 
     // Lista los items que tiene para vender
     const std::vector<itemType> listItems() const override;

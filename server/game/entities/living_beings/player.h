@@ -100,6 +100,8 @@ class Player : public LivingBeing {
     friend class World;
     friend class Equations;
     friend class Banker;
+    friend class Priest;
+    friend class Merchant;
     friend class ClientHandler;
     friend class ServerProtocol;
 
@@ -173,6 +175,12 @@ public:
 
     // Saca un oro del mundo segun su pos (x,y) y guarda su cantidad
     void takeGoldFromWorld(const int pos_x, const int pos_y);
+
+    // Compra un item
+    void buyItem(Item* item);
+
+    // Vende un item segun 'type'
+    Item* sellItem(const int type);
 };
 
 #endif // GAME_PLAYER_H

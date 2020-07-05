@@ -2,13 +2,19 @@
 #define PRIEST_H
 
 #include <vector>
+#include <set>
 #include "npc.h"
+#include "../items/item_factory.h"
 #include "../living_beings/player.h"
 
 class Priest : public NPC {
+    ItemFactory& itemFactory;
+    std::set<int> items;
+
 public:
     // Constructor
-    Priest(const int pos_x, const int pos_y, const int orient);
+    Priest(ItemFactory& item_factory, const int pos_x,
+            const int pos_y, const int orient);
 
     // Constructor y asignacion por copia deshabilitados
     Priest(const Priest& other) = delete;
@@ -22,6 +28,9 @@ public:
 
     // Cura al player
     void heal(Player& player);
+
+    // Vende un item al player segun 'item_type'
+    void sellItem(Player& player, const int type);
 
     // Lista los items que tiene para vender
     const std::vector<itemType> listItems() const override;
