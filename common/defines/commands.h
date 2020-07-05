@@ -28,4 +28,10 @@ enum moveDirection {
     UP,
 };
 
+// Take Command
+enum takeType {
+    TAKE_ITEM,
+    TAKE_GOLD
+};
+
 #endif // COMMANDS_H

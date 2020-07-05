@@ -93,10 +93,12 @@ Command* CommandFactory::operator()(Player& player, int type,
         // TODO:...
 
     } else if (type == CMD_TAKE) {
+        uint8_t take_type;
         uint16_t pos_x, pos_y;
-        memcpy(&pos_x, arguments.data(), SIZE_16);
-        memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
-        return new TakeCommand(player, ntohs(pos_x), ntohs(pos_y));
+        memcpy(&take_type, arguments.data(), SIZE_8);
+        memcpy(&pos_x, arguments.data() + SIZE_8, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_8 + SIZE_16, SIZE_16);
+        return new TakeCommand(player, take_type, ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_THROW) {
         int item_type = arguments[0];

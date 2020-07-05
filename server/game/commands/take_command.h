@@ -6,11 +6,13 @@
 
 class TakeCommand : public Command {
     Player& player;
+    int takeType;
     int posX, posY;
 
 public:
     // Constructor
-    TakeCommand(Player& player, const int pos_x, const int pot_y);
+    TakeCommand(Player& player, const int take_type,
+            const int pos_x, const int pot_y);
 
     // Constructor y asignacion por copia deshabilitados
     TakeCommand(const TakeCommand&) = delete;
