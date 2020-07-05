@@ -82,4 +82,8 @@ player_t MapMonitor::getMainPlayer() {
     std::unique_lock<std::mutex> lk(m);
     return map.getMainPlayer();
 }
+client_world_t MapMonitor::getCurrentWorld() {
+    std::unique_lock<std::mutex> lk(m);
+    return map.getCurrentWorld();
+}
 

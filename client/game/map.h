@@ -2,6 +2,7 @@
 #ifndef ARGENTUM_MAP_H
 #define ARGENTUM_MAP_H
 #include "../../common/defines/world_structs.h"
+#include "map_structs.h"
 #include <vector>
 
 class Map {
@@ -85,6 +86,8 @@ public:
     int getPlayerYEnd(player_t& player);
 
     player_info_t getPlayerInfo();
+
+    client_world_t getCurrentWorld();
 
 };
 

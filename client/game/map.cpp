@@ -6,6 +6,7 @@
 #include "exception.h"
 #include "../../common/defines/commands.h"
 #include "../../common/defines/npcs.h"
+
 // constructor
 Map::Map() {
 }
@@ -320,4 +321,15 @@ std::vector<int> Map::getNpcLookingAt() {
 
 player_info_t Map::getPlayerInfo() {
     return world.player_info;
+}
+
+client_world_t Map::getCurrentWorld() {
+    client_world_t current_world;
+    current_world.player_info = world.player_info;
+    current_world.players = getRenderablePlayers();
+    current_world.items = getRenderableItems();
+    current_world.creatures = getRenderableCreatures();
+    current_world.npcs = getRenderableNpcs();
+    current_world.terrains = getTerrains();
+    return std::move(current_world);
 }
