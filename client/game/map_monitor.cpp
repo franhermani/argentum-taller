@@ -20,7 +20,7 @@ void MapMonitor::initialize(int username_id,
 void MapMonitor::updateWorld(world_t receivedWorld) {
     std::unique_lock<std::mutex> lk(m);
     //TODO CUIDADO COPIAS CAMBIAR
-    map.updateWorld(receivedWorld);
+    map.updateWorld(std::move(receivedWorld));
 }
 
 

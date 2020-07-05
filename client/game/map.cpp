@@ -15,11 +15,11 @@ Map::~Map() {}
 
 void Map::updateWorld(world_t receivedWorld) {
     //actualizo players
-    world.players = receivedWorld.players;
-    world.num_players = receivedWorld.num_players;
-    world.player_info = receivedWorld.player_info;
-    world.creatures = receivedWorld.creatures;
-    world.num_creatures = receivedWorld.num_creatures;
+    world.players = std::move(receivedWorld.players);
+    world.num_players = std::move(receivedWorld.num_players);
+    world.player_info = std::move(receivedWorld.player_info);
+    world.creatures = std::move(receivedWorld.creatures);
+    world.num_creatures = std::move(receivedWorld.num_creatures);
     //el resto falta recibirlo
 }
 
