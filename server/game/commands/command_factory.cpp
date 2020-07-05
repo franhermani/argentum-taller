@@ -7,6 +7,10 @@
 #include "meditate_command.h"
 #include "revive_command.h"
 #include "heal_command.h"
+#include "deposit_item_command.h"
+#include "withdraw_item_command.h"
+#include "deposit_gold_command.h"
+#include "withdraw_gold_command.h"
 #include "list_command.h"
 #include "take_command.h"
 #include "throw_command.h"
@@ -40,17 +44,41 @@ Command* CommandFactory::operator()(Player& player, int type,
         memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
         return new HealCommand(player, ntohs(pos_x), ntohs(pos_y));
 
-    } else if (type == CMD_DEPOSIT) {
-        // TODO:...
+    } else if (type == CMD_DEPOSIT_ITEM) {
+        uint8_t item_type;
+        uint16_t pos_x, pos_y;
+        memcpy(&item_type, arguments.data(), SIZE_8);
+        memcpy(&pos_x, arguments.data() + SIZE_8, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_8 + SIZE_16, SIZE_16);
+        return new DepositItemCommand(player, item_type,
+                ntohs(pos_x), ntohs(pos_y));
 
-    } else if (type == CMD_WITHDRAW) {
-        // TODO:...
+    } else if (type == CMD_WITHDRAW_ITEM) {
+        uint8_t item_type;
+        uint16_t pos_x, pos_y;
+        memcpy(&item_type, arguments.data(), SIZE_8);
+        memcpy(&pos_x, arguments.data() + SIZE_8, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_8 + SIZE_16, SIZE_16);
+        return new WithdrawItemCommand(player, item_type,
+                ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_DEPOSIT_GOLD) {
-        // TODO:...
+        uint16_t quantity;
+        uint16_t pos_x, pos_y;
+        memcpy(&quantity, arguments.data(), SIZE_16);
+        memcpy(&pos_x, arguments.data() + SIZE_16, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_16 + SIZE_16, SIZE_16);
+        return new DepositGoldCommand(player, quantity,
+                ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_WITHDRAW_GOLD) {
-        // TODO:...
+        uint16_t quantity;
+        uint16_t pos_x, pos_y;
+        memcpy(&quantity, arguments.data(), SIZE_16);
+        memcpy(&pos_x, arguments.data() + SIZE_16, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_16 + SIZE_16, SIZE_16);
+        return new WithdrawGoldCommand(player, quantity,
+                ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_LIST) {
         uint16_t pos_x, pos_y;
@@ -65,10 +93,12 @@ Command* CommandFactory::operator()(Player& player, int type,
         // TODO:...
 
     } else if (type == CMD_TAKE) {
+        uint8_t take_type;
         uint16_t pos_x, pos_y;
-        memcpy(&pos_x, arguments.data(), SIZE_16);
-        memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
-        return new TakeCommand(player, ntohs(pos_x), ntohs(pos_y));
+        memcpy(&take_type, arguments.data(), SIZE_8);
+        memcpy(&pos_x, arguments.data() + SIZE_8, SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_8 + SIZE_16, SIZE_16);
+        return new TakeCommand(player, take_type, ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_THROW) {
         int item_type = arguments[0];
@@ -84,9 +114,6 @@ Command* CommandFactory::operator()(Player& player, int type,
     } else if (type == CMD_EQUIP) {
         int item_type = arguments[0];
         return new EquipCommand(player, item_type);
-
-    } else if (type == CMD_TRICK) {
-        // TODO:...
     }
     return nullptr;
 }

@@ -12,7 +12,7 @@ Priest::Priest(const int pos_x, const int pos_y, const int orient) {
 Priest::~Priest() = default;
 
 void Priest::revive(Player &player) {
-    player.revive();
+    player.shortTermRevive();
 }
 
 void Priest::heal(Player &player) {

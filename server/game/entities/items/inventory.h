@@ -36,6 +36,12 @@ public:
 
     // Saca un item del inventario segun su item type
     Item* removeItem(const int type);
+
+    // Saca el ultimo item del inventario
+    Item* removeLastItem();
+
+    // Devuelve true si el inventario esta vacio, false en caso contrario
+    const bool isEmpty() const;
 };
 
 #endif // INVENTORY_H
