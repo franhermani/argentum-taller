@@ -135,8 +135,17 @@ void Player::die() {
 void Player::dropExcessGold() {
     int excess_gold = actualGold - maxSafeGold;
 
-    if (excess_gold > 0)
+    if (excess_gold > 0) {
+        subtractGold(excess_gold);
         world.addGold(new Gold(excess_gold, posX, posY));
+    }
+}
+
+void Player::subtractGold(int gold) {
+    actualGold -= gold;
+
+    if (actualGold < 0)
+        actualGold = 0;
 }
 
 void Player::dropInventoryItems() {

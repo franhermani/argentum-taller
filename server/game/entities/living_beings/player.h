@@ -61,6 +61,9 @@ class Player : public LivingBeing {
     // Dropea el oro en exceso al mundo
     void dropExcessGold();
 
+    // Resta 'gold' cantidad de oro al player
+    void subtractGold(int gold);
+
     // Dropea los items del inventario al mundo
     void dropInventoryItems();
 
