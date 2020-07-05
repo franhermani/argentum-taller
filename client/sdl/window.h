@@ -81,5 +81,9 @@ public:
                                    std::map<int, Surface*>& surfaces_map);
     void renderPlayerInfo(std::map<int, float> player_info,
             std::map<int, Surface *> info_surfaces_map);
-};
+
+    int getRenderedItemIndexByPosition(int x, int y, size_t inventory_length);
+    int isInsideArea(SDL_Rect& stretchRect, int x, int y);
+
+    };
 #endif // SDL_WINDOW_H
