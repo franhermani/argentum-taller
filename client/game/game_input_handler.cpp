@@ -80,8 +80,12 @@ void GameInputHandler::play() {
                     //command = new TakeCommandDTO(0, 0);
                 } else if (key == SDLK_y) {
                     //throw
-                    //TODO cuando tengamos los items guardados pedirlo al mapa
-                    continue;
+                    SDL_WaitEvent(&event);
+                    if (isLeftClick(event)) {
+                        SDL_GetMouseState(&x, &y);
+                        command = new ThrowCommandDTO(
+                                gameRender->getInventoryItemByPosition(x, y));
+                    }
                 } else if (key == SDLK_e) {
                     SDL_WaitEvent(&event);
                     if (isLeftClick(event)) {
