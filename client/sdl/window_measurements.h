@@ -1,6 +1,3 @@
-//
-// Created by martinrosas on 5/7/20.
-//
 
 #ifndef ARGENTUM_WINDOW_MEASUREMENTS_H
 #define ARGENTUM_WINDOW_MEASUREMENTS_H

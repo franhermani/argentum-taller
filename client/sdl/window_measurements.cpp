@@ -1,6 +1,3 @@
-//
-// Created by martinrosas on 5/7/20.
-//
 
 #include "window_measurements.h"
 
