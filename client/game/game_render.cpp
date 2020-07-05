@@ -15,6 +15,7 @@
 #include "../../common/defines/creatures.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/items.h"
+#include "exception.h"
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -493,12 +494,14 @@ void GameRender::run() {
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {
-    //size_t inventory_length = current_world.player_info.inventory.length;
-    size_t inventory_length = 7;
+    size_t inventory_length = current_world.player_info.inventory.length;
     int position = window.getRenderedItemIndexByPosition(x, y, inventory_length);
-    std::cout << "\n\n\n\n\n\n\n CLICKEARON EN LA POSICION "<< position<< "\n\n\n\n AAAAAAA";
-    std::cout << " esto es x" << x << " esto es y "<<y << "\n\n\n";
-    return position;
+    if (position < 0) throw InventoryException(
+            "El inventario no tiene items en la posicion clickeada");
+    if (current_world.player_info.inventory.length < position) throw
+            InventoryException("El inventario ya no tiene ese item");
+
+    return current_world.player_info.inventory.items[position];
 }
 
 void GameRender::stop() {
