@@ -46,7 +46,7 @@ public:
     void withdrawGold(Player& player, const int quant) override;
 
     // Lista los items que tiene para vender
-    const std::vector<int> listItems() const override;
+    list_t listItems(Player& player) const override;
 };
 
 #endif // MERCHANT_H

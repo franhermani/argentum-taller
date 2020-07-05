@@ -12,7 +12,7 @@ class GameException : public std::exception {
 
 public:
     // Constructor con parametros variables
-    explicit GameException(const int player_id, const char *fmt, ...) noexcept;
+    GameException(const int player_id, const char *fmt, ...) noexcept;
 
     // Devuelve el id del player
     const int getPlayerId() const noexcept;

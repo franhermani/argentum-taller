@@ -68,3 +68,21 @@ Item* ItemFactory::operator()(const int type, const int pos_x,
         return nullptr;
     }
 }
+
+const int ItemFactory::getItemPrice(const int type) {
+    json js;
+    int price = 0;
+
+    if (weapons.count(type) > 0) {
+        price = itemParams["weapons"][itemsMap[type]]["price"];
+    } else if (armors.count(type) > 0) {
+        price = itemParams["armors"][itemsMap[type]]["price"];
+    } else if (helmets.count(type) > 0) {
+        price = itemParams["helmets"][itemsMap[type]]["price"];
+    } else if (shields.count(type) > 0) {
+        price = itemParams["shields"][itemsMap[type]]["price"];
+    } else if (potions.count(type) > 0) {
+        price = itemParams["potions"][itemsMap[type]]["price"];
+    }
+    return price;
+}

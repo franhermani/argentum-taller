@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "../../../../common/defines/items.h"
+#include "../../../../common/defines/world_structs.h"
 
 class Player;
 
@@ -54,7 +55,7 @@ public:
 
     // Lista los items que tiene para ofrecer
     // Metodo a definir por las clases derivadas
-    virtual const std::vector<int> listItems() const = 0;
+    virtual list_t listItems(Player& player) const = 0;
 };
 
 #endif // NPC_H

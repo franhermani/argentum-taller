@@ -8,7 +8,7 @@ ListCommand::~ListCommand() = default;
 
 void ListCommand::execute(World& world) {
     NPC* npc = world.getNPCByPos(NPCPosX, NPCPosY);
-    npc->listItems();
+    npc->listItems(player);
 
     // TODO: ver que hacer con esa lista
 }

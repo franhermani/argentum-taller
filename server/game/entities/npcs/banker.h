@@ -45,9 +45,8 @@ public:
     // Retira la cantidad recibida de oro del player del banco
     void withdrawGold(Player& player, const int quant) override;
 
-    // Lista los items que tiene el player en el banco
-    // TODO: necesita recibir al player por parametro
-    const std::vector<int> listItems() const override;
+    // Lista los items y la cantidad de oro que tiene el player en el banco
+    list_t listItems(Player& player) const override;
 };
 
 #endif // BANKER_H

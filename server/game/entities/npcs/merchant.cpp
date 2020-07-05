@@ -1,5 +1,6 @@
 #include <vector>
 #include <algorithm>
+#include <netinet/in.h>
 #include "merchant.h"
 #include "../../../../common/defines/npcs.h"
 #include "../../game_exception.h"
@@ -74,7 +75,19 @@ void Merchant::withdrawGold(Player &player, const int quant) {
                                    "acceso al banco");
 }
 
-const std::vector<int> Merchant::listItems() const {
-    // TODO: ...
-    return std::vector<int>();
+list_t Merchant::listItems(Player& player) const {
+    int num_items = items.size();
+
+    list_t list;
+    list.show_price = 1;
+    list.gold_quantity = 0;
+    list.num_items = htons(num_items);
+    list.items.resize(num_items);
+
+    int i;
+    for (i = 0; i < num_items; i ++) {
+        list.items[i].type = items[i];
+        list.items[i].price = htons(itemFactory.getItemPrice(items[i]));
+    }
+    return list;
 }
