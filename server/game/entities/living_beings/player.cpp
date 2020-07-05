@@ -316,6 +316,7 @@ void Player::shortTermRevive() {
 
     actualLife = maxLife;
     isAlive = true;
+    isReviving = false;
 }
 
 void Player::longTermRevive() {
