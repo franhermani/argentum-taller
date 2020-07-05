@@ -4,11 +4,15 @@
 #include <vector>
 #include "npc.h"
 #include "../living_beings/player.h"
+#include "../items/item_factory.h"
 
 class Merchant : public NPC {
+    ItemFactory& itemFactory;
+
 public:
     // Constructor
-    Merchant(const int pos_x, const int pos_y, const int orient);
+    Merchant(ItemFactory& item_factory, const int pos_x,
+            const int pos_y, const int orient);
 
     // Constructor y asignacion por copia deshabilitados
     Merchant(const Merchant& other) = delete;
@@ -17,14 +21,32 @@ public:
     // Destructor
     ~Merchant();
 
-    // Compra el item al player
-    void buy(Player& player, int item_type);
+    // Lanza una excepcion
+    void revive(Player& player) override;
 
-    // Vende el item al player
-    void sell(Player& player, int item_type);
+    // Lanza una excepcion
+    void heal(Player& player) override;
+
+    // Compra un item al player segun 'item_type'
+    void buyItem(Player& player, const int type) override;
+
+    // Vende un item al player segun 'item_type'
+    void sellItem(Player& player, const int type) override;
+
+    // Lanza una excepcion
+    void depositItem(Player& player, const int type) override;
+
+    // Lanza una excepcion
+    void withdrawItem(Player& player, const int type) override;
+
+    // Lanza una excepcion
+    void depositGold(Player& player, const int quant) override;
+
+    // Lanza una excepcion
+    void withdrawGold(Player& player, const int quant) override;
 
     // Lista los items que tiene para vender
-    const std::vector<itemType> listItems() const override;
+    const std::vector<int> listItems() const override;
 };
 
 #endif // MERCHANT_H

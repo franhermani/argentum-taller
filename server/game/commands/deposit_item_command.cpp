@@ -10,7 +10,6 @@ bankerPosX(banker_pos_x), bankerPosY(banker_pos_y) {}
 DepositItemCommand::~DepositItemCommand() = default;
 
 void DepositItemCommand::execute(World& world) {
-    auto* banker = dynamic_cast<Banker*>
-            (world.getNPCByPos(bankerPosX, bankerPosY));
-    banker->depositItem(player, itemType);
+    NPC* npc = world.getNPCByPos(bankerPosX, bankerPosY);
+    npc->depositItem(player, itemType);
 }

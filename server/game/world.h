@@ -14,7 +14,7 @@
 
 class World {
     GameParams& params;
-    ItemFactory itemFactory;
+    ItemFactory& itemFactory;
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> entitiesImpenetrableTerrains;
     std::set<Terrain> attacksImpenetrableTerrains;
@@ -48,7 +48,7 @@ class World {
 
 public:
     // Constructor
-    explicit World(GameParams& params);
+    explicit World(GameParams& params, ItemFactory& item_factory);
 
     // Constructor y asignacion por copia deshabilitados
     World(const World& other) = delete;

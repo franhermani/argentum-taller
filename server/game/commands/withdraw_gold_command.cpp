@@ -10,7 +10,6 @@ bankerPosX(banker_pos_x), bankerPosY(banker_pos_y) {}
 WithdrawGoldCommand::~WithdrawGoldCommand() = default;
 
 void WithdrawGoldCommand::execute(World& world) {
-    auto* banker = dynamic_cast<Banker*>
-            (world.getNPCByPos(bankerPosX, bankerPosY));
-    banker->withdrawGold(player, quantity);
+    NPC* npc = world.getNPCByPos(bankerPosX, bankerPosY);
+    npc->withdrawGold(player, quantity);
 }
