@@ -10,7 +10,7 @@ class DepositGoldCommandDTO : public CommandDTO {
 
 public:
     // Constructor
-    explicit DepositGoldCommandDTO(const uint16_t quantity,
+    DepositGoldCommandDTO(const uint16_t quantity,
             const uint16_t banker_pos_x, const uint16_t banker_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
@@ -23,6 +23,5 @@ public:
     // Devuelve la serializacion en bytes del comando
     const std::vector<char> serialize() const override;
 };
-
 
 #endif // DEPOSIT_GOLD_COMMAND_DTO_H
