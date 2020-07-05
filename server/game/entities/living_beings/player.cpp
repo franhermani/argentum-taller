@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <random>
 #include <climits>
 #include <algorithm>
@@ -10,6 +11,7 @@
 #include "../../game_exception.h"
 
 // TODO: ver si vale la pena mover esto a un param de la clase en el json
+#define MOVE_VELOCITY       1500
 #define RECOVERY_VELOCITY   1000
 #define NO_WEAPON_VELOCITY  600
 #define NO_WEAPON_RANGE     1
@@ -23,14 +25,18 @@ classType(class_type),
 maxExperience(LONG_MAX),
 actualExperience(0),
 isMeditating(false),
+isReviving(false),
 ableToUseMagic(classType != WARRIOR),
 weapon(nullptr),
 armor(nullptr),
 helmet(nullptr),
 shield(nullptr),
 inventory(world.getInventoryLength()),
+moveVelocity(MOVE_VELOCITY),
 recoveryVelocity(RECOVERY_VELOCITY),
-msRecoveryCounter(0) {
+msMoveCounter(0),
+msRecoveryCounter(0),
+distanceInMsToPriest(0) {
     id = new_id;
     level = 1;
     isAlive = true;
@@ -150,6 +156,28 @@ void Player::subtractGold(int gold) {
 
 void Player::dropInventoryItems() {
     // TODO: armar algun algoritmo que recorra en espiral
+    /*
+    int world_width = world.getWidth(), world_height = world.getHeight();
+    int pos_x, pos_y, i, j, n;
+
+    while (! inventory.isEmpty()) {
+        Item* item = inventory.removeLastItem();
+        if (! item)
+            continue;
+
+        i = 1, j = 1, n = 1;
+        pos_x = posX, pos_y = posY;
+
+        while ((world.inCollision(pos_x, pos_y) || world.itemInPosition(pos_x, pos_y))) {
+
+            pos_x += i;
+        }
+
+
+        item->updatePosition(pos_x, pos_y);
+        world.addItem(item);
+    }
+     */
 }
 
 void Player::stopMeditating() {
@@ -162,6 +190,21 @@ void Player::recoverLifeAndMana() {
 
     if (isMeditating)
         addMana(equations.eqManaMeditation(*this));
+}
+
+void Player::moveNextTo(const int pos_x, const int pos_y) {
+    std::vector<std::vector<int>> pos_tries =
+            {{pos_x + 1, pos_y}, {pos_x - 1, pos_y},
+             {pos_x, pos_y + 1}, {pos_x, pos_y - 1}};
+
+    for (auto& pos : pos_tries) {
+        if ((world.inMapBoundaries(pos[0], pos[1])) &&
+        (! world.inCollision(pos[0], pos[1]))) {
+            posX = pos[0];
+            posY = pos[1];
+            break;
+        }
+    }
 }
 
 void Player::equipWeapon(Weapon* new_weapon) {
@@ -205,11 +248,24 @@ void Player::equipPotion(Potion *new_potion) {
 // -------------- //
 
 void Player::update(int ms) {
-    msRecoveryCounter += ms;
+    if (isDead()) {
+        if (isReviving) {
+            msMoveCounter += ms;
+            if (msMoveCounter >= distanceInMsToPriest) {
+                msMoveCounter = 0;
+                std::vector<int> priest_pos =
+                        world.getClosestPriestPos(posX, posY);
+                moveNextTo(priest_pos[0], priest_pos[1]);
+                shortTermRevive();
+            }
+        }
+    } else {
+        msRecoveryCounter += ms;
 
-    if (msRecoveryCounter >= recoveryVelocity) {
-        msRecoveryCounter = 0;
-        recoverLifeAndMana();
+        if (msRecoveryCounter >= recoveryVelocity) {
+            msRecoveryCounter = 0;
+            recoverLifeAndMana();
+        }
     }
 }
 
@@ -252,7 +308,7 @@ void Player::heal() {
     actualMana = maxMana;
 }
 
-void Player::revive() {
+void Player::shortTermRevive() {
     stopMeditating();
 
     if (! isDead())
@@ -260,6 +316,18 @@ void Player::revive() {
 
     actualLife = maxLife;
     isAlive = true;
+    isReviving = false;
+}
+
+void Player::longTermRevive() {
+    stopMeditating();
+
+    if (! isDead())
+        throw GameException(id, "No eres un fantasma. No puedes revivir");
+
+    isReviving = true;
+    distanceInMsToPriest = world.distanceInMsToClosestPriest(posX, posY,
+            moveVelocity);
 }
 
 void Player::meditate() {

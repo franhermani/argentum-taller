@@ -84,5 +84,10 @@ public:
 
     void renderList(std::vector<Surface*>& surfaces);
 
-};
+    int getRenderedItemIndexByPosition(int x, int y, size_t inventory_length);
+    int getRenderedListIndexByPosition(int x, int y, size_t inventory_length);
+
+    int isInsideArea(SDL_Rect& stretchRect, int x, int y);
+
+    };
 #endif // SDL_WINDOW_H

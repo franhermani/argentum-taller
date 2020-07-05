@@ -135,11 +135,22 @@ public:
     // Devuelve el NPC asociado a la posicion (pos_x, pos_y)
     NPC* getNPCByPos(const int pos_x, const int pos_y) const;
 
-    // Devuelve la posicion del player mas cercano a la posicion (pos_x, pos_y)
+    // Devuelve la posicion del player mas cercano
+    // a la posicion (pos_x, pos_y)
     std::vector<int> getClosestPlayerPos(const int pos_x, const int pos_y);
 
-    // Devuelve la distancia (en bloques) de una posicion (x,y) a otra
-    const int distance(const int x1, const int y1, const int x2, const int y2);
+    // Devuelve la distancia en bloques de una posicion (x, y) a otra
+    const int distanceInBlocks(const int x1, const int y1,
+            const int x2, const int y2);
+
+    // Devuelve la posicion del sacerdote mas cercano
+    // a la posicion (pos_x, pos_y)
+    std::vector<int> getClosestPriestPos(const int pos_x, const int pos_y);
+
+    // Devuelve la distancia en ms de una posicion (pos_x, pos_y)
+    // a la del sacerdote mas cercano segun la velocidad dada
+    const int distanceInMsToClosestPriest(const int pos_x, const int pos_y,
+            const int velocity);
 
     // Devuelve el largo maximo del inventario
     const int getInventoryLength() const;

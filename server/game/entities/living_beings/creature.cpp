@@ -165,7 +165,7 @@ void Creature::dropItemOrGold() {
 
 void Creature::moveAndAttackPlayers() {
     std::vector<int> player_pos = world.getClosestPlayerPos(posX, posY);
-    bool in_attack_range = world.distance(posX, posY,
+    bool in_attack_range = world.distanceInBlocks(posX, posY,
             player_pos[0], player_pos[1]) <= attackRange;
 
     if (in_attack_range) {

@@ -12,7 +12,7 @@ public:
     ReviveCommandDTO();
 
     // Constructor con sacerdote
-    explicit ReviveCommandDTO(const uint16_t priest_pos_x,
+    ReviveCommandDTO(const uint16_t priest_pos_x,
             const uint16_t priest_pos_y);
 
     // Constructor y asignacion por copia deshabilitados

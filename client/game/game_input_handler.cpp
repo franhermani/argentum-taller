@@ -5,21 +5,24 @@
 #include "../data_transfer_objects/heal_command_dto.h"
 #include "../data_transfer_objects/take_command_dto.h"
 #include "../data_transfer_objects/list_command_dto.h"
+#include "../data_transfer_objects/equip_command_dto.h"
 #include "../data_transfer_objects/throw_command_dto.h"
 #include "../data_transfer_objects/revive_command_dto.h"
 #include "../data_transfer_objects/meditate_command_dto.h"
 #include "../data_transfer_objects/attack_command_dto.h"
+#include "exception.h"
 #include <vector>
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
-            MapMonitor& mapMonitor):
-commandQueue(commandQueue), mapMonitor(mapMonitor) {}
+            MapMonitor& mapMonitor, GameRender* gameRender):
+commandQueue(commandQueue), mapMonitor(mapMonitor), gameRender(gameRender) {}
 
 GameInputHandler::~GameInputHandler() = default;
 
 void GameInputHandler::play() {
     try {
         bool running = true;
+        bool interacting_with_npc = false;
         while (running) {
             SDL_Event event;
             SDL_WaitEvent(&event);
@@ -71,6 +74,22 @@ void GameInputHandler::play() {
                     continue;
                 }
                 commandQueue.push(command);
+            } else if ((event.type == SDL_MOUSEBUTTONDOWN) && (event.button.button == SDL_BUTTON_LEFT)) {
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                if (not interacting_with_npc) {
+                    try {
+                        command = new EquipCommandDTO(
+                                gameRender->getInventoryItemByPosition(x, y));
+                    } catch (InventoryException &e) {
+                        continue;
+                    }
+                } else {
+                    //caso interactuar con npc, estamos dentro de comando list
+                    continue;
+                }
+
+
             } else if (event.type == SDL_QUIT) {
                 running = false;
             } else if (event.type == SDL_KEYUP) {

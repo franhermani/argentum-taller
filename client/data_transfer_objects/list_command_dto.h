@@ -9,7 +9,7 @@ class ListCommandDTO : public CommandDTO {
 
 public:
     // Constructor
-    explicit ListCommandDTO(const uint16_t npc_pos_x,
+    ListCommandDTO(const uint16_t npc_pos_x,
             const uint16_t npc_pos_y);
 
     // Constructor y asignacion por copia deshabilitados

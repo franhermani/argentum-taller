@@ -1,6 +1,7 @@
 #include <random>
 #include <cstdlib>
 #include "world.h"
+#include "entities/npcs/priest.h"
 
 World::World(GameParams& params) : params(params),
 itemFactory(params.getConfigParams()["items"]) {
@@ -304,7 +305,9 @@ std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
         if (player->isDead())
             continue;
 
-        actual_distance = distance(pos_x, pos_y, player->posX, player->posY);
+        actual_distance = distanceInBlocks(pos_x, pos_y,
+                player->posX, player->posY);
+
         if (actual_distance < min_distance) {
             min_distance = actual_distance;
             pos[0] = player->posX;
@@ -314,10 +317,38 @@ std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
     return pos;
 }
 
-const int World::distance(const int x1, const int y1,
+const int World::distanceInBlocks(const int x1, const int y1,
         const int x2, const int y2) {
     int dist_x = abs(x1 - x2), dist_y = abs(y1 - y2);
     return dist_x + dist_y;
+}
+
+std::vector<int> World::getClosestPriestPos(const int pos_x, const int pos_y) {
+    std::vector<int> pos = {0,0};
+    int min_distance = 2 * worldHeight, actual_distance;
+
+    for (auto& npc : npcs) {
+        if (typeid(npcs) != typeid(Priest))
+            continue;
+
+        actual_distance = distanceInBlocks(pos_x, pos_y,
+                npc->posX, npc->posY);
+
+        if (actual_distance < min_distance) {
+            min_distance = actual_distance;
+            pos[0] = npc->posX;
+            pos[1] = npc->posY;
+        }
+    }
+    return pos;
+}
+
+const int World::distanceInMsToClosestPriest(const int pos_x, const int pos_y,
+        const int velocity) {
+    std::vector<int> priest_pos = getClosestPriestPos(pos_x, pos_y);
+    int distance = distanceInBlocks(pos_x, pos_y,
+            priest_pos[0], priest_pos[1]);
+    return distance * velocity;
 }
 
 const int World::getInventoryLength() const {

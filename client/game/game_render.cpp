@@ -15,6 +15,7 @@
 #include "../../common/defines/creatures.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/items.h"
+#include "exception.h"
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -432,8 +433,7 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
-std::map<int, float> GameRender::getRenderablePlayerInfo(
-        client_world_t& current_world) {
+std::map<int, float> GameRender::getRenderablePlayerInfo() {
     std::map<int, float> playerInfo = {
             //TODO RECIBIR EXPERIENCE max
             {LIFE, current_world.main_player.actual_life/
@@ -455,7 +455,7 @@ void GameRender::run() {
     window.renderGameFrame(createGameFrameSurface());
 
     while (keepRunning) {
-        client_world_t current_world = mapMonitor.getCurrentWorld();
+        current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
         renderPlayers(current_world.players);
         renderNpcs(current_world.npcs);
@@ -486,12 +486,23 @@ void GameRender::run() {
         player.helmet = NO_ITEM_EQUIPPED;
         player.weapon = ARCO_COMPUESTO;
         window.renderEquipped(player, floorItemSurfacesMap);
-        window.renderPlayerInfo(getRenderablePlayerInfo(current_world),
+        window.renderPlayerInfo(getRenderablePlayerInfo(),
                 infoSurfacesMap);
         window.renderList(inventory_items);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }
+}
+
+int GameRender::getInventoryItemByPosition(int x, int y) {
+    size_t inventory_length = current_world.player_info.inventory.length;
+    int position = window.getRenderedItemIndexByPosition(x, y, inventory_length);
+    if (position < 0) throw InventoryException(
+            "El inventario no tiene items en la posicion clickeada");
+    if (current_world.player_info.inventory.length < position) throw
+            InventoryException("El inventario ya no tiene ese item");
+
+    return current_world.player_info.inventory.items[position];
 }
 
 void GameRender::stop() {
