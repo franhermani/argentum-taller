@@ -368,6 +368,9 @@ void Player::attack() {
 }
 
 void Player::attack(Player& other) {
+    if (other.id == id)
+        return;
+
     if (isNewbie)
         throw GameException(id, "Eres un newbie. No puedes atacar "
                                 "a otro jugador");
@@ -442,7 +445,6 @@ void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
     if (isDead())
         throw GameException(id, "Eres un fantasma. No puedes tomar items "
                                 "del mundo");
-
 
     Item* item = world.removeItem(pos_x, pos_y);
     if (! item)
