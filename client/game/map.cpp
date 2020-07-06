@@ -159,32 +159,33 @@ std::vector<player_t> Map::getRenderablePlayers() {
     return visible_players;
 }
 
-std::vector<npc_t> Map::getRenderableNpcs() {
+int Map::betweenPlayerBorders(int pos_x, int pos_y) {
     player_t main_player = getMainPlayer();
-
-    //Pedimos los bordes de vision del jugador en
-    // coordenadas de la matriz principal
     int x_start, y_start, x_finish, y_finish;
     x_start = getPlayerXStart(main_player);
     y_start = getPlayerYStart(main_player);
     x_finish = getPlayerXEnd(main_player);
     y_finish = getPlayerYEnd(main_player);
+    return ((pos_x < x_start) &&  (pos_x > x_finish)
+    && (pos_y < y_start) && (pos_y > y_finish));
+}
+
+std::vector<npc_t> Map::getRenderableNpcs() {
+    player_t main_player = getMainPlayer();
 
     std::vector<npc_t> visible_npcs;
-
 
     //traducimos posiciones a la vision del jugador y
     // nos quedamos con los jugadores que esten
     //dentro del rango de vision del principal
     for (auto& npc: npcs.npcs) {
-        if ((npc.pos_x < x_start) ||  (npc.pos_x > x_finish)
-            || (npc.pos_y < y_start) || (npc.pos_y > y_finish)) {
+        if (betweenPlayerBorders(npc.pos_x, npc.pos_y)) {
             continue;
         } else {
             npc_t converted_npc = npc;
-            converted_npc.pos_x = npc.pos_x - x_start;
+            converted_npc.pos_x = npc.pos_x - getPlayerXStart(main_player);
             if (converted_npc.pos_x < 0) converted_npc.pos_x = 0;
-            converted_npc.pos_y = npc.pos_y - y_start;
+            converted_npc.pos_y = npc.pos_y - getPlayerYStart(main_player);
             if (converted_npc.pos_y < 0) converted_npc.pos_y = 0;
             visible_npcs.push_back(converted_npc);
         }
@@ -195,13 +196,6 @@ std::vector<npc_t> Map::getRenderableNpcs() {
 std::vector<creature_t> Map::getRenderableCreatures() {
     player_t main_player = getMainPlayer();
 
-    //Pedimos los bordes de vision del jugador en
-    // coordenadas de la matriz principal
-    int x_start, y_start, x_finish, y_finish;
-    x_start = getPlayerXStart(main_player);
-    y_start = getPlayerYStart(main_player);
-    x_finish = getPlayerXEnd(main_player);
-    y_finish = getPlayerYEnd(main_player);
 
     std::vector<creature_t> visible_creatures;
 
@@ -210,14 +204,13 @@ std::vector<creature_t> Map::getRenderableCreatures() {
     // nos quedamos con las criaturas que esten
     //dentro del rango de vision del principal
     for (auto& creature: world.creatures) {
-        if ((creature.pos_x < x_start) ||  (creature.pos_x > x_finish)
-            || (creature.pos_y < y_start) || (creature.pos_y > y_finish)) {
+        if (betweenPlayerBorders(creature.pos_x, creature.pos_y)) {
             continue;
         } else {
             creature_t converted_creature = creature;
-            converted_creature.pos_x = creature.pos_x - x_start;
+            converted_creature.pos_x = creature.pos_x - getPlayerXStart(main_player);
             if (converted_creature.pos_x < 0) converted_creature.pos_x = 0;
-            converted_creature.pos_y = creature.pos_y - y_start;
+            converted_creature.pos_y = creature.pos_y - getPlayerYStart(main_player);
             if (converted_creature.pos_y < 0) converted_creature.pos_y = 0;
             visible_creatures.push_back(converted_creature);
         }

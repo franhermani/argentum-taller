@@ -46,7 +46,9 @@ public:
     // devuelve la matriz de pisos
     std::vector<std::vector<Terrain>> getTerrains();
 
-    // devuelve los jugadores dentro del rango de vision del jguador principal
+    int betweenPlayerBorders(int pos_x, int pos_y);
+
+        // devuelve los jugadores dentro del rango de vision del jguador principal
     // con posiciones actualizadas a la submatriz
     std::vector<player_t> getRenderablePlayers();
 
