@@ -104,6 +104,7 @@ void GameRender::setTilesSize(int width,int height) {
 
 std::map<int, float> GameRender::getRenderablePlayerInfo() {
     std::map<int, float> playerInfo = {
+            //TODO QUE ESTO LO HAGA EL MAP!
             //TODO RECIBIR EXPERIENCE max
             {LIFE, ((float) current_world.main_player.actual_life)/
                             current_world.main_player.max_life},
