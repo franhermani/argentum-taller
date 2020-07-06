@@ -150,7 +150,7 @@ void SDLWindow::renderGameFrame(Surface* surface) {
                    getSurface(), &stretchRect);
 }
 
-void SDLWindow::renderInventoryGold(Surface* surface) {
+void SDLWindow::renderInventoryGolds(Surface* surface) {
     game_area_t& gold_area = measurements.inventoryGold;
     int x,y, w, h;
     //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES

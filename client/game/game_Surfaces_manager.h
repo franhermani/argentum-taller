@@ -19,6 +19,7 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
     std::map<int, Surface *> floorItemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
+    Surface* goldSurface;
     std::map<Terrain, std::string> terrainSurfacesPaths;
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
@@ -39,6 +40,9 @@ class GameSurfacesManager {
     void loadPlayerPaths();
     void loadItemPaths();
 
+
+    void createFrameSurfaces();
+
     // inicializadores lazy de surfaces
     void createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix);
     void createNecessaryPlayers(std::vector<player_t>& players);
@@ -46,6 +50,7 @@ class GameSurfacesManager {
     void createNecessaryCreatures(std::vector<creature_t>& creatures);
     void createNecessaryItems(std::vector<item_t>& items);
     void createNecessaryFrameItems(std::vector<uint8_t>& items);
+
 
 public:
     //Constructor

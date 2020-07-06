@@ -7,6 +7,7 @@ typedef struct {
     std::vector<npc_t> npcs;
     std::vector<creature_t> creatures;
     std::vector<item_t> items;
+    std::vector<gold_t> golds;
     player_info_t player_info;
     player_t main_player;
 } client_world_t;

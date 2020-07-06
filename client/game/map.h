@@ -87,6 +87,7 @@ public:
     std::vector<npc_t> getRenderableNpcs();
     std::vector<creature_t> getRenderableCreatures();
     std::vector<item_t> getRenderableItems();
+    std::vector<gold_t> getRenderableGolds();
 
     // getters de campo de vision del jugador
     int getPlayerVisionWidth();
