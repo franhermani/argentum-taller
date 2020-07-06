@@ -106,6 +106,18 @@ void GameSurfacesManager::createNecessaryNpcs(std::vector<npc_t>& npcs) {
     }
 }
 
+void GameSurfacesManager::createNecessaryFrameItems(std::vector<uint8_t>& items) {
+    for (auto& type: items) {
+        if ((type != NO_ITEM_EQUIPPED) && (floorItemSurfacesMap.find(type)
+            == floorItemSurfacesMap.end())) {
+            Surface* surface = new Surface(
+                    floorItemSurfacesPaths[type], window, 1);
+            floorItemSurfacesMap.insert({type, surface});
+        }
+    }
+}
+
+
 void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
     for (auto& item: items) {
         int type = item.type;

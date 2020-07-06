@@ -79,6 +79,12 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
 }
 
 
+void GameRender::renderEquipped(player_t& player) {
+    std::vector<uint8_t> equipped_items {player.weapon, player.armor,
+                                     player.shield, player.helmet};
+    surfacesManager.createNecessaryFrameItems(equipped_items);
+    window.renderEquipped(player, surfacesManager.floorItemSurfacesMap);
+}
 
 
 void GameRender::renderItems(std::vector<item_t> &items) {
@@ -87,6 +93,16 @@ void GameRender::renderItems(std::vector<item_t> &items) {
          it != std::end(items); ++it) {
         window.renderNpc(it->pos_x, it->pos_y,
                          surfacesManager.floorItemSurfacesMap[it->type]);
+    }
+}
+
+
+void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
+    surfacesManager.createNecessaryFrameItems(inventory);
+    for (auto it = std::begin(inventory);
+         it != std::end(inventory); ++it) {
+        window.renderInventory(inventory,
+                         surfacesManager.floorItemSurfacesMap);
     }
 }
 
@@ -143,30 +159,15 @@ void GameRender::run() {
         renderPlayers(current_world.players);
         renderNpcs(current_world.npcs);
         renderCreatures(current_world.creatures);
-        //simulamos inventario recibido de server
-        window.renderInventory(inventory_items);
-        //cuando lleguen los items del server los renderizamos
-        /*std::vector<item_t> floor_items;
-        item_t item = {3, 2, 3};
-        floor_items.push_back(item);
-        item_t item2 = {1, 3, 5};
-        floor_items.push_back(item2);
-        item_t item3 = {5, 4, 2};
-        floor_items.push_back(item3);
-        renderItems(floor_items);
-         */
-        //simulamos un player, despues poner el posta sacado de current_world
-        player_t player;
-        player.shield = ESCUDO_HIERRO;
-        player.armor = ARMADURA_CUERO;
-        player.helmet = NO_ITEM_EQUIPPED;
-        player.weapon = ARCO_COMPUESTO;
-        window.renderEquipped(player, surfacesManager.floorItemSurfacesMap);
+        renderInventory(current_world.player_info.inventory.items);
+        window.renderInventoryGold(gold_surface);
+        //renderList(current_world.player_info.)
+        renderEquipped(current_world.main_player);
+        renderItems(current_world.items);
+        window.renderList(inventory_items);
+        window.renderListGold(gold_surface);
         window.renderPlayerInfo(getRenderablePlayerInfo(),
                                 surfacesManager.infoSurfacesMap);
-        window.renderList(inventory_items);
-        window.renderInventoryGold(gold_surface);
-        window.renderListGold(gold_surface);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }

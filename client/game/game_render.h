@@ -50,6 +50,8 @@ public:
     void renderNpcs(std::vector<npc_t>& npcs);
     void renderCreatures(std::vector<creature_t>& creatures);
     void renderItems(std::vector<item_t>& items);
+    void renderEquipped(player_t& player);
+    void renderInventory(std::vector<uint8_t>& inventory);
 
     //Inicializador de SDL
     int init();
