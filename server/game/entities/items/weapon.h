@@ -29,10 +29,6 @@ public:
 
     // Destructor
     ~Weapon();
-
-    // Devuelve true si el arma es de larga distancia (range > 1)
-    // False en caso contrario
-    const bool isLongDistance();
 };
 
 #endif // WEAPON_H

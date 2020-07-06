@@ -186,7 +186,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
             SIZE_16 + num_players * (6 * SIZE_16 + 10 * SIZE_8) +
 
             // creature_t
-            SIZE_16 + num_creatures * (6*SIZE_16 + 2 * SIZE_8);
+            SIZE_16 + num_creatures * (5 * SIZE_16 + 2 * SIZE_8);
 
     // ------------------------ //
     // Carga del struct world_t //
@@ -195,14 +195,14 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     // Longitud total mensaje
     w.length = htons(message_length);
 
-    // Info particular del player del cliente
+    // Info particular del Player del cliente
     w.player_info.actual_mana = htons(player.actualMana);
     w.player_info.max_mana = htons(player.maxMana);
     w.player_info.actual_gold = htons(player.actualGold);
     w.player_info.max_gold = htons(player.maxSafeGold);
     w.player_info.actual_experience = htonl(player.actualExperience);
 
-    // Lista de players (incluido el del cliente)
+    // Lista de Players (incluido el del cliente)
     // TODO: si hago htons(num_players) lo carga en 0...
     w.num_players = num_players;
     w.players.resize(num_players * sizeof(player_t));
@@ -236,7 +236,6 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.num_creatures = num_creatures;
     w.creatures.resize(num_creatures * sizeof(creature_t));
     for (i = 0; i < num_creatures; i ++) {
-        w.creatures[i].id = htons(creatures[i]->id);
         w.creatures[i].pos_x = htons(creatures[i]->posX);
         w.creatures[i].pos_y = htons(creatures[i]->posY);
         w.creatures[i].actual_life = htons(creatures[i]->actualLife);
@@ -267,7 +266,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     memcpy(&byte_msg[pos], &w.length, SIZE_16);
     pos += SIZE_16;
 
-    // Info particular del player del cliente
+    // Info particular del Player del cliente
     memcpy(&byte_msg[pos], &w.player_info.actual_mana, SIZE_16);
     pos += SIZE_16;
 
@@ -292,7 +291,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         pos += SIZE_8;
     }
 
-    // Lista de players
+    // Lista de Players
     memcpy(&byte_msg[pos], &w.num_players, SIZE_16);
     pos+=SIZE_16;
 
@@ -346,14 +345,11 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         pos += SIZE_8;
     }
 
-    // Lista de criaturas
+    // Lista de Criaturas
     memcpy(&byte_msg[pos], &w.num_creatures, SIZE_16);
     pos += SIZE_16;
 
     for (i = 0; i < num_creatures; i ++) {
-        memcpy(&byte_msg[pos], &w.creatures[i].id, SIZE_16);
-        pos += SIZE_16;
-
         memcpy(&byte_msg[pos], &w.creatures[i].pos_x, SIZE_16);
         pos += SIZE_16;
 

@@ -292,20 +292,20 @@ world_t ClientProtocol::receiveWorldUpdate() {
         }
     }
 
-    // ---------------- //
-    // Lista de players //
-    // ---------------- //
+    // ------- //
+    // Players //
+    // ------- //
 
-    // Cantidad de players
+    // Cantidad de Players
     uint16_t num_players;
     memcpy(&num_players, world_buffer.data() + bytes_advanced, SIZE_16);
     w.num_players = num_players;
     bytes_advanced += SIZE_16;
 
-    // Lista de players
+    // Lista de Players
     std::vector<player_t> players;
-
     players.resize(w.num_players * sizeof(player_t));
+
     for (i = 0; i < w.num_players; i ++) {
         player_t player;
 
@@ -428,28 +428,22 @@ world_t ClientProtocol::receiveWorldUpdate() {
     }
     w.players = players;
 
-    // ------------------ //
-    // Lista de Criaturas //
-    // ------------------ //
+    // --------- //
+    // Criaturas //
+    // --------- //
 
-    // Cantidad de creatures
+    // Cantidad de Criaturas
     uint16_t num_creatures;
     memcpy(&num_creatures, world_buffer.data() + bytes_advanced, SIZE_16);
     w.num_creatures = num_creatures;
     bytes_advanced += SIZE_16;
 
-    // Lista de creatures
+    // Lista de Criaturas
     std::vector<creature_t> creatures;
-
     creatures.resize(w.num_creatures * sizeof(creature_t));
+
     for (i = 0; i < w.num_creatures; i ++) {
         creature_t creature;
-
-        // Id
-        uint16_t id;
-        memcpy(&id, world_buffer.data() + bytes_advanced, SIZE_16);
-        creature.id = ntohs(id);
-        bytes_advanced += SIZE_16;
 
         // Pos x en la matriz
         uint16_t pos_x;
@@ -495,10 +489,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         creatures[i] = creature;
 
-
         if (debug) {
-            std::cout << "\nLISTA DE creatures\n" <<
-                      "Id: " << (int) creature.id << "\n" <<
+            std::cout << "\nLISTA DE CRIATURAS\n" <<
                       "Pos X: " << (int) creature.pos_x << "\n" <<
                       "Pos Y: " << (int) creature.pos_y << "\n" <<
                       "Vida actual: " << (int) creature.actual_life << "\n" <<
@@ -509,10 +501,21 @@ world_t ClientProtocol::receiveWorldUpdate() {
     }
     w.creatures = creatures;
 
+    // ----- //
+    // Items //
+    // ----- //
 
-    // -------------- //
-    // Lista de Items //
-    // -------------- //
+    // TODO: ...
+
+    // ---- //
+    // Oros //
+    // ---- //
+
+    // TODO: ...
+
+    // ------- //
+    // Ataques //
+    // ------- //
 
     // TODO: ...
 

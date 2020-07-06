@@ -46,7 +46,6 @@ typedef struct {
 } item_t;
 
 typedef struct {
-    uint16_t id;                // Id
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
     uint16_t actual_life;       // Vida actual

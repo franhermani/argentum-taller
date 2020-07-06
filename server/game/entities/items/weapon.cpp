@@ -21,8 +21,3 @@ isLifeRestorer(is_life_restorer) {
 }
 
 Weapon::~Weapon() = default;
-
-// TODO: esta funcion eliminarla, no creo que la usemos
-const bool Weapon::isLongDistance() {
-    return range > 1;
-}
