@@ -494,7 +494,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
         bytes_advanced += SIZE_8;
 
         creatures[i] = creature;
-        bytes_advanced -= SIZE_8;
+
 
         if (debug) {
             std::cout << "\nLISTA DE creatures\n" <<

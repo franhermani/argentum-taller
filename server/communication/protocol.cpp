@@ -267,6 +267,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         byte_msg[pos+=SIZE_8] = w.players[i].armor;
         byte_msg[pos+=SIZE_8] = w.players[i].helmet;
         byte_msg[pos+=SIZE_8] = w.players[i].shield;
+        pos -= SIZE_8;
     }
 
     // Lista de criaturas
