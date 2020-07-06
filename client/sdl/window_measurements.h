@@ -22,8 +22,11 @@ struct WindowMeasurements {
     game_area_t experience;
     WindowMeasurements();
     ~WindowMeasurements();
+
+    //inicializa medidas de los elementos a renderizar. Dura toda la ejecucion
     void initialize(int numberOfTilesInWidth, int numberOfTilesInHeight,
                     int screenWidth, int screenHeight);
+private:
     void initializePlayerInfo(int screenWidth, int screenHeight);
     void initializeItemInfo(int screenWidth, int screenHeight);
 };

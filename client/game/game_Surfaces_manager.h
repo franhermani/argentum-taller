@@ -27,22 +27,9 @@ class GameSurfacesManager {
     std::vector<std::vector<Terrain>> floor;
     SDLWindow& window;
 
+    friend class GameRender;
 
-    GameSurfacesManager(SDLWindow& window);
-    ~GameSurfacesManager();
-    // inicializa en terrainSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix);
-
-    // inicializa en playerSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryPlayers(std::vector<player_t>& players);
-
-    // inicializa en npcSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryNpcs(std::vector<npc_t>& npcs);
-
-    void createNecessaryCreatures(std::vector<creature_t>& creatures);
-
-
-    void createNecessaryItems(std::vector<item_t>& items);
+    //creador de surface de marco. Se utiliza siempre
     Surface* createGameFrameSurface();
 
     //Inicializa paths a archivos de imagenes para surfaces
@@ -52,8 +39,23 @@ class GameSurfacesManager {
     void loadPlayerPaths();
     void loadItemPaths();
 
-    friend class GameRender;
+    // inicializadores lazy de surfaces
+    void createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix);
+    void createNecessaryPlayers(std::vector<player_t>& players);
+    void createNecessaryNpcs(std::vector<npc_t>& npcs);
+    void createNecessaryCreatures(std::vector<creature_t>& creatures);
+    void createNecessaryItems(std::vector<item_t>& items);
 
+public:
+    //Constructor
+    GameSurfacesManager(SDLWindow& window);
+
+    //Destructor
+    ~GameSurfacesManager();
+
+    // Constructor y asignacion por copia deshabilitados
+    GameSurfacesManager(const GameSurfacesManager& other) = delete;
+    GameSurfacesManager& operator=(const GameSurfacesManager& other) = delete;
 };
 
 

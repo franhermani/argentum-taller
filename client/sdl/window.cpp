@@ -49,15 +49,6 @@ SDL_PixelFormat* SDLWindow::getSurfaceFormat() const {
     return SDL_GetWindowSurface(window)->format;
 }
 
-void SDLWindow::stampSurface(Surface& surface, Area& area) {
-    SDL_Rect rect;
-    rect.x = area.getX();
-    rect.y = area.getY();
-    rect.w = area.getWidth();
-    rect.h = area.getHeight();
-    SDL_BlitScaled(surface.getRenderableSurface(), NULL, getSurface(), &rect);
-}
-
 void SDLWindow::renderNpc(int x, int y, Surface* character_surface) {
     game_area_t& frame_area = measurements.frame;
     SDL_Rect stretchRect;
