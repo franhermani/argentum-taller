@@ -326,9 +326,12 @@ std::vector<int> Map::getNpcLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();
     for (int i=0; i<npcs.length; i++) {
         if (npcs.npcs[i].pos_x == looking_at[0]
-            and npcs.npcs[i].pos_y == looking_at[1])
+            and npcs.npcs[i].pos_y == looking_at[1]) {
+            std::cout << "\n\n\n\n encontre uno";
             return std::move(looking_at);
+        }
     }
+    std::cout << "\n\n\nNO LO ENCONTREEEEEEEEEEEEEEEEEEE";
     throw MapException("No hay ningun npc en la posicion solicitada");
 }
 

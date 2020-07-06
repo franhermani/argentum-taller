@@ -80,9 +80,7 @@ void GameInputHandler::play() {
                         std::vector<int> item_pos = mapMonitor.getItemLookingAt();
                         new TakeCommandDTO(0, item_pos[0], item_pos[1]);
                     } else if (key == SDLK_y) {
-                        std::cout << "TOCARON E Y AHORA VOY A ESPERAR\n";
                         waitForLeftClick(x, y);
-                        std::cout << "\n\nENVIO EL COMANDO NETONCES";
                             command = new ThrowCommandDTO(
                                     gameRender->getInventoryItemByPosition(x, y));
                     } else if (key == SDLK_e) {
@@ -91,48 +89,54 @@ void GameInputHandler::play() {
                                     gameRender->getInventoryItemByPosition(x, y));
                     } else if (key == SDLK_d) {
                         try {
-                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
                             waitForLeftClick(x, y);
+                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
                             if (gameRender->isClickingInventoryItems(x, y))
                                 command = new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), npc_pos[0], npc_pos[1]);
                             else if (gameRender->isClickingInventoryGold(x, y))
                                 command = new DepositGoldCommandDTO(1, npc_pos[0], npc_pos[1]);
+                            else continue;
                         } catch (MapException& e) {
                             continue;
                         }
                     } else if (key == SDLK_w) {
                         try {
-                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
                             waitForLeftClick(x, y);
+                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
                             if (gameRender->isClickingListItems(x, y))
                                 command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
                             else if (gameRender->isClickingListGold(x, y))
                                 command = new WithdrawGoldCommandDTO(1, npc_pos[0], npc_pos[1]);
+                            else continue;
                         } catch (MapException& e) {
+                            std::cout << e.what();
                             continue;
                         }
                     } else if (key == SDLK_s) {
                         try {
-                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
                             waitForLeftClick(x, y);
+                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
                             if (gameRender->isClickingInventoryItems(x, y))
-                                command = new SellItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
+                                command = new SellItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), npc_pos[0], npc_pos[1]);
+                            else continue;
                         } catch (MapException& e) {
                             continue;
                         }
                     } else if (key == SDLK_b) {
                         try {
-                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
                             waitForLeftClick(x, y);
-                             waitForLeftClick(x, y);
+                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
                             if (gameRender->isClickingListItems(x, y))
-                                command = new BuyItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
+                                command = new BuyItemCommandDTO(gameRender->getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
+                            else continue;
                         } catch (MapException& e) {
                             continue;
                         }
                     } else {
                         continue;
                     }
+                    std::cout << "\n\n\n estoy pusheando comando "<< (int) command->serialize()[0];
+
                     commandQueue.push(command);
                 }
                 catch (ItemException& e) {
