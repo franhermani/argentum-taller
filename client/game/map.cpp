@@ -314,7 +314,7 @@ std::vector<int> Map::getItemStandingAt() {
             && (world.items[i].pos_y == player_position[1]))
             return std::move(player_position);
     }
-    return std::move(std::vector<int> {-1, -1});
+    throw MapException("No se encontro item");
 }
 
 
