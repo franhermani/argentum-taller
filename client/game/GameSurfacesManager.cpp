@@ -1,5 +1,6 @@
 
 #include "GameSurfacesManager.h"
+#include "iostream"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
 #include "../../common/defines/creatures.h"
@@ -30,9 +31,6 @@ GameSurfacesManager::~GameSurfacesManager(){
 }
 
 
-Surface* GameSurfacesManager::createGameFrameSurface(){
-    return new Surface("../client/resources/images/game_frame.jpeg", window, 0);
-}
 
 void GameSurfacesManager::createNecessaryTerrains(
         std::vector<std::vector<Terrain>>& matrix) {
@@ -124,20 +122,25 @@ void GameSurfacesManager::createNecessaryFloorItems(std::vector<item_t> &items) 
     }
 }
 
+void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
+    for (auto& item: items) {
+        int type = item.type;
+        if (floorItemSurfacesMap.find(type)
+            == floorItemSurfacesMap.end()) {
+            Surface* surface = new Surface(
+                    floorItemSurfacesPaths[type], window, 1);
+            floorItemSurfacesMap.insert({type, surface});
+        }
+    }
+}
 
 
-void GameSurfacesManager::loadSurfacePaths() {
-    //PISOS
-    terrainSurfacesPaths = {
-            {TERRAIN_WATER, "../client/resources/images/24082.png"},
-            {TERRAIN_LAND, "../client/resources/images/24086.png"},
-            {TERRAIN_GRASS, "../client/resources/images/24083.png"},
-            {TERRAIN_SAND, "../client/resources/images/24086.png"},
-            {TERRAIN_STONE, "../client/resources/images/12013.png"},
-            {TERRAIN_WALL, "../client/resources/images/12017.png"},
-            {TERRAIN_OUT_OF_BOUNDARIES,
-                            "../client/resources/images/12050.png"}};
+Surface* GameSurfacesManager::createGameFrameSurface(){
+    return new Surface("../client/resources/images/game_frame.jpeg", window, 0);
+}
 
+
+void GameSurfacesManager::loadCreaturePaths() {
     //CRIATURAS
     std::map<int, std::string> skeleton_orientations = {
             {UP, "../client/resources/images/skeleton_up_t.png"},
@@ -181,7 +184,9 @@ void GameSurfacesManager::loadSurfacePaths() {
                            {GOBLIN,   goblin_surfaces}
     };
 
+}
 
+void GameSurfacesManager::loadNpcPaths() {
 
     //npcs
     std::map<int, std::string> banker_orientations = {
@@ -216,7 +221,10 @@ void GameSurfacesManager::loadSurfacePaths() {
                       {MERCHANT, merchant_surfaces},
                       {BANKER, banker_surfaces}
     };
+}
 
+
+void GameSurfacesManager::loadPlayerPaths() {
 
     //JUGADORES
 
@@ -258,7 +266,9 @@ void GameSurfacesManager::loadSurfacePaths() {
                          {ELF, elf_surfaces},
                          {DWARF, dwarf_surfaces},
                          {GNOME, gnome_surfaces}};
+}
 
+void GameSurfacesManager::loadItemPaths() {
     floorItemSurfacesPaths = {
             {ESPADA, "../client/resources/images/espada_t.png"},
             {HACHA, "../client/resources/images/hacha_t.png"},
@@ -287,6 +297,25 @@ void GameSurfacesManager::loadSurfacePaths() {
             {POCION_VIDA, "../client/resources/images/pocion_vida_t.png"},
             {POCION_MANA, "../client/resources/images/pocion_mana_t.png"},
     };
+}
+
+void GameSurfacesManager::loadSurfacePaths() {
+
+    //PISOS
+    terrainSurfacesPaths = {
+            {TERRAIN_WATER, "../client/resources/images/24082.png"},
+            {TERRAIN_LAND, "../client/resources/images/24086.png"},
+            {TERRAIN_GRASS, "../client/resources/images/24083.png"},
+            {TERRAIN_SAND, "../client/resources/images/24086.png"},
+            {TERRAIN_STONE, "../client/resources/images/12013.png"},
+            {TERRAIN_WALL, "../client/resources/images/12017.png"},
+            {TERRAIN_OUT_OF_BOUNDARIES,
+                            "../client/resources/images/12050.png"}};
+
+    loadCreaturePaths();
+    loadNpcPaths();
+    loadPlayerPaths();
+    loadItemPaths();
     floorItemSurfacesMap = {
             {ESPADA, new Surface(
                     "../client/resources/images/espada_t.png",

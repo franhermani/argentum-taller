@@ -43,10 +43,16 @@ class GameSurfacesManager {
 
     void createNecessaryFloorItems(std::vector<item_t>& items);
 
+    void createNecessaryItems(std::vector<item_t>& items);
     Surface* createGameFrameSurface();
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();
+    void loadCreaturePaths();
+    void loadNpcPaths();
+    void loadPlayerPaths();
+    void loadItemPaths();
+
     friend class GameRender;
 
 };
