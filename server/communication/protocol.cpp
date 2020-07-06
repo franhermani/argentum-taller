@@ -302,7 +302,31 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
 }
 
 void ServerProtocol::sendItemsList(list_t& list) {
-    // TODO: ...
+    int message_length = SIZE_8 + SIZE_16 + SIZE_16 +
+            list.num_items * (SIZE_8 + SIZE_16);
+
+    int pos = 0;
+
+    std::vector<char> byte_msg;
+    byte_msg.resize(SIZE_16 + message_length);
+
+    memcpy(&byte_msg[pos], &list.show_price, SIZE_8);
+    pos += SIZE_8;
+
+    memcpy(&byte_msg[pos], &list.gold_quantity, SIZE_16);
+    pos += SIZE_16;
+
+    memcpy(&byte_msg[pos], &list.num_items, SIZE_16);
+    pos += SIZE_16;
+
+    int i;
+    for (i = 0; i < ntohs(list.num_items); i ++) {
+        memcpy(&byte_msg[pos], &list.items[i].type, SIZE_8);
+        pos += SIZE_8;
+
+        memcpy(&byte_msg[pos], &list.items[i].price, SIZE_16);
+        pos += SIZE_16;
+    }
 }
 
 void ServerProtocol::sendGameMessage(const std::string& message) {
