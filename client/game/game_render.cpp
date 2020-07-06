@@ -34,7 +34,7 @@ GameRender::~GameRender() {
 int GameRender::init() {
     //Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        throw SDLException("Error al inicializar video de sdl", SDL_GetError());
+        throw SDLException("\nError al inicializar video de sdl", SDL_GetError());
     }
     return true;
 }

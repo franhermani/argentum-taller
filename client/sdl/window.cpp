@@ -9,11 +9,11 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
                 screenHeight(screenHeight), screenWidth(screenWidth),
                 measurements(){
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
-        throw SDLException("Error al inicializar SDL", SDL_GetError());
+        throw SDLException("\nError al inicializar SDL", SDL_GetError());
 
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
-        throw SDLException("Error al crear la ventana", SDL_GetError());
+        throw SDLException("\nError al crear la ventana", SDL_GetError());
     setTilesSize(9, 9);
 }
 
