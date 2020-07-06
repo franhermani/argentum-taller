@@ -28,6 +28,7 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto & orientations : npcSurfacesMap) {
         for (auto const& surface : orientations.second) delete surface.second;
     }
+    delete goldSurface;
 }
 
 
@@ -312,6 +313,7 @@ void GameSurfacesManager::loadSurfacePaths() {
     loadNpcPaths();
     loadPlayerPaths();
     loadItemPaths();
+    goldSurface = new Surface("../client/resources/images/gold_t.png", window, 1);
     floorItemSurfacesMap = {
             {ESPADA, new Surface(
                     "../client/resources/images/espada_t.png",

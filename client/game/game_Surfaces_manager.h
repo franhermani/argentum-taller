@@ -19,6 +19,7 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
     std::map<int, Surface *> floorItemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
+    Surface* goldSurface;
     std::map<Terrain, std::string> terrainSurfacesPaths;
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;

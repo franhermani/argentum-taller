@@ -106,6 +106,14 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     }
 }
 
+void GameRender::renderInventoryGolds(std::vector<gold_t>& golds) {
+    for (auto it = std::begin(golds);
+         it != std::end(golds); ++it) {
+        window.renderInventory(golds,
+                               surfacesManager.goldSurface);
+    }
+}
+
 
 
 
@@ -152,7 +160,6 @@ void GameRender::run() {
                          window, 0),
              new Surface("../client/resources/images/capucha_t.png",
                          window, 0)};
-    Surface* gold_surface = new Surface("../client/resources/images/gold_t.png", window, 1);
     while (keepRunning) {
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
@@ -160,12 +167,11 @@ void GameRender::run() {
         renderNpcs(current_world.npcs);
         renderCreatures(current_world.creatures);
         renderInventory(current_world.player_info.inventory.items);
-        window.renderInventoryGold(gold_surface);
-        //renderList(current_world.player_info.)
+        renderInventoryGolds(current_world.golds);
         renderEquipped(current_world.main_player);
         renderItems(current_world.items);
-        window.renderList(inventory_items);
-        window.renderListGold(gold_surface);
+        //renderList();
+        //window.renderListGold();
         window.renderPlayerInfo(getRenderablePlayerInfo(),
                                 surfacesManager.infoSurfacesMap);
         window.UpdateWindowSurface();
