@@ -147,8 +147,7 @@ npcs_t ClientProtocol::receiveNPCs() {
     // Cantidad de NPCs
     uint16_t num_npcs;
     memcpy(&num_npcs, npcs_buffer.data() + bytes_advanced, SIZE_16);
-    // TODO: n.num_npcs = ntohs(num_npcs);
-    n.num_npcs = num_npcs;
+    n.num_npcs = ntohs(num_npcs);
     bytes_advanced += SIZE_16;
 
     // Lista de NPCs
@@ -156,7 +155,7 @@ npcs_t ClientProtocol::receiveNPCs() {
     npcs.resize(n.num_npcs * sizeof(npc_t));
 
     int i;
-    for (i = 0; i < num_npcs; i ++) {
+    for (i = 0; i < n.num_npcs; i ++) {
         npc_t npc;
 
         // Enum type del NPC

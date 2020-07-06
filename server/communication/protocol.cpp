@@ -114,8 +114,7 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     n.length = htons(message_length);
 
     // Cantidad de NPCs
-    // TODO: n.num_npcs = htons(num_npcs);
-    n.num_npcs = num_npcs;
+    n.num_npcs = htons(num_npcs);
     n.npcs.resize(num_npcs * sizeof(npc_t));
 
     // Lista de NPCs
