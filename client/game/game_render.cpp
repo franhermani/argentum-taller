@@ -144,22 +144,6 @@ void GameRender::run() {
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     window.setTilesSize(blocksWidth,blocksHeight);
     window.renderGameFrame(surfacesManager.createGameFrameSurface());
-
-    std::vector<Surface*> inventory_items =
-            {new Surface("../client/resources/images/pocion_mana_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/armadura_cuero_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/pocion_mana_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/arco_compuesto_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/pocion_mana_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/escudo_tortuga_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/capucha_t.png",
-                         window, 0)};
     while (keepRunning) {
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
