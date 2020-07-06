@@ -95,6 +95,12 @@ public:
     // Devuelve un vector de todos los items en la sub-matriz de 'player'
     std::vector<Item*> getItemsAround(Player& player);
 
+    // Devuelve un vector de todos los oros en la sub-matriz de 'player'
+    std::vector<Gold*> getGoldsAround(Player& player);
+
+    // Devuelve un vector de todos los ataques en la sub-matriz de 'player'
+    std::vector<Attack*> getAttacksAround(Player& player);
+
     // Devuelve la base del mapa
     const int getWidth() const;
 

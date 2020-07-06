@@ -408,7 +408,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
         players[i] = player;
 
         if (debug) {
-            std::cout << "\nLISTA DE PLAYERS\n" <<
+            std::cout << "\nPLAYER RECIBIDO\n" <<
             "Id: " << player.id << "\n" <<
             "Pos X: " << player.pos_x << "\n" <<
             "Pos Y: " << player.pos_y << "\n" <<
@@ -490,13 +490,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         creatures[i] = creature;
 
         if (debug) {
-            std::cout << "\nLISTA DE CRIATURAS\n" <<
-                      "Pos X: " << (int) creature.pos_x << "\n" <<
-                      "Pos Y: " << (int) creature.pos_y << "\n" <<
-                      "Vida actual: " << (int) creature.actual_life << "\n" <<
-                      "Vida maxima: " << (int) creature.max_life << "\n" <<
-                      "Orientacion: " << (int) creature.orientation << "\n" <<
-                      "Tipo: " << (int) creature.type << "\n";
+            std::cout << "\nCRIATURA RECIBIDA\n" <<
+            "Pos X: " << (int) creature.pos_x << "\n" <<
+            "Pos Y: " << (int) creature.pos_y << "\n" <<
+            "Vida actual: " << (int) creature.actual_life << "\n" <<
+            "Vida maxima: " << (int) creature.max_life << "\n" <<
+            "Orientacion: " << (int) creature.orientation << "\n" <<
+            "Tipo: " << (int) creature.type << "\n";
         }
     }
     w.creatures = creatures;
@@ -505,7 +505,47 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Items //
     // ----- //
 
-    // TODO: ...
+    // Cantidad de Items
+    uint16_t num_items;
+    memcpy(&num_items, world_buffer.data() + bytes_advanced, SIZE_16);
+    w.num_items = num_items;
+    bytes_advanced += SIZE_16;
+
+    // Lista de Items
+    std::vector<item_t> items;
+    items.resize(w.num_items * sizeof(item_t));
+
+    for (i = 0; i < w.num_items; i ++) {
+        item_t item;
+
+        // Pos x en la matriz
+        uint16_t pos_x;
+        memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
+        item.pos_x = ntohs(pos_x);
+        bytes_advanced += SIZE_16;
+
+        // Pos y en la matriz
+        uint16_t pos_y;
+        memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
+        item.pos_y = ntohs(pos_y);
+        bytes_advanced += SIZE_16;
+
+        // Enum type del item
+        uint8_t item_type;
+        memcpy(&item_type, world_buffer.data() + bytes_advanced, SIZE_8);
+        item.type = item_type;
+        bytes_advanced += SIZE_8;
+
+        items[i] = item;
+
+        if (debug) {
+            std::cout << "\nITEM RECIBIDO\n" <<
+            "Pos X: " << (int) item.pos_x << "\n" <<
+            "Pos Y: " << (int) item.pos_y << "\n" <<
+            "Tipo: " << (int) item.type << "\n";
+        }
+    }
+    w.items = items;
 
     // ---- //
     // Oros //

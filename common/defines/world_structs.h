@@ -97,6 +97,10 @@ typedef struct {
     std::vector<creature_t> creatures;  // Lista de structs 'npc_t'
     uint16_t num_items;                 // Cantidad de items en 'items'
     std::vector<item_t> items;          // Lista de structs 'item_t'
+    uint16_t num_golds;                 // Cantidad de oros en 'golds'
+    std::vector<gold_t> golds;          // Lista de structs 'gold_t'
+    uint16_t num_attacks;               // Cantidad de ataques en 'attacks'
+    std::vector<attack_t> attacks;      // Lista de structs 'attack_t'
 } world_t;
 
 // ------------- //
