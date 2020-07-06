@@ -93,6 +93,5 @@ public:
     int isClickingListGold(int x, int y);
     int isClickingInventoryItems(int x, int y);
     int isClickingInventoryGold(int x, int y);
-
     };
 #endif // SDL_WINDOW_H

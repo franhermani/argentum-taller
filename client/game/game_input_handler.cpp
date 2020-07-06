@@ -152,17 +152,13 @@ void GameInputHandler::play() {
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
-    std::cout << "\n\n\nSALI DEL RUNNING!!!!\n\n\n";
 }
 
 void GameInputHandler::waitForLeftClick(int& x, int& y) {
     SDL_Event event;
     while (true) {
         SDL_WaitEvent(&event);
-        std::cout << "HICIERON ALGO Y ME FIJO SI ES CLICK IZQ\n";
-
         if (isLeftClick(event)) {
-            std::cout << "\n\n sisi ES CLICK IZQ\n";
             SDL_GetMouseState(&x, &y);
             return;
         }
