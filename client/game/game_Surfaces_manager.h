@@ -1,6 +1,6 @@
 
-#ifndef ARGENTUM_GAMESURFACESMANAGER_H
-#define ARGENTUM_GAMESURFACESMANAGER_H
+#ifndef ARGENTUM_GAME_SURFACES_MANAGER_H
+#define ARGENTUM_GAME_SURFACES_MANAGER_H
 #include <vector>
 #include <map>
 #include <string>
@@ -57,4 +57,4 @@ class GameSurfacesManager {
 };
 
 
-#endif //ARGENTUM_GAMESURFACESMANAGER_H
+#endif //ARGENTUM_GAME_SURFACES_MANAGER_H

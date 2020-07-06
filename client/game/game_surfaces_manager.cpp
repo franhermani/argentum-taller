@@ -1,5 +1,5 @@
 
-#include "GameSurfacesManager.h"
+#include "game_Surfaces_manager.h"
 #include "iostream"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"

@@ -13,9 +13,9 @@ struct WindowMeasurements {
     int screenWidth;
     game_area_t frame;
     game_area_t inventory;
-    game_area_t inventory_gold;
+    game_area_t inventoryGold;
     game_area_t list;
-    game_area_t list_gold;
+    game_area_t listGold;
     game_area_t equipped;
     game_area_t life;
     game_area_t mana;
