@@ -14,6 +14,7 @@ class Attack {
     int msMoveCounter;
 
     friend class World;
+    friend class ServerProtocol;
 
     void updatePosition();
 

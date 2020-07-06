@@ -169,8 +169,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     uint16_t num_players = players.size();
     uint16_t num_creatures = creatures.size();
     uint16_t num_items = items.size();
-//    uint16_t num_golds = items.size();
-//    uint16_t num_attacks = items.size();
+    uint16_t num_golds = golds.size();
+//    uint16_t num_attacks = attacks.size();
 
     // Longitud total del mensaje
     size_t message_length =
@@ -187,10 +187,10 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
             SIZE_16 + num_creatures * (5 * SIZE_16 + 2 * SIZE_8) +
 
             // item_t
-            SIZE_16 + num_items * (3 * SIZE_16);
+            SIZE_16 + num_items * (3 * SIZE_16) +
 
             // gold_t
-//            SIZE_16 + num_golds * (3 * SIZE_16) +
+            SIZE_16 + num_golds * (3 * SIZE_16);
 
             // attack_t
 //            SIZE_16 + num_attacks * (2 * SIZE_16 + 3 * SIZE_8);
@@ -254,6 +254,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de Items
+    // TODO: si hago htons(num_items) lo carga en 0...
     w.num_items = num_items;
     w.items.resize(num_items * sizeof(item_t));
 
@@ -264,7 +265,15 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de Oros
-    // TODO: ...
+    // TODO: si hago htons(num_golds) lo carga en 0...
+    w.num_golds = num_golds;
+    w.golds.resize(num_golds * sizeof(gold_t));
+
+    for (i = 0; i < num_golds; i ++) {
+        w.golds[i].pos_x = htons(golds[i]->posX);
+        w.golds[i].pos_y = htons(golds[i]->posY);
+        w.golds[i].quantity = golds[i]->quantity;
+    }
 
     // Lista de Ataques
     // TODO: ...
@@ -372,7 +381,16 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de oros
-    // TODO: ...
+    memcpy(&byte_msg[pos], &w.num_golds, SIZE_16);
+    pos += SIZE_16;
+    for (i = 0; i < num_golds; i ++) {
+        memcpy(&byte_msg[pos], &w.golds[i].pos_x, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.golds[i].pos_y, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.golds[i].quantity, SIZE_16);
+        pos += SIZE_16;
+    }
 
     // Lista de ataques
     // TODO: ...

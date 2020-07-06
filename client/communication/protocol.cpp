@@ -299,6 +299,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de Players
     uint16_t num_players;
     memcpy(&num_players, world_buffer.data() + bytes_advanced, SIZE_16);
+    // TODO: ntohs()
     w.num_players = num_players;
     bytes_advanced += SIZE_16;
 
@@ -435,6 +436,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de Criaturas
     uint16_t num_creatures;
     memcpy(&num_creatures, world_buffer.data() + bytes_advanced, SIZE_16);
+    // TODO: ntohs()
     w.num_creatures = num_creatures;
     bytes_advanced += SIZE_16;
 
@@ -508,6 +510,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de Items
     uint16_t num_items;
     memcpy(&num_items, world_buffer.data() + bytes_advanced, SIZE_16);
+    // TODO: ntohs()
     w.num_items = num_items;
     bytes_advanced += SIZE_16;
 
@@ -551,7 +554,48 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Oros //
     // ---- //
 
-    // TODO: ...
+    // Cantidad de Oros
+    uint16_t num_golds;
+    memcpy(&num_golds, world_buffer.data() + bytes_advanced, SIZE_16);
+    // TODO: ntohs()
+    w.num_golds = num_golds;
+    bytes_advanced += SIZE_16;
+
+    // Lista de Oros
+    std::vector<gold_t> golds;
+    golds.resize(w.num_golds * sizeof(gold_t));
+
+    for (i = 0; i < w.num_golds; i ++) {
+        gold_t gold;
+
+        // Pos x en la matriz
+        uint16_t pos_x;
+        memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
+        gold.pos_x = ntohs(pos_x);
+        bytes_advanced += SIZE_16;
+
+        // Pos y en la matriz
+        uint16_t pos_y;
+        memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
+        gold.pos_y = ntohs(pos_y);
+        bytes_advanced += SIZE_16;
+
+        // Cantidad
+        uint16_t quantity;
+        memcpy(&quantity, world_buffer.data() + bytes_advanced, SIZE_16);
+        gold.quantity = ntohs(quantity);
+        bytes_advanced += SIZE_16;
+
+        golds[i] = gold;
+
+        if (debug) {
+            std::cout << "\nORO RECIBIDO\n" <<
+            "Pos X: " << (int) gold.pos_x << "\n" <<
+            "Pos Y: " << (int) gold.pos_y << "\n" <<
+            "Cantidad: " << (int) gold.quantity << "\n";
+        }
+    }
+    w.golds = golds;
 
     // ------- //
     // Ataques //
