@@ -5,6 +5,7 @@
 #include "client.h"
 #include "../common/socket_error.h"
 #include "../common/defines/username_confirmation.h"
+#include "sdl/exception.h"
 
 #define OK 0
 #define ERROR 1
@@ -34,7 +35,10 @@ int main(int argc, char *argv[]) {
         std::cerr << e.what() << "\n";
     } catch(NoMoreAvailableIdsException& e) {
         std::cerr << e.what() << "\n";
-    } catch(...) {
+    } catch(SDLException& e) {
+        std::cerr << e.what() << "\n";
+    }
+    catch(...) {
         std::cerr << "Error desconocido\n";
     }
     return OK;

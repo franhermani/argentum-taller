@@ -4,8 +4,11 @@
 #include <zconf.h>
 #include "game_handler.h"
 #include "exception.h"
-#include "../../common/defines/username_confirmation.h"
 #include "../sdl/exception.h"
+#include "../../common/defines/username_confirmation.h"
+#define DEFAULT_SCREEN_WIDTH 960
+#define DEFAULT_SCREEN_HEIGHT 720
+
 
 GameHandler::GameHandler(const char *host, const char *port,
         const std::string& username, const uint8_t race_type,
@@ -17,9 +20,13 @@ GameHandler::GameHandler(const char *host, const char *port,
     checkUsername();
     printStartMessage();
     try {
-        gameRender = new GameRender(960, 720, mapMonitor);
+        std::cout << "Iniciando renderizado";
+        gameRender = new GameRender(DEFAULT_SCREEN_WIDTH,
+                DEFAULT_SCREEN_HEIGHT, mapMonitor);
     } catch (SDLException& e) {
-        std::cout << e.what();
+        delete connectionSender;
+        delete connectionReceiver;
+        throw e;
     }
     inputHandler = new GameInputHandler(commandQueue, mapMonitor, gameRender);
 }
