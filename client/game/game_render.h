@@ -11,6 +11,7 @@
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"
+#include "GameSurfacesManager.h"
 
 
 class GameRender : public Thread {
@@ -20,39 +21,12 @@ class GameRender : public Thread {
     int blocksWidth;
     int blocksHeight;
     SDLWindow window;
+    GameSurfacesManager surfacesManager;
     // TODO arreglar private y public
-    std::map<Terrain, Surface *> terrainSurfacesMap;
-    std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
-    std::map<int, std::map<int, Surface *>> npcSurfacesMap;
-    std::map<int, std::map<int, Surface *>> playerSurfacesMap;
-    std::map<int, Surface *> floorItemSurfacesMap;
-    std::map<int, Surface *> infoSurfacesMap;
-
-
-    std::map<Terrain, std::string> terrainSurfacesPaths;
-    std::map<int, std::map<int, std::string>> npcSurfacesPaths;
-    std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
-    std::map<int, std::map<int, std::string>> playerSurfacesPaths;
-    std::map<int, std::string> floorItemSurfacesPaths;
-    std::vector<std::vector<Terrain>> floor;
 
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
-
-private:
-    // inicializa en terrainSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix);
-
-    // inicializa en playerSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryPlayers(std::vector<player_t>& players);
-
-    // inicializa en npcSurfacesMap las surfaces necesarias faltantes
-    void createNecessaryNpcs(std::vector<npc_t>& npcs);
-
-    void createNecessaryCreatures(std::vector<creature_t>& creatures);
-
-    void createNecessaryFloorItems(std::vector<item_t>& items);
 
 
 public:
@@ -86,15 +60,11 @@ public:
 
     void renderItems(std::vector<item_t>& items);
 
-        //Inicializa paths a archivos de imagenes para surfaces
-    void loadSurfacePaths();
 
     //Inicializador de SDL
     int init();
 
     void setTilesSize(int width, int height);
-
-    Surface* createGameFrameSurface();
 
     std::map<int, float> getRenderablePlayerInfo();
 
