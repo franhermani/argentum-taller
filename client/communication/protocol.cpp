@@ -306,7 +306,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de players
     uint16_t num_players;
     memcpy(&num_players, world_buffer.data() + bytes_advanced, SIZE_16);
-    w.num_players = ntohs(num_players);
+    w.num_players = num_players;
     bytes_advanced += SIZE_16;
 
     // Lista de players
@@ -436,7 +436,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de creatures
     uint16_t num_creatures;
     memcpy(&num_creatures, world_buffer.data() + bytes_advanced, SIZE_16);
-    w.num_creatures = ntohs(num_creatures);
+    w.num_creatures = num_creatures;
     bytes_advanced += SIZE_16;
     // Lista de creatures
     std::vector<creature_t> creatures;
