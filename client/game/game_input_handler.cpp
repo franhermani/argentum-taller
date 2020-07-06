@@ -34,7 +34,7 @@ void GameInputHandler::play() {
             SDL_WaitEvent(&event);
             int x, y;
             CommandDTO *command;
-            if (event.type == SDL_KEYUP) {
+            if (event.type == SDL_KEYDOWN) {
                 auto &keyEvent = (SDL_KeyboardEvent &) event;
                 int key = keyEvent.keysym.sym;
                 try {
@@ -88,14 +88,10 @@ void GameInputHandler::play() {
                         }
                     } else if (key == SDLK_e) {
                         std::cout << "TOCARON E Y AHORA VOY A ESPERAR\n";
-                        SDL_WaitEvent(&event);
-                        std::cout << "HICIERON ALGO Y ME FIJO SI ES CLICK IZQ\n";
-                        if (isLeftClick(event)) {
-                            std::cout << "\n\n sisi ES CLICK IZQ\n";
-                            SDL_GetMouseState(&x, &y);
-                            command = new EquipCommandDTO(
+                        waitForLeftClick(x, y);
+                        std::cout << "\n\nENVIO EL COMANDO NETONCES";
+                        command = new EquipCommandDTO(
                                     gameRender->getInventoryItemByPosition(x, y));
-                        } else continue;
                     } else if (key == SDLK_d) {
                         SDL_WaitEvent(&event);
                         if (isLeftClick(event)) {
@@ -138,8 +134,6 @@ void GameInputHandler::play() {
                 }
             } else if (event.type == SDL_QUIT) {
                 running = false;
-            } else if (event.type == SDL_KEYUP) {
-                continue;
             } else {
                 continue;
             }
@@ -148,15 +142,19 @@ void GameInputHandler::play() {
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
+    std::cout << "\n\n\nSALI DEL RUNNING!!!!\n\n\n";
 }
 
 void GameInputHandler::waitForLeftClick(int& x, int& y) {
     SDL_Event event;
     while (true) {
         SDL_WaitEvent(&event);
+        std::cout << "HICIERON ALGO Y ME FIJO SI ES CLICK IZQ\n";
+
         if (isLeftClick(event)) {
+            std::cout << "\n\n sisi ES CLICK IZQ\n";
             SDL_GetMouseState(&x, &y);
-            break;
+            return;
         }
     }
 }
