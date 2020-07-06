@@ -18,6 +18,7 @@
 #include "exception.h"
 #include "../sdl/exception.h"
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
+#define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -138,13 +139,15 @@ std::map<int, float> GameRender::getRenderablePlayerInfo() {
 }
 
 void GameRender::run() {
+    using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
-    std::this_thread::sleep_for(ms(500));
+    std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     window.setTilesSize(blocksWidth,blocksHeight);
     window.renderGameFrame(surfacesManager.createGameFrameSurface());
     while (keepRunning) {
+        auto start = clock::now();
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
         renderPlayers(current_world.players);
@@ -159,7 +162,10 @@ void GameRender::run() {
         window.renderPlayerInfo(getRenderablePlayerInfo(),
                                 surfacesManager.infoSurfacesMap);
         window.UpdateWindowSurface();
-        std::this_thread::sleep_for(ms(WAIT_TIME_FOR_WORLD_TO_UPDATE));
+        auto end = clock::now();
+        auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
+        auto time_to_sleep = WAIT_TIME_FOR_WORLD_TO_UPDATE - elapsed;
+        std::this_thread::sleep_for(ms(time_to_sleep));
     }
 }
 
