@@ -53,14 +53,6 @@ player_t Map::getMainPlayer() {
     }
     throw MapException("main player not found");
 }
-int Map::xPosToUser(int x) {
-    if (x >= playerVisionWidth) return x-playerVisionWidth;
-    return x;
-}
-int Map::yPosToUser(int y) {
-    if (y >= playerVisionWidth) return y-playerVisionWidth;
-    return y;
-}
 
 void Map::printDebugTerrainMatrix(
         std::vector<std::vector<Terrain>>& received_matrix){

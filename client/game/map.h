@@ -17,8 +17,6 @@ class Map {
     //TODO SETEAR ESTOS recibidos al principio
     int playerVisionWidth;
     int playerVisionHeight;
-    int xPosToUser(int x);
-    int yPosToUser(int y);
 
 public:
     // constructor
