@@ -261,6 +261,32 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
                    getSurface(), &stretchRect);
 }
 
+
+
+void SDLWindow::renderList(std::vector<Surface*>& surfaces) {
+    game_area_t& list_area = measurements.list;
+    int x,y, w, h;
+    //TODO 10 es el maximo de items en la lista , sacar AFUERA A CONSTANTES
+    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/10;
+    h = w;
+    x = list_area.x_pixel_begin;
+    y = list_area.y_pixel_begin;
+    int surfaces_size = surfaces.size();
+    int current_index = 0;
+    while (current_index < surfaces_size) {
+        SDL_Rect stretchRect;
+        stretchRect.x = x;
+        stretchRect.y = y;
+        stretchRect.w = w;
+        stretchRect.h = h;
+        SDL_BlitScaled(surfaces[current_index]->getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+        x = x + w;
+        current_index ++;
+    }
+}
+
+
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     measurements.initialize(tileWidth,
                             tileHeight, screenWidth, screenHeight);
@@ -268,7 +294,6 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
 
 int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
         int yClicked, size_t inventory_length) {
-
     game_area_t& inventory_area = measurements.inventory;
     int x,y, w, h;
     w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/2;
@@ -282,7 +307,8 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
         stretchRect.y = y;
         stretchRect.w = w;
         stretchRect.h = h;
-        if (isInsideArea(stretchRect, xClicked, yClicked)) return current_index;
+        if (isInsideArea(stretchRect, xClicked, yClicked))
+            return current_index;
         y = y + h;
         current_index ++;
         //new column
@@ -294,8 +320,54 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
     return -1;
 }
 
+
+int SDLWindow::getRenderedListIndexByPosition(int xClicked,
+        int yClicked, size_t list_length) {
+    //codigo repetido con render list, sacarlo afuera
+    game_area_t& list_area = measurements.list;
+    int x,y, w, h;
+    //TODO 10 es el maximo de items en la lista , sacar AFUERA A CONSTANTES
+    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/10;
+    h = w;
+    x = list_area.x_pixel_begin;
+    y = list_area.y_pixel_begin;
+    size_t current_index = 0;
+    SDL_Rect stretchRect;
+    while (current_index < list_length) {
+        stretchRect.x = x;
+        stretchRect.y = y;
+        stretchRect.w = w;
+        stretchRect.h = h;
+        if (isInsideArea(stretchRect, xClicked, yClicked))
+            return current_index;
+        x = x + w;
+        current_index ++;
+    }
+    return -1;
+}
+
 int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {
     return (((x >= stretchRect.x) and (x < (stretchRect.x + stretchRect.w)))
-        and
-        ((y >= stretchRect.y) and (y < (stretchRect.y + stretchRect.h))));
+        and ((y >= stretchRect.y) and (y < (stretchRect.y + stretchRect.h))));
+}
+
+
+int SDLWindow::isInsideGameArea(game_area_t& area, int x, int y) {
+    return (((x >= area.x_pixel_begin) and (x < area.x_pixel_end))
+            and ((y >= area.y_pixel_begin) and (y < (area.y_pixel_end))));
+}
+
+int SDLWindow::isClickingListItems(int x, int y) {
+    return isInsideGameArea(measurements.list, x, y);
+}
+
+int SDLWindow::isClickingListGold(int x, int y) {
+    return isInsideGameArea(measurements.list, x, y);
+}
+int SDLWindow::isClickingInventoryItems(int x, int y) {
+    return isInsideGameArea(measurements.inventory, x, y);
+}
+
+int SDLWindow::isClickingInventoryGold(int x, int y) {
+    return isInsideGameArea(measurements.inventory, x, y);
 }

@@ -8,8 +8,8 @@ const char* MapException::what() const noexcept {
     return message.c_str();
 }
 
-InventoryException::InventoryException(const char *message) : message(message) {}
+ItemException::ItemException(const char *message) : message(message) {}
 
-const char* InventoryException::what() const noexcept {
+const char* ItemException::what() const noexcept {
     return message.c_str();
 }

@@ -37,6 +37,10 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
-};
+
+    int isLeftClick(SDL_Event& event);
+
+    void waitForLeftClick(int& x, int& y);
+    };
 
 #endif // GAME_INPUT_HANDLER_H

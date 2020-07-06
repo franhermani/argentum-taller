@@ -37,11 +37,13 @@ public:
     // a la orientacion del jugador principal
     std::vector<int> getPositionLookingAt();
 
+    std::vector<int> getPositionStandingAt();
+
     std::vector<int> getPriestLookingAt();
 
     std::vector<int> getNpcLookingAt();
 
-
+    std::vector<int> getItemStandingAt();
 
     // devuelve la matriz de pisos
     std::vector<std::vector<Terrain>> getTerrains();

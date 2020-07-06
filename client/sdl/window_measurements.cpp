@@ -19,6 +19,9 @@ void WindowMeasurements::initialize(int numberOfTilesInWidth,
     inventory = {(screenWidth / 100) * 84, (screenWidth / 100) * 102,
                  screenHeight / 4, (screenHeight /100) * 64};
 
+    list = {(int) (screenWidth / 100.0) * 44, (int) (screenWidth / 100.0) * 74,
+            (int) (screenHeight / 100.0) * 5, (int) (screenHeight /100.0) * 15};
+
     equipped = {(screenWidth / 100) * 1, (screenWidth / 100) * 45,
                 (screenHeight / 100) * 4, (screenHeight /100) * 15};
 
