@@ -36,6 +36,9 @@ void Banker::sellItem(Player &player, const int type) {
 
 void Banker::depositItem(Player &player, int type) {
     Item* item = player.takeItemFromInventory(type);
+    if (! item)
+        return;
+
     bank.depositItem(player.id, item);
 }
 
