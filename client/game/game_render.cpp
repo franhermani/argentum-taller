@@ -17,6 +17,7 @@
 #include "../../common/defines/items.h"
 #include "exception.h"
 #include "../sdl/exception.h"
+#define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -174,25 +175,25 @@ void GameRender::run() {
         window.renderPlayerInfo(getRenderablePlayerInfo(),
                                 surfacesManager.infoSurfacesMap);
         window.UpdateWindowSurface();
-        std::this_thread::sleep_for(ms(10));
+        std::this_thread::sleep_for(ms(WAIT_TIME_FOR_WORLD_TO_UPDATE));
     }
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {
-    //size_t inventory_length = current_world.player_info.inventory.length;
-    int position = window.getRenderedItemIndexByPosition(x, y, 7);
+    size_t inventory_length = current_world.player_info.inventory.length;
+    int position = window.getRenderedItemIndexByPosition(x, y, inventory_length);
     if (position < 0) throw ItemException(
             "El inventario no tiene items en la posicion clickeada");
-    /*if (current_world.player_info.inventory.length < position) throw
-            ItemException("El inventario ya no tiene ese item");*/
+    if (current_world.player_info.inventory.length < position) throw
+            ItemException("El inventario ya no tiene ese item");
     std::cout << "\n\nESTA ES LA POSITION DE INVENTARIO" << position;
 
-//    return current_world.player_info.inventory.items[position];
-    return 1;
+    return current_world.player_info.inventory.items[position];
 }
 
 
 int GameRender::getListItemByPosition(int x, int y) {
+    //TODO cuando se reciba la lista del npc, reemplazar numeros magicos
     //size_t inventory_length = current_world.player_info.list.length;
     int position = window.getRenderedListIndexByPosition(x, y, 7);
     if (position < 0) throw ItemException(
