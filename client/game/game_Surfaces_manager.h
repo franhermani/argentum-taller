@@ -40,6 +40,9 @@ class GameSurfacesManager {
     void loadPlayerPaths();
     void loadItemPaths();
 
+
+    void createFrameSurfaces();
+
     // inicializadores lazy de surfaces
     void createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix);
     void createNecessaryPlayers(std::vector<player_t>& players);
@@ -47,6 +50,7 @@ class GameSurfacesManager {
     void createNecessaryCreatures(std::vector<creature_t>& creatures);
     void createNecessaryItems(std::vector<item_t>& items);
     void createNecessaryFrameItems(std::vector<uint8_t>& items);
+
 
 public:
     //Constructor
