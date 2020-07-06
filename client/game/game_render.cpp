@@ -109,8 +109,7 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
 void GameRender::renderInventoryGolds(std::vector<gold_t>& golds) {
     for (auto it = std::begin(golds);
          it != std::end(golds); ++it) {
-        window.renderInventory(golds,
-                               surfacesManager.goldSurface);
+        window.renderInventoryGolds(surfacesManager.goldSurface);
     }
 }
 

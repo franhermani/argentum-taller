@@ -78,7 +78,7 @@ public:
             std::map<int, Surface *> info_surfaces_map);
     void renderList(std::vector<Surface*>& surfaces);
     void renderListGold(Surface* surface);
-    void renderInventoryGold(Surface* surface);
+    void renderInventoryGolds(Surface* surface);
 
 
     //Consultas a elementos o sectores renderizados
