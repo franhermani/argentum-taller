@@ -93,5 +93,7 @@ public:
     int isClickingListGold(int x, int y);
     int isClickingInventoryItems(int x, int y);
     int isClickingInventoryGold(int x, int y);
+    void renderListGold(Surface* surface);
+    void renderInventoryGold(Surface* surface);
     };
 #endif // SDL_WINDOW_H

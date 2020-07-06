@@ -443,7 +443,6 @@ std::map<int, float> GameRender::getRenderablePlayerInfo() {
             {EXPERIENCE, ((float) current_world.player_info.actual_experience)/
                             current_world.player_info.actual_experience}
     };
-    std::cout << "\n\n\n esto es life " << playerInfo[LIFE];
     return std::move(playerInfo);
 }
 
@@ -455,6 +454,22 @@ void GameRender::run() {
     window.setTilesSize(blocksWidth,blocksHeight);
     window.renderGameFrame(createGameFrameSurface());
 
+    std::vector<Surface*> inventory_items =
+            {new Surface("../client/resources/images/pocion_mana_t.png",
+                         window, 0),
+             new Surface("../client/resources/images/armadura_cuero_t.png",
+                         window, 0),
+             new Surface("../client/resources/images/pocion_mana_t.png",
+                         window, 0),
+             new Surface("../client/resources/images/arco_compuesto_t.png",
+                         window, 0),
+             new Surface("../client/resources/images/pocion_mana_t.png",
+                         window, 0),
+             new Surface("../client/resources/images/escudo_tortuga_t.png",
+                         window, 0),
+             new Surface("../client/resources/images/capucha_t.png",
+                         window, 0)};
+    Surface* gold_surface = new Surface("../client/resources/images/gold_t.png", window, 1);
     while (keepRunning) {
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
@@ -462,21 +477,6 @@ void GameRender::run() {
         renderNpcs(current_world.npcs);
         renderCreatures(current_world.creatures);
         //simulamos inventario recibido de server
-        std::vector<Surface*> inventory_items =
-                {new Surface("../client/resources/images/pocion_mana_t.png",
-                 window, 0),
-                 new Surface("../client/resources/images/armadura_cuero_t.png",
-                         window, 0),
-                 new Surface("../client/resources/images/pocion_mana_t.png",
-                         window, 0),
-                 new Surface("../client/resources/images/arco_compuesto_t.png",
-                         window, 0),
-                 new Surface("../client/resources/images/pocion_mana_t.png",
-                         window, 0),
-                 new Surface("../client/resources/images/escudo_tortuga_t.png",
-                         window, 0),
-                 new Surface("../client/resources/images/capucha_t.png",
-                         window, 0)};
         window.renderInventory(inventory_items);
         //cuando lleguen los items del server los renderizamos
         //renderItems(floor_items);
@@ -490,6 +490,8 @@ void GameRender::run() {
         window.renderPlayerInfo(getRenderablePlayerInfo(),
                 infoSurfacesMap);
         window.renderList(inventory_items);
+        window.renderInventoryGold(gold_surface);
+        window.renderListGold(gold_surface);
         window.UpdateWindowSurface();
         std::this_thread::sleep_for(ms(10));
     }
