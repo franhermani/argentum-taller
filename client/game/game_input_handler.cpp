@@ -78,6 +78,7 @@ void GameInputHandler::play() {
                         }
                     } else if (key == SDLK_t) {
                         std::vector<int> item_pos = mapMonitor.getItemLookingAt();
+                        if (item_pos[0] == -1) continue;
                         new TakeCommandDTO(0, item_pos[0], item_pos[1]);
                     } else if (key == SDLK_y) {
                         waitForLeftClick(x, y);

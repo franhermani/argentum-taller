@@ -213,7 +213,7 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
                    getSurface(), &stretchRect);
 
     //TODO usar player info
-    float life_percentage = 0.8;
+    float life_percentage = player_info[LIFE];
     stretchRect.x = life_area.x_pixel_begin;
     stretchRect.y = life_area.y_pixel_begin;
     stretchRect.w = (int) ((float)(life_area.x_pixel_end -
@@ -231,7 +231,7 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
                    getSurface(), &stretchRect);
 
     //TODO usar player info
-    float mana_percentage = 0.6;
+    float mana_percentage = player_info[MANA];
     stretchRect.x = mana_area.x_pixel_begin;
     stretchRect.y = mana_area.y_pixel_begin;
     stretchRect.w = (int) ((float)(mana_area.x_pixel_end -
@@ -250,7 +250,7 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
                    getSurface(), &stretchRect);
 
     //TODO usar player info
-    float experience_percentage = 0.3;
+    float experience_percentage = player_info[EXPERIENCE];
     stretchRect.x = experience_area.x_pixel_begin;
     stretchRect.y = experience_area.y_pixel_begin;
     stretchRect.w = (int) ((float)(experience_area.x_pixel_end -
