@@ -184,6 +184,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
 
     // Info generica de todos los players (incluido el del cliente)
     // TODO: si hago htons(num_players) lo carga en 0...
+
     w.num_players = num_players;
     w.players.resize(num_players * sizeof(player_t));
     int i;
@@ -234,55 +235,85 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
 
     // Longitud total mensaje
     memcpy(&byte_msg[pos], &w.length, SIZE_16);
-
+    pos+=SIZE_16;
     // Info particular del player del cliente
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_mana, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_mana, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_gold, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.max_gold, SIZE_16);
-    memcpy(&byte_msg[pos+=SIZE_16], &w.player_info.actual_experience, SIZE_32);
-    memcpy(&byte_msg[pos+=SIZE_32], &w.player_info.long_distance, SIZE_8);
+    memcpy(&byte_msg[pos], &w.player_info.actual_mana, SIZE_16);
+    pos+=SIZE_16;
+    memcpy(&byte_msg[pos], &w.player_info.max_mana, SIZE_16);
+    pos+=SIZE_16;
+    memcpy(&byte_msg[pos], &w.player_info.actual_gold, SIZE_16);
+    pos+=SIZE_16;
+    memcpy(&byte_msg[pos], &w.player_info.max_gold, SIZE_16);
+    pos+=SIZE_16;
+    memcpy(&byte_msg[pos], &w.player_info.actual_experience, SIZE_32);
+    pos+=SIZE_32;
+    memcpy(&byte_msg[pos], &w.player_info.long_distance, SIZE_8);
+    pos+=SIZE_8;
 
     // Inventario
-    byte_msg[pos+=SIZE_8] = inventory_length;
-    for (i = 0; i < inventory_length; i ++)
-        byte_msg[pos+=SIZE_8] = player.inventory.items[i]->type;
+    byte_msg[pos] = inventory_length;
+    pos+=SIZE_8;
+    for (i = 0; i < inventory_length; i ++) {
+        byte_msg[pos] = player.inventory.items[i]->type;
+        pos += SIZE_8;
+    }
 
     // Lista de players
-    memcpy(&byte_msg[pos+=SIZE_16], &w.num_players, SIZE_16);
-    pos -= SIZE_8;
+    memcpy(&byte_msg[pos], &w.num_players, SIZE_16);
+    pos+=SIZE_16;
     for (i = 0; i < num_players; i ++) {
-        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].id, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].pos_x, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].pos_y, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].actual_life, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].max_life, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.players[i].level, SIZE_16);
-        byte_msg[pos+=SIZE_16] = w.players[i].is_alive;
-        byte_msg[pos+=SIZE_8] = w.players[i].is_meditating;
-        byte_msg[pos+=SIZE_8] = w.players[i].orientation;
-        byte_msg[pos+=SIZE_8] = w.players[i].race_type;
-        byte_msg[pos+=SIZE_8] = w.players[i].class_type;
-        byte_msg[pos+=SIZE_8] = w.players[i].weapon;
-        byte_msg[pos+=SIZE_8] = w.players[i].armor;
-        byte_msg[pos+=SIZE_8] = w.players[i].helmet;
-        byte_msg[pos+=SIZE_8] = w.players[i].shield;
-        pos -= SIZE_8;
+        memcpy(&byte_msg[pos], &w.players[i].id, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.players[i].pos_x, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.players[i].pos_y, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.players[i].actual_life, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.players[i].max_life, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.players[i].level, SIZE_16);
+        pos+=SIZE_16;
+        byte_msg[pos] = w.players[i].is_alive;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.players[i].is_meditating;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.players[i].orientation;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.players[i].race_type;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.players[i].class_type;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.players[i].weapon;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.players[i].armor;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.players[i].helmet;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.players[i].shield;
+        pos+=SIZE_8;
     }
 
     // Lista de criaturas
-    memcpy(&byte_msg[pos+=SIZE_16], &w.num_creatures, SIZE_16);
-    pos -= SIZE_8;
+    memcpy(&byte_msg[pos], &w.num_creatures, SIZE_16);
+    pos+=SIZE_16;
     for (i = 0; i < num_creatures; i ++) {
-        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].id, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].pos_x, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].pos_y, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].actual_life, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].max_life, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &w.creatures[i].level, SIZE_16);
-        byte_msg[pos+=SIZE_16] = w.creatures[i].type;
-        byte_msg[pos+=SIZE_8] = w.creatures[i].orientation;
-        pos -= SIZE_8;
+        memcpy(&byte_msg[pos], &w.creatures[i].id, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.creatures[i].pos_x, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.creatures[i].pos_y, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.creatures[i].actual_life, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.creatures[i].max_life, SIZE_16);
+        pos+=SIZE_16;
+        memcpy(&byte_msg[pos], &w.creatures[i].level, SIZE_16);
+        pos+=SIZE_16;
+        byte_msg[pos] = w.creatures[i].type;
+        pos+=SIZE_8;
+        byte_msg[pos] = w.creatures[i].orientation;
+        pos+=SIZE_8;
     }
 
     // Lista de items
