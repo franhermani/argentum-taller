@@ -3,7 +3,7 @@
 #include <SDL2/SDL_render.h>
 #include <iostream>
 #include "window.h"
-#include "exception.h"
+#include "../sdl/exception.h"
 
 SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
                 screenHeight(screenHeight), screenWidth(screenWidth),

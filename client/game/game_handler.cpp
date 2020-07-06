@@ -3,7 +3,9 @@
 #include <vector>
 #include <zconf.h>
 #include "game_handler.h"
+#include "exception.h"
 #include "../../common/defines/username_confirmation.h"
+#include "../sdl/exception.h"
 
 GameHandler::GameHandler(const char *host, const char *port,
         const std::string& username, const uint8_t race_type,
@@ -14,7 +16,11 @@ GameHandler::GameHandler(const char *host, const char *port,
     connectionReceiver = new ConnectionReceiver(socket, mapMonitor);
     checkUsername();
     printStartMessage();
-    gameRender = new GameRender(960, 720, mapMonitor);
+    try {
+        gameRender = new GameRender(960, 720, mapMonitor);
+    } catch (SDLException& e) {
+        std::cout << e.what();
+    }
     inputHandler = new GameInputHandler(commandQueue, mapMonitor, gameRender);
 }
 
