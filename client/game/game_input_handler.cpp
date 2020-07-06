@@ -80,12 +80,11 @@ void GameInputHandler::play() {
                         std::vector<int> item_pos = mapMonitor.getItemLookingAt();
                         new TakeCommandDTO(0, item_pos[0], item_pos[1]);
                     } else if (key == SDLK_y) {
-                        SDL_WaitEvent(&event);
-                        if (isLeftClick(event)) {
-                            SDL_GetMouseState(&x, &y);
+                        std::cout << "TOCARON E Y AHORA VOY A ESPERAR\n";
+                        waitForLeftClick(x, y);
+                        std::cout << "\n\nENVIO EL COMANDO NETONCES";
                             command = new ThrowCommandDTO(
                                     gameRender->getInventoryItemByPosition(x, y));
-                        }
                     } else if (key == SDLK_e) {
                         std::cout << "TOCARON E Y AHORA VOY A ESPERAR\n";
                         waitForLeftClick(x, y);
@@ -93,37 +92,35 @@ void GameInputHandler::play() {
                         command = new EquipCommandDTO(
                                     gameRender->getInventoryItemByPosition(x, y));
                     } else if (key == SDLK_d) {
-                        SDL_WaitEvent(&event);
-                        if (isLeftClick(event)) {
-                            SDL_GetMouseState(&x, &y);
+                        std::cout << "TOCARON d Y AHORA VOY A ESPERAR\n";
+                        waitForLeftClick(x, y);
+                        std::cout << "\n\nENVIO EL COMANDO NETONCES";
                             if (gameRender->isClickingInventoryItems(x, y))
                                 command = new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
                             else if (gameRender->isClickingInventoryGold(x, y))
                                 command = new DepositGoldCommandDTO(1, x, y);
-                        } else continue;
+
                     } else if (key == SDLK_w) {
-                        SDL_WaitEvent(&event);
-                        if (isLeftClick(event)) {
-                            SDL_GetMouseState(&x, &y);
+                        std::cout << "TOCARON w Y AHORA VOY A ESPERAR\n";
+                        waitForLeftClick(x, y);
+                        std::cout << "\n\nENVIO EL COMANDO NETONCES";
                             if (gameRender->isClickingListItems(x, y))
                                 command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
                             else if (gameRender->isClickingListGold(x, y))
                                 command = new WithdrawGoldCommandDTO(1, x, y);
-                        } else continue;
                     } else if (key == SDLK_s) {
-                        SDL_WaitEvent(&event);
-                        if (isLeftClick(event)) {
-                            SDL_GetMouseState(&x, &y);
+                        std::cout << "TOCARON s Y AHORA VOY A ESPERAR\n";
+                        waitForLeftClick(x, y);
+                        std::cout << "\n\nENVIO EL COMANDO NETONCES";
                             if (gameRender->isClickingInventoryItems(x, y))
                                 command = new SellItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), x, y);
-                        } else continue;
+
                     } else if (key == SDLK_b) {
-                        SDL_WaitEvent(&event);
-                        if (isLeftClick(event)) {
-                            SDL_GetMouseState(&x, &y);
+                        std::cout << "TOCARON b Y AHORA VOY A ESPERAR\n";
+                        waitForLeftClick(x, y);
+                        std::cout << "\n\nENVIO EL COMANDO NETONCES";
                             if (gameRender->isClickingListItems(x, y))
                                 command = new BuyItemCommandDTO(gameRender->getListItemByPosition(x, y), x, y);
-                        } else continue;
                     } else {
                         continue;
                     }
