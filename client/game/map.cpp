@@ -24,8 +24,8 @@ void Map::updateWorld(world_t receivedWorld) {
 }
 
 void Map::initialize(int received_id,
-        std::vector<int> blocks_around, matrix_t received_matrix,
-        npcs_t received_npcs) {
+        std::vector<int>& blocks_around, matrix_t& received_matrix,
+        npcs_t& received_npcs) {
     int current_index = 0;
     for (int i=0; i<received_matrix.height; i++) {
         std::vector<Terrain> row;
@@ -40,7 +40,7 @@ void Map::initialize(int received_id,
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
-    npcs = received_npcs;
+    npcs = std::move(received_npcs);
 }
 
 

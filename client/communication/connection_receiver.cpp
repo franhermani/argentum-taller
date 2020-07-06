@@ -17,17 +17,14 @@ void ConnectionReceiver::run() {
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
         matrix_t matrix = protocol.receiveMatrix();
         npcs_t npcs = protocol.receiveNPCs();
-
-        // TODO: pasar por referencia
         mapMonitor.initialize(username_id, blocks_around,
-                std::move(matrix), npcs);
+                matrix, npcs);
 
         std::string game_message;
 
         while (keepRunning) {
             world_t world = protocol.receiveWorldUpdate();
             mapMonitor.updateWorld(std::move(world));
-
             // TODO: mandar estos al mapMonitor o gameRender en un struct
             protocol.receiveItemsList();
 

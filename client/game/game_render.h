@@ -11,7 +11,7 @@
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"
-#include "GameSurfacesManager.h"
+#include "game_Surfaces_manager.h"
 
 
 class GameRender : public Thread {
