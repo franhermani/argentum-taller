@@ -39,6 +39,8 @@ public:
     bool isDead() override;
 
     int isLeftClick(SDL_Event& event);
+
+    void waitForLeftClick(int& x, int& y);
     };
 
 #endif // GAME_INPUT_HANDLER_H
