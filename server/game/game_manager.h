@@ -26,6 +26,7 @@ class GameManager : public Thread {
     WorldMonitor worldMonitor;
     ProtectedQueue<Command*> commandQueue;
     std::map<int, ProtectedQueue<std::string>> messagesQueuePerPlayer;
+    std::map<int, ProtectedQueue<list_t>> listsQueuePerPlayer;
     IdManager idManager;
     Bank bank;
     int msPerSend;

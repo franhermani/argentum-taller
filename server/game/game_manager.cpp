@@ -3,6 +3,7 @@
 #include <chrono>
 #include "game_manager.h"
 #include "game_exception.h"
+#include "list_exception.h"
 #include "entities/npcs/priest.h"
 #include "entities/npcs/merchant.h"
 #include "entities/npcs/banker.h"
@@ -41,6 +42,8 @@ void GameManager::run() {
                 } catch (GameException& e) {
                     std::string message(e.what());
                     messagesQueuePerPlayer[e.getPlayerId()].push(message);
+                } catch (ListException& e) {
+                    listsQueuePerPlayer[e.getPlayerId()].push(e.getList());
                 }
                 delete command;
             } catch(ClosedQueueException&) {
@@ -61,6 +64,9 @@ void GameManager::stop() {
 
     for (auto& kv : messagesQueuePerPlayer)
         messagesQueuePerPlayer[kv.first].close();
+
+    for (auto& kv : listsQueuePerPlayer)
+        listsQueuePerPlayer[kv.first].close();
 
     keepRunning = false;
 }

@@ -46,5 +46,6 @@ public:
 // Definir aca los tipos T que usemos a lo largo del TP
 template class ProtectedQueue<Command*>;
 template class ProtectedQueue<std::string>;
+template class ProtectedQueue<list_t>;
 
 #endif // PROTECTED_QUEUE_H

@@ -6,6 +6,23 @@
 #include "terrains.h"
 
 typedef struct {
+    uint8_t type;                   // Enum type del item
+    uint16_t price;                 // Precio del item
+} list_item_t;
+
+typedef struct {
+    uint8_t show_price;             // 1 si muestra precio, 0 si no
+    uint16_t gold_quantity;         // Cantidad de oro
+    uint16_t num_items;             // Cantidad de items en 'list_item_t'
+    std::vector<list_item_t> items; // Lista de structs 'list_item_t'
+} list_t;
+
+typedef struct {
+    uint16_t pos_x;             // Pos x en la matriz
+    uint16_t pos_y;             // Pos y en la matriz
+} gold_t;
+
+typedef struct {
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
     uint8_t type;               // Enum type del item
@@ -85,8 +102,5 @@ typedef struct {
     uint16_t height;                // Alto de la matriz
     std::vector<Terrain> terrains;  // Lista de structs 'terrain_t'
 } matrix_t;
-
-// TODO: agregar struct lista de items --> enum y precio
-// - si es oro enum y cantidad
 
 #endif // WORLD_STRUCTS_H

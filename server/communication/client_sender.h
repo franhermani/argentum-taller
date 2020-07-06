@@ -11,13 +11,15 @@ class ClientSender : public Thread {
     ServerProtocol protocol;
     WorldMonitor& worldMonitor;
     ProtectedQueue<std::string>& messagesQueue;
+    ProtectedQueue<list_t>& listsQueue;
     int msPerSend;
     Player* player{};
 
 public:
     // Constructor
     ClientSender(Socket& socket, WorldMonitor& worldMonitor,
-            ProtectedQueue<std::string>& messages_queue, int ms_per_send);
+            ProtectedQueue<std::string>& messages_queue,
+            ProtectedQueue<list_t>& lists_queue, int ms_per_send);
 
     // Constructor y asignacion por copia deshabilitados
     ClientSender(const ClientSender&) = delete;

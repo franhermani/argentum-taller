@@ -35,9 +35,13 @@ void ClientHandler::checkUsername() {
 
     try {
         int id = gameManager.addIdByUsername(username);
+
         clientSender = new ClientSender(socket, gameManager.worldMonitor,
-                gameManager.messagesQueuePerPlayer[id], gameManager.msPerSend);
+                gameManager.messagesQueuePerPlayer[id],
+                gameManager.listsQueuePerPlayer[id], gameManager.msPerSend);
+
         clientSender->sendUsernameConfirmation(USERNAME_OK);
+
         player = new Player(gameManager.world, gameManager.equations,
                             id, race_type, class_type);
     } catch (DuplicatedUsernameException&) {

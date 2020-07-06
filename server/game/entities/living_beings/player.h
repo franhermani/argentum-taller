@@ -102,6 +102,7 @@ class Player : public LivingBeing {
     friend class Banker;
     friend class Priest;
     friend class Merchant;
+    friend class ListCommand;
     friend class ClientHandler;
     friend class ServerProtocol;
 

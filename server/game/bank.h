@@ -34,6 +34,14 @@ public:
 
     // Retira la cantidad de oro del player segun su id
     void withdrawGold(const int player_id, const int quant);
+
+    // Devuelve los items que tiene el player en el banco
+    // Si no tiene nada, devuelve un vector vacio
+    std::vector<Item*> getItems(const int player_id);
+
+    // Devuelve la cantidad de oro que tiene el player en el banco
+    // Si no tiene nada, devuelve cero
+    const int getGoldQuantity(const int player_id);
 };
 
 #endif // BANK_H

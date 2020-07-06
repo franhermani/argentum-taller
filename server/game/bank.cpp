@@ -53,3 +53,17 @@ void Bank::withdrawGold(const int player_id, const int quant) {
 
     goldPerPlayer[player_id] -= quant;
 }
+
+std::vector<Item*> Bank::getItems(const int player_id) {
+    if (itemsPerPlayer.find(player_id) == itemsPerPlayer.end())
+        return {};
+
+    return itemsPerPlayer[player_id];
+}
+
+const int Bank::getGoldQuantity(const int player_id) {
+    if (goldPerPlayer.find(player_id) == goldPerPlayer.end())
+        return 0;
+
+    return goldPerPlayer[player_id];
+}

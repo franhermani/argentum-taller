@@ -46,10 +46,10 @@ public:
     void sendWorldUpdate(WorldMonitor& world_monitor, Player& player);
 
     // Envia un listado de items a traves del socket (incluye oro)
-    void sendItemsList(WorldMonitor& world_monitor, Player& player);
+    void sendItemsList(list_t& list);
 
     // Envia un mensaje del juego a traves del socket
-    void sendGameMessage(const std::string& message, Player& player);
+    void sendGameMessage(const std::string& message);
 };
 
 #endif // SERVER_PROTOCOL_H
