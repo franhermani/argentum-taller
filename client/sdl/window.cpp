@@ -248,7 +248,7 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
     SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
 
-    //TODO usar player info
+
     float life_percentage = player_info[LIFE];
     stretchRect.x = life_area.x_pixel_begin;
     stretchRect.y = life_area.y_pixel_begin;
@@ -266,7 +266,7 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
     SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
 
-    //TODO usar player info
+
     float mana_percentage = player_info[MANA];
     stretchRect.x = mana_area.x_pixel_begin;
     stretchRect.y = mana_area.y_pixel_begin;
@@ -285,7 +285,7 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
     SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
 
-    //TODO usar player info
+
     float experience_percentage = player_info[EXPERIENCE];
     stretchRect.x = experience_area.x_pixel_begin;
     stretchRect.y = experience_area.y_pixel_begin;

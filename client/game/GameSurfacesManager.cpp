@@ -106,22 +106,6 @@ void GameSurfacesManager::createNecessaryNpcs(std::vector<npc_t>& npcs) {
     }
 }
 
-void GameSurfacesManager::createNecessaryFloorItems(std::vector<item_t> &items) {
-    for (auto& item:items) {
-        int type = item.type;
-        if (floorItemSurfacesMap.find(type)
-            == floorItemSurfacesMap.end()) {
-            if (floorItemSurfacesPaths.find(type)
-                == floorItemSurfacesPaths.end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    floorItemSurfacesPaths[type], window, 1);
-            floorItemSurfacesMap.insert({type, surface});
-        }
-    }
-}
-
 void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
     for (auto& item: items) {
         int type = item.type;
@@ -319,61 +303,61 @@ void GameSurfacesManager::loadSurfacePaths() {
     floorItemSurfacesMap = {
             {ESPADA, new Surface(
                     "../client/resources/images/espada_t.png",
-                    window, 0)},
+                    window, 1)},
             {HACHA, new Surface(
                     "../client/resources/images/hacha_t.png",
-                    window, 0)},
+                    window, 1)},
             {MARTILLO, new Surface(
                     "../client/resources/images/martillo_t.png",
-                    window, 0)},
+                    window, 1)},
             {VARA_FRESNO, new Surface(
                     "../client/resources/images/vara_fresno_t.png",
-                    window, 0)},
+                    window, 1)},
             {FLAUTA_ELFICA, new Surface(
                     "../client/resources/images/flauta_elfica_t.png",
-                    window, 0)},
+                    window, 1)},
             {BACULO_NUDOSO, new Surface(
                     "../client/resources/images/baculo_nudoso_t.png",
-                    window, 0)},
+                    window, 1)},
             {BACULO_ENGARZADO, new Surface(
                     "../client/resources/images/baculo_engarzado_t.png",
-                    window, 0)},
+                    window, 1)},
             {ARCO_SIMPLE, new Surface(
                     "../client/resources/images/arco_simple_t.png",
-                    window, 0)},
+                    window, 1)},
             {ARCO_COMPUESTO, new Surface(
                     "../client/resources/images/arco_compuesto_t.png",
-                    window, 0)},
+                    window, 1)},
             {ARMADURA_CUERO, new Surface(
                     "../client/resources/images/armadura_cuero_t.png",
-                    window, 0)},
+                    window, 1)},
             {ARMADURA_PLACAS, new Surface(
                     "../client/resources/images/armadura_placas_t.png",
-                    window, 0)},
+                    window, 1)},
             {TUNICA_AZUL, new Surface(
                     "../client/resources/images/tunica_azul_t.png",
-                    window, 0)},
+                    window, 1)},
             {CAPUCHA, new Surface(
                     "../client/resources/images/capucha_t.png",
-                    window, 0)},
+                    window, 1)},
             {CASCO_HIERRO, new Surface(
                     "../client/resources/images/casco_hierro_t.png",
-                    window, 0)},
+                    window, 1)},
             {SOMBRERO_MAGICO, new Surface(
                     "../client/resources/images/sombrero_magico_t.png",
-                    window, 0)},
+                    window, 1)},
             {ESCUDO_TORTUGA, new Surface(
                     "../client/resources/images/escudo_tortuga_t.png",
-                    window, 0)},
+                    window, 1)},
             {ESCUDO_HIERRO, new Surface(
                     "../client/resources/images/escudo_hierro_t.png",
-                    window, 0)},
+                    window, 1)},
             {POCION_VIDA, new Surface(
                     "../client/resources/images/pocion_vida_t.png",
-                    window, 0)},
+                    window, 1)},
             {POCION_MANA, new Surface(
                     "../client/resources/images/pocion_mana_t.png",
-                    window, 0)},
+                    window, 1)},
     };
 
 

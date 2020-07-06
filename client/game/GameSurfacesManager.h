@@ -41,7 +41,6 @@ class GameSurfacesManager {
 
     void createNecessaryCreatures(std::vector<creature_t>& creatures);
 
-    void createNecessaryFloorItems(std::vector<item_t>& items);
 
     void createNecessaryItems(std::vector<item_t>& items);
     Surface* createGameFrameSurface();

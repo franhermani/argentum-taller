@@ -85,7 +85,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
 
 
 void GameRender::renderItems(std::vector<item_t> &items) {
-    surfacesManager.createNecessaryFloorItems(items);
+    surfacesManager.createNecessaryItems(items);
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
         window.renderNpc(it->pos_x, it->pos_y,
@@ -148,7 +148,15 @@ void GameRender::run() {
         //simulamos inventario recibido de server
         window.renderInventory(inventory_items);
         //cuando lleguen los items del server los renderizamos
-        //renderItems(floor_items);
+        /*std::vector<item_t> floor_items;
+        item_t item = {3, 2, 3};
+        floor_items.push_back(item);
+        item_t item2 = {1, 3, 5};
+        floor_items.push_back(item2);
+        item_t item3 = {5, 4, 2};
+        floor_items.push_back(item3);
+        renderItems(floor_items);
+         */
         //simulamos un player, despues poner el posta sacado de current_world
         player_t player;
         player.shield = ESCUDO_HIERRO;
