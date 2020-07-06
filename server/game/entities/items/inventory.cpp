@@ -2,9 +2,7 @@
 #include "../../game_exception.h"
 
 Inventory::Inventory(const int max_items) :
-maxItems(max_items), numItems(0) {
-    items.resize(maxItems);
-}
+maxItems(max_items), numItems(0) {}
 
 Inventory::~Inventory() {
     for (auto& item : items)
