@@ -77,9 +77,13 @@ void GameInputHandler::play() {
                                                            priest_position[1]);
                         }
                     } else if (key == SDLK_t) {
-                        std::vector<int> item_pos = mapMonitor.getItemLookingAt();
-                        if (item_pos[0] == -1) continue;
-                        new TakeCommandDTO(0, item_pos[0], item_pos[1]);
+                        try {
+                            std::vector<int> item_pos = mapMonitor.getItemLookingAt();
+                            new TakeCommandDTO(0, item_pos[0], item_pos[1]);
+                        }
+                        catch (MapException& e) {
+                            continue;
+                        }
                     } else if (key == SDLK_y) {
                         waitForLeftClick(x, y);
                             command = new ThrowCommandDTO(

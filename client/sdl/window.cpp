@@ -173,6 +173,42 @@ void SDLWindow::renderGameFrame(Surface* surface) {
                    getSurface(), &stretchRect);
 }
 
+void SDLWindow::renderInventoryGold(Surface* surface) {
+    game_area_t& gold_area = measurements.inventory_gold;
+    int x,y, w, h;
+    //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
+    w = (gold_area.x_pixel_end-gold_area.x_pixel_begin);
+    h = (gold_area.y_pixel_end-gold_area.y_pixel_begin);
+    x = gold_area.x_pixel_begin;
+    y = gold_area.y_pixel_begin;
+    SDL_Rect stretchRect;
+    stretchRect.x = x;
+    stretchRect.y = y;
+    stretchRect.w = w;
+    stretchRect.h = h;
+    SDL_BlitScaled(surface->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+}
+
+
+void SDLWindow::renderListGold(Surface* surface) {
+    //todo codigo repetido los 2 golds juntar?
+    game_area_t& gold_area = measurements.list_gold;
+    int x,y, w, h;
+    //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
+    w = (gold_area.x_pixel_end-gold_area.x_pixel_begin);
+    h = (gold_area.y_pixel_end-gold_area.y_pixel_begin);
+    x = gold_area.x_pixel_begin;
+    y = gold_area.y_pixel_begin;
+    SDL_Rect stretchRect;
+    stretchRect.x = x;
+    stretchRect.y = y;
+    stretchRect.w = w;
+    stretchRect.h = h;
+    SDL_BlitScaled(surface->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+}
+
 
 void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
     game_area_t& inventory_area = measurements.inventory;
@@ -362,12 +398,12 @@ int SDLWindow::isClickingListItems(int x, int y) {
 }
 
 int SDLWindow::isClickingListGold(int x, int y) {
-    return isInsideGameArea(measurements.list, x, y);
+    return isInsideGameArea(measurements.list_gold, x, y);
 }
 int SDLWindow::isClickingInventoryItems(int x, int y) {
     return isInsideGameArea(measurements.inventory, x, y);
 }
 
 int SDLWindow::isClickingInventoryGold(int x, int y) {
-    return isInsideGameArea(measurements.inventory, x, y);
+    return isInsideGameArea(measurements.inventory_gold, x, y);
 }
