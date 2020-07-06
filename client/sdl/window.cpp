@@ -87,19 +87,6 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
             stretchRect.y = getYPixelPos(y);
             stretchRect.w = measurements.xWidthTileSize;
             stretchRect.h = measurements.yHeightTileSize;
-            /*if (debug) {
-                std::cout << "Intento de estampar el terrain con valor: "
-                        << matrix[y][x] << "\n";
-                std::cout << "En los indices y:"
-                        << y << " x:" << x << "\n";
-                std::cout << "Esta en el mapa de superficies? "
-                <<(surfaces_map.find(matrix[y][x]) != surfaces_map.end())
-                << "\n";
-                std::cout << "lo meto en este pixel x" << stretchRect.x
-                            << " y este pixel y " << stretchRect.y
-                            << "de este ancho " << stretchRect.w
-                            << "y este alto " << stretchRect.h << "\n";
-            }*/
             if (surfaces_map.find(matrix[y][x]) != surfaces_map.end()) {
                 SDL_BlitScaled(surfaces_map.at(matrix[y][x])->
                 getRenderableSurface(), NULL,
@@ -174,7 +161,7 @@ void SDLWindow::renderGameFrame(Surface* surface) {
 }
 
 void SDLWindow::renderInventoryGold(Surface* surface) {
-    game_area_t& gold_area = measurements.inventory_gold;
+    game_area_t& gold_area = measurements.inventoryGold;
     int x,y, w, h;
     //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
     w = (gold_area.x_pixel_end-gold_area.x_pixel_begin);
@@ -193,7 +180,7 @@ void SDLWindow::renderInventoryGold(Surface* surface) {
 
 void SDLWindow::renderListGold(Surface* surface) {
     //todo codigo repetido los 2 golds juntar?
-    game_area_t& gold_area = measurements.list_gold;
+    game_area_t& gold_area = measurements.listGold;
     int x,y, w, h;
     //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
     w = (gold_area.x_pixel_end-gold_area.x_pixel_begin);
@@ -398,12 +385,12 @@ int SDLWindow::isClickingListItems(int x, int y) {
 }
 
 int SDLWindow::isClickingListGold(int x, int y) {
-    return isInsideGameArea(measurements.list_gold, x, y);
+    return isInsideGameArea(measurements.listGold, x, y);
 }
 int SDLWindow::isClickingInventoryItems(int x, int y) {
     return isInsideGameArea(measurements.inventory, x, y);
 }
 
 int SDLWindow::isClickingInventoryGold(int x, int y) {
-    return isInsideGameArea(measurements.inventory_gold, x, y);
+    return isInsideGameArea(measurements.inventoryGold, x, y);
 }

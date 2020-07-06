@@ -45,17 +45,17 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
     inventory = {(screenWidth / 100) * 84, (screenWidth / 100) * 102,
                  screenHeight / 4, (screenHeight /100) * 64};
 
-    inventory_gold = {(int) (screenWidth / 100.0) * 85,
+    inventoryGold = {(int) (screenWidth / 100.0) * 85,
                       (int) (screenWidth / 100.0) * 89,
-                      (int) (screenHeight / 100.0 * 95),
-                      int (screenHeight /100.0 * 99)};
+                     (int) (screenHeight / 100.0 * 95),
+                     int (screenHeight /100.0 * 99)};
 
     list = {(int) (screenWidth / 100.0) * 44,
             (int) (screenWidth / 100.0) * 74,
             (int) (screenHeight / 100.0) * 5,
             (int) (screenHeight /100.0) * 15};
 
-    list_gold = {(int) (screenWidth / 100.0) * 75,
+    listGold = {(int) (screenWidth / 100.0) * 75,
                  (int) (screenWidth / 100.0) * 80,
                  (int) (screenHeight / 100.0) * 3,
                  (int) (screenHeight /100.0) * 10};

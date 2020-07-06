@@ -25,8 +25,8 @@ public:
     ~Map();
 
     //inicializa matriz
-    void initialize(int username_id, std::vector<int>
-            blocks_around, matrix_t received_terrains, npcs_t npcs);
+    void initialize(int username_id, std::vector<int>&
+            blocks_around, matrix_t& received_terrains, npcs_t& npcs);
 
     //actualiza el vector de jugadores
     void updateWorld(world_t receivedWorld);
