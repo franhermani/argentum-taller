@@ -26,7 +26,7 @@ class GameSurfacesManager {
     std::map<int, std::string> floorItemSurfacesPaths;
     std::vector<std::vector<Terrain>> floor;
     SDLWindow& window;
-    
+
     friend class GameRender;
 
     //creador de surface de marco. Se utiliza siempre

@@ -22,8 +22,6 @@ class GameRender : public Thread {
     int blocksHeight;
     SDLWindow window;
     GameSurfacesManager surfacesManager;
-    // TODO arreglar private y public
-
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
@@ -37,7 +35,6 @@ public:
     //Destructor
     ~GameRender();
 
-
     void run() override;
 
     // Setea la variable booleana 'keepRunning' en false
@@ -47,30 +44,26 @@ public:
     // false en caso contrario
     bool isDead() override;
 
-    //Renderizador de pisos
+    //Renderizadores
     void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
-
-    //Renderizador de players
     void renderPlayers(std::vector<player_t> &players);
-
-    //renderizador de npcs
     void renderNpcs(std::vector<npc_t>& npcs);
-
     void renderCreatures(std::vector<creature_t>& creatures);
-
     void renderItems(std::vector<item_t>& items);
-
 
     //Inicializador de SDL
     int init();
-
+    //setea cantidad de bloques recibida por server
     void setTilesSize(int width, int height);
 
+    //TODO pasar esto a map, son un par de ecuaciones
     std::map<int, float> getRenderablePlayerInfo();
 
+    //Consultas por posicion de click a cosas renderizadas
     int getInventoryItemByPosition(int x, int y);
     int getListItemByPosition(int x, int y);
 
+    // Consultas de clicks dentro de areas renderizadas
     int isClickingListItems(int x, int y);
     int isClickingListGold(int x, int y);
     int isClickingInventoryItems(int x, int y);
