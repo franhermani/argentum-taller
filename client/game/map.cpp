@@ -227,14 +227,31 @@ std::vector<creature_t> Map::getRenderableCreatures() {
     return visible_creatures;
 }
 
+std::vector<gold_t> Map::getRenderableGolds() {
+    player_t main_player = getMainPlayer();
+    std::vector<gold_t> visible_gold;
+    //traducimos posiciones a la vision del jugador y
+    // nos quedamos con los items que esten
+    //dentro del rango de vision del principal
+    for (auto& gold: world.golds) {
+        if (betweenPlayerBorders(gold.pos_x, gold.pos_y)) {
+            continue;
+        } else {
+            gold_t converted_gold = gold;
+            converted_gold.pos_x = gold.pos_x - getPlayerXStart(main_player);
+            if (converted_gold.pos_x < 0) converted_gold.pos_x = 0;
+            converted_gold.pos_y = gold.pos_y - getPlayerYStart(main_player);
+            if (converted_gold.pos_y < 0) converted_gold.pos_y = 0;
+            visible_gold.push_back(converted_gold);
+        }
+    }
+    return visible_gold;
+}
+
 
 std::vector<item_t> Map::getRenderableItems() {
     player_t main_player = getMainPlayer();
-
-
     std::vector<item_t> visible_items;
-
-
     //traducimos posiciones a la vision del jugador y
     // nos quedamos con los items que esten
     //dentro del rango de vision del principal
@@ -322,8 +339,10 @@ client_world_t Map::getCurrentWorld() {
     current_world.main_player = getMainPlayer();
     current_world.players = getRenderablePlayers();
     current_world.items = getRenderableItems();
+    current_world.golds = getRenderableGolds();
     current_world.creatures = getRenderableCreatures();
     current_world.npcs = getRenderableNpcs();
     current_world.terrains = getTerrains();
+
     return std::move(current_world);
 }
