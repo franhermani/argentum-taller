@@ -62,6 +62,8 @@ public:
         //
     int getPlayerVisionWidth();
 
+    void initializeMatrixFromVector(matrix_t& received_matrix);
+
     int getPlayerVisionHeight();
 
     //busca en la lista actual de jugadores y devuelve el principal

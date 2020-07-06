@@ -23,9 +23,7 @@ void Map::updateWorld(world_t receivedWorld) {
     //el resto falta recibirlo
 }
 
-void Map::initialize(int received_id,
-        std::vector<int>& blocks_around, matrix_t& received_matrix,
-        npcs_t& received_npcs) {
+void Map::initializeMatrixFromVector(matrix_t& received_matrix) {
     int current_index = 0;
     for (int i=0; i<received_matrix.height; i++) {
         std::vector<Terrain> row;
@@ -35,6 +33,11 @@ void Map::initialize(int received_id,
             ++current_index;
         }
     }
+}
+void Map::initialize(int received_id,
+        std::vector<int>& blocks_around, matrix_t& received_matrix,
+        npcs_t& received_npcs) {
+    initializeMatrixFromVector(received_matrix);
     terrainMatrixHeight = received_matrix.height;
     terrainMatrixWidth = received_matrix.width;
     playerVisionWidth = blocks_around[0];
