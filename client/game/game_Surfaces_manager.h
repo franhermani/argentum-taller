@@ -45,6 +45,7 @@ class GameSurfacesManager {
     void createNecessaryNpcs(std::vector<npc_t>& npcs);
     void createNecessaryCreatures(std::vector<creature_t>& creatures);
     void createNecessaryItems(std::vector<item_t>& items);
+    void createNecessaryFrameItems(std::vector<int>& items);
 
 public:
     //Constructor

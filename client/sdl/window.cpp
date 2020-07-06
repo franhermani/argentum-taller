@@ -187,7 +187,8 @@ void SDLWindow::renderListGold(Surface* surface) {
 }
 
 
-void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
+void SDLWindow::renderInventory(std::vector<int>& inventory,
+        std::map<int,Surface*>& surfaces) {
     game_area_t& inventory_area = measurements.inventory;
     int x,y, w, h;
     //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
@@ -195,7 +196,7 @@ void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
     h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/5;
     x = inventory_area.x_pixel_begin;
     y = inventory_area.y_pixel_begin;
-    int surfaces_size = surfaces.size();
+    int surfaces_size = inventory.size();
     int current_index = 0;
     while (current_index < surfaces_size) {
         SDL_Rect stretchRect;
@@ -203,7 +204,7 @@ void SDLWindow::renderInventory(std::vector<Surface*>& surfaces) {
         stretchRect.y = y;
         stretchRect.w = w;
         stretchRect.h = h;
-        SDL_BlitScaled(surfaces[current_index]->getRenderableSurface(), NULL,
+        SDL_BlitScaled(surfaces[inventory[current_index]]->getRenderableSurface(), NULL,
                        getSurface(), &stretchRect);
         y = y + h;
         current_index ++;
