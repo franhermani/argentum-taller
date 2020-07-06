@@ -56,6 +56,10 @@ public:
     // destructor
     ~Map();
 
+    // Constructor y asignacion por copia deshabilitados
+    Map(const Map&) = delete;
+    Map& operator=(const Map&) = delete;
+
     //inicializa matriz
     void initialize(int username_id, std::vector<int>&
             blocks_around, matrix_t& received_terrains, npcs_t& npcs);

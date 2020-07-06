@@ -17,7 +17,7 @@ public:
 
     // Destructor
     ~MapMonitor();
-
+    
     // Constructor y asignacion por copia deshabilitados
     MapMonitor(const MapMonitor& other) = delete;
     MapMonitor& operator=(const MapMonitor& other) = delete;
