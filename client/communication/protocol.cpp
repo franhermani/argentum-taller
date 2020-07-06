@@ -262,12 +262,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
     w.player_info.actual_experience = ntohl(actual_experience);
     bytes_advanced += SIZE_32;
 
-    // Booleano de arma equipada a distancia
-    uint8_t long_distance;
-    memcpy(&long_distance, world_buffer.data() + bytes_advanced, SIZE_8);
-    w.player_info.long_distance = long_distance;
-    bytes_advanced += SIZE_8;
-
     if (debug) {
         std::cout << "\nPLAYER PRINCIPAL\n" <<
         "Mana actual: " << w.player_info.actual_mana << "\n" <<
@@ -275,7 +269,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
         "Oro actual: " << w.player_info.actual_gold << "\n" <<
         "Oro maximo: " << w.player_info.max_gold << "\n" <<
         "Experiencia actual: " << w.player_info.actual_experience << "\n" <<
-        "Arma a distancia: " << (int) w.player_info.long_distance << "\n" <<
         "Inventario:\n";
     }
 
@@ -364,6 +357,12 @@ world_t ClientProtocol::receiveWorldUpdate() {
         player.is_meditating = is_meditating;
         bytes_advanced += SIZE_8;
 
+        // 1 si esta reviviendo, 0 si no
+        uint8_t is_reviving;
+        memcpy(&is_reviving, world_buffer.data() + bytes_advanced, SIZE_8);
+        player.is_reviving = is_reviving;
+        bytes_advanced += SIZE_8;
+
         // Enum type de la orientacion
         uint8_t orientation;
         memcpy(&orientation, world_buffer.data() + bytes_advanced, SIZE_8);
@@ -438,6 +437,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     memcpy(&num_creatures, world_buffer.data() + bytes_advanced, SIZE_16);
     w.num_creatures = num_creatures;
     bytes_advanced += SIZE_16;
+
     // Lista de creatures
     std::vector<creature_t> creatures;
 

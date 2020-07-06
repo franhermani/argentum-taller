@@ -1,9 +1,6 @@
 #include <string>
 #include <vector>
 #include "protocol.h"
-#include "../../common/defines/world_structs.h"
-#include "../../common/defines/items.h"
-#include "../../common/defines/messages.h"
 #include "../../common/defines/debug.h"
 
 #define SIZE_8      sizeof(uint8_t)
@@ -33,14 +30,14 @@ Command* ServerProtocol::receiveCommand(Player& player) {
 
     int type = buffer1[0], length = buffer2[0];
 
-    if (debug)
-        std::cout << "Recibido el comando tipo " << type <<
-                  " de longitud " << length << "\n";
-
     if (length > 0) {
         arguments.resize(length);
         socket.receiveBytes(arguments.data(), arguments.size());
     }
+
+    if (debug)
+        std::cout << "Recibido el comando tipo " << type << "\n";
+
     return commandFactory(player, type, arguments);
 }
 
@@ -74,10 +71,18 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
     int height = world_monitor.getHeight();
     int matrix_length = width * height;
 
+    // ------------------------- //
+    // Carga del struct matrix_t //
+    // ------------------------- //
+
     matrix_t m;
     m.length = htons(2 * SIZE_16 + matrix_length * SIZE_8);
     m.width = htons(width);
     m.height = htons(height);
+
+    // ------------------------- //
+    // Carga del struct byte_msg //
+    // ------------------------- //
 
     std::vector<char> byte_msg;
     byte_msg.resize(3 * SIZE_16 + matrix_length);
@@ -96,13 +101,16 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
 
 void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     std::vector<NPC*> npcs = world_monitor.getNPCs();
-
     int num_npcs = npcs.size();
-
-    npcs_t n;
 
     // Longitud total del mensaje
     uint16_t message_length = SIZE_16 + num_npcs * (2 * SIZE_16 + 2 * SIZE_8);
+
+    // ----------------------- //
+    // Carga del struct npcs_t //
+    // ----------------------- //
+
+    npcs_t n;
     n.length = htons(message_length);
 
     // Cantidad de NPCs
@@ -118,6 +126,10 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
         n.npcs[i].pos_y = htons(npcs[i]->posY);
         n.npcs[i].orientation = npcs[i]->orientation;
     }
+
+    // ------------------------- //
+    // Carga del struct byte_msg //
+    // ------------------------- //
 
     std::vector<char> byte_msg;
     byte_msg.resize(SIZE_16 + message_length);
@@ -152,6 +164,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     std::vector<Item*> items = world_monitor.
             getItemsAround(player);
 
+    // TODO: getAttacksAround
+    // TODO: getGoldsAround
+
     // Longitudes variables
     uint8_t inventory_length = player.inventory.numItems;
     uint16_t num_players = players.size();
@@ -159,11 +174,18 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
 //    int num_items = items.size();
 
     // Longitud total del mensaje
-    // TODO: completar con criaturas e items
+    // TODO: completar con criaturas, items, oros y ataques
     size_t message_length =
-            4 * SIZE_16 + SIZE_32 + SIZE_8 +
+            // player_info_t
+            4 * SIZE_16 + SIZE_32 +
+
+            // inventory_t
             SIZE_8 + inventory_length * SIZE_8 +
-            SIZE_16 + num_players * (6 * SIZE_16 + 9 * SIZE_8) +
+
+            // player_t
+            SIZE_16 + num_players * (6 * SIZE_16 + 10 * SIZE_8) +
+
+            // creature_t
             SIZE_16 + num_creatures * (6*SIZE_16 + 2 * SIZE_8);
 
     // ------------------------ //
@@ -179,14 +201,12 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.player_info.actual_gold = htons(player.actualGold);
     w.player_info.max_gold = htons(player.maxSafeGold);
     w.player_info.actual_experience = htonl(player.actualExperience);
-    w.player_info.long_distance = player.weapon &&
-            player.weapon->isLongDistance() ? 1 : 0;
 
-    // Info generica de todos los players (incluido el del cliente)
+    // Lista de players (incluido el del cliente)
     // TODO: si hago htons(num_players) lo carga en 0...
-
     w.num_players = num_players;
     w.players.resize(num_players * sizeof(player_t));
+
     int i;
     for (i = 0; i < num_players; i ++) {
         w.players[i].id = htons(players[i]->id);
@@ -197,6 +217,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         w.players[i].level = htons(players[i]->level);
         w.players[i].is_alive = players[i]->isAlive ? 1 : 0;
         w.players[i].is_meditating = players[i]->isMeditating ? 1 : 0;
+        w.players[i].is_reviving = players[i]->isReviving ? 1 : 0;
         w.players[i].orientation = players[i]->orientation;
         w.players[i].race_type = players[i]->raceType;
         w.players[i].class_type = players[i]->classType;
@@ -210,6 +231,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
                               players[i]->shield->type : NO_ITEM_EQUIPPED;
     }
 
+    // Lista de Criaturas
+    // TODO: si hago htons(num_players) lo carga en 0...
     w.num_creatures = num_creatures;
     w.creatures.resize(num_creatures * sizeof(creature_t));
     for (i = 0; i < num_creatures; i ++) {
@@ -223,7 +246,14 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         w.creatures[i].orientation = creatures[i]->orientation;
     }
 
+    // Lista de Items
+    // TODO: ...
 
+    // Lista de Oros
+    // TODO: ...
+
+    // Lista de Ataques
+    // TODO: ...
 
     // ------------------ //
     // Carga del byte_msg //
@@ -235,24 +265,28 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
 
     // Longitud total mensaje
     memcpy(&byte_msg[pos], &w.length, SIZE_16);
-    pos+=SIZE_16;
+    pos += SIZE_16;
+
     // Info particular del player del cliente
     memcpy(&byte_msg[pos], &w.player_info.actual_mana, SIZE_16);
-    pos+=SIZE_16;
+    pos += SIZE_16;
+
     memcpy(&byte_msg[pos], &w.player_info.max_mana, SIZE_16);
-    pos+=SIZE_16;
+    pos += SIZE_16;
+
     memcpy(&byte_msg[pos], &w.player_info.actual_gold, SIZE_16);
-    pos+=SIZE_16;
+    pos += SIZE_16;
+
     memcpy(&byte_msg[pos], &w.player_info.max_gold, SIZE_16);
-    pos+=SIZE_16;
+    pos += SIZE_16;
+
     memcpy(&byte_msg[pos], &w.player_info.actual_experience, SIZE_32);
-    pos+=SIZE_32;
-    memcpy(&byte_msg[pos], &w.player_info.long_distance, SIZE_8);
-    pos+=SIZE_8;
+    pos += SIZE_32;
 
     // Inventario
     byte_msg[pos] = inventory_length;
-    pos+=SIZE_8;
+    pos += SIZE_8;
+
     for (i = 0; i < inventory_length; i ++) {
         byte_msg[pos] = player.inventory.items[i]->type;
         pos += SIZE_8;
@@ -261,66 +295,95 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     // Lista de players
     memcpy(&byte_msg[pos], &w.num_players, SIZE_16);
     pos+=SIZE_16;
+
     for (i = 0; i < num_players; i ++) {
         memcpy(&byte_msg[pos], &w.players[i].id, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.players[i].pos_x, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.players[i].pos_y, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.players[i].actual_life, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.players[i].max_life, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.players[i].level, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         byte_msg[pos] = w.players[i].is_alive;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.players[i].is_meditating;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
+        byte_msg[pos] = w.players[i].is_reviving;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.players[i].orientation;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.players[i].race_type;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.players[i].class_type;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.players[i].weapon;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.players[i].armor;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.players[i].helmet;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.players[i].shield;
-        pos+=SIZE_8;
+        pos += SIZE_8;
     }
 
     // Lista de criaturas
     memcpy(&byte_msg[pos], &w.num_creatures, SIZE_16);
-    pos+=SIZE_16;
+    pos += SIZE_16;
+
     for (i = 0; i < num_creatures; i ++) {
         memcpy(&byte_msg[pos], &w.creatures[i].id, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.creatures[i].pos_x, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.creatures[i].pos_y, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.creatures[i].actual_life, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.creatures[i].max_life, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         memcpy(&byte_msg[pos], &w.creatures[i].level, SIZE_16);
-        pos+=SIZE_16;
+        pos += SIZE_16;
+
         byte_msg[pos] = w.creatures[i].type;
-        pos+=SIZE_8;
+        pos += SIZE_8;
+
         byte_msg[pos] = w.creatures[i].orientation;
-        pos+=SIZE_8;
+        pos += SIZE_8;
     }
 
     // Lista de items
     // TODO: ...
 
-    // Lista de ataques (no incluye ataques cuerpo a cuerpo)
-    // TODO: usar el bool isLongDistance()
+    // Lista de oros
+    // TODO: ...
+
+    // Lista de ataques
+    // TODO: ...
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 

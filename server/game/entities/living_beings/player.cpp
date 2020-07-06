@@ -410,6 +410,9 @@ void Player::attack(Creature &creature) {
 }
 
 const int Player::receiveAttack(const int damage) {
+    if (isReviving)
+        return 0;
+
     stopMeditating();
 
     int damage_received = equations.eqDamageReceived(*this, damage);

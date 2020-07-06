@@ -310,7 +310,7 @@ std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& player : players) {
-        if (player->isDead())
+        if (player->isDead() || player->isReviving)
             continue;
 
         actual_distance = distanceInBlocks(pos_x, pos_y,

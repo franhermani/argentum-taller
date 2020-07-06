@@ -65,6 +65,7 @@ typedef struct {
     uint16_t level;             // Nivel
     uint8_t is_alive;           // 1 si esta vivo, 0 si no (fantasma)
     uint8_t is_meditating;      // 1 si esta meditando, 0 si no
+    uint8_t is_reviving;        // 1 si esta reviviendo, 0 si no
     uint8_t orientation;        // Enum type de la orientacion
     uint8_t race_type;          // Enum type de la raza
     uint8_t class_type;         // Enum type de la clase
@@ -85,7 +86,6 @@ typedef struct {
     uint16_t actual_gold;           // Oro actual
     uint16_t max_gold;              // Oro maximo
     uint32_t actual_experience;     // Experiencia
-    uint8_t long_distance;          // 1 si el arma es a distancia, 0 si no
     inventory_t inventory;          // Inventario
 } player_info_t;
 
