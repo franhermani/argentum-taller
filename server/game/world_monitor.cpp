@@ -3,7 +3,7 @@
 
 WorldMonitor::WorldMonitor(World& world) : world(world) {}
 
-void WorldMonitor::addPlayer(Player *player) {
+void WorldMonitor::addPlayer(Player* player) {
     std::unique_lock<std::mutex> lk(m);
     world.addPlayer(player);
 }
@@ -48,17 +48,27 @@ const int WorldMonitor::getPlayerHeight() {
     return world.getPlayerHeight();
 }
 
-std::vector<Player*> WorldMonitor::getPlayersAround(Player &player) {
+std::vector<Player*> WorldMonitor::getPlayersAround(Player& player) {
     std::unique_lock<std::mutex> lk(m);
     return world.getPlayersAround(player);
 }
 
-std::vector<Creature*> WorldMonitor::getCreaturesAround(Player &player) {
+std::vector<Creature*> WorldMonitor::getCreaturesAround(Player& player) {
     std::unique_lock<std::mutex> lk(m);
     return world.getCreaturesAround(player);
 }
 
-std::vector<Item*> WorldMonitor::getItemsAround(Player &player) {
+std::vector<Item*> WorldMonitor::getItemsAround(Player& player) {
     std::unique_lock<std::mutex> lk(m);
     return world.getItemsAround(player);
+}
+
+std::vector<Gold*> WorldMonitor::getGoldsAround(Player& player) {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getGoldsAround(player);
+}
+
+std::vector<Attack*> WorldMonitor::getAttacksAround(Player& player) {
+    std::unique_lock<std::mutex> lk(m);
+    return world.getAttacksAround(player);
 }

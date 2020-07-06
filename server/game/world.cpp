@@ -122,7 +122,7 @@ std::vector<NPC *> World::getNPCs() const {
     return npcs;
 }
 
-std::vector<Player*> World::getPlayersAround(Player &player) {
+std::vector<Player*> World::getPlayersAround(Player& player) {
     std::vector<Player*> players_around;
 
     for (auto& p : players)
@@ -132,7 +132,7 @@ std::vector<Player*> World::getPlayersAround(Player &player) {
     return players_around;
 }
 
-std::vector<Creature*> World::getCreaturesAround(Player &player) {
+std::vector<Creature*> World::getCreaturesAround(Player& player) {
     std::vector<Creature*> creatures_around;
 
     for (auto& c : creatures)
@@ -142,7 +142,7 @@ std::vector<Creature*> World::getCreaturesAround(Player &player) {
     return creatures_around;
 }
 
-std::vector<Item*> World::getItemsAround(Player &player) {
+std::vector<Item*> World::getItemsAround(Player& player) {
     std::vector<Item*> items_around;
 
     for (auto& i : items)
@@ -150,6 +150,26 @@ std::vector<Item*> World::getItemsAround(Player &player) {
             items_around.push_back(i);
 
     return items_around;
+}
+
+std::vector<Gold*> World::getGoldsAround(Player& player) {
+    std::vector<Gold*> golds_around;
+
+    for (auto& g : golds)
+        if (inPlayerBoundaries(player, g->posX, g->posY))
+            golds_around.push_back(g);
+
+    return golds_around;
+}
+
+std::vector<Attack*> World::getAttacksAround(Player& player) {
+    std::vector<Attack*> attacks_around;
+
+    for (auto& a : attacks)
+        if (inPlayerBoundaries(player, a->posX, a->posY))
+            attacks_around.push_back(a);
+
+    return attacks_around;
 }
 
 const bool World::inPlayerBoundaries(Player &player,
@@ -310,7 +330,8 @@ std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& player : players) {
-        if (player->isDead())
+        // TODO: no buscar players en safe zones
+        if (player->isDead() || player->isReviving)
             continue;
 
         actual_distance = distanceInBlocks(pos_x, pos_y,

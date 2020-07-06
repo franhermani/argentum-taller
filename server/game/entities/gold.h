@@ -7,6 +7,7 @@ class Gold {
 
     friend class World;
     friend class Player;
+    friend class ServerProtocol;
 
 public:
     // Constructor
