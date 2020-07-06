@@ -90,7 +90,11 @@ public:
     player_info_t getPlayerInfo();
 
     client_world_t getCurrentWorld();
-};
+
+    int getNewBordersXPosition(int pos_x, player_t& main_player);
+    int getNewBordersYPosition(int pos_y, player_t& main_player);
+
+    };
 
 
 

@@ -43,8 +43,7 @@ void Map::initialize(int received_id,
     npcs = received_npcs;
 }
 
-//TODO esto podria devolver una ref
-//puede haber un error?
+
 player_t Map::getMainPlayer() {
     for (int i=0; i<world.num_players; i++) {
         if (username_id == world.players[i].id) {
@@ -70,6 +69,9 @@ void Map::printDebugTerrainMatrix(
 }
 
 std::vector<std::vector<Terrain>> Map::getTerrains() {
+    //TODO hacer lo que dijo eze de mandar una estructura con la matriz
+    // y solo mostrar la parte que hay en vision
+    // para no tener que crear una submatriz cada vez
     //printDebugTerrainMatrix(terrainMatrix);
     player_t player = getMainPlayer();
 
@@ -159,6 +161,19 @@ int Map::betweenPlayerBorders(int pos_x, int pos_y) {
 }
 
 
+int Map::getNewBordersXPosition(int pos_x, player_t& main_player) {
+    int pos;
+    pos = pos_x - getPlayerXStart(main_player);
+    if (pos < 0) pos = 0;
+    return pos;
+}
+int Map::getNewBordersYPosition(int pos_y, player_t& main_player) {
+    int pos;
+    pos = pos_y - getPlayerYStart(main_player);
+    if (pos < 0) pos = 0;
+    return pos;
+}
+
 std::vector<npc_t> Map::getRenderableNpcs() {
     player_t main_player = getMainPlayer();
 
@@ -181,6 +196,8 @@ std::vector<npc_t> Map::getRenderableNpcs() {
     }
     return visible_npcs;
 }
+
+
 
 std::vector<creature_t> Map::getRenderableCreatures() {
     player_t main_player = getMainPlayer();
