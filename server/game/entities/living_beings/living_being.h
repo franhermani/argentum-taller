@@ -14,6 +14,7 @@ protected:
     int maxLife{};
     int actualLife{};
 
+    friend class World;
     friend class Equations;
 
     // Resta puntos de vida

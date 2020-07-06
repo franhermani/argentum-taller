@@ -218,20 +218,28 @@ void World::detectAttackCollision(Attack* new_attack) {
     }
 
     // Players
-    for (auto& p : players)
+    for (auto& p : players) {
+        if (typeid(owner) == typeid(p) && owner->id == p->id)
+            continue;
+
         if (p->posX == pos_x && p->posY == pos_y) {
             new_attack->collision();
             owner->attack(*p);
             return;
         }
+    }
 
     // Criaturas
-    for (auto& c : creatures)
+    for (auto& c : creatures) {
+        if (typeid(owner) == typeid(c) && owner->id == c->id)
+            continue;
+
         if (c->posX == pos_x && c->posY == pos_y) {
             new_attack->collision();
             owner->attack(*c);
             return;
         }
+    }
 
     // NPCs
     for (auto& npc : npcs)
