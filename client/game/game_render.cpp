@@ -80,7 +80,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
 
 
 void GameRender::renderEquipped(player_t& player) {
-    std::vector<int> equipped_items {player.weapon, player.armor,
+    std::vector<uint8_t> equipped_items {player.weapon, player.armor,
                                      player.shield, player.helmet};
     surfacesManager.createNecessaryFrameItems(equipped_items);
     window.renderEquipped(player, surfacesManager.floorItemSurfacesMap);
@@ -97,7 +97,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
 }
 
 
-void GameRender::renderInventory(std::vector<int>& inventory) {
+void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     surfacesManager.createNecessaryFrameItems(inventory);
     for (auto it = std::begin(inventory);
          it != std::end(inventory); ++it) {

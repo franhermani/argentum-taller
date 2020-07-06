@@ -187,7 +187,7 @@ void SDLWindow::renderListGold(Surface* surface) {
 }
 
 
-void SDLWindow::renderInventory(std::vector<int>& inventory,
+void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
         std::map<int,Surface*>& surfaces) {
     game_area_t& inventory_area = measurements.inventory;
     int x,y, w, h;

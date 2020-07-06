@@ -106,7 +106,7 @@ void GameSurfacesManager::createNecessaryNpcs(std::vector<npc_t>& npcs) {
     }
 }
 
-void GameSurfacesManager::createNecessaryFrameItems(std::vector<int>& items) {
+void GameSurfacesManager::createNecessaryFrameItems(std::vector<uint8_t>& items) {
     for (auto& type: items) {
         if ((type != NO_ITEM_EQUIPPED) && (floorItemSurfacesMap.find(type)
             == floorItemSurfacesMap.end())) {
