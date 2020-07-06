@@ -18,61 +18,6 @@ class Map {
     int playerVisionWidth;
     int playerVisionHeight;
 
-public:
-    // constructor
-    Map();
-    // destructor
-    ~Map();
-
-    //inicializa matriz
-    void initialize(int username_id, std::vector<int>&
-            blocks_around, matrix_t& received_terrains, npcs_t& npcs);
-
-    //actualiza el vector de jugadores
-    void updateWorld(world_t receivedWorld);
-
-    // devuelve la posicion mas cercana apuntando
-    // a la orientacion del jugador principal
-    std::vector<int> getPositionLookingAt();
-
-    std::vector<int> getPositionStandingAt();
-
-    std::vector<int> getPriestLookingAt();
-
-    std::vector<int> getNpcLookingAt();
-
-    std::vector<int> getItemStandingAt();
-
-    // devuelve la matriz de pisos
-    std::vector<std::vector<Terrain>> getTerrains();
-
-    int betweenPlayerBorders(int pos_x, int pos_y);
-
-        // devuelve los jugadores dentro del rango de vision del jguador principal
-    // con posiciones actualizadas a la submatriz
-    std::vector<player_t> getRenderablePlayers();
-
-    // devuelve los npcs dentro del rango de vision del jguador principal
-    // con posiciones actualizadas a la submatriz
-    std::vector<npc_t> getRenderableNpcs();
-
-    std::vector<creature_t> getRenderableCreatures();
-
-    std::vector<item_t> getRenderableItems();
-        //
-    int getPlayerVisionWidth();
-
-    void initializeMatrixFromVector(matrix_t& received_matrix);
-
-    int getPlayerVisionHeight();
-
-    //busca en la lista actual de jugadores y devuelve el principal
-    player_t getMainPlayer();
-
-    //imprime la matriz recibida de terrains por consola para debugeo
-    void printDebugTerrainMatrix(std::vector<
-            std::vector<Terrain>>& received_matrix);
-
     //Dada la posicion de un jugador, devuelve la posicion donde
     // arrancaria en X su submatriz dentro de la matriz principal
     int getPlayerXStart(player_t& player);
@@ -89,13 +34,66 @@ public:
     // terminaria en Y su submatriz dentro de la matriz principal
     int getPlayerYEnd(player_t& player);
 
-    player_info_t getPlayerInfo();
+    int betweenPlayerBorders(int pos_x, int pos_y);
 
-    client_world_t getCurrentWorld();
+
+    //busca en la lista actual de jugadores y devuelve el principal
+    player_t getMainPlayer();
+
+    //convierte un vector de terrains a matriz
+    void initializeMatrixFromVector(matrix_t& received_matrix);
+
+
 
     int getNewBordersXPosition(int pos_x, player_t& main_player);
     int getNewBordersYPosition(int pos_y, player_t& main_player);
 
+
+
+public:
+    // constructor
+    Map();
+    // destructor
+    ~Map();
+
+    //inicializa matriz
+    void initialize(int username_id, std::vector<int>&
+            blocks_around, matrix_t& received_terrains, npcs_t& npcs);
+
+    //actualiza el vector de jugadores recibido del server
+    void updateWorld(world_t receivedWorld);
+
+    // devuelve npc/posicion al que se mira
+    std::vector<int> getPositionLookingAt();
+    std::vector<int> getPriestLookingAt();
+    std::vector<int> getNpcLookingAt();
+
+    //devuelve item/posicion donde se esta prado
+    std::vector<int> getPositionStandingAt();
+    std::vector<int> getItemStandingAt();
+
+    // devuelve la matriz de pisos
+    std::vector<std::vector<Terrain>> getTerrains();
+
+
+    // devuelve los npcs/players/criatura/item
+    // dentro del rango de vision del jguador principal
+    // con posiciones actualizadas a la submatriz
+    std::vector<player_t> getRenderablePlayers();
+    std::vector<npc_t> getRenderableNpcs();
+    std::vector<creature_t> getRenderableCreatures();
+    std::vector<item_t> getRenderableItems();
+
+    // getters de campo de vision del jugador
+    int getPlayerVisionWidth();
+    int getPlayerVisionHeight();
+
+    //imprime por consola la matriz recibida de terrains para debugeo
+    void printDebugTerrainMatrix(std::vector<
+            std::vector<Terrain>>& received_matrix);
+
+    //devuelve infomacion del estado actual del mundo
+    client_world_t getCurrentWorld();
     };
 
 

@@ -79,16 +79,6 @@ std::vector<int> MapMonitor::getItemLookingAt() {
     return std::move(map.getItemStandingAt());
 }
 
-
-player_info_t MapMonitor::getPlayerInfo() {
-    std::unique_lock<std::mutex> lk(m);
-    return std::move(map.getPlayerInfo());
-}
-
-player_t MapMonitor::getMainPlayer() {
-    std::unique_lock<std::mutex> lk(m);
-    return std::move(map.getMainPlayer());
-}
 client_world_t MapMonitor::getCurrentWorld() {
     std::unique_lock<std::mutex> lk(m);
     return std::move(map.getCurrentWorld());

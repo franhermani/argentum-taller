@@ -315,9 +315,6 @@ std::vector<int> Map::getNpcLookingAt() {
     throw MapException("No hay ningun npc en la posicion solicitada");
 }
 
-player_info_t Map::getPlayerInfo() {
-    return world.player_info;
-}
 
 client_world_t Map::getCurrentWorld() {
     client_world_t current_world;
