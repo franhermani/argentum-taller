@@ -101,7 +101,7 @@ void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
 
 void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     std::vector<NPC*> npcs = world_monitor.getNPCs();
-    int num_npcs = npcs.size();
+    uint16_t num_npcs = npcs.size();
 
     // Longitud total del mensaje
     uint16_t message_length = SIZE_16 + num_npcs * (2 * SIZE_16 + 2 * SIZE_8);
@@ -114,7 +114,7 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     n.length = htons(message_length);
 
     // Cantidad de NPCs
-    // TODO: si hago htons(num_npcs) lo carga en 0...
+    // TODO: n.num_npcs = htons(num_npcs);
     n.num_npcs = num_npcs;
     n.npcs.resize(num_npcs * sizeof(npc_t));
 
@@ -210,8 +210,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.player_info.actual_experience = htonl(player.actualExperience);
 
     // Lista de Players (incluido el del cliente)
-    // TODO: si hago htons(num_players) lo carga en 0...
-    w.num_players = num_players;
+    w.num_players = htons(num_players);
     w.players.resize(num_players * sizeof(player_t));
 
     int i;
@@ -239,8 +238,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de Criaturas
-    // TODO: si hago htons(num_players) lo carga en 0...
-    w.num_creatures = num_creatures;
+    w.num_creatures = htons(num_creatures);
     w.creatures.resize(num_creatures * sizeof(creature_t));
 
     for (i = 0; i < num_creatures; i ++) {
@@ -254,8 +252,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de Items
-    // TODO: si hago htons(num_items) lo carga en 0...
-    w.num_items = num_items;
+    w.num_items = htons(num_items);
     w.items.resize(num_items * sizeof(item_t));
 
     for (i = 0; i < num_items; i ++) {
@@ -265,8 +262,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de Oros
-    // TODO: si hago htons(num_golds) lo carga en 0...
-    w.num_golds = num_golds;
+    w.num_golds = htons(num_golds);
     w.golds.resize(num_golds * sizeof(gold_t));
 
     for (i = 0; i < num_golds; i ++) {
@@ -276,8 +272,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de Ataques
-    // TODO: si hago htons(num_attacks) lo carga en 0...
-    w.num_attacks = num_attacks;
+    w.num_attacks = htons(num_attacks);
     w.attacks.resize(num_attacks * sizeof(attack_t));
 
     for (i = 0; i < num_attacks; i ++) {

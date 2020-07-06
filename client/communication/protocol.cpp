@@ -147,7 +147,8 @@ npcs_t ClientProtocol::receiveNPCs() {
     // Cantidad de NPCs
     uint16_t num_npcs;
     memcpy(&num_npcs, npcs_buffer.data() + bytes_advanced, SIZE_16);
-    n.num_npcs = ntohs(num_npcs);
+    // TODO: n.num_npcs = ntohs(num_npcs);
+    n.num_npcs = num_npcs;
     bytes_advanced += SIZE_16;
 
     // Lista de NPCs
@@ -299,8 +300,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de Players
     uint16_t num_players;
     memcpy(&num_players, world_buffer.data() + bytes_advanced, SIZE_16);
-    // TODO: ntohs()
-    w.num_players = num_players;
+    w.num_players = ntohs(num_players);
     bytes_advanced += SIZE_16;
 
     // Lista de Players
@@ -436,8 +436,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de Criaturas
     uint16_t num_creatures;
     memcpy(&num_creatures, world_buffer.data() + bytes_advanced, SIZE_16);
-    // TODO: ntohs()
-    w.num_creatures = num_creatures;
+    w.num_creatures = ntohs(num_creatures);
     bytes_advanced += SIZE_16;
 
     // Lista de Criaturas
@@ -510,8 +509,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de Items
     uint16_t num_items;
     memcpy(&num_items, world_buffer.data() + bytes_advanced, SIZE_16);
-    // TODO: ntohs()
-    w.num_items = num_items;
+    w.num_items = ntohs(num_items);
     bytes_advanced += SIZE_16;
 
     // Lista de Items
@@ -557,8 +555,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de Oros
     uint16_t num_golds;
     memcpy(&num_golds, world_buffer.data() + bytes_advanced, SIZE_16);
-    // TODO: ntohs()
-    w.num_golds = num_golds;
+    w.num_golds = ntohs(num_golds);
     bytes_advanced += SIZE_16;
 
     // Lista de Oros
@@ -604,8 +601,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Cantidad de Ataques
     uint16_t num_attacks;
     memcpy(&num_attacks, world_buffer.data() + bytes_advanced, SIZE_16);
-    // TODO: ntohs()
-    w.num_attacks = num_attacks;
+    w.num_attacks = ntohs(num_attacks);
     bytes_advanced += SIZE_16;
 
     // Lista de Ataques
