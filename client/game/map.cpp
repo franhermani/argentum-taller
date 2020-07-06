@@ -74,18 +74,14 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     player_t player = getMainPlayer();
 
     std::vector<std::vector<Terrain>> sub_matrix;
-    int x_player = player.pos_x;
-    int y_player = player.pos_y;
 
     sub_matrix.resize(playerVisionHeight);
     int x_start, y_start, x_finish, y_finish;
     x_start = getPlayerXStart(player);
     y_start = getPlayerYStart(player);
-    x_finish = x_player + (playerVisionWidth / 2) +1;
-    if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
-    y_finish = y_player + (playerVisionHeight / 2) +1;
-    if (y_finish >= terrainMatrixHeight) y_finish = terrainMatrixHeight;
-
+    x_finish = getPlayerXEnd(player);
+    y_finish = getPlayerYEnd(player);
+    
     int current_column_index = 0;
     for (int i=y_start; i<y_finish; i++) {
         std::vector<Terrain> row;
@@ -129,7 +125,7 @@ int Map::getPlayerYEnd(player_t& player) {
 
 std::vector<player_t> Map::getRenderablePlayers() {
     player_t main_player = getMainPlayer();
-    
+
     std::vector<player_t> visible_players;
 
 
