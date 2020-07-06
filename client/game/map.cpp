@@ -89,7 +89,6 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
     int x_start, y_start, x_finish, y_finish;
     x_start = getPlayerXStart(player);
     y_start = getPlayerYStart(player);
-    //TODO ojo con este +1 que es porque 9/2 da 4 y sino me morfo un pedazo
     x_finish = x_player + (playerVisionWidth / 2) +1;
     if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
     y_finish = y_player + (playerVisionHeight / 2) +1;
@@ -279,9 +278,6 @@ int Map::getPlayerVisionHeight() {
 std::vector<int> Map::getPositionLookingAt() {
     player_t player = getMainPlayer();
     std::vector<int> position;
-    //TODO agregar chequeo de posiciones.
-    //igualmente el mapa nunca deberia incluir los bordes
-    //pero igual hacer chequeo
     if (player.orientation == LEFT) {
         position.push_back(player.pos_x - 1);
         position.push_back(player.pos_y);
@@ -327,11 +323,9 @@ std::vector<int> Map::getNpcLookingAt() {
     for (int i=0; i<npcs.length; i++) {
         if (npcs.npcs[i].pos_x == looking_at[0]
             and npcs.npcs[i].pos_y == looking_at[1]) {
-            std::cout << "\n\n\n\n encontre uno";
             return std::move(looking_at);
         }
     }
-    std::cout << "\n\n\nNO LO ENCONTREEEEEEEEEEEEEEEEEEE";
     throw MapException("No hay ningun npc en la posicion solicitada");
 }
 
