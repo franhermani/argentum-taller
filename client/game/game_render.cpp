@@ -16,6 +16,7 @@
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/items.h"
 #include "exception.h"
+#include "../sdl/exception.h"
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -31,15 +32,11 @@ GameRender::~GameRender() {
 }
 
 int GameRender::init() {
-    //Initialization flag
-    bool success = true;
-
     //Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
-        success = false;
+        throw SDLException("Error al inicializar video de sdl", SDL_GetError());
     }
-    return success;
+    return true;
 }
 
 
