@@ -27,13 +27,6 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
 }
 
 GameRender::~GameRender() {
-    for (auto const& surface : surfacesManager.terrainSurfacesMap) {
-        delete surface.second;
-    }
-    //TODO DELETE DE LAS OTRAS SURFACES!!!!!!!!
-//    for (auto const& surface : creatureSurfacesMap) {
-//        delete surface.second;
-//    }
     SDL_Quit();
 }
 

@@ -9,8 +9,27 @@
 
 GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window){}
 GameSurfacesManager::~GameSurfacesManager(){
-
+    for (auto const& surface : terrainSurfacesMap) {
+        delete surface.second;
+    }
+    for (auto const& surface : infoSurfacesMap) {
+        delete surface.second;
+    }
+    for (auto const& surface : floorItemSurfacesMap) {
+        delete surface.second;
+    }
+    for (auto const& orientations : creatureSurfacesMap) {
+        for (auto const& surface : orientations.second) delete surface.second;
+    }
+    for (auto & orientations : playerSurfacesMap) {
+        for (auto const& surface : orientations.second) delete surface.second;
+    }
+    for (auto & orientations : npcSurfacesMap) {
+        for (auto const& surface : orientations.second) delete surface.second;
+    }
 }
+
+
 Surface* GameSurfacesManager::createGameFrameSurface(){
     return new Surface("../client/resources/images/game_frame.jpeg", window, 0);
 }

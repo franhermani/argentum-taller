@@ -9,8 +9,6 @@
 #include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
-
-
 #include "../sdl/surface.h"
 #include "../sdl/window.h"
 
