@@ -6,6 +6,7 @@
 #include "../../equations.h"
 #include "../../../../common/defines/commands.h"
 #include "../../../defines/creatures_death_drop.h"
+#include "../../../../common/defines/attacks.h"
 
 Creature::Creature(World &world, Equations& equations,
         const int new_id, const int type, const int new_level,
@@ -169,8 +170,8 @@ void Creature::moveAndAttackPlayers() {
             player_pos[0], player_pos[1]) <= attackRange;
 
     if (in_attack_range) {
-        world.addAttack(new Attack(this, posX, posY, orientation,
-                attackRange, attackVelocity));
+        world.addAttack(new Attack(this, MELEE, posX, posY,
+                orientation, attackRange, attackVelocity));
     } else {
         moveTo(player_pos);
     }

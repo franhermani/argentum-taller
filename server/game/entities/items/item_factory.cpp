@@ -7,6 +7,7 @@
 #include "shield.h"
 #include "weapon.h"
 #include "../../../../common/defines/items.h"
+#include "../../../../common/defines/attacks.h"
 
 ItemFactory::ItemFactory(json item_params) :
 itemParams(std::move(item_params)) {
@@ -29,6 +30,15 @@ itemParams(std::move(item_params)) {
                 {ESCUDO_HIERRO, ESCUDO_HIERRO_STRING},
                 {POCION_VIDA, POCION_VIDA_STRING},
                 {POCION_MANA, POCION_MANA_STRING}};
+
+    attackTypesMap = {{MELEE_STRING, MELEE},
+                      {MAGIC_ARROW_SPELL_STRING, MAGIC_ARROW_SPELL},
+                      {HEAL_SPELL_STRING, HEAL_SPELL},
+                      {MISSILE_SPELL_STRING, MISSILE_SPELL},
+                      {EXPLOSION_SPELL_STRING, EXPLOSION_SPELL},
+                      {SINGLE_ARROW_STRING, SINGLE_ARROW},
+                      {MULTIPLE_ARROW_STRING, MULTIPLE_ARROW}};
+
     weapons = {ESPADA, HACHA, MARTILLO, VARA_FRESNO, FLAUTA_ELFICA,
                BACULO_NUDOSO, BACULO_ENGARZADO, ARCO_SIMPLE, ARCO_COMPUESTO};
     armors = {ARMADURA_CUERO, ARMADURA_PLACAS, TUNICA_AZUL};
@@ -43,9 +53,10 @@ Item* ItemFactory::operator()(const int type, const int pos_x,
 
     if (weapons.count(type) > 0) {
         js = itemParams["weapons"][itemsMap[type]];
-        return new Weapon(type, pos_x, pos_y, js["min_damage"],
-                js["max_damage"], js["mana_consumption"],
-                js["range"], js["move_velocity"], js["is_magic"],
+        return new Weapon(type, attackTypesMap[js["attack_type"]],
+                pos_x, pos_y,js["min_damage"],js["max_damage"],
+                js["mana_consumption"],js["range"],
+                js["move_velocity"], js["is_magic"],
                 js["is_life_restorer"], js["price"]);
     } else if (armors.count(type) > 0) {
         js = itemParams["armors"][itemsMap[type]];

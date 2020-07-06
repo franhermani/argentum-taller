@@ -5,6 +5,7 @@ class LivingBeing;
 
 class Attack {
     LivingBeing* owner;
+    int type;
     int posX, posY;
     int direction;
     int range, blocksToRange;
@@ -18,8 +19,9 @@ class Attack {
 
 public:
     // Constructor
-    Attack(LivingBeing* owner, const int pos_x, const int pos_y,
-    const int direction, const int range, const int move_velocity);
+    Attack(LivingBeing* owner, const int type, const int pos_x,
+            const int pos_y, const int direction, const int range,
+            const int move_velocity);
 
     // Constructor y asignacion por copia deshabilitados
     Attack(const Attack& other) = delete;

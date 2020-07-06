@@ -5,6 +5,10 @@
 #include <vector>
 #include "terrains.h"
 
+// ---------------------- //
+// Listado de items y oro //
+// ---------------------- //
+
 typedef struct {
     uint8_t type;                   // Enum type del item
     uint16_t price;                 // Precio del item
@@ -17,9 +21,22 @@ typedef struct {
     std::vector<list_item_t> items; // Lista de structs 'list_item_t'
 } list_t;
 
+// -------------- //
+// Info del mundo //
+// -------------- //
+
 typedef struct {
     uint16_t pos_x;             // Pos x en la matriz
     uint16_t pos_y;             // Pos y en la matriz
+    uint8_t orientation;        // Enum type de la orietntacion
+    uint8_t type;               // Enum type del tipo de ataque
+    uint8_t is_colliding;       // 1 si esta colisionando, 0 si no
+} attack_t;
+
+typedef struct {
+    uint16_t pos_x;             // Pos x en la matriz
+    uint16_t pos_y;             // Pos y en la matriz
+    uint16_t quantity;          // Cantidad de oro
 } gold_t;
 
 typedef struct {
@@ -83,6 +100,10 @@ typedef struct {
     std::vector<item_t> items;          // Lista de structs 'item_t'
 } world_t;
 
+// ------------- //
+// Lista de NPCs //
+// ------------- //
+
 typedef struct {
     uint8_t type;               // Enum type del tipo de NPC
     uint16_t pos_x;             // Pos x en la matriz
@@ -95,6 +116,10 @@ typedef struct {
     uint16_t num_npcs;          // Cantidad de npcs en 'npcs'
     std::vector<npc_t> npcs;    // Lista de structs 'npc_t'
 } npcs_t;
+
+// ------------------ //
+// Matriz de terrenos //
+// ------------------ //
 
 typedef struct {
     uint16_t length;                // Longitud total del mensaje

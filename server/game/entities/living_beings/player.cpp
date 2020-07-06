@@ -9,6 +9,7 @@
 #include "../../../../common/defines/commands.h"
 #include "../../../../common/defines/classes.h"
 #include "../../game_exception.h"
+#include "../../../../common/defines/attacks.h"
 
 // TODO: ver si vale la pena mover esto a un param de la clase en el json
 #define MOVE_VELOCITY       1500
@@ -360,11 +361,12 @@ void Player::attack() {
         return;
     }
 
-    int weapon_range = weapon ? weapon->range : NO_WEAPON_RANGE,
+    int weapon_attack_type = weapon ? weapon->attackType : MELEE,
+        weapon_range = weapon ? weapon->range : NO_WEAPON_RANGE,
         weapon_velocity = weapon ? weapon->moveVelocity : NO_WEAPON_VELOCITY;
 
-    world.addAttack(new Attack(this, posX, posY, orientation,
-            weapon_range, weapon_velocity));
+    world.addAttack(new Attack(this, weapon_attack_type, posX, posY,
+            orientation, weapon_range, weapon_velocity));
 }
 
 void Player::attack(Player& other) {
