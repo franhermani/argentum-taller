@@ -24,6 +24,8 @@ struct WindowMeasurements {
     ~WindowMeasurements();
     void initialize(int numberOfTilesInWidth, int numberOfTilesInHeight,
                     int screenWidth, int screenHeight);
+    void initializePlayerInfo(int screenWidth, int screenHeight);
+    void initializeItemInfo(int screenWidth, int screenHeight);
 };
 
 
