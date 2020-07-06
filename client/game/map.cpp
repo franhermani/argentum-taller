@@ -23,9 +23,7 @@ void Map::updateWorld(world_t receivedWorld) {
     //el resto falta recibirlo
 }
 
-void Map::initialize(int received_id,
-        std::vector<int>& blocks_around, matrix_t& received_matrix,
-        npcs_t& received_npcs) {
+void Map::initializeMatrixFromVector(matrix_t& received_matrix) {
     int current_index = 0;
     for (int i=0; i<received_matrix.height; i++) {
         std::vector<Terrain> row;
@@ -35,6 +33,11 @@ void Map::initialize(int received_id,
             ++current_index;
         }
     }
+}
+void Map::initialize(int received_id,
+        std::vector<int>& blocks_around, matrix_t& received_matrix,
+        npcs_t& received_npcs) {
+    initializeMatrixFromVector(received_matrix);
     terrainMatrixHeight = received_matrix.height;
     terrainMatrixWidth = received_matrix.width;
     playerVisionWidth = blocks_around[0];
@@ -43,8 +46,7 @@ void Map::initialize(int received_id,
     npcs = std::move(received_npcs);
 }
 
-//TODO esto podria devolver una ref
-//puede haber un error?
+
 player_t Map::getMainPlayer() {
     for (int i=0; i<world.num_players; i++) {
         if (username_id == world.players[i].id) {
@@ -70,22 +72,21 @@ void Map::printDebugTerrainMatrix(
 }
 
 std::vector<std::vector<Terrain>> Map::getTerrains() {
+    //TODO hacer lo que dijo eze de mandar una estructura con la matriz
+    // y solo mostrar la parte que hay en vision
+    // para no tener que crear una submatriz cada vez
     //printDebugTerrainMatrix(terrainMatrix);
     player_t player = getMainPlayer();
 
     std::vector<std::vector<Terrain>> sub_matrix;
-    int x_player = player.pos_x;
-    int y_player = player.pos_y;
 
     sub_matrix.resize(playerVisionHeight);
     int x_start, y_start, x_finish, y_finish;
     x_start = getPlayerXStart(player);
     y_start = getPlayerYStart(player);
-    x_finish = x_player + (playerVisionWidth / 2) +1;
-    if (x_finish >= terrainMatrixWidth) x_finish = terrainMatrixWidth;
-    y_finish = y_player + (playerVisionHeight / 2) +1;
-    if (y_finish >= terrainMatrixHeight) y_finish = terrainMatrixHeight;
-
+    x_finish = getPlayerXEnd(player);
+    y_finish = getPlayerYEnd(player);
+    
     int current_column_index = 0;
     for (int i=y_start; i<y_finish; i++) {
         std::vector<Terrain> row;
@@ -130,13 +131,6 @@ int Map::getPlayerYEnd(player_t& player) {
 std::vector<player_t> Map::getRenderablePlayers() {
     player_t main_player = getMainPlayer();
 
-    //Pedimos los bordes de vision del jugador en
-    // coordenadas de la matriz principal
-    int x_start, y_start, x_finish, y_finish;
-    x_start = getPlayerXStart(main_player);
-    y_start = getPlayerYStart(main_player);
-    x_finish = getPlayerXEnd(main_player);
-    y_finish = getPlayerYEnd(main_player);
     std::vector<player_t> visible_players;
 
 
@@ -144,14 +138,13 @@ std::vector<player_t> Map::getRenderablePlayers() {
     // nos quedamos con los jugadores que esten
     //dentro del rango de vision del principal
     for (auto& player: world.players) {
-        if ((player.pos_x < x_start) ||  (player.pos_x > x_finish)
-        || (player.pos_y < y_start) || (player.pos_y > y_finish)) {
+        if (betweenPlayerBorders(player.pos_x, player.pos_y)) {
             continue;
         } else {
             player_t converted_player = player;
-            converted_player.pos_x = player.pos_x - x_start;
+            converted_player.pos_x = player.pos_x - getPlayerXStart(main_player);
             if (converted_player.pos_x < 0) converted_player.pos_x = 0;
-            converted_player.pos_y = player.pos_y - y_start;
+            converted_player.pos_y = player.pos_y - getPlayerYStart(main_player);
             if (converted_player.pos_y < 0) converted_player.pos_y = 0;
             visible_players.push_back(converted_player);
         }
@@ -159,32 +152,47 @@ std::vector<player_t> Map::getRenderablePlayers() {
     return visible_players;
 }
 
-std::vector<npc_t> Map::getRenderableNpcs() {
+int Map::betweenPlayerBorders(int pos_x, int pos_y) {
     player_t main_player = getMainPlayer();
-
-    //Pedimos los bordes de vision del jugador en
-    // coordenadas de la matriz principal
     int x_start, y_start, x_finish, y_finish;
     x_start = getPlayerXStart(main_player);
     y_start = getPlayerYStart(main_player);
     x_finish = getPlayerXEnd(main_player);
     y_finish = getPlayerYEnd(main_player);
+    return ((pos_x < x_start) &&  (pos_x > x_finish)
+    && (pos_y < y_start) && (pos_y > y_finish));
+}
+
+
+int Map::getNewBordersXPosition(int pos_x, player_t& main_player) {
+    int pos;
+    pos = pos_x - getPlayerXStart(main_player);
+    if (pos < 0) pos = 0;
+    return pos;
+}
+int Map::getNewBordersYPosition(int pos_y, player_t& main_player) {
+    int pos;
+    pos = pos_y - getPlayerYStart(main_player);
+    if (pos < 0) pos = 0;
+    return pos;
+}
+
+std::vector<npc_t> Map::getRenderableNpcs() {
+    player_t main_player = getMainPlayer();
 
     std::vector<npc_t> visible_npcs;
-
 
     //traducimos posiciones a la vision del jugador y
     // nos quedamos con los jugadores que esten
     //dentro del rango de vision del principal
     for (auto& npc: npcs.npcs) {
-        if ((npc.pos_x < x_start) ||  (npc.pos_x > x_finish)
-            || (npc.pos_y < y_start) || (npc.pos_y > y_finish)) {
+        if (betweenPlayerBorders(npc.pos_x, npc.pos_y)) {
             continue;
         } else {
             npc_t converted_npc = npc;
-            converted_npc.pos_x = npc.pos_x - x_start;
+            converted_npc.pos_x = npc.pos_x - getPlayerXStart(main_player);
             if (converted_npc.pos_x < 0) converted_npc.pos_x = 0;
-            converted_npc.pos_y = npc.pos_y - y_start;
+            converted_npc.pos_y = npc.pos_y - getPlayerYStart(main_player);
             if (converted_npc.pos_y < 0) converted_npc.pos_y = 0;
             visible_npcs.push_back(converted_npc);
         }
@@ -192,16 +200,11 @@ std::vector<npc_t> Map::getRenderableNpcs() {
     return visible_npcs;
 }
 
+
+
 std::vector<creature_t> Map::getRenderableCreatures() {
     player_t main_player = getMainPlayer();
 
-    //Pedimos los bordes de vision del jugador en
-    // coordenadas de la matriz principal
-    int x_start, y_start, x_finish, y_finish;
-    x_start = getPlayerXStart(main_player);
-    y_start = getPlayerYStart(main_player);
-    x_finish = getPlayerXEnd(main_player);
-    y_finish = getPlayerYEnd(main_player);
 
     std::vector<creature_t> visible_creatures;
 
@@ -210,14 +213,13 @@ std::vector<creature_t> Map::getRenderableCreatures() {
     // nos quedamos con las criaturas que esten
     //dentro del rango de vision del principal
     for (auto& creature: world.creatures) {
-        if ((creature.pos_x < x_start) ||  (creature.pos_x > x_finish)
-            || (creature.pos_y < y_start) || (creature.pos_y > y_finish)) {
+        if (betweenPlayerBorders(creature.pos_x, creature.pos_y)) {
             continue;
         } else {
             creature_t converted_creature = creature;
-            converted_creature.pos_x = creature.pos_x - x_start;
+            converted_creature.pos_x = creature.pos_x - getPlayerXStart(main_player);
             if (converted_creature.pos_x < 0) converted_creature.pos_x = 0;
-            converted_creature.pos_y = creature.pos_y - y_start;
+            converted_creature.pos_y = creature.pos_y - getPlayerYStart(main_player);
             if (converted_creature.pos_y < 0) converted_creature.pos_y = 0;
             visible_creatures.push_back(converted_creature);
         }
@@ -229,13 +231,6 @@ std::vector<creature_t> Map::getRenderableCreatures() {
 std::vector<item_t> Map::getRenderableItems() {
     player_t main_player = getMainPlayer();
 
-    //Pedimos los bordes de vision del jugador en
-    // coordenadas de la matriz principal
-    int x_start, y_start, x_finish, y_finish;
-    x_start = getPlayerXStart(main_player);
-    y_start = getPlayerYStart(main_player);
-    x_finish = getPlayerXEnd(main_player);
-    y_finish = getPlayerYEnd(main_player);
 
     std::vector<item_t> visible_items;
 
@@ -244,14 +239,13 @@ std::vector<item_t> Map::getRenderableItems() {
     // nos quedamos con los items que esten
     //dentro del rango de vision del principal
     for (auto& item: world.items) {
-        if ((item.pos_x < x_start) ||  (item.pos_x > x_finish)
-            || (item.pos_y < y_start) || (item.pos_y > y_finish)) {
+        if (betweenPlayerBorders(item.pos_x, item.pos_y)) {
             continue;
         } else {
             item_t converted_item = item;
-            converted_item.pos_x = item.pos_x - x_start;
+            converted_item.pos_x = item.pos_x - getPlayerXStart(main_player);
             if (converted_item.pos_x < 0) converted_item.pos_x = 0;
-            converted_item.pos_y = item.pos_y - y_start;
+            converted_item.pos_y = item.pos_y - getPlayerYStart(main_player);
             if (converted_item.pos_y < 0) converted_item.pos_y = 0;
             visible_items.push_back(converted_item);
         }
@@ -321,9 +315,6 @@ std::vector<int> Map::getNpcLookingAt() {
     throw MapException("No hay ningun npc en la posicion solicitada");
 }
 
-player_info_t Map::getPlayerInfo() {
-    return world.player_info;
-}
 
 client_world_t Map::getCurrentWorld() {
     client_world_t current_world;

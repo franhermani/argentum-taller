@@ -17,7 +17,7 @@ public:
 
     // Destructor
     ~MapMonitor();
-
+    
     // Constructor y asignacion por copia deshabilitados
     MapMonitor(const MapMonitor& other) = delete;
     MapMonitor& operator=(const MapMonitor& other) = delete;
@@ -55,10 +55,6 @@ public:
     std::vector<int> getItemLookingAt();
 
     std::vector<int> getNpcLookingAt();
-
-    player_info_t getPlayerInfo();
-
-    player_t getMainPlayer();
 
     client_world_t getCurrentWorld();
     };
