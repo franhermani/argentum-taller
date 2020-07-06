@@ -601,7 +601,62 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Ataques //
     // ------- //
 
-    // TODO: ...
+    // Cantidad de Ataques
+    uint16_t num_attacks;
+    memcpy(&num_attacks, world_buffer.data() + bytes_advanced, SIZE_16);
+    // TODO: ntohs()
+    w.num_attacks = num_attacks;
+    bytes_advanced += SIZE_16;
+
+    // Lista de Ataques
+    std::vector<attack_t> attacks;
+    attacks.resize(w.num_attacks * sizeof(attack_t));
+
+    for (i = 0; i < w.num_attacks; i ++) {
+        attack_t attack;
+
+        // Pos x en la matriz
+        uint16_t pos_x;
+        memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
+        attack.pos_x = ntohs(pos_x);
+        bytes_advanced += SIZE_16;
+
+        // Pos y en la matriz
+        uint16_t pos_y;
+        memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
+        attack.pos_y = ntohs(pos_y);
+        bytes_advanced += SIZE_16;
+
+        // Enum type de la orientacion
+        uint8_t orientation;
+        memcpy(&orientation, world_buffer.data() + bytes_advanced, SIZE_8);
+        attack.orientation = orientation;
+        bytes_advanced += SIZE_8;
+
+        // Enum type del tipo
+        uint8_t type;
+        memcpy(&type, world_buffer.data() + bytes_advanced, SIZE_8);
+        attack.type = type;
+        bytes_advanced += SIZE_8;
+
+        // 1 si esta colisionando, 0 si no
+        uint8_t is_colliding;
+        memcpy(&is_colliding, world_buffer.data() + bytes_advanced, SIZE_8);
+        attack.is_colliding = is_colliding;
+        bytes_advanced += SIZE_8;
+
+        attacks[i] = attack;
+
+        if (debug) {
+            std::cout << "\nATAQUE RECIBIDO\n" <<
+            "Pos X: " << (int) attack.pos_x << "\n" <<
+            "Pos Y: " << (int) attack.pos_y << "\n" <<
+            "Orientacion: " << (int) attack.orientation << "\n" <<
+            "Tipo: " << (int) attack.type << "\n" <<
+            "Colisionando: " << (int) attack.is_colliding << "\n";
+        }
+    }
+    w.attacks = attacks;
 
     return std::move(w);
 }

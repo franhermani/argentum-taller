@@ -170,7 +170,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     uint16_t num_creatures = creatures.size();
     uint16_t num_items = items.size();
     uint16_t num_golds = golds.size();
-//    uint16_t num_attacks = attacks.size();
+    uint16_t num_attacks = attacks.size();
 
     // Longitud total del mensaje
     size_t message_length =
@@ -190,10 +190,10 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
             SIZE_16 + num_items * (3 * SIZE_16) +
 
             // gold_t
-            SIZE_16 + num_golds * (3 * SIZE_16);
+            SIZE_16 + num_golds * (3 * SIZE_16) +
 
             // attack_t
-//            SIZE_16 + num_attacks * (2 * SIZE_16 + 3 * SIZE_8);
+            SIZE_16 + num_attacks * (2 * SIZE_16 + 3 * SIZE_8);
 
     // ------------------------ //
     // Carga del struct world_t //
@@ -276,7 +276,17 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de Ataques
-    // TODO: ...
+    // TODO: si hago htons(num_attacks) lo carga en 0...
+    w.num_attacks = num_attacks;
+    w.attacks.resize(num_attacks * sizeof(attack_t));
+
+    for (i = 0; i < num_attacks; i ++) {
+        w.attacks[i].pos_x = htons(attacks[i]->posX);
+        w.attacks[i].pos_y = htons(attacks[i]->posY);
+        w.attacks[i].orientation = attacks[i]->direction;
+        w.attacks[i].type = attacks[i]->type;
+        w.attacks[i].is_colliding = attacks[i]->isColliding;
+    }
 
     // ------------------ //
     // Carga del byte_msg //
@@ -393,7 +403,20 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     // Lista de ataques
-    // TODO: ...
+    memcpy(&byte_msg[pos], &w.num_attacks, SIZE_16);
+    pos += SIZE_16;
+    for (i = 0; i < num_attacks; i ++) {
+        memcpy(&byte_msg[pos], &w.attacks[i].pos_x, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.attacks[i].pos_y, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.attacks[i].orientation, SIZE_8);
+        pos += SIZE_8;
+        memcpy(&byte_msg[pos], &w.attacks[i].type, SIZE_8);
+        pos += SIZE_8;
+        memcpy(&byte_msg[pos], &w.attacks[i].is_colliding, SIZE_8);
+        pos += SIZE_8;
+    }
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
