@@ -300,15 +300,11 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 }
 
-void ServerProtocol::sendItemsList(WorldMonitor &world_monitor,
-        Player &player) {
-    // TODO:
-    // - Enviar 1 byte con la cantidad de items
-    // - Enviar N structs listed_item_t
+void ServerProtocol::sendItemsList(list_t& list) {
+    // TODO: ...
 }
 
-void ServerProtocol::sendGameMessage(const std::string& message,
-        Player &player) {
+void ServerProtocol::sendGameMessage(const std::string& message) {
     std::vector<char> byte_msg;
     std::vector<char> msg(message.begin(), message.end());
     byte_msg.resize(SIZE_8 + msg.size());

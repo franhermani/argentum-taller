@@ -6,3 +6,7 @@ playerId(player_id), list(list) {}
 const int ListException::getPlayerId() const noexcept {
     return playerId;
 }
+
+list_t ListException::getList() const noexcept {
+    return list;
+}

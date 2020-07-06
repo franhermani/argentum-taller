@@ -4,9 +4,11 @@
 #include "../../common/socket_error.h"
 
 ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
-        ProtectedQueue<std::string>& messages_queue, int ms_per_send) :
+        ProtectedQueue<std::string>& messages_queue,
+        ProtectedQueue<list_t>& lists_queue, int ms_per_send) :
         protocol(socket), worldMonitor(world_monitor),
-        messagesQueue(messages_queue), msPerSend(ms_per_send) {
+        messagesQueue(messages_queue), listsQueue(lists_queue),
+        msPerSend(ms_per_send) {
     keepRunning = true;
     isRunning = true;
 }
@@ -29,25 +31,36 @@ void ClientSender::run() {
         protocol.sendNPCs(worldMonitor);
 
         std::string game_message;
+        list_t list;
 
         // Envio actualizaciones del juego
         while (keepRunning) {
             std::this_thread::sleep_for(ms(msPerSend));
+
+            // Envio actualizaciones del mundo
             protocol.sendWorldUpdate(worldMonitor, *player);
 
-            // Desencolo de a un mensaje para que el player llegue a verlo
+            // Envio excepciones del juego
             if (! messagesQueue.isEmpty()) {
                 try {
                     game_message = messagesQueue.pop();
-                    protocol.sendGameMessage(game_message, *player);
+                    protocol.sendGameMessage(game_message);
                 } catch (ClosedQueueException&) {
                     break;
                 }
             } else {
-                protocol.sendGameMessage("", *player);
+                protocol.sendGameMessage("");
             }
-            // TODO: desencolar esto de algun lado
-            protocol.sendItemsList(worldMonitor, *player);
+
+            // Envio respuesta al comando listar
+            if (! listsQueue.isEmpty()) {
+                try {
+                    list = listsQueue.pop();
+                    protocol.sendItemsList(list);
+                } catch (ClosedQueueException&) {
+                    break;
+                }
+            }
         }
     } catch (SocketError&) {
         // Do nothing

@@ -15,6 +15,9 @@ public:
 
     // Devuelve el id del player
     const int getPlayerId() const noexcept;
+
+    // Devuelve el struct list_t
+    list_t getList() const noexcept;
 };
 
 #endif // LIST_EXCEPTION_H
