@@ -431,15 +431,15 @@ void Player::equipItemFromInventory(const int type) {
     if (! item)
         return;
 
-    if (typeid(item) == typeid(Weapon)) {
+    if (dynamic_cast<Weapon*>(item)) {
         equipWeapon(dynamic_cast<Weapon*>(item));
-    } else if (typeid(item) == typeid(Armor)) {
+    } else if (dynamic_cast<Armor*>(item)) {
         equipArmor(dynamic_cast<Armor*>(item));
-    } else if (typeid(item) == typeid(Helmet)) {
+    } else if (dynamic_cast<Helmet*>(item)) {
         equipHelmet(dynamic_cast<Helmet*>(item));
-    } else if (typeid(item) == typeid(Shield)) {
+    } else if (dynamic_cast<Shield*>(item)) {
         equipShield(dynamic_cast<Shield*>(item));
-    } else if (typeid(item) == typeid(Potion)) {
+    } else if (dynamic_cast<Potion*>(item)) {
         equipPotion(dynamic_cast<Potion*>(item));
     }
 }

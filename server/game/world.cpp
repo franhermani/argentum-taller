@@ -239,7 +239,7 @@ void World::detectAttackCollision(Attack* new_attack) {
 
     // Players
     for (auto& p : players) {
-        if (typeid(owner) == typeid(p) && owner->id == p->id)
+        if (owner->id == p->id && dynamic_cast<Player*>(owner))
             continue;
 
         if (p->posX == pos_x && p->posY == pos_y) {
@@ -251,7 +251,7 @@ void World::detectAttackCollision(Attack* new_attack) {
 
     // Criaturas
     for (auto& c : creatures) {
-        if (typeid(owner) == typeid(c) && owner->id == c->id)
+        if (owner->id == c->id && dynamic_cast<Creature*>(owner))
             continue;
 
         if (c->posX == pos_x && c->posY == pos_y) {
@@ -357,7 +357,8 @@ std::vector<int> World::getClosestPriestPos(const int pos_x, const int pos_y) {
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& npc : npcs) {
-        if (typeid(npcs) != typeid(Priest))
+        // TODO: ver si esta bien este cast
+        if (! dynamic_cast<Priest*>(npc))
             continue;
 
         actual_distance = distanceInBlocks(pos_x, pos_y,
