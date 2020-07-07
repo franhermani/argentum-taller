@@ -21,6 +21,7 @@ void Map::updateWorld(world_t receivedWorld) {
     world.player_info = std::move(receivedWorld.player_info);
     world.creatures = std::move(receivedWorld.creatures);
     world.num_creatures = std::move(receivedWorld.num_creatures);
+    world.items = std::move(receivedWorld.items);
     //el resto falta recibirlo
 }
 
