@@ -26,6 +26,7 @@ class SDLWindow {
     WindowMeasurements measurements;
     SDL_Rect gameFrameStaticRect;
     SDL_Rect inventoryGoldStaticRect;
+    SDL_Rect listGoldStaticRect;
     /*
     SDL_Rect inventoryStaticArea;
     SDL_Rect inventoryGoldStaticArea;
