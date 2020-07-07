@@ -49,6 +49,14 @@ class Map {
     int getNewBordersYPosition(int pos_y, player_t& main_player);
 
 
+    // devuelve los npcs/players/criatura/item
+    // dentro del rango de vision del jguador principal
+    // con posiciones actualizadas a la submatriz
+    std::vector<player_t> getRenderablePlayers();
+    std::vector<npc_t> getRenderableNpcs();
+    std::vector<creature_t> getRenderableCreatures();
+    std::vector<item_t> getRenderableItems();
+    std::vector<gold_t> getRenderableGolds();
 
 public:
     // constructor
@@ -78,16 +86,6 @@ public:
 
     // devuelve la matriz de pisos
     std::vector<std::vector<Terrain>> getTerrains();
-
-
-    // devuelve los npcs/players/criatura/item
-    // dentro del rango de vision del jguador principal
-    // con posiciones actualizadas a la submatriz
-    std::vector<player_t> getRenderablePlayers();
-    std::vector<npc_t> getRenderableNpcs();
-    std::vector<creature_t> getRenderableCreatures();
-    std::vector<item_t> getRenderableItems();
-    std::vector<gold_t> getRenderableGolds();
 
     // getters de campo de vision del jugador
     int getPlayerVisionWidth();

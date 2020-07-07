@@ -29,20 +29,6 @@ public:
     //actualiza el vector de jugadores
     void updateWorld(world_t receivedWorld);
 
-    //todo fix devolver referencia
-    std::vector<std::vector<Terrain>> getTerrains();
-
-    //todo fix devolver referencia
-    std::vector<player_t> getRenderablePlayers();
-
-    //fix devolver referencia
-    std::vector<creature_t> getRenderableCreatures();
-
-    std::vector<item_t> getRenderableItems();
-
-    //todo fix devolver referencia
-    std::vector<npc_t> getRenderableNpcs();
-
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
 

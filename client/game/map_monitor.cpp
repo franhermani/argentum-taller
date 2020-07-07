@@ -21,33 +21,6 @@ void MapMonitor::updateWorld(world_t receivedWorld) {
     map.updateWorld(std::move(receivedWorld));
 }
 
-
-std::vector<std::vector<Terrain>> MapMonitor::getTerrains() {
-    std::unique_lock<std::mutex> lk(m);
-    return std::move(map.getTerrains());
-}
-
-
-std::vector<player_t> MapMonitor::getRenderablePlayers() {
-    std::unique_lock<std::mutex> lk(m);
-    return std::move(map.getRenderablePlayers());
-}
-
-std::vector<creature_t> MapMonitor::getRenderableCreatures() {
-    std::unique_lock<std::mutex> lk(m);
-    return std::move(map.getRenderableCreatures());
-}
-
-std::vector<item_t> MapMonitor::getRenderableItems() {
-    std::unique_lock<std::mutex> lk(m);
-    return std::move(map.getRenderableItems());
-}
-
-std::vector<npc_t> MapMonitor::getRenderableNpcs() {
-    std::unique_lock<std::mutex> lk(m);
-    return std::move(map.getRenderableNpcs());
-}
-
 int MapMonitor::getPlayerVisionWidth() {
     return map.getPlayerVisionWidth();
 }
