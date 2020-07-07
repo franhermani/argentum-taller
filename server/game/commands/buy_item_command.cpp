@@ -11,5 +11,5 @@ BuyItemCommand::~BuyItemCommand() = default;
 
 void BuyItemCommand::execute(World& world) {
     NPC* npc = world.getNPCByPos(NPCPosX, NPCPosY);
-    npc->buyItem(player, itemType);
+    npc->sellItem(player, itemType);
 }
