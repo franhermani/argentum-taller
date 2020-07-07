@@ -67,7 +67,7 @@ public:
     //renderizadores dentro de la pantalla del mapa
     void renderTerrain(std::vector<std::vector<Terrain>> &matrix,
             std::map<Terrain, Surface *> &surfaces_map);
-    void renderNpc(int x, int y, Surface *character_surface);
+    void renderMapObject(int x, int y, Surface *character_surface);
 
     //renderizadores marco + lo que contiene
     void renderGameFrame(Surface *surface);
