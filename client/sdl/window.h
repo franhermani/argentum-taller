@@ -24,6 +24,17 @@ class SDLWindow {
     SDL_Window *window;
     SDL_Renderer *renderer;
     WindowMeasurements measurements;
+    SDL_Rect gameFrameStaticRect;
+    SDL_Rect inventoryGoldStaticRect;
+    /*
+    SDL_Rect inventoryStaticArea;
+    SDL_Rect inventoryGoldStaticArea;
+    SDL_Rect listStaticArea;
+    SDL_Rect listGoldStaticArea;
+    SDL_Rect inventoryGoldStaticArea;
+    SDL_Rect inventoryGoldStaticArea;
+    SDL_Rect inventoryGoldStaticArea;*/
+
 
 
 public:
@@ -37,6 +48,9 @@ public:
 
     // Destructor
     ~SDLWindow();
+
+    //inicializa areas estaticas donde se renderizara
+    void initializeStaticAreas();
 
     // Colorea la pantalla segun el codigo RGB recibido
     void fill(const int r = 0, const int g = 0, const int b = 0,
@@ -72,9 +86,9 @@ public:
     //renderizadores marco + lo que contiene
     void renderGameFrame(Surface *surface);
     void renderInventory(std::vector<uint8_t>& inventory, std::map<int,Surface*>& surfaces);
-    void renderEquipped(player_t player,
+    void renderEquipped(player_t& player,
             std::map<int, Surface*>& surfaces_map);
-    void renderPlayerInfo(std::map<int, float> player_info,
+    void renderPlayerInfo(std::map<int, float>& player_info,
             std::map<int, Surface *> info_surfaces_map);
     void renderList(std::vector<Surface*>& surfaces);
     void renderListGold(Surface* surface);

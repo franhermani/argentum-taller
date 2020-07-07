@@ -17,6 +17,7 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
+    initializeStaticAreas();
 }
 
 SDLWindow::~SDLWindow() {
@@ -28,6 +29,20 @@ SDLWindow::~SDLWindow() {
         SDL_DestroyWindow(window);
         window = nullptr;
     }
+}
+
+void SDLWindow::initializeStaticAreas() {
+    gameFrameStaticRect.x = 0;
+    gameFrameStaticRect.y = 0;
+    gameFrameStaticRect.w = screenWidth;
+    gameFrameStaticRect.h = screenHeight;
+
+
+    game_area_t& gold_area = measurements.inventoryGold;
+    inventoryGoldStaticRect.x = gold_area.x_pixel_begin;;
+    inventoryGoldStaticRect.y = gold_area.y_pixel_begin;;
+    inventoryGoldStaticRect.w = (gold_area.x_pixel_end - gold_area.x_pixel_begin);
+    inventoryGoldStaticRect.h = (gold_area.y_pixel_end - gold_area.y_pixel_begin);
 }
 
 void SDLWindow::fill(const int r, const int g, const int b, const int alpha) {
@@ -71,10 +86,9 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
     if (height_size <= 0) return;
     int width_size = matrix[0].size();
     if (width_size <= 0) return;
-
+    SDL_Rect stretchRect;
     for (int y=0; y < height_size; y++) {
         for (int x=0; x < width_size; x++) {
-            SDL_Rect stretchRect;
             stretchRect.x = getXPixelPos(x);
             stretchRect.y = getYPixelPos(y);
             stretchRect.w = measurements.xWidthTileSize;
@@ -91,7 +105,7 @@ void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
         }
     }
 }
-void SDLWindow::renderEquipped(player_t player,
+void SDLWindow::renderEquipped(player_t& player,
                               std::map<int, Surface*>& surfaces_map) {
     game_area_t& equipped_area = measurements.equipped;
     int equipped_width = (equipped_area.x_pixel_end -
@@ -143,29 +157,13 @@ void SDLWindow::UpdateWindowSurface() {
 }
 
 void SDLWindow::renderGameFrame(Surface* surface) {
-    SDL_Rect stretchRect;
-    stretchRect.x = 0;
-    stretchRect.y = 0;
-    stretchRect.w = screenWidth;
-    stretchRect.h = screenHeight;
     SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &stretchRect);
+                   getSurface(), &gameFrameStaticRect);
 }
 
 void SDLWindow::renderInventoryGolds(Surface* surface) {
-    game_area_t& gold_area = measurements.inventoryGold;
-    int x,y, w, h;
-    w = (gold_area.x_pixel_end-gold_area.x_pixel_begin);
-    h = (gold_area.y_pixel_end-gold_area.y_pixel_begin);
-    x = gold_area.x_pixel_begin;
-    y = gold_area.y_pixel_begin;
-    SDL_Rect stretchRect;
-    stretchRect.x = x;
-    stretchRect.y = y;
-    stretchRect.w = w;
-    stretchRect.h = h;
     SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &stretchRect);
+                   getSurface(), &inventoryGoldStaticRect);
 }
 
 
@@ -214,7 +212,7 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
     }
 }
 
-void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
+void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
         std::map<int, Surface *> info_surfaces_map) {
     game_area_t& life_area = measurements.life;
     SDL_Rect stretchRect;
