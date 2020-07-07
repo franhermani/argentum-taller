@@ -3,6 +3,7 @@
 #include <cmath>
 #include <algorithm>
 #include <random>
+#include <iostream>
 #include "equations.h"
 #include "../../common/defines/races.h"
 #include "../../common/defines/classes.h"
@@ -252,7 +253,8 @@ std::vector<int> Equations::eqCreatureDeathDrop(Creature &creature) {
         default:
             break;
     }
-    death_drop[0] = enum_drop;
-    death_drop[1] = param_drop;
+    std::cout << param_drop;
+    death_drop[0] = DROP_ITEM;
+    death_drop[1] = ESPADA;
     return death_drop;
 }

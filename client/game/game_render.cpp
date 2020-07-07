@@ -141,9 +141,9 @@ void GameRender::run() {
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     window.setTilesSize(blocksWidth,blocksHeight);
-    window.renderGameFrame(surfacesManager.createGameFrameSurface());
     while (keepRunning) {
         auto start = clock::now();
+        window.renderGameFrame(surfacesManager.createGameFrameSurface());
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
         renderPlayers(current_world.players);

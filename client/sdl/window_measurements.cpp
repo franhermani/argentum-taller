@@ -22,6 +22,8 @@ void WindowMeasurements::initialize(int numberOfTilesInWidth,
     initializeItemInfo(screenWidth, screenHeight);
 }
 
+
+
 void WindowMeasurements::initializePlayerInfo(int screenWidth,
         int screenHeight) {
     life = {(int) ((screenWidth/100.0) * 78.8),
