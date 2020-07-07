@@ -132,11 +132,6 @@ void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
 }
 
 
-Surface* GameSurfacesManager::createGameFrameSurface(){
-    return new Surface("../client/resources/images/game_frame.jpeg", window, 0);
-}
-
-
 void GameSurfacesManager::loadCreaturePaths() {
     //CRIATURAS
     std::map<int, std::string> skeleton_orientations = {
@@ -317,6 +312,7 @@ void GameSurfacesManager::loadSurfacePaths() {
 
 }
 void GameSurfacesManager::createFrameSurfaces() {
+    gameFrameSurface = new Surface("../client/resources/images/game_frame.jpeg", window, 0);
     goldSurface = new Surface("../client/resources/images/gold_t.png", window, 1);
     Surface* life_bar = new Surface("../client/resources/images/life_bar.png",
                                     window, 0);

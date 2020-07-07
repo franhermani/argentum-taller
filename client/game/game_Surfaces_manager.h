@@ -20,6 +20,7 @@ class GameSurfacesManager {
     std::map<int, Surface *> floorItemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
     Surface* goldSurface;
+    Surface* gameFrameSurface;
     std::map<Terrain, std::string> terrainSurfacesPaths;
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
@@ -30,8 +31,6 @@ class GameSurfacesManager {
 
     friend class GameRender;
 
-    //creador de surface de marco. Se utiliza siempre
-    Surface* createGameFrameSurface();
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();

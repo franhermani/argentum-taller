@@ -109,6 +109,9 @@ void GameRender::renderGolds(std::vector<gold_t> &golds) {
     }
 }
 
+void GameRender::renderGameFrame() {
+    window.renderGameFrame(surfacesManager.gameFrameSurface);
+}
 
 void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     surfacesManager.createNecessaryFrameItems(inventory);
@@ -143,7 +146,7 @@ void GameRender::run() {
     window.setTilesSize(blocksWidth,blocksHeight);
     while (keepRunning) {
         auto start = clock::now();
-        window.renderGameFrame(surfacesManager.createGameFrameSurface());
+        renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
         renderPlayers(current_world.players);
