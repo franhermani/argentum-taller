@@ -10,6 +10,7 @@ typedef struct {
     std::vector<gold_t> golds;
     player_info_t player_info;
     player_t main_player;
+    player_percentages_t percentages;
 } client_world_t;
 
 #endif //ARGENTUM_MAP_STRUCTS_H

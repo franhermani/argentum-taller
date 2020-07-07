@@ -60,7 +60,6 @@ public:
     //setea cantidad de bloques recibida por server
     void setTilesSize(int width, int height);
 
-    //TODO pasar esto a map, son un par de ecuaciones
     std::map<int, float> getRenderablePlayerInfo();
 
     //Consultas por posicion de click a cosas renderizadas

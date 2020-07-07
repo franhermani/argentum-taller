@@ -14,7 +14,6 @@ class Map {
     std::vector<std::vector<Terrain>> terrainMatrix;
     int terrainMatrixHeight;
     int terrainMatrixWidth;
-    //TODO SETEAR ESTOS recibidos al principio
     int playerVisionWidth;
     int playerVisionHeight;
 
