@@ -40,17 +40,21 @@ void SDLWindow::initializeStaticAreas() {
 
 
     game_area_t& inventory_gold_area = measurements.inventoryGold;
-    inventoryGoldStaticRect.x = inventory_gold_area.x_pixel_begin;;
-    inventoryGoldStaticRect.y = inventory_gold_area.y_pixel_begin;;
-    inventoryGoldStaticRect.w = (inventory_gold_area.x_pixel_end - inventory_gold_area.x_pixel_begin);
-    inventoryGoldStaticRect.h = (inventory_gold_area.y_pixel_end - inventory_gold_area.y_pixel_begin);
+    inventoryGoldStaticRect.x = inventory_gold_area.x_pixel_begin;
+    inventoryGoldStaticRect.y = inventory_gold_area.y_pixel_begin;
+    inventoryGoldStaticRect.w = (inventory_gold_area.x_pixel_end -
+            inventory_gold_area.x_pixel_begin);
+    inventoryGoldStaticRect.h = (inventory_gold_area.y_pixel_end -
+            inventory_gold_area.y_pixel_begin);
 
 
     game_area_t& list_gold_area = measurements.listGold;
     listGoldStaticRect.x = list_gold_area.x_pixel_begin;
     listGoldStaticRect.y = list_gold_area.y_pixel_begin;
-    listGoldStaticRect.w = (list_gold_area.x_pixel_end - list_gold_area.x_pixel_begin);
-    listGoldStaticRect.h = (list_gold_area.y_pixel_end - list_gold_area.y_pixel_begin);
+    listGoldStaticRect.w = (list_gold_area.x_pixel_end -
+            list_gold_area.x_pixel_begin);
+    listGoldStaticRect.h = (list_gold_area.y_pixel_end -
+            list_gold_area.y_pixel_begin);
 }
 
 void SDLWindow::fill(const int r, const int g, const int b, const int alpha) {
@@ -185,8 +189,10 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
         std::map<int,Surface*>& surfaces) {
     game_area_t& inventory_area = measurements.inventory;
     int x,y, w, h;
-    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/INVENTORY_MAX_TILES_WIDTH;
-    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/INVENTORY_MAX_TILES_HEIGHT;
+    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/
+            INVENTORY_MAX_TILES_WIDTH;
+    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/
+            INVENTORY_MAX_TILES_HEIGHT;
     x = inventory_area.x_pixel_begin;
     y = inventory_area.y_pixel_begin;
     int surfaces_size = inventory.size();
@@ -197,7 +203,8 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
         stretchRect.y = y;
         stretchRect.w = w;
         stretchRect.h = h;
-        SDL_BlitScaled(surfaces[inventory[current_index]]->getRenderableSurface(), NULL,
+        SDL_BlitScaled(surfaces[inventory[current_index]]->
+                        getRenderableSurface(), NULL,
                        getSurface(), &stretchRect);
         y = y + h;
         current_index ++;
@@ -224,7 +231,8 @@ void SDLWindow::renderLife(std::map<int, float>& player_info,
 
     stretchRect.x = stretchRect.x + stretchRect.w;
     stretchRect.y = life_area.y_pixel_begin;
-    stretchRect.w = life_area.x_pixel_end - life_area.x_pixel_begin - stretchRect.w;
+    stretchRect.w = life_area.x_pixel_end -
+            life_area.x_pixel_begin - stretchRect.w;
     stretchRect.h = life_area.y_pixel_end - life_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
@@ -246,7 +254,8 @@ void SDLWindow::renderMana(std::map<int, float>& player_info,
 
     stretchRect.x = stretchRect.x + stretchRect.w;
     stretchRect.y = mana_area.y_pixel_begin;
-    stretchRect.w = mana_area.x_pixel_end - mana_area.x_pixel_begin - stretchRect.w;
+    stretchRect.w = mana_area.x_pixel_end -
+            mana_area.x_pixel_begin - stretchRect.w;
     stretchRect.h = mana_area.y_pixel_end - mana_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
@@ -258,16 +267,16 @@ void SDLWindow::renderExperience(std::map<int, float>& player_info,
     game_area_t& experience_area = measurements.experience;
 
     float experience_percentage = player_info[EXPERIENCE];
-    stretchRect.x = experience_area.x_pixel_begin ;
+    stretchRect.x = experience_area.x_pixel_begin;
     stretchRect.y = experience_area.y_pixel_begin;
     stretchRect.w = (int) ((float)(experience_area.x_pixel_end -
-                                   experience_area.x_pixel_begin))*experience_percentage;
+            experience_area.x_pixel_begin))*experience_percentage;
     stretchRect.h = experience_area.y_pixel_end -
                     experience_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[EXPERIENCE]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
 
-    stretchRect.x = experience_area.x_pixel_begin  + stretchRect.w ;
+    stretchRect.x = experience_area.x_pixel_begin  + stretchRect.w;
     stretchRect.y = experience_area.y_pixel_begin;
     stretchRect.w = experience_area.x_pixel_end -
                     experience_area.x_pixel_begin - stretchRect.w;
@@ -275,7 +284,6 @@ void SDLWindow::renderExperience(std::map<int, float>& player_info,
                     experience_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
-
 }
 
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
@@ -319,8 +327,10 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
         int yClicked, size_t inventory_length) {
     game_area_t& inventory_area = measurements.inventory;
     int x,y, w, h;
-    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/INVENTORY_MAX_TILES_WIDTH;
-    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/INVENTORY_MAX_TILES_HEIGHT;
+    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/
+            INVENTORY_MAX_TILES_WIDTH;
+    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/
+            INVENTORY_MAX_TILES_HEIGHT;
     x = inventory_area.x_pixel_begin;
     y = inventory_area.y_pixel_begin;
     size_t current_index = 0;
@@ -369,14 +379,14 @@ int SDLWindow::getRenderedListIndexByPosition(int xClicked,
 }
 
 int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {
-    return (((x >= stretchRect.x) and (x < (stretchRect.x + stretchRect.w)))
-        and ((y >= stretchRect.y) and (y < (stretchRect.y + stretchRect.h))));
+    return (x >= stretchRect.x) && (x < (stretchRect.x + stretchRect.w))
+        && (y >= stretchRect.y) && (y < (stretchRect.y + stretchRect.h));
 }
 
 
 int SDLWindow::isInsideGameArea(game_area_t& area, int x, int y) {
-    return (((x >= area.x_pixel_begin) and (x < area.x_pixel_end))
-            and ((y >= area.y_pixel_begin) and (y < (area.y_pixel_end))));
+    return (x >= area.x_pixel_begin) && (x < area.x_pixel_end)
+            && (y >= area.y_pixel_begin) && (y < area.y_pixel_end);
 }
 
 int SDLWindow::isClickingListItems(int x, int y) {

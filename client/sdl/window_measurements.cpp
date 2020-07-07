@@ -50,7 +50,7 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
     inventoryGold = {(int) (screenWidth / 100.0) * 85,
                       (int) (screenWidth / 100.0) * 89,
                      (int) (screenHeight / 100.0 * 95),
-                     int (screenHeight /100.0 * 99)};
+                     (int) (screenHeight /100.0 * 99)};
 
     list = {(int) (screenWidth / 100.0) * 44,
             (int) (screenWidth / 100.0) * 74,
@@ -64,7 +64,6 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
 
     equipped = {(screenWidth / 100) * 1, (screenWidth / 100) * 45,
                 (screenHeight / 100) * 4, (screenHeight /100) * 15};
-
 }
 
 WindowMeasurements::~WindowMeasurements() {}
