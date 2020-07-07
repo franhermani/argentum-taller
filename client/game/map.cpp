@@ -6,6 +6,7 @@
 #include "exception.h"
 #include "../../common/defines/commands.h"
 #include "../../common/defines/npcs.h"
+#include "../sdl/render_structs.h"
 
 // constructor
 Map::Map() {
@@ -332,6 +333,16 @@ std::vector<int> Map::getNpcLookingAt() {
     throw MapException("No hay ningun npc en la posicion solicitada");
 }
 
+std::map<int, float> Map::getPercentages() {
+    player_t main_player = getMainPlayer();
+    return {{LIFE, ((float) main_player.actual_life)/
+           main_player.max_life},
+    {MANA, ((float) world.player_info.actual_mana)/
+                world.player_info.max_mana},
+    {EXPERIENCE, ((float) world.player_info.actual_experience)/
+                world.player_info.actual_experience}};
+}
+
 
 client_world_t Map::getCurrentWorld() {
     client_world_t current_world;
@@ -343,6 +354,7 @@ client_world_t Map::getCurrentWorld() {
     current_world.creatures = getRenderableCreatures();
     current_world.npcs = getRenderableNpcs();
     current_world.terrains = getTerrains();
+    current_world.percentages = getPercentages();
 
     return std::move(current_world);
 }

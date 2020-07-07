@@ -96,6 +96,8 @@ public:
 
     //devuelve infomacion del estado actual del mundo
     client_world_t getCurrentWorld();
+
+    std::map<int, float> getPercentages();
     };
 
 

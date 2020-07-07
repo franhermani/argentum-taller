@@ -49,6 +49,7 @@ public:
     void renderPlayers(std::vector<player_t> &players);
     void renderNpcs(std::vector<npc_t>& npcs);
     void renderCreatures(std::vector<creature_t>& creatures);
+    void renderPlayerInfo(std::map<int,float>& percentages);
     void renderItems(std::vector<item_t>& items);
     void renderEquipped(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
@@ -59,8 +60,6 @@ public:
     int init();
     //setea cantidad de bloques recibida por server
     void setTilesSize(int width, int height);
-
-    std::map<int, float> getRenderablePlayerInfo();
 
     //Consultas por posicion de click a cosas renderizadas
     int getInventoryItemByPosition(int x, int y);
