@@ -29,6 +29,7 @@ GameSurfacesManager::~GameSurfacesManager(){
         for (auto const& surface : orientations.second) delete surface.second;
     }
     delete goldSurface;
+    delete gameFrameSurface;
 }
 
 
