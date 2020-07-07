@@ -357,7 +357,6 @@ std::vector<int> World::getClosestPriestPos(const int pos_x, const int pos_y) {
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& npc : npcs) {
-        // TODO: ver si esta bien este cast
         if (! dynamic_cast<Priest*>(npc))
             continue;
 
