@@ -4,6 +4,7 @@
 #include <iostream>
 #include <utility>
 #include "exception.h"
+#include <map>
 #include "../../common/defines/commands.h"
 #include "../../common/defines/npcs.h"
 #include "../sdl/render_structs.h"
@@ -150,9 +151,11 @@ std::vector<player_t> Map::getRenderablePlayers() {
             continue;
         } else {
             player_t converted_player = player;
-            converted_player.pos_x = player.pos_x - getPlayerXStart(main_player);
+            converted_player.pos_x = player.pos_x -
+                    getPlayerXStart(main_player);
             if (converted_player.pos_x < 0) converted_player.pos_x = 0;
-            converted_player.pos_y = player.pos_y - getPlayerYStart(main_player);
+            converted_player.pos_y = player.pos_y -
+                    getPlayerYStart(main_player);
             if (converted_player.pos_y < 0) converted_player.pos_y = 0;
             visible_players.push_back(converted_player);
         }
@@ -225,9 +228,11 @@ std::vector<creature_t> Map::getRenderableCreatures() {
             continue;
         } else {
             creature_t converted_creature = creature;
-            converted_creature.pos_x = creature.pos_x - getPlayerXStart(main_player);
+            converted_creature.pos_x = creature.pos_x -
+                    getPlayerXStart(main_player);
             if (converted_creature.pos_x < 0) converted_creature.pos_x = 0;
-            converted_creature.pos_y = creature.pos_y - getPlayerYStart(main_player);
+            converted_creature.pos_y = creature.pos_y -
+                    getPlayerYStart(main_player);
             if (converted_creature.pos_y < 0) converted_creature.pos_y = 0;
             visible_creatures.push_back(converted_creature);
         }

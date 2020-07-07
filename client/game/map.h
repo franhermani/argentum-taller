@@ -3,6 +3,7 @@
 #define ARGENTUM_MAP_H
 #include "../../common/defines/world_structs.h"
 #include "map_structs.h"
+#include <map>
 #include <vector>
 
 class Map {

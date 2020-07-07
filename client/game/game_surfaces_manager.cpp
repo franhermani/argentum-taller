@@ -56,7 +56,8 @@ void GameSurfacesManager::createNecessaryTerrains(
 }
 
 
-void GameSurfacesManager::createNecessaryPlayers(std::vector<player_t>& players) {
+void GameSurfacesManager::createNecessaryPlayers(
+        std::vector<player_t>& players) {
     for (auto& player:players) {
         int race = player.race_type;
         int orientation = player.orientation;
@@ -73,7 +74,8 @@ void GameSurfacesManager::createNecessaryPlayers(std::vector<player_t>& players)
     }
 }
 
-void GameSurfacesManager::createNecessaryCreatures(std::vector<creature_t>& creatures) {
+void GameSurfacesManager::createNecessaryCreatures(
+        std::vector<creature_t>& creatures) {
     for (auto& creature:creatures) {
         int type = creature.type;
         int orientation = creature.orientation;
@@ -108,7 +110,8 @@ void GameSurfacesManager::createNecessaryNpcs(std::vector<npc_t>& npcs) {
     }
 }
 
-void GameSurfacesManager::createNecessaryFrameItems(std::vector<uint8_t>& items) {
+void GameSurfacesManager::createNecessaryFrameItems(
+        std::vector<uint8_t>& items) {
     for (auto& type: items) {
         if ((type != NO_ITEM_EQUIPPED) && (itemSurfacesMap.find(type)
             == itemSurfacesMap.end())) {
@@ -176,11 +179,9 @@ void GameSurfacesManager::loadCreaturePaths() {
                            {ZOMBIE,   zombie_surfaces},
                            {GOBLIN,   goblin_surfaces}
     };
-
 }
 
 void GameSurfacesManager::loadNpcPaths() {
-
     //npcs
     std::map<int, std::string> banker_orientations = {
             {UP, "../client/resources/images/banker_up_t.png"},
@@ -218,7 +219,6 @@ void GameSurfacesManager::loadNpcPaths() {
 
 
 void GameSurfacesManager::loadPlayerPaths() {
-
     //JUGADORES
 
     std::map<int, std::string> human_orientations = {
@@ -293,7 +293,6 @@ void GameSurfacesManager::loadItemPaths() {
 }
 
 void GameSurfacesManager::loadSurfacePaths() {
-
     //PISOS
     terrainSurfacesPaths = {
             {TERRAIN_WATER, "../client/resources/images/24082.png"},
@@ -310,11 +309,12 @@ void GameSurfacesManager::loadSurfacePaths() {
     loadPlayerPaths();
     loadItemPaths();
     createFrameSurfaces();
-
 }
 void GameSurfacesManager::createFrameSurfaces() {
-    gameFrameSurface = new Surface("../client/resources/images/game_frame.jpeg", window, 0);
-    goldSurface = new Surface("../client/resources/images/gold_t.png", window, 1);
+    gameFrameSurface = new Surface(
+            "../client/resources/images/game_frame.jpeg", window, 0);
+    goldSurface = new Surface(
+            "../client/resources/images/gold_t.png", window, 1);
     Surface* life_bar = new Surface("../client/resources/images/life_bar.png",
                                     window, 0);
     Surface* black_bar = new Surface(

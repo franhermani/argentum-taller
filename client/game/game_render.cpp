@@ -24,7 +24,8 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
                        screenWidth(screenWidth), screenHeight(screenHeight),
                        mapMonitor(mapMonitor),
-                       window(screenWidth, screenHeight), surfacesManager(window) {
+                       window(screenWidth, screenHeight),
+                       surfacesManager(window) {
     init();
     surfacesManager.loadSurfacePaths();
     keepRunning = true;
@@ -37,7 +38,8 @@ GameRender::~GameRender() {
 int GameRender::init() {
     //Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        throw SDLException("\nError al inicializar video de sdl", SDL_GetError());
+        throw SDLException(
+                "\nError al inicializar video de sdl", SDL_GetError());
     }
     return true;
 }
@@ -54,7 +56,8 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         window.renderMapObject(it->pos_x, it->pos_y,
-                               surfacesManager.playerSurfacesMap[it->race_type][it->orientation]);
+                surfacesManager.
+                playerSurfacesMap[it->race_type][it->orientation]);
     }
 }
 
@@ -69,7 +72,8 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
         window.renderMapObject(it->pos_x, it->pos_y,
-                               surfacesManager.creatureSurfacesMap[it->type][it->orientation]);
+                surfacesManager.
+                creatureSurfacesMap[it->type][it->orientation]);
     }
 }
 
@@ -80,7 +84,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
     for (auto it = std::begin(npcs);
          it != std::end(npcs); ++it) {
         window.renderMapObject(it->pos_x, it->pos_y,
-                               surfacesManager.npcSurfacesMap[it->type][it->orientation]);
+                surfacesManager.npcSurfacesMap[it->type][it->orientation]);
     }
 }
 
@@ -171,7 +175,8 @@ void GameRender::run() {
 
 int GameRender::getInventoryItemByPosition(int x, int y) {
     int inventory_length = current_world.player_info.inventory.length;
-    int position = window.getRenderedItemIndexByPosition(x, y, inventory_length);
+    int position = window.getRenderedItemIndexByPosition(x, y,
+            inventory_length);
     if (position < 0) throw ItemException(
             "El inventario no tiene items en la posicion clickeada");
     if (inventory_length < position) throw

@@ -87,7 +87,8 @@ public:
 
     //renderizadores marco + lo que contiene
     void renderGameFrame(Surface *surface);
-    void renderInventory(std::vector<uint8_t>& inventory, std::map<int,Surface*>& surfaces);
+    void renderInventory(std::vector<uint8_t>& inventory,
+            std::map<int,Surface*>& surfaces);
     void renderEquipped(player_t& player,
             std::map<int, Surface*>& surfaces_map);
     void renderPlayerInfo(std::map<int, float>& player_info,

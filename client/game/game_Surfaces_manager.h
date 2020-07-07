@@ -53,7 +53,7 @@ class GameSurfacesManager {
 
 public:
     //Constructor
-    GameSurfacesManager(SDLWindow& window);
+    explicit GameSurfacesManager(SDLWindow& window);
 
     //Destructor
     ~GameSurfacesManager();
