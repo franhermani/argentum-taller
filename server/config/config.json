@@ -48,8 +48,8 @@
       },
       "attack": {
         "no_weapon_eq": {
-          "c1": 1,
-          "c2": 2
+          "c1": 5,
+          "c2": 10
         }
       },
       "defense": {
@@ -101,7 +101,7 @@
       },
       "goblin": {
         "quantity": 3,
-        "max_life": 100,
+        "max_life": 50,
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 5,
@@ -112,7 +112,7 @@
       },
       "skeleton": {
         "quantity": 3,
-        "max_life": 200,
+        "max_life": 50,
         "min_defense": 7,
         "max_defense": 12,
         "min_attack": 8,
@@ -123,7 +123,7 @@
       },
       "zombie": {
         "quantity": 3,
-        "max_life": 250,
+        "max_life": 40,
         "min_defense": 3,
         "max_defense": 8,
         "min_attack": 2,
@@ -134,7 +134,7 @@
       },
       "spider": {
         "quantity": 3,
-        "max_life": 150,
+        "max_life": 80,
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 10,
