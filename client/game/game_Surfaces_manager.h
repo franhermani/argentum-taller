@@ -17,7 +17,7 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
-    std::map<int, Surface *> floorItemSurfacesMap;
+    std::map<int, Surface *> itemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
     Surface* goldSurface;
     Surface* gameFrameSurface;
@@ -25,7 +25,7 @@ class GameSurfacesManager {
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
-    std::map<int, std::string> floorItemSurfacesPaths;
+    std::map<int, std::string> itemSurfacesPaths;
     std::vector<std::vector<Terrain>> floor;
     SDLWindow& window;
 

@@ -16,7 +16,7 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto const& surface : infoSurfacesMap) {
         delete surface.second;
     }
-    for (auto const& surface : floorItemSurfacesMap) {
+    for (auto const& surface : itemSurfacesMap) {
         delete surface.second;
     }
     for (auto const& orientations : creatureSurfacesMap) {
@@ -109,11 +109,11 @@ void GameSurfacesManager::createNecessaryNpcs(std::vector<npc_t>& npcs) {
 
 void GameSurfacesManager::createNecessaryFrameItems(std::vector<uint8_t>& items) {
     for (auto& type: items) {
-        if ((type != NO_ITEM_EQUIPPED) && (floorItemSurfacesMap.find(type)
-            == floorItemSurfacesMap.end())) {
+        if ((type != NO_ITEM_EQUIPPED) && (itemSurfacesMap.find(type)
+            == itemSurfacesMap.end())) {
             Surface* surface = new Surface(
-                    floorItemSurfacesPaths[type], window, 1);
-            floorItemSurfacesMap.insert({type, surface});
+                    itemSurfacesPaths[type], window, 1);
+            itemSurfacesMap.insert({type, surface});
         }
     }
 }
@@ -122,11 +122,11 @@ void GameSurfacesManager::createNecessaryFrameItems(std::vector<uint8_t>& items)
 void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
     for (auto& item: items) {
         int type = item.type;
-        if (floorItemSurfacesMap.find(type)
-            == floorItemSurfacesMap.end()) {
+        if (itemSurfacesMap.find(type)
+            == itemSurfacesMap.end()) {
             Surface* surface = new Surface(
-                    floorItemSurfacesPaths[type], window, 1);
-            floorItemSurfacesMap.insert({type, surface});
+                    itemSurfacesPaths[type], window, 1);
+            itemSurfacesMap.insert({type, surface});
         }
     }
 }
@@ -261,7 +261,7 @@ void GameSurfacesManager::loadPlayerPaths() {
 }
 
 void GameSurfacesManager::loadItemPaths() {
-    floorItemSurfacesPaths = {
+    itemSurfacesPaths = {
             {ESPADA, "../client/resources/images/espada_t.png"},
             {HACHA, "../client/resources/images/hacha_t.png"},
             {MARTILLO, "../client/resources/images/martillo_t.png"},
