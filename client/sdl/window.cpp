@@ -6,6 +6,7 @@
 #include "../sdl/exception.h"
 #define INVENTORY_MAX_TILES_WIDTH 2
 #define INVENTORY_MAX_TILES_HEIGHT 5
+#define EQUIPPED_MAX_TILES_WIDTH 4
 #define LIST_MAX_TILES_WIDTH 10
 
 SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
@@ -116,7 +117,7 @@ void SDLWindow::renderEquipped(player_t& player,
                               std::map<int, Surface*>& surfaces_map) {
     game_area_t& equipped_area = measurements.equipped;
     int equipped_width = (equipped_area.x_pixel_end -
-            equipped_area.x_pixel_begin) / 4;
+            equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
     SDL_Rect stretchRect;
     stretchRect.x = equipped_area.x_pixel_begin;
     stretchRect.y = equipped_area.y_pixel_begin;
