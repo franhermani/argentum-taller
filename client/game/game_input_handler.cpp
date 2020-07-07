@@ -54,7 +54,7 @@ void GameInputHandler::play() {
                     } else if (key == SDLK_h) {
                         command = handleHeal();
                     } else if (key == SDLK_l) {
-                        handleList();
+                        command = handleList();
                     } else if (key == SDLK_m) {
                         command = new MeditateCommandDTO();
                     } else if (key == SDLK_r) {
@@ -67,17 +67,9 @@ void GameInputHandler::play() {
                                                            priest_position[1]);
                         }
                     } else if (key == SDLK_t) {
-                        try {
-                            std::vector<int> item_pos = mapMonitor.getItemLookingAt();
-                            new TakeCommandDTO(0, item_pos[0], item_pos[1]);
-                        }
-                        catch (MapException& e) {
-                            continue;
-                        }
+                        command = handleTake();
                     } else if (key == SDLK_y) {
-                        waitForLeftClick(x, y);
-                            command = new ThrowCommandDTO(
-                                    gameRender->getInventoryItemByPosition(x, y));
+                        command = handleThrow();
                     } else if (key == SDLK_e) {
                         command = handleEquip();
                     } else if (key == SDLK_d) {
@@ -148,9 +140,19 @@ void GameInputHandler::play() {
         std::cout << e.what() << std::endl;
     }
 }
+CommandDTO* GameInputHandler::handleThrow() {
+    int x,y;
+    waitForLeftClick(x, y);
+    return new ThrowCommandDTO(
+            gameRender->getInventoryItemByPosition(x, y));
+}
 
+CommandDTO* GameInputHandler::handleTake() {
+    std::vector<int> item_pos = mapMonitor.getItemLookingAt();
+    return new TakeCommandDTO(0, item_pos[0], item_pos[1]);
+}
 
-    CommandDTO* GameInputHandler::handleList() {
+CommandDTO* GameInputHandler::handleList() {
     std::vector<int> npc_position =
             mapMonitor.getNpcLookingAt();
     return new ListCommandDTO(npc_position[0], npc_position[1]);

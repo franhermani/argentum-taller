@@ -21,6 +21,9 @@ class GameInputHandler : public Thread {
     CommandDTO* handleEquip();
     CommandDTO* handleHeal();
     CommandDTO* handleList();
+    CommandDTO* handleTake();
+    CommandDTO* handleThrow();
+
 
 public:
     // Constructor
