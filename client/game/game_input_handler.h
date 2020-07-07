@@ -17,6 +17,11 @@ class GameInputHandler : public Thread {
 
     void waitForLeftClick(int &x, int &y);
 
+
+    CommandDTO* handleEquip();
+    CommandDTO* handleHeal();
+    CommandDTO* handleList();
+
 public:
     // Constructor
     GameInputHandler(BlockingQueue<CommandDTO *> &commandQueue,
@@ -42,8 +47,6 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead() override;
-
-    CommandDTO* handleEquip();
 };
 
 #endif // GAME_INPUT_HANDLER_H

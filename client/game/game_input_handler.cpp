@@ -52,19 +52,9 @@ void GameInputHandler::play() {
                     } else if (key == SDLK_a) {
                         command = new AttackCommandDTO();
                     } else if (key == SDLK_h) {
-                        std::vector<int> priest_position =
-                                mapMonitor.getPriestLookingAt();
-                        if (priest_position[0] == -1) continue;
-                        command = new HealCommandDTO(priest_position[0],
-                                                     priest_position[1]);
+                        command = handleHeal();
                     } else if (key == SDLK_l) {
-                        try {
-                            std::vector<int> npc_position =
-                                    mapMonitor.getNpcLookingAt();
-                            command = new ListCommandDTO(npc_position[0], npc_position[1]);
-                        } catch (MapException &e) {
-                            continue;
-                        }
+                        handleList();
                     } else if (key == SDLK_m) {
                         command = new MeditateCommandDTO();
                     } else if (key == SDLK_r) {
@@ -144,6 +134,8 @@ void GameInputHandler::play() {
                 }
                 catch (ItemException& e) {
                     continue;
+                } catch (MapException& e) {
+                    continue;
                 }
             } else if (event.type == SDL_QUIT) {
                 running = false;
@@ -155,6 +147,19 @@ void GameInputHandler::play() {
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
+}
+
+
+    CommandDTO* GameInputHandler::handleList() {
+    std::vector<int> npc_position =
+            mapMonitor.getNpcLookingAt();
+    return new ListCommandDTO(npc_position[0], npc_position[1]);
+}
+CommandDTO* GameInputHandler::handleHeal() {
+    std::vector<int> priest_position =
+            mapMonitor.getPriestLookingAt();
+    return new HealCommandDTO(priest_position[0],
+                                 priest_position[1]);
 }
 
 CommandDTO* GameInputHandler::handleEquip() {

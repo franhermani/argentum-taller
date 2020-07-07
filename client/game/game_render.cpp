@@ -170,7 +170,7 @@ void GameRender::run() {
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {
-    size_t inventory_length = current_world.player_info.inventory.length;
+    int inventory_length = current_world.player_info.inventory.length;
     int position = window.getRenderedItemIndexByPosition(x, y, inventory_length);
     if (position < 0) throw ItemException(
             "El inventario no tiene items en la posicion clickeada");
