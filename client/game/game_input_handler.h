@@ -23,6 +23,8 @@ class GameInputHandler : public Thread {
     CommandDTO* handleList();
     CommandDTO* handleTake();
     CommandDTO* handleThrow();
+    CommandDTO* handleRevive();
+    CommandDTO* handleDeposit();
 
 
 public:
