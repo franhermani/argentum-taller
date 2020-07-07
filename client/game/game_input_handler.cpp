@@ -213,10 +213,3 @@ void GameInputHandler::run() {
     play();
 }
 
-void GameInputHandler::stop() {
-    keepRunning = false;
-}
-
-bool GameInputHandler::isDead() {
-    return (! isRunning);
-}
