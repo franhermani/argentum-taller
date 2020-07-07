@@ -186,15 +186,15 @@ int GameRender::getInventoryItemByPosition(int x, int y) {
 
 
 int GameRender::getListItemByPosition(int x, int y) {
-    //TODO cuando se reciba la lista del npc, reemplazar numeros magicos
+    //TODO cuando se reciba la lista de items de banquero/merchanat descomentar
     //size_t inventory_length = current_world.player_info.list.length;
-    int position = window.getRenderedListIndexByPosition(x, y, 7);
+    /*int position = window.getRenderedListIndexByPosition(x, y, inventory_length);
     if (position < 0) throw ItemException(
                 "la lista no tiene items en la posicion clickeada");
-    /*if (current_world.player_info.inventory.length < position) throw
-                ItemException("la lista ya no tiene ese item");*/
-    std::cout << "\n\nESTA ES LA POSITION DE list" << position;
+    if (current_world.player_info.inventory.length < position) throw
+                ItemException("la lista ya no tiene ese item");
     //return current_world.player_info.inventory.items[position];
+     */
     return 1;
 }
 
