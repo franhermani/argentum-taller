@@ -17,6 +17,8 @@
 #include "../../common/defines/items.h"
 #include "exception.h"
 #include "../sdl/exception.h"
+#define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
+#define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor) :
@@ -137,29 +139,15 @@ std::map<int, float> GameRender::getRenderablePlayerInfo() {
 }
 
 void GameRender::run() {
+    using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
-    std::this_thread::sleep_for(ms(500));
+    std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     window.setTilesSize(blocksWidth,blocksHeight);
     window.renderGameFrame(surfacesManager.createGameFrameSurface());
-
-    std::vector<Surface*> inventory_items =
-            {new Surface("../client/resources/images/pocion_mana_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/armadura_cuero_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/pocion_mana_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/arco_compuesto_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/pocion_mana_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/escudo_tortuga_t.png",
-                         window, 0),
-             new Surface("../client/resources/images/capucha_t.png",
-                         window, 0)};
     while (keepRunning) {
+        auto start = clock::now();
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
         renderPlayers(current_world.players);
@@ -174,25 +162,28 @@ void GameRender::run() {
         window.renderPlayerInfo(getRenderablePlayerInfo(),
                                 surfacesManager.infoSurfacesMap);
         window.UpdateWindowSurface();
-        std::this_thread::sleep_for(ms(10));
+        auto end = clock::now();
+        auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
+        auto time_to_sleep = WAIT_TIME_FOR_WORLD_TO_UPDATE - elapsed;
+        std::this_thread::sleep_for(ms(time_to_sleep));
     }
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {
-    //size_t inventory_length = current_world.player_info.inventory.length;
-    int position = window.getRenderedItemIndexByPosition(x, y, 7);
+    size_t inventory_length = current_world.player_info.inventory.length;
+    int position = window.getRenderedItemIndexByPosition(x, y, inventory_length);
     if (position < 0) throw ItemException(
             "El inventario no tiene items en la posicion clickeada");
-    /*if (current_world.player_info.inventory.length < position) throw
-            ItemException("El inventario ya no tiene ese item");*/
+    if (current_world.player_info.inventory.length < position) throw
+            ItemException("El inventario ya no tiene ese item");
     std::cout << "\n\nESTA ES LA POSITION DE INVENTARIO" << position;
 
-//    return current_world.player_info.inventory.items[position];
-    return 1;
+    return current_world.player_info.inventory.items[position];
 }
 
 
 int GameRender::getListItemByPosition(int x, int y) {
+    //TODO cuando se reciba la lista del npc, reemplazar numeros magicos
     //size_t inventory_length = current_world.player_info.list.length;
     int position = window.getRenderedListIndexByPosition(x, y, 7);
     if (position < 0) throw ItemException(
