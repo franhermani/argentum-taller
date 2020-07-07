@@ -27,14 +27,15 @@ class SDLWindow {
     SDL_Rect gameFrameStaticRect;
     SDL_Rect inventoryGoldStaticRect;
     SDL_Rect listGoldStaticRect;
-    /*
-    SDL_Rect inventoryStaticArea;
-    SDL_Rect inventoryGoldStaticArea;
-    SDL_Rect listStaticArea;
-    SDL_Rect listGoldStaticArea;
-    SDL_Rect inventoryGoldStaticArea;
-    SDL_Rect inventoryGoldStaticArea;
-    SDL_Rect inventoryGoldStaticArea;*/
+
+    void renderExperience(std::map<int, float>& player_info,
+                          std::map<int, Surface *> info_surfaces_map);
+
+    void renderLife(std::map<int, float>& player_info,
+                          std::map<int, Surface *> info_surfaces_map);
+
+    void renderMana(std::map<int, float>& player_info,
+                          std::map<int, Surface *> info_surfaces_map);
 
 
 
