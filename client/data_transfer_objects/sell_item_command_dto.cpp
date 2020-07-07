@@ -33,7 +33,8 @@ const std::vector<char> SellItemCommandDTO::serialize() const {
     byte_msg[1] = arguments_size;
 
     // Argumentos
-    uint16_t item_type = htons(itemType), pos_x = htons(NPCPosX),
+    uint8_t item_type = itemType;
+    uint16_t pos_x = htons(NPCPosX),
              pos_y = htons(NPCPosY);
 
     memcpy(&byte_msg[2], &item_type, SIZE_8);
