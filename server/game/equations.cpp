@@ -3,7 +3,6 @@
 #include <cmath>
 #include <algorithm>
 #include <random>
-#include <iostream>
 #include "equations.h"
 #include "../../common/defines/races.h"
 #include "../../common/defines/classes.h"
@@ -224,19 +223,19 @@ const int Equations::eqDamageReceived(Creature &creature, const int damage) {
 
 std::vector<int> Equations::eqCreatureDeathDrop(Creature &creature) {
     std::vector<int> death_drop = {0,0};
-    
+
     json js = configParams["creatures"]["death_prob_eq"];
     std::vector<double> p = {js["nothing"]["p"], js["gold"]["p"],
                              js["potion"]["p"], js["other"]["p"]};
-    
+
     double c1 = js["gold"]["quantity_eq"]["c1"],
            c2 = js["gold"]["quantity_eq"]["c2"];
-    
+
     std::default_random_engine generator;
     std::discrete_distribution<int> dist = {p.begin(), p.end()};
-    
+
     int enum_drop = dist(generator), param_drop = 0;
-    
+
     switch (enum_drop) {
         case DROP_NOTHING:
             param_drop = 0;
@@ -253,8 +252,7 @@ std::vector<int> Equations::eqCreatureDeathDrop(Creature &creature) {
         default:
             break;
     }
-    std::cout << param_drop;
-    death_drop[0] = DROP_ITEM;
-    death_drop[1] = ESPADA;
+    death_drop[0] = enum_drop;
+    death_drop[1] = param_drop;
     return death_drop;
 }
