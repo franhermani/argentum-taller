@@ -89,9 +89,7 @@ void GameInputHandler::play() {
                             command = new ThrowCommandDTO(
                                     gameRender->getInventoryItemByPosition(x, y));
                     } else if (key == SDLK_e) {
-                        waitForLeftClick(x, y);
-                        command = new EquipCommandDTO(
-                                    gameRender->getInventoryItemByPosition(x, y));
+                        command = handleEquip();
                     } else if (key == SDLK_d) {
                         try {
                             waitForLeftClick(x, y);
@@ -157,6 +155,13 @@ void GameInputHandler::play() {
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
+}
+
+CommandDTO* GameInputHandler::handleEquip() {
+    int x,y;
+    waitForLeftClick(x, y);
+    return new EquipCommandDTO(
+            gameRender->getInventoryItemByPosition(x, y));
 }
 
 void GameInputHandler::waitForLeftClick(int& x, int& y) {

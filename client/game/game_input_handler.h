@@ -9,20 +9,25 @@
 #include "game_render.h"
 
 class GameInputHandler : public Thread {
-    BlockingQueue<CommandDTO*>& commandQueue;
-    MapMonitor& mapMonitor;
-    GameRender* gameRender;
+    BlockingQueue<CommandDTO *> &commandQueue;
+    MapMonitor &mapMonitor;
+    GameRender *gameRender;
+
+    int isLeftClick(SDL_Event &event);
+
+    void waitForLeftClick(int &x, int &y);
 
 public:
     // Constructor
-    GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
-            MapMonitor& mapMonitor, GameRender* gameRender);
+    GameInputHandler(BlockingQueue<CommandDTO *> &commandQueue,
+                     MapMonitor &mapMonitor, GameRender *gameRender);
 
     // Destructor
     ~GameInputHandler();
 
     // Constructor y asignacion por copia deshabilitados
     GameInputHandler(const GameInputHandler &) = delete;
+
     GameInputHandler &operator=(const GameInputHandler &) = delete;
 
     //ciclo de interaccion con teclado
@@ -38,9 +43,7 @@ public:
     // false en caso contrario
     bool isDead() override;
 
-    int isLeftClick(SDL_Event& event);
-
-    void waitForLeftClick(int& x, int& y);
-    };
+    CommandDTO* handleEquip();
+};
 
 #endif // GAME_INPUT_HANDLER_H
