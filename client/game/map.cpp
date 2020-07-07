@@ -139,7 +139,7 @@ std::vector<player_t> Map::getRenderablePlayers() {
     // nos quedamos con los jugadores que esten
     //dentro del rango de vision del principal
     for (auto& player: world.players) {
-        if (betweenPlayerBorders(player.pos_x, player.pos_y)) {
+        if (not betweenPlayerBorders(player.pos_x, player.pos_y)) {
             continue;
         } else {
             player_t converted_player = player;
@@ -160,8 +160,8 @@ int Map::betweenPlayerBorders(int pos_x, int pos_y) {
     y_start = getPlayerYStart(main_player);
     x_finish = getPlayerXEnd(main_player);
     y_finish = getPlayerYEnd(main_player);
-    return ((pos_x < x_start) &&  (pos_x > x_finish)
-    && (pos_y < y_start) && (pos_y > y_finish));
+    return ((pos_x >= x_start) &&  (pos_x < x_finish)
+    && (pos_y >= y_start) && (pos_y < y_finish));
 }
 
 
@@ -187,7 +187,7 @@ std::vector<npc_t> Map::getRenderableNpcs() {
     // nos quedamos con los jugadores que esten
     //dentro del rango de vision del principal
     for (auto& npc: npcs.npcs) {
-        if (betweenPlayerBorders(npc.pos_x, npc.pos_y)) {
+        if (not betweenPlayerBorders(npc.pos_x, npc.pos_y)) {
             continue;
         } else {
             npc_t converted_npc = npc;
@@ -214,7 +214,7 @@ std::vector<creature_t> Map::getRenderableCreatures() {
     // nos quedamos con las criaturas que esten
     //dentro del rango de vision del principal
     for (auto& creature: world.creatures) {
-        if (betweenPlayerBorders(creature.pos_x, creature.pos_y)) {
+        if (not betweenPlayerBorders(creature.pos_x, creature.pos_y)) {
             continue;
         } else {
             creature_t converted_creature = creature;
@@ -235,7 +235,7 @@ std::vector<gold_t> Map::getRenderableGolds() {
     // nos quedamos con los items que esten
     //dentro del rango de vision del principal
     for (auto& gold: world.golds) {
-        if (betweenPlayerBorders(gold.pos_x, gold.pos_y)) {
+        if (not betweenPlayerBorders(gold.pos_x, gold.pos_y)) {
             continue;
         } else {
             gold_t converted_gold = gold;
@@ -257,7 +257,7 @@ std::vector<item_t> Map::getRenderableItems() {
     // nos quedamos con los items que esten
     //dentro del rango de vision del principal
     for (auto& item: world.items) {
-        if (betweenPlayerBorders(item.pos_x, item.pos_y)) {
+        if (not betweenPlayerBorders(item.pos_x, item.pos_y)) {
             continue;
         } else {
             item_t converted_item = item;
