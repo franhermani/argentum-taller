@@ -22,6 +22,12 @@ void Map::updateWorld(world_t receivedWorld) {
     world.creatures = std::move(receivedWorld.creatures);
     world.num_creatures = std::move(receivedWorld.num_creatures);
     world.items = std::move(receivedWorld.items);
+    world.num_items = std::move(receivedWorld.num_items);
+    world.attacks = std::move(receivedWorld.attacks);
+    world.num_attacks = std::move(receivedWorld.num_attacks);
+    world.golds = std::move(receivedWorld.golds);
+    world.num_golds = std::move(receivedWorld.num_golds);
+
     //el resto falta recibirlo
 }
 
