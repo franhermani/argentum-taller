@@ -4,6 +4,9 @@
 #include <iostream>
 #include "window.h"
 #include "../sdl/exception.h"
+#define INVENTORY_MAX_TILES_WIDTH 2
+#define INVENTORY_MAX_TILES_HEIGHT 5
+#define LIST_MAX_TILES_WIDTH 10
 
 SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
                 screenHeight(screenHeight), screenWidth(screenWidth),
@@ -152,7 +155,6 @@ void SDLWindow::renderGameFrame(Surface* surface) {
 void SDLWindow::renderInventoryGolds(Surface* surface) {
     game_area_t& gold_area = measurements.inventoryGold;
     int x,y, w, h;
-    //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
     w = (gold_area.x_pixel_end-gold_area.x_pixel_begin);
     h = (gold_area.y_pixel_end-gold_area.y_pixel_begin);
     x = gold_area.x_pixel_begin;
@@ -171,7 +173,6 @@ void SDLWindow::renderListGold(Surface* surface) {
     //todo codigo repetido los 2 golds juntar?
     game_area_t& gold_area = measurements.listGold;
     int x,y, w, h;
-    //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
     w = (gold_area.x_pixel_end-gold_area.x_pixel_begin);
     h = (gold_area.y_pixel_end-gold_area.y_pixel_begin);
     x = gold_area.x_pixel_begin;
@@ -191,8 +192,8 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
     game_area_t& inventory_area = measurements.inventory;
     int x,y, w, h;
     //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
-    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/2;
-    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/5;
+    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/INVENTORY_MAX_TILES_WIDTH;
+    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/INVENTORY_MAX_TILES_HEIGHT;
     x = inventory_area.x_pixel_begin;
     y = inventory_area.y_pixel_begin;
     int surfaces_size = inventory.size();
@@ -279,8 +280,7 @@ void SDLWindow::renderPlayerInfo(std::map<int, float> player_info,
 void SDLWindow::renderList(std::vector<Surface*>& surfaces) {
     game_area_t& list_area = measurements.list;
     int x,y, w, h;
-    //TODO 10 es el maximo de items en la lista , sacar AFUERA A CONSTANTES
-    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/10;
+    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/LIST_MAX_TILES_WIDTH;
     h = w;
     x = list_area.x_pixel_begin;
     y = list_area.y_pixel_begin;
@@ -309,8 +309,8 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
         int yClicked, size_t inventory_length) {
     game_area_t& inventory_area = measurements.inventory;
     int x,y, w, h;
-    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/2;
-    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/5;
+    w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/INVENTORY_MAX_TILES_WIDTH;
+    h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/INVENTORY_MAX_TILES_HEIGHT;
     x = inventory_area.x_pixel_begin;
     y = inventory_area.y_pixel_begin;
     size_t current_index = 0;
@@ -339,8 +339,7 @@ int SDLWindow::getRenderedListIndexByPosition(int xClicked,
     //codigo repetido con render list, sacarlo afuera
     game_area_t& list_area = measurements.list;
     int x,y, w, h;
-    //TODO 10 es el maximo de items en la lista , sacar AFUERA A CONSTANTES
-    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/10;
+    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/LIST_MAX_TILES_WIDTH;
     h = w;
     x = list_area.x_pixel_begin;
     y = list_area.y_pixel_begin;
