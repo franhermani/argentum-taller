@@ -305,8 +305,8 @@ void Player::heal() {
         throw GameException(id, "Eres un fantasma. No puedes curarte "
                                 "antes de revivir");
 
-    actualLife = maxLife;
-    actualMana = maxMana;
+    addLife(maxLife);
+    addMana(maxMana);
 }
 
 void Player::shortTermRevive() {
@@ -315,7 +315,7 @@ void Player::shortTermRevive() {
     if (! isDead())
         throw GameException(id, "No eres un fantasma. No puedes revivir");
 
-    actualLife = maxLife;
+    addLife(maxLife);
     isAlive = true;
     isReviving = false;
 }
