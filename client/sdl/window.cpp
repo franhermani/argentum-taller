@@ -14,7 +14,6 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
-    setTilesSize(9, 9);
 }
 
 SDLWindow::~SDLWindow() {
