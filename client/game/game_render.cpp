@@ -27,6 +27,7 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
                        window(screenWidth, screenHeight), surfacesManager(window) {
     init();
     surfacesManager.loadSurfacePaths();
+    keepRunning = true;
 }
 
 GameRender::~GameRender() {
