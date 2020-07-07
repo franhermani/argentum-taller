@@ -32,7 +32,6 @@ void GameInputHandler::play() {
         while (running) {
             SDL_Event event;
             SDL_WaitEvent(&event);
-            int x, y;
             CommandDTO *command;
             if (event.type == SDL_KEYDOWN) {
                 auto &keyEvent = (SDL_KeyboardEvent &) event;
@@ -72,15 +71,7 @@ void GameInputHandler::play() {
                     } else if (key == SDLK_s) {
                         command = handleSell();
                     } else if (key == SDLK_b) {
-                        try {
-                            waitForLeftClick(x, y);
-                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
-                            if (gameRender->isClickingListItems(x, y))
-                                command = new BuyItemCommandDTO(gameRender->getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
-                            else continue;
-                        } catch (MapException& e) {
-                            continue;
-                        }
+                        command = handleBuy();
                     } else {
                         continue;
                     }
