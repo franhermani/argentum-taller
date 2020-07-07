@@ -66,40 +66,11 @@ void GameInputHandler::play() {
                     } else if (key == SDLK_e) {
                         command = handleEquip();
                     } else if (key == SDLK_d) {
-                        try {
-                            waitForLeftClick(x, y);
-                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
-                            if (gameRender->isClickingInventoryItems(x, y))
-                                command = new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), npc_pos[0], npc_pos[1]);
-                            else if (gameRender->isClickingInventoryGold(x, y))
-                                command = new DepositGoldCommandDTO(1, npc_pos[0], npc_pos[1]);
-                            else continue;
-                        } catch (MapException& e) {
-                            continue;
-                        }
+                        command = handleDeposit();
                     } else if (key == SDLK_w) {
-                        try {
-                            waitForLeftClick(x, y);
-                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
-                            if (gameRender->isClickingListItems(x, y))
-                                command = new WithdrawItemCommandDTO(gameRender->getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
-                            else if (gameRender->isClickingListGold(x, y))
-                                command = new WithdrawGoldCommandDTO(1, npc_pos[0], npc_pos[1]);
-                            else continue;
-                        } catch (MapException& e) {
-                            std::cout << e.what();
-                            continue;
-                        }
+                        command = handleWithdraw();
                     } else if (key == SDLK_s) {
-                        try {
-                            waitForLeftClick(x, y);
-                            std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
-                            if (gameRender->isClickingInventoryItems(x, y))
-                                command = new SellItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), npc_pos[0], npc_pos[1]);
-                            else continue;
-                        } catch (MapException& e) {
-                            continue;
-                        }
+                        command = handleSell();
                     } else if (key == SDLK_b) {
                         try {
                             waitForLeftClick(x, y);
@@ -121,6 +92,8 @@ void GameInputHandler::play() {
                     continue;
                 } catch (MapException& e) {
                     continue;
+                } catch(CommandCreationException& e) {
+                    continue;
                 }
             } else if (event.type == SDL_QUIT) {
                 running = false;
@@ -134,15 +107,51 @@ void GameInputHandler::play() {
     }
 }
 
+CommandDTO* GameInputHandler::handleBuy() {
+    int x,y;
+    waitForLeftClick(x, y);
+    std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
+    if (gameRender->isClickingListItems(x, y))
+        return new BuyItemCommandDTO(gameRender->getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
+    else throw CommandCreationException(
+                "No se dieron las condiciones para la creacion del comando Buy");
+}
+
+CommandDTO* GameInputHandler::handleSell() {
+    int x,y;
+    waitForLeftClick(x, y);
+    std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
+    if (gameRender->isClickingInventoryItems(x, y))
+        return new SellItemCommandDTO(gameRender->getInventoryItemByPosition(x, y),
+                npc_pos[0], npc_pos[1]);
+    else throw CommandCreationException(
+                "No se dieron las condiciones para la creacion del comando Sell");
+}
+
+CommandDTO* GameInputHandler::handleWithdraw() {
+    int x,y;
+    waitForLeftClick(x, y);
+    std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
+    if (gameRender->isClickingListItems(x, y))
+        return new WithdrawItemCommandDTO(gameRender->
+            getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
+    else if (gameRender->isClickingListGold(x, y))
+        return new WithdrawGoldCommandDTO(1, npc_pos[0], npc_pos[1]);
+    else throw CommandCreationException(
+            "No se dieron las condiciones para la creacion del comando withdraw");
+}
+
 CommandDTO* GameInputHandler::handleDeposit() {
     int x,y;
     waitForLeftClick(x, y);
-        std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
-        if (gameRender->isClickingInventoryItems(x, y))
-            return new DepositItemCommandDTO(gameRender->getInventoryItemByPosition(x, y), npc_pos[0], npc_pos[1]);
-        else if (gameRender->isClickingInventoryGold(x, y))
-            return new DepositGoldCommandDTO(1, npc_pos[0], npc_pos[1]);
-        else throw ItemException("Se debe clickear en item a depositar");
+    std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
+    if (gameRender->isClickingInventoryItems(x, y))
+        return new DepositItemCommandDTO(gameRender->
+        getInventoryItemByPosition(x, y), npc_pos[0], npc_pos[1]);
+    else if (gameRender->isClickingInventoryGold(x, y))
+        return new DepositGoldCommandDTO(1, npc_pos[0], npc_pos[1]);
+    else throw CommandCreationException(
+            "No se dieron las condiciones para la creacion del comando deposit");
 }
 
 CommandDTO* GameInputHandler::handleRevive() {

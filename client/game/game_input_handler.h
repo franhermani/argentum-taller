@@ -25,6 +25,9 @@ class GameInputHandler : public Thread {
     CommandDTO* handleThrow();
     CommandDTO* handleRevive();
     CommandDTO* handleDeposit();
+    CommandDTO* handleSell();
+    CommandDTO* handleWithdraw();
+    CommandDTO* handleBuy();
 
 
 public:
