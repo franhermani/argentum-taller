@@ -89,6 +89,13 @@ typedef struct {
 } player_info_t;
 
 typedef struct {
+    uint16_t life;                  // Porcentaje de vida
+    uint16_t mana;                  // Porcentaje de mana
+    uint16_t experience;            // Porcentaje de experiencia
+} player_percentages_t;
+
+
+typedef struct {
     uint16_t length;                    // Longitud total del mensaje
     player_info_t player_info;          // Info del player del cliente
     uint16_t num_players;               // Cantidad de players en 'players'

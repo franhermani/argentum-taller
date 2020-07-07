@@ -57,7 +57,10 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     }
 }
 
-
+void GameRender::renderPlayerInfo(std::map<int,float>& percentages) {
+    window.renderPlayerInfo(current_world.percentages,
+                            surfacesManager.infoSurfacesMap);
+}
 
 
 void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
@@ -124,19 +127,6 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
-std::map<int, float> GameRender::getRenderablePlayerInfo() {
-    std::map<int, float> playerInfo = {
-            //TODO QUE ESTO LO HAGA EL MAP!
-            //TODO RECIBIR EXPERIENCE max
-            {LIFE, ((float) current_world.main_player.actual_life)/
-                            current_world.main_player.max_life},
-            {MANA, ((float) current_world.player_info.actual_mana)/
-                            current_world.player_info.max_mana},
-            {EXPERIENCE, ((float) current_world.player_info.actual_experience)/
-                            current_world.player_info.actual_experience}
-    };
-    return std::move(playerInfo);
-}
 
 void GameRender::run() {
     using clock = std::chrono::system_clock;
@@ -157,10 +147,9 @@ void GameRender::run() {
         renderInventoryGolds(current_world.golds);
         renderEquipped(current_world.main_player);
         renderItems(current_world.items);
+        renderPlayerInfo(current_world.percentages);
         //renderList();
         //window.renderListGold();
-        window.renderPlayerInfo(getRenderablePlayerInfo(),
-                                surfacesManager.infoSurfacesMap);
         window.UpdateWindowSurface();
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
