@@ -8,7 +8,7 @@
 #include "map_monitor.h"
 #include "game_render.h"
 
-class GameInputHandler : public Thread {
+class GameInputHandler {
     BlockingQueue<CommandDTO *> &commandQueue;
     MapMonitor &mapMonitor;
     GameRender *gameRender;
@@ -49,14 +49,14 @@ public:
     void play();
 
     // Inicializa los thread sender y receiver
-    void run() override;
+    void run();
 
     // Setea la variable booleana 'keepRunning' en false
-    void stop() override;
+    void stop();
 
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
-    bool isDead() override;
+    bool isDead();
 };
 
 #endif // GAME_INPUT_HANDLER_H
