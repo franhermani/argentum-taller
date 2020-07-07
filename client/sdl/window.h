@@ -19,8 +19,8 @@ class SDL_Surface;
 class SDL_Renderer;
 
 class SDLWindow {
-    int screenHeight;
-    int screenWidth;
+    const int screenHeight;
+    const int screenWidth;
     SDL_Window *window;
     SDL_Renderer *renderer;
     WindowMeasurements measurements;
