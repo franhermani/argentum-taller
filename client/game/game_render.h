@@ -55,9 +55,10 @@ public:
     void renderEquipped(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
     void renderInventoryGolds(std::vector<gold_t>& golds);
+    void renderGameFrame();
 
 
-        //Inicializador de SDL
+    //Inicializador de SDL
     int init();
     //setea cantidad de bloques recibida por server
     void setTilesSize(int width, int height);
