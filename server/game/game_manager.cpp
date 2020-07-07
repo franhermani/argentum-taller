@@ -50,7 +50,12 @@ void GameManager::run() {
                 break;
             }
         }
-        worldMonitor.update(ms_per_update);
+        try {
+            worldMonitor.update(ms_per_update);
+        } catch (GameException& e) {
+            std::string message(e.what());
+            messagesQueuePerPlayer[e.getPlayerId()].push(message);
+        }
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = ms_per_update - elapsed;

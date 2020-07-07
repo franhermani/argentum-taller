@@ -459,4 +459,7 @@ void ServerProtocol::sendGameMessage(const std::string& message) {
     memcpy(byte_msg.data() + SIZE_8, msg.data(), msg.size());
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
+
+    if (debug)
+        std::cout << message << "\n";
 }
