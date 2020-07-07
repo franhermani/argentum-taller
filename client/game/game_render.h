@@ -51,6 +51,7 @@ public:
     void renderCreatures(std::vector<creature_t>& creatures);
     void renderPlayerInfo(std::map<int,float>& percentages);
     void renderItems(std::vector<item_t>& items);
+    void renderGolds(std::vector<gold_t> &golds);
     void renderEquipped(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
     void renderInventoryGolds(std::vector<gold_t>& golds);
