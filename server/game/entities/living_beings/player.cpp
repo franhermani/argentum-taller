@@ -214,16 +214,26 @@ void Player::equipWeapon(Weapon* new_weapon) {
         throw GameException(id, "Eres un guerrero. No puedes utilizar "
                                 "armas magicas");
     }
-    if (weapon)
-        inventory.addItem(weapon);
-
+    if (weapon) {
+        try {
+            inventory.addItem(weapon);
+        } catch (GameException& e) {
+            weapon->updatePosition(posX, posY);
+            world.addItem(weapon);
+        }
+    }
     weapon = new_weapon;
 }
 
 void Player::equipArmor(Armor* new_armor) {
-    if (armor)
-        inventory.addItem(armor);
-
+    if (armor) {
+        try {
+            inventory.addItem(armor);
+        } catch (GameException& e) {
+            armor->updatePosition(posX, posY);
+            world.addItem(armor);
+        }
+    }
     armor = new_armor;
 }
 
@@ -233,16 +243,26 @@ void Player::equipHelmet(Helmet* new_helmet) {
         throw GameException(id, "Eres un guerrero. No puedes utilizar "
                                 "cascos magicos");
     }
-    if (helmet)
-        inventory.addItem(helmet);
-
+    if (helmet) {
+        try {
+            inventory.addItem(helmet);
+        } catch (GameException& e) {
+            helmet->updatePosition(posX, posY);
+            world.addItem(helmet);
+        }
+    }
     helmet = new_helmet;
 }
 
 void Player::equipShield(Shield* new_shield) {
-    if (shield)
-        inventory.addItem(shield);
-
+    if (shield) {
+        try {
+            inventory.addItem(shield);
+        } catch (GameException& e) {
+            shield->updatePosition(posX, posY);
+            world.addItem(shield);
+        }
+    }
     shield = new_shield;
 }
 
