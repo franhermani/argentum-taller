@@ -49,13 +49,13 @@ void GameInputHandler::play() {
                         running = false;
                         continue;
                     } else if (key == SDLK_a) {
-                        command = new AttackCommandDTO();
+                        command = handleAttack();
                     } else if (key == SDLK_h) {
                         command = handleHeal();
                     } else if (key == SDLK_l) {
                         command = handleList();
                     } else if (key == SDLK_m) {
-                        command = new MeditateCommandDTO();
+                        command = handleMeditate();
                     } else if (key == SDLK_r) {
                         command = handleRevive();
                     } else if (key == SDLK_t) {
@@ -106,6 +106,13 @@ CommandDTO* GameInputHandler::handleBuy() {
         return new BuyItemCommandDTO(gameRender->getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
     else throw CommandCreationException(
                 "No se dieron las condiciones para la creacion del comando Buy");
+}
+
+CommandDTO* GameInputHandler::handleAttack() {
+    return new AttackCommandDTO();
+}
+CommandDTO* GameInputHandler::handleMeditate() {
+    return new MeditateCommandDTO();
 }
 
 CommandDTO* GameInputHandler::handleSell() {

@@ -28,6 +28,8 @@ class GameInputHandler : public Thread {
     CommandDTO* handleSell();
     CommandDTO* handleWithdraw();
     CommandDTO* handleBuy();
+    CommandDTO* handleAttack();
+    CommandDTO* handleMeditate();
 
 
 public:
