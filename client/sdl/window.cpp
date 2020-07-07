@@ -191,7 +191,6 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
         std::map<int,Surface*>& surfaces) {
     game_area_t& inventory_area = measurements.inventory;
     int x,y, w, h;
-    //TODO EL 2 Y EL 5 SACAR AFUERA A CONSTANTES
     w = (inventory_area.x_pixel_end-inventory_area.x_pixel_begin)/INVENTORY_MAX_TILES_WIDTH;
     h = (inventory_area.y_pixel_end-inventory_area.y_pixel_begin)/INVENTORY_MAX_TILES_HEIGHT;
     x = inventory_area.x_pixel_begin;
@@ -208,7 +207,7 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
                        getSurface(), &stretchRect);
         y = y + h;
         current_index ++;
-        if (current_index == 5){
+        if (current_index == INVENTORY_MAX_TILES_HEIGHT){
             x = x + w;
             y = inventory_area.y_pixel_begin;
         }
@@ -325,7 +324,7 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
         y = y + h;
         current_index ++;
         //new column
-        if (current_index == 5){
+        if (current_index == INVENTORY_MAX_TILES_HEIGHT){
             x = x + w;
             y = inventory_area.y_pixel_begin;
         }
