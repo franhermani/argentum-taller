@@ -101,6 +101,14 @@ void GameRender::renderItems(std::vector<item_t> &items) {
     }
 }
 
+void GameRender::renderGolds(std::vector<gold_t> &golds) {
+    for (auto it = std::begin(golds);
+         it != std::end(golds); ++it) {
+        window.renderNpc(it->pos_x, it->pos_y,
+                         surfacesManager.goldSurface);
+    }
+}
+
 
 void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     surfacesManager.createNecessaryFrameItems(inventory);
@@ -117,8 +125,6 @@ void GameRender::renderInventoryGolds(std::vector<gold_t>& golds) {
         window.renderInventoryGolds(surfacesManager.goldSurface);
     }
 }
-
-
 
 
 void GameRender::setTilesSize(int width,int height) {
@@ -147,6 +153,7 @@ void GameRender::run() {
         renderInventoryGolds(current_world.golds);
         renderEquipped(current_world.main_player);
         renderItems(current_world.items);
+        renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages);
         //renderList();
         //window.renderListGold();
