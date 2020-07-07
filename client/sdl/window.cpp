@@ -48,7 +48,7 @@ SDL_PixelFormat* SDLWindow::getSurfaceFormat() const {
     return SDL_GetWindowSurface(window)->format;
 }
 
-void SDLWindow::renderNpc(int x, int y, Surface* character_surface) {
+void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
     game_area_t& frame_area = measurements.frame;
     SDL_Rect stretchRect;
     stretchRect.x = getXPixelPos(x);
