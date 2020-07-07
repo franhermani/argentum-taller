@@ -305,7 +305,7 @@ std::vector<int> Map::getPriestLookingAt() {
             and npcs.npcs[i].pos_y == looking_at[1])
             return std::move(looking_at);
     }
-    return std::move(std::vector<int> {-1, -1});
+    throw MapException("No se encontro priest");
 }
 
 
