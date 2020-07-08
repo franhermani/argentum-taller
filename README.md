@@ -32,35 +32,22 @@ clean.sh y make.sh nuevamente)*
 bash clean.sh
 ```
 
+### Ejecutar el servidor
+
+```
+cd build
+./server ../server/config/config.json
+```
+
+### Ejecutar el cliente
+
+```
+cd build
+./client localhost 8080
+```
+
 ### Verificar normas de codificación
 
 ```
 bash execute.sh
-```
-
-
-### Generar archivo de supresión
-
-Esto sirve para detectar los leaks que tiene la librería SDL y omitirlos
-en nuestras ejecuciones, así podemos ver realmente qué leaks son nuestros.
-
-Luego de compilar el proyecto, ejecutar dentro de la carpeta build:
-
-```
-valgrind --leak-check=full --show-reachable=yes --show-leak-kinds=all --gen-suppressions=all --log-file=minimal.log ./client
-```
-
-Esto genera la salida normal de Valgrind y la almacena en el archivo *minimal.log*
-
-Luego, ejecutar:
-
-```
-python3 ../parser.py minimal.log minimal.supp
-```
-
-Esto copia la salida anterior a un nuevo archivo. Ahora podemos ejecutar
-Valgrind filtrando los logs obtenidos:
-
-```
-valgrind --leak-check=full --show-leak-kinds=all --suppressions=minimal.supp ./client
 ```

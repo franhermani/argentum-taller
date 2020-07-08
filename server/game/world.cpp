@@ -1,10 +1,16 @@
+#include <map>
+#include <string>
 #include <random>
 #include <cstdlib>
 #include "world.h"
 #include "entities/npcs/priest.h"
+#include "game_exception.h"
 
-World::World(GameParams& params, ItemFactory& item_factory) :
-params(params), itemFactory(item_factory) {
+World::World(GameParams& params, ItemFactory& item_factory,
+        std::map<int,ProtectedQueue<std::string>>& messagesQueuePerPlayer) :
+params(params),
+itemFactory(item_factory),
+messagesQueuePerPlayer(messagesQueuePerPlayer) {
     json js;
     js = params.getWorldParams()["layers"][0];
     worldWidth = js["width"], worldHeight = js["height"];
@@ -78,7 +84,13 @@ void World::update(const int ms) {
 
     for (auto& attack : attacks) {
         attack->update(ms);
-        detectAttackCollision(attack);
+
+        try {
+            detectAttackCollision(attack);
+        } catch (GameException& e) {
+            std::string message(e.what());
+            messagesQueuePerPlayer[e.getPlayerId()].push(message);
+        }
     }
 }
 

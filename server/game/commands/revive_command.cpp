@@ -1,5 +1,5 @@
 #include "revive_command.h"
-#include "../entities/npcs/priest.h"
+#include "../world.h"
 
 ReviveCommand::ReviveCommand(Player& player) :
 player(player) {}
@@ -12,9 +12,8 @@ ReviveCommand::~ReviveCommand() = default;
 
 void ReviveCommand::execute(World& world) {
     if (priestPosX && priestPosY) {
-        auto* priest = dynamic_cast<Priest*>
-        (world.getNPCByPos(priestPosX, priestPosY));
-        priest->revive(player);
+        NPC* npc = world.getNPCByPos(priestPosX, priestPosY);
+        npc->revive(player);
     } else {
         player.longTermRevive();
     }

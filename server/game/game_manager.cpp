@@ -16,7 +16,7 @@ params(jsonParser.getConfigParams(config_file),
         jsonParser.getWorldParams(worldFile)),
 itemFactory(params.getConfigParams()["items"]),
 equations(params.getConfigParams()),
-world(params, itemFactory),
+world(params, itemFactory, messagesQueuePerPlayer),
 worldMonitor(world),
 msPerSend(params.getConfigParams()["ms_per_send"]) {
     keepRunning = true;
@@ -50,12 +50,7 @@ void GameManager::run() {
                 break;
             }
         }
-        try {
-            worldMonitor.update(ms_per_update);
-        } catch (GameException& e) {
-            std::string message(e.what());
-            messagesQueuePerPlayer[e.getPlayerId()].push(message);
-        }
+        worldMonitor.update(ms_per_update);
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = ms_per_update - elapsed;
