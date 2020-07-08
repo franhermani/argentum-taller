@@ -1,5 +1,5 @@
 #include "deposit_item_command.h"
-#include "../entities/npcs/banker.h"
+#include "../world.h"
 
 DepositItemCommand::DepositItemCommand(Player &player,
         const uint8_t item_type, const uint16_t banker_pos_x,

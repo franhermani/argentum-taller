@@ -1,5 +1,5 @@
 #include "sell_item_command.h"
-#include "../entities/npcs/banker.h"
+#include "../world.h"
 
 SellItemCommand::SellItemCommand(Player &player,
         const uint8_t item_type, const uint16_t npc_pos_x,

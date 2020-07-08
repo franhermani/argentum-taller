@@ -413,6 +413,7 @@ void Player::attack(Player& other) {
 
     int level_diff = std::max(level - other.level, other.level - level);
     int max_level_diff = world.getMaxLevelDiff();
+
     if (level_diff > max_level_diff)
         throw GameException(id, "No puedes atacar a un jugador con una "
                                 "diferencia de nivel mayor a %d",
@@ -427,6 +428,9 @@ void Player::attack(Player& other) {
 }
 
 void Player::attack(Creature &creature) {
+    if (creature.isDead())
+        return;
+
     int damage_caused = creature.receiveAttack(
             equations.eqDamageCaused(*this));
 

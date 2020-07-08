@@ -3,8 +3,6 @@
 
 #include <iostream>
 
-bool debug = false;
-
-
+bool debug = true;
 
 #endif // DEBUG_H

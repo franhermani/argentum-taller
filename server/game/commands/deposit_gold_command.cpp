@@ -1,5 +1,5 @@
 #include "deposit_gold_command.h"
-#include "../entities/npcs/banker.h"
+#include "../world.h"
 
 DepositGoldCommand::DepositGoldCommand(Player &player,
         const uint16_t quantity, const uint16_t banker_pos_x,

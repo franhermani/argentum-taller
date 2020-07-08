@@ -3,8 +3,11 @@
 
 #include <vector>
 #include <set>
+#include <map>
+#include <string>
 #include "params.h"
 #include "entities/items/item_factory.h"
+#include "../../common/protected_queue.h"
 #include "../../common/defines/terrains.h"
 #include "entities/living_beings/player.h"
 #include "entities/living_beings/creature.h"
@@ -15,6 +18,7 @@
 class World {
     GameParams& params;
     ItemFactory& itemFactory;
+    std::map<int, ProtectedQueue<std::string>>& messagesQueuePerPlayer;
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> entitiesImpenetrableTerrains;
     std::set<Terrain> attacksImpenetrableTerrains;
@@ -48,7 +52,8 @@ class World {
 
 public:
     // Constructor
-    explicit World(GameParams& params, ItemFactory& item_factory);
+    explicit World(GameParams& params, ItemFactory& item_factory,
+            std::map<int,ProtectedQueue<std::string>>& messagesQueuePerPlayer);
 
     // Constructor y asignacion por copia deshabilitados
     World(const World& other) = delete;

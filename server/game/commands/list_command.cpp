@@ -1,4 +1,5 @@
 #include "list_command.h"
+#include "../world.h"
 #include "../list_exception.h"
 
 ListCommand::ListCommand(Player& player, const uint16_t npc_pos_x,

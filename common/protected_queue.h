@@ -6,6 +6,7 @@
 #include <queue>
 #include <string>
 #include "../server/game/commands/command.h"
+#include "defines/world_structs.h"
 
 struct ClosedQueueException : public std::exception {
     const char* what() const throw() {
