@@ -156,29 +156,36 @@ void Player::subtractGold(int gold) {
 }
 
 void Player::dropInventoryItems() {
-    // TODO: armar algun algoritmo que recorra en espiral
-    /*
-    int world_width = world.getWidth(), world_height = world.getHeight();
-    int pos_x, pos_y, i, j, n;
+    bool item_positioned;
+    int i, j, diameter = 0, max_diameter = 10;
 
     while (! inventory.isEmpty()) {
         Item* item = inventory.removeLastItem();
-        if (! item)
-            continue;
+        if (! item) continue;
 
-        i = 1, j = 1, n = 1;
-        pos_x = posX, pos_y = posY;
+        item_positioned = false;
+        diameter = 1;
 
-        while ((world.inCollision(pos_x, pos_y) || world.itemInPosition(pos_x, pos_y))) {
+        while (! item_positioned) {
+            for (i = posX - diameter; i <= posX + diameter; i ++) {
+                for (j = posY - diameter; j <= posY + diameter; j++) {
+                    if ((world.inMapBoundaries(i, j)) &&
+                       (! world.itemInCollision(i, j))) {
+                        item->updatePosition(i, j);
+                        world.addItem(item);
+                        item_positioned = true;
+                        break;
+                    }
+                }
+                if (item_positioned) break;
+            }
+            // Sanity check to avoid big loops
+            if (diameter == max_diameter)
+                inventory.deleteItems();
 
-            pos_x += i;
+            diameter ++;
         }
-
-
-        item->updatePosition(pos_x, pos_y);
-        world.addItem(item);
     }
-     */
 }
 
 void Player::stopMeditating() {
@@ -541,7 +548,7 @@ void Player::dropItemFromInventoryToWorld(const int type) {
         throw GameException(id, "Eres un fantasma. No puedes tirar items "
                                 "al mundo");
 
-    if (world.itemInPosition(posX, posY))
+    if (world.itemInCollision(posX, posY))
         throw GameException(id, "Ya hay un item en esta posicion");
 
     Item* item = inventory.removeItem(type);
