@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "window.h"
 #include "../sdl/exception.h"
@@ -18,6 +19,8 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
+    TTF_Init();
+
 }
 
 SDLWindow::~SDLWindow() {
@@ -266,6 +269,50 @@ void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
     renderLife(player_info, info_surfaces_map);
     renderMana(player_info, info_surfaces_map);
     renderExperience(player_info, info_surfaces_map);
+
+
+    try {
+    TTF_Font *font = TTF_OpenFont("../client/resources/fonts/arial.ttf", 25);
+    if (font == NULL) {
+        throw (::std::runtime_error("Font failed to load! ERROR: "));
+    }
+
+    SDL_Color White = {255, 255,
+                       255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+
+    std::cout << White.a;
+
+    SDL_Surface *surfaceMessage = TTF_RenderText_Solid(font, "put your text here",
+                                                       White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+    std::cout << surfaceMessage->flags;
+    //SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+    SDL_Rect Message_rect; //create a rect
+    Message_rect.x = 300;  //controls the rect's x coordinate
+    Message_rect.y = 300; // controls the rect's y coordinte
+    Message_rect.w = 120; // controls the width of the rect
+    Message_rect.h = 120; // controls the height of the rect
+
+
+        SDL_Surface *optimized_surface = SDL_ConvertSurface(
+                surfaceMessage, getSurfaceFormat(), 0);
+    SDL_BlitScaled(optimized_surface, NULL,
+                   getSurface(), &Message_rect);
+    SDL_FreeSurface(optimized_surface);
+    TTF_CloseFont(font);
+}
+    catch (std::runtime_error const& msg)
+    {
+        std::cout << "HUBO UN ERROR";
+        printf("%s", msg.what());
+        if (SDL_GetError() != NULL)
+        {
+            printf("%s", SDL_GetError());
+        }
+        if (TTF_GetError() != NULL)
+        {
+            printf("%s", TTF_GetError());
+        }
+    }
 }
 
 

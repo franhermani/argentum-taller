@@ -9,6 +9,7 @@
 #include "vector"
 #include "map"
 #include <utility>
+#include <SDL2/SDL_ttf.h>
 #include "../sdl/window.h"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
@@ -140,6 +141,10 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
+void GameRender::renderText() {
+
+}
+
 
 void GameRender::run() {
     using clock = std::chrono::system_clock;
@@ -148,8 +153,43 @@ void GameRender::run() {
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     window.setTilesSize(blocksWidth,blocksHeight);
+
+/*
+    try
+    {
+        TTF_Font * font = TTF_OpenFont("arial.ttf", 25);
+        if (font == NULL)
+        {
+            throw(::std::runtime_error("Font failed to load! ERROR: "));
+        }
+
+        SDL_Color White = {255, 255, 255};  // this is the color in rgb format, maxing out all would give you the color white, and it will be your text's color
+
+        std::cout << White.a;
+
+        SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, "put your text here", White); // as TTF_RenderText_Solid could only be used on SDL_Surface then you have to create the surface first
+        std::cout << surfaceMessage->flags;
+        //SDL_Texture* Message = SDL_CreateTextureFromSurface(renderer, surfaceMessage); //now you can convert it into a texture
+        TTF_CloseFont(font);
+    }
+    catch (std::runtime_error const& msg)
+    {
+        printf("%s", msg.what());
+        if (SDL_GetError() != NULL)
+        {
+            printf("%s", SDL_GetError());
+        }
+        if (TTF_GetError() != NULL)
+        {
+            printf("%s", TTF_GetError());
+        }
+    }*/
+
+
+
     while (keepRunning) {
         auto start = clock::now();
+
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
