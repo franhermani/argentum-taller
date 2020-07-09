@@ -208,6 +208,10 @@ void Player::moveNextTo(const int pos_x, const int pos_y) {
     }
 }
 
+const int Player::secondsToRevive() {
+    return (distanceInMsToPriest - msMoveCounter)/1000;
+}
+
 void Player::equipWeapon(Weapon* new_weapon) {
     if (new_weapon->isMagic && ! ableToUseMagic) {
         inventory.addItem(new_weapon);
@@ -278,7 +282,7 @@ void Player::equipPotion(Potion *new_potion) {
 
 void Player::update(int ms) {
     if (isDead()) {
-        if (isReviving) {
+        if (isWaitingToRevive()) {
             msMoveCounter += ms;
             if (msMoveCounter >= distanceInMsToPriest) {
                 msMoveCounter = 0;
@@ -299,6 +303,11 @@ void Player::update(int ms) {
 }
 
 void Player::moveTo(int direction) {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     stopMeditating();
 
     int new_x = posX, new_y = posY;
@@ -327,6 +336,11 @@ void Player::moveTo(int direction) {
 }
 
 void Player::heal() {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     stopMeditating();
 
     if (isDead())
@@ -360,6 +374,11 @@ void Player::longTermRevive() {
 }
 
 void Player::meditate() {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     if (! ableToUseMagic)
         throw GameException(id, "Eres un guerrero. No puedes meditar");
 
@@ -367,6 +386,11 @@ void Player::meditate() {
 }
 
 void Player::attack() {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     stopMeditating();
 
     // TODO: chequear safe zones!!!
@@ -442,7 +466,7 @@ void Player::attack(Creature &creature) {
 }
 
 const int Player::receiveAttack(const int damage) {
-    if (isReviving)
+    if (isWaitingToRevive())
         return 0;
 
     stopMeditating();
@@ -453,6 +477,11 @@ const int Player::receiveAttack(const int damage) {
 }
 
 void Player::equipItemFromInventory(const int type) {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     stopMeditating();
 
     if (isDead())
@@ -477,6 +506,11 @@ void Player::equipItemFromInventory(const int type) {
 }
 
 void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     stopMeditating();
 
     if (isDead())
@@ -496,6 +530,11 @@ void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
 }
 
 void Player::dropItemFromInventoryToWorld(const int type) {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     stopMeditating();
 
     if (isDead())
@@ -514,6 +553,11 @@ void Player::dropItemFromInventoryToWorld(const int type) {
 }
 
 Item* Player::takeItemFromInventory(const int type) {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     return inventory.removeItem(type);
 }
 
@@ -534,6 +578,11 @@ void Player::addGold(const int quant) {
 }
 
 void Player::removeGold(const int quant) {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     if (actualGold < quant)
         throw GameException(id, "No tienes suficiente oro para extraer");
 
@@ -541,6 +590,11 @@ void Player::removeGold(const int quant) {
 }
 
 void Player::takeGoldFromWorld(const int pos_x, const int pos_y) {
+    if (isWaitingToRevive())
+        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
+                                "termines de revivir. Quedan aprox. %d "
+                                "segundos", secondsToRevive());
+
     stopMeditating();
 
     if (isDead())
@@ -581,4 +635,8 @@ Item* Player::sellItem(const int type) {
 
     addGold(item->price);
     return item;
+}
+
+const bool Player::isWaitingToRevive() const {
+    return isReviving;
 }

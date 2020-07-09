@@ -78,6 +78,9 @@ class Player : public LivingBeing {
     // Mueve al player al lado de la posicion (pos_x, pos_y)
     void moveNextTo(const int pos_x, const int pos_y);
 
+    // Devuelve los segundos faltantes para revivir (aprox)
+    const int secondsToRevive();
+
     // Asigna 'new_weapon' a 'weapon'
     // Lanza una excepcion si:
     // - el arma es magica y player no puede usar la magia
@@ -182,6 +185,9 @@ public:
 
     // Vende un item segun 'type'
     Item* sellItem(const int type);
+
+    // Devuelve true si esta reviviendo, false en caso contrario
+    const bool isWaitingToRevive() const;
 };
 
 #endif // GAME_PLAYER_H
