@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include "window_measurements.h"
 
 WindowMeasurements::WindowMeasurements() {}
@@ -18,10 +19,36 @@ void WindowMeasurements::initialize(int numberOfTilesInWidth,
     yHeightTileSize = (frame.y_pixel_end - frame.y_pixel_begin) /
             numberOfTilesInHeight;
 
-    initializePlayerInfo(screenWidth, screenHeight);
     initializeItemInfo(screenWidth, screenHeight);
+    initializeStaticAreas();
+    initializePlayerInfo(screenWidth, screenHeight);
 }
 
+void WindowMeasurements::initializeStaticAreas() {
+    gameFrameStaticRect.x = 0;
+    gameFrameStaticRect.y = 0;
+    gameFrameStaticRect.w = screenWidth;
+    gameFrameStaticRect.h = screenHeight;
+
+    std::cout << "ahora inicializo static area de oro\n";
+
+    game_area_t& inventory_gold_area = inventoryGold;
+    inventoryGoldStaticRect.x = inventory_gold_area.x_pixel_begin;
+    inventoryGoldStaticRect.y = inventory_gold_area.y_pixel_begin;
+    inventoryGoldStaticRect.w = (inventory_gold_area.x_pixel_end -
+                                 inventory_gold_area.x_pixel_begin);
+    inventoryGoldStaticRect.h = (inventory_gold_area.y_pixel_end -
+                                 inventory_gold_area.y_pixel_begin);
+
+
+    game_area_t& list_gold_area = listGold;
+    listGoldStaticRect.x = list_gold_area.x_pixel_begin;
+    listGoldStaticRect.y = list_gold_area.y_pixel_begin;
+    listGoldStaticRect.w = (list_gold_area.x_pixel_end -
+                            list_gold_area.x_pixel_begin);
+    listGoldStaticRect.h = (list_gold_area.y_pixel_end -
+                            list_gold_area.y_pixel_begin);
+}
 
 
 void WindowMeasurements::initializePlayerInfo(int screenWidth,
@@ -49,8 +76,9 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
 
     inventoryGold = {(int) (screenWidth / 100.0) * 85,
                       (int) (screenWidth / 100.0) * 89,
-                     (int) (screenHeight / 100.0 * 95),
-                     (int) (screenHeight /100.0 * 99)};
+                     (int) ((screenHeight / 100.0) * 95),
+                     (int) ((screenHeight /100.0) * 99)};
+
 
     list = {(int) (screenWidth / 100.0) * 44,
             (int) (screenWidth / 100.0) * 74,

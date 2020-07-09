@@ -54,7 +54,7 @@ public:
     void renderGolds(std::vector<gold_t> &golds);
     void renderEquipped(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
-    void renderInventoryGolds(std::vector<gold_t>& golds);
+    void renderInventoryGolds(uint16_t quantity);
     void renderGameFrame();
 
 
