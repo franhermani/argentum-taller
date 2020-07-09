@@ -256,10 +256,16 @@ world_t ClientProtocol::receiveWorldUpdate() {
     w.player_info.max_gold = ntohs(max_gold);
     bytes_advanced += SIZE_16;
 
-    // Experiencia actual
-    uint32_t actual_experience;
-    memcpy(&actual_experience, world_buffer.data() + bytes_advanced, SIZE_32);
-    w.player_info.actual_experience = ntohl(actual_experience);
+    // Experiencia actual del nivel
+    uint32_t level_actual_exp;
+    memcpy(&level_actual_exp, world_buffer.data() + bytes_advanced, SIZE_32);
+    w.player_info.level_actual_experience = ntohl(level_actual_exp);
+    bytes_advanced += SIZE_32;
+
+    // Experiencia maxima del nivel
+    uint32_t level_max_exp;
+    memcpy(&level_max_exp, world_buffer.data() + bytes_advanced, SIZE_32);
+    w.player_info.level_max_experience = ntohl(level_max_exp);
     bytes_advanced += SIZE_32;
 
     if (debug) {
@@ -268,7 +274,10 @@ world_t ClientProtocol::receiveWorldUpdate() {
         "Mana maxima: " << w.player_info.max_mana << "\n" <<
         "Oro actual: " << w.player_info.actual_gold << "\n" <<
         "Oro maximo: " << w.player_info.max_gold << "\n" <<
-        "Experiencia actual: " << w.player_info.actual_experience << "\n" <<
+        "Experiencia actual del nivel: " <<
+        w.player_info.level_actual_experience << "\n" <<
+        "Experiencia maxima del nivel: " <<
+        w.player_info.level_max_experience << "\n" <<
         "Inventario:\n";
     }
 
@@ -288,7 +297,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "Item " << (i+1) << ": " <<
-            w.player_info.inventory.items[i] << "\n";
+            (int) w.player_info.inventory.items[i] << "\n";
         }
     }
 

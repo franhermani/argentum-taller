@@ -174,7 +174,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     // Longitud total del mensaje
     size_t message_length =
             // player_info_t
-            4 * SIZE_16 + SIZE_32 +
+            4 * SIZE_16 + 2 * SIZE_32 +
 
             // inventory_t
             SIZE_8 + inventory_length * SIZE_8 +
@@ -206,7 +206,10 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.player_info.max_mana = htons(player.maxMana);
     w.player_info.actual_gold = htons(player.actualGold);
     w.player_info.max_gold = htons(player.maxSafeGold);
-    w.player_info.actual_experience = htonl(player.actualExperience);
+    w.player_info.level_actual_experience =
+            htonl(player.levelActualExperience());
+    w.player_info.level_max_experience =
+            htonl(player.levelMaxExperience());
 
     // Lista de Players (incluido el del cliente)
     w.num_players = htons(num_players);
@@ -303,7 +306,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     pos += SIZE_16;
     memcpy(&byte_msg[pos], &w.player_info.max_gold, SIZE_16);
     pos += SIZE_16;
-    memcpy(&byte_msg[pos], &w.player_info.actual_experience, SIZE_32);
+    memcpy(&byte_msg[pos], &w.player_info.level_actual_experience, SIZE_32);
+    pos += SIZE_32;
+    memcpy(&byte_msg[pos], &w.player_info.level_max_experience, SIZE_32);
     pos += SIZE_32;
 
     // Inventario

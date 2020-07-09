@@ -80,12 +80,13 @@ typedef struct {
 } inventory_t;
 
 typedef struct {
-    uint16_t actual_mana;           // Mana actual
-    uint16_t max_mana;              // Mana maxima
-    uint16_t actual_gold;           // Oro actual
-    uint16_t max_gold;              // Oro maximo
-    uint32_t actual_experience;     // Experiencia
-    inventory_t inventory;          // Inventario
+    uint16_t actual_mana;               // Mana actual
+    uint16_t max_mana;                  // Mana maxima
+    uint16_t actual_gold;               // Oro actual
+    uint16_t max_gold;                  // Oro maximo
+    uint32_t level_actual_experience;   // Experiencia actual del nivel
+    uint32_t level_max_experience;      // Experiencia maxima del nivel
+    inventory_t inventory;              // Inventario
 } player_info_t;
 
 typedef struct {

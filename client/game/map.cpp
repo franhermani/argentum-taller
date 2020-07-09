@@ -364,8 +364,8 @@ std::map<int, float> Map::getPercentages() {
            main_player.max_life},
     {MANA, ((float) world.player_info.actual_mana)/
                 world.player_info.max_mana},
-    {EXPERIENCE, ((float) world.player_info.actual_experience)/
-                world.player_info.actual_experience}};
+    {EXPERIENCE, ((float) world.player_info.level_actual_experience)/
+                world.player_info.level_max_experience}};
 }
 
 

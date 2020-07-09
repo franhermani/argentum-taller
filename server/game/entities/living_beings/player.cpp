@@ -123,12 +123,14 @@ void Player::addExperience(int exp) {
     if (actualExperience > maxExperience)
         actualExperience = maxExperience;
 
-    // TODO: testear caso de subir mas de un nivel a la vez
-    if (actualExperience >= equations.eqExperienceLimit(*this)) {
-        level += 1;
-        if (level > world.getMaxLevelNewbie())
-            isNewbie = false;
+    long exp_limit = equations.eqExperienceLimit(level);
+
+    while (actualExperience >= exp_limit) {
+        level ++;
+        exp_limit = equations.eqExperienceLimit(level);
     }
+    if (level > world.getMaxLevelNewbie())
+        isNewbie = false;
 }
 
 void Player::die() {
@@ -646,4 +648,16 @@ Item* Player::sellItem(const int type) {
 
 const bool Player::isWaitingToRevive() const {
     return isReviving;
+}
+
+const long Player::levelActualExperience() const {
+    long prev_level_max_exp = equations.eqExperienceLimit(level - 1);
+    long actual_level_exp = actualExperience;
+    return actual_level_exp - prev_level_max_exp;
+}
+
+const long Player::levelMaxExperience() const {
+    long prev_level_max_exp = equations.eqExperienceLimit(level - 1);
+    long actual_level_max_exp = equations.eqExperienceLimit(level);
+    return actual_level_max_exp - prev_level_max_exp;
 }

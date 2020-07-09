@@ -66,7 +66,7 @@ public:
     const int eqInitialGold(Player& player);
 
     // Limite de experiencia del nivel actual
-    const long eqExperienceLimit(Player& player);
+    const long eqExperienceLimit(const int level);
 
     // Experiencia obtenida por ataque realizado a otro player o criatura
     const long eqExperienceAttack(Player& player, LivingBeing& other,
