@@ -40,6 +40,8 @@ public:
 
     std::vector<int> getItemLookingAt();
 
+    std::vector<int> getGoldStandingAt();
+
     std::vector<int> getNpcLookingAt();
 
     client_world_t getCurrentWorld();

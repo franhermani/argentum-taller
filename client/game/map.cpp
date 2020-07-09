@@ -334,6 +334,19 @@ std::vector<int> Map::getItemStandingAt() {
 }
 
 
+//TODO  codigo repetido con get item standing at, hacer refactor
+std::vector<int> Map::getGoldStandingAt() {
+    player_t player = getMainPlayer();
+    std::vector<int> player_position = {player.pos_x, player.pos_y};
+    for (int i=0; i<world.num_golds; i++) {
+        if ((world.golds[i].pos_x == player_position[0])
+            && (world.golds[i].pos_y == player_position[1]))
+            return std::move(player_position);
+    }
+    throw MapException("No se encontro item");
+}
+
+
 std::vector<int> Map::getNpcLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();
     for (int i=0; i<npcs.length; i++) {

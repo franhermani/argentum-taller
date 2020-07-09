@@ -51,6 +51,11 @@ std::vector<int> MapMonitor::getItemLookingAt() {
     return std::move(map.getItemStandingAt());
 }
 
+std::vector<int> MapMonitor::getGoldStandingAt() {
+    std::unique_lock<std::mutex> lk(m);
+    return std::move(map.getGoldStandingAt());
+}
+
 client_world_t MapMonitor::getCurrentWorld() {
     std::unique_lock<std::mutex> lk(m);
     return std::move(map.getCurrentWorld());
