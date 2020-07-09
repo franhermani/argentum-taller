@@ -1,6 +1,8 @@
 
 #ifndef ARGENTUM_WINDOW_MEASUREMENTS_H
 #define ARGENTUM_WINDOW_MEASUREMENTS_H
+
+#include <SDL2/SDL_rect.h>
 #include "render_structs.h"
 
 
@@ -20,6 +22,10 @@ struct WindowMeasurements {
     game_area_t life;
     game_area_t mana;
     game_area_t experience;
+
+    SDL_Rect gameFrameStaticRect;
+    SDL_Rect inventoryGoldStaticRect;
+    SDL_Rect listGoldStaticRect;
     WindowMeasurements();
     ~WindowMeasurements();
 
@@ -30,7 +36,8 @@ struct WindowMeasurements {
 private:
     void initializePlayerInfo(int screenWidth, int screenHeight);
     void initializeItemInfo(int screenWidth, int screenHeight);
-};
+    void initializeStaticAreas();
+    };
 
 
 #endif //ARGENTUM_WINDOW_MEASUREMENTS_H

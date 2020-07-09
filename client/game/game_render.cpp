@@ -127,11 +127,10 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     }
 }
 
-void GameRender::renderInventoryGolds(std::vector<gold_t>& golds) {
-    for (auto it = std::begin(golds);
-         it != std::end(golds); ++it) {
-        window.renderInventoryGolds(surfacesManager.goldSurface);
-    }
+void GameRender::renderInventoryGolds(uint16_t quantity) {
+    window.renderInventoryGolds(surfacesManager.goldSurface);
+    /* todo renderizar cnatidad de oro como texto
+     * ademas del logo ya renderizado*/
 }
 
 
@@ -159,7 +158,7 @@ void GameRender::run() {
         renderNpcs(current_world.npcs);
         renderCreatures(current_world.creatures);
         renderInventory(current_world.player_info.inventory.items);
-        renderInventoryGolds(current_world.golds);
+        renderInventoryGolds(current_world.player_info.actual_gold);
         renderEquipped(current_world.main_player);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages);

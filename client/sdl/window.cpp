@@ -18,7 +18,6 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
-    initializeStaticAreas();
 }
 
 SDLWindow::~SDLWindow() {
@@ -32,30 +31,6 @@ SDLWindow::~SDLWindow() {
     }
 }
 
-void SDLWindow::initializeStaticAreas() {
-    gameFrameStaticRect.x = 0;
-    gameFrameStaticRect.y = 0;
-    gameFrameStaticRect.w = screenWidth;
-    gameFrameStaticRect.h = screenHeight;
-
-
-    game_area_t& inventory_gold_area = measurements.inventoryGold;
-    inventoryGoldStaticRect.x = inventory_gold_area.x_pixel_begin;
-    inventoryGoldStaticRect.y = inventory_gold_area.y_pixel_begin;
-    inventoryGoldStaticRect.w = (inventory_gold_area.x_pixel_end -
-            inventory_gold_area.x_pixel_begin);
-    inventoryGoldStaticRect.h = (inventory_gold_area.y_pixel_end -
-            inventory_gold_area.y_pixel_begin);
-
-
-    game_area_t& list_gold_area = measurements.listGold;
-    listGoldStaticRect.x = list_gold_area.x_pixel_begin;
-    listGoldStaticRect.y = list_gold_area.y_pixel_begin;
-    listGoldStaticRect.w = (list_gold_area.x_pixel_end -
-            list_gold_area.x_pixel_begin);
-    listGoldStaticRect.h = (list_gold_area.y_pixel_end -
-            list_gold_area.y_pixel_begin);
-}
 
 void SDLWindow::fill(const int r, const int g, const int b, const int alpha) {
     SDL_SetRenderDrawColor(renderer, r, g, b, alpha);
@@ -170,18 +145,18 @@ void SDLWindow::UpdateWindowSurface() {
 
 void SDLWindow::renderGameFrame(Surface* surface) {
     SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &gameFrameStaticRect);
+                   getSurface(), &measurements.gameFrameStaticRect);
 }
 
 void SDLWindow::renderInventoryGolds(Surface* surface) {
     SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &inventoryGoldStaticRect);
+                   getSurface(), &measurements.inventoryGoldStaticRect);
 }
 
 
 void SDLWindow::renderListGold(Surface* surface) {
     SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &listGoldStaticRect);
+                   getSurface(), &measurements.listGoldStaticRect);
 }
 
 

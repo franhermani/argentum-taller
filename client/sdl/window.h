@@ -24,9 +24,6 @@ class SDLWindow {
     SDL_Window *window;
     SDL_Renderer *renderer;
     WindowMeasurements measurements;
-    SDL_Rect gameFrameStaticRect;
-    SDL_Rect inventoryGoldStaticRect;
-    SDL_Rect listGoldStaticRect;
 
     void renderExperience(std::map<int, float>& player_info,
                           std::map<int, Surface *> info_surfaces_map);
