@@ -193,7 +193,7 @@ public:
     const long levelActualExperience() const;
 
     // Devuelve la experiencia maxima en el nivel actual
-    const long levelMaxExperience();
+    const long levelMaxExperience() const;
 };
 
 #endif // GAME_PLAYER_H

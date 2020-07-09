@@ -656,7 +656,7 @@ const long Player::levelActualExperience() const {
     return actual_level_exp - prev_level_max_exp;
 }
 
-const long Player::levelMaxExperience() {
+const long Player::levelMaxExperience() const {
     long prev_level_max_exp = equations.eqExperienceLimit(level - 1);
     long actual_level_max_exp = equations.eqExperienceLimit(level);
     return actual_level_max_exp - prev_level_max_exp;
