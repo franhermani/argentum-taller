@@ -40,6 +40,11 @@ public:
     // Saca el ultimo item del inventario
     Item* removeLastItem();
 
+    // Elimina los items restantes del inventario
+    // Es utilizado en caso de que no haya lugar en el mapa
+    // para dropear los items al morir
+    void deleteItems();
+
     // Devuelve true si el inventario esta vacio, false en caso contrario
     const bool isEmpty() const;
 };
