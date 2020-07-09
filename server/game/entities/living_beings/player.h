@@ -23,7 +23,6 @@ class Player : public LivingBeing {
     int classType;
     long maxExperience;
     long actualExperience;
-    long prevLevelMaxExperience;
     bool isMeditating;
     bool isReviving;
     bool isNewbie;

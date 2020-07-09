@@ -130,10 +130,10 @@ const int Equations::eqInitialGold(Player &player) {
     return initial_gold;
 }
 
-const long Equations::eqExperienceLimit(Player &player) {
+const long Equations::eqExperienceLimit(const int level) {
     json exp_params = configParams["player"]["experience"]["limit_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
-    long experience = c1 * pow(player.level, c2);
+    long experience = c1 * pow(level, c2);
     return experience;
 }
 
