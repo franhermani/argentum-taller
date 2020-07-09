@@ -46,6 +46,8 @@ void ClientsAcceptor::run() {
         clientsCleaner->stop();
         clientsCleaner->join();
     }
+    gameManager.stop();
+    gameManager.join();
 }
 
 void ClientsAcceptor::stop() {

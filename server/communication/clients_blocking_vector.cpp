@@ -16,8 +16,8 @@ void ClientsBlockingVector::notifyClientsCleaner() {
 
 void ClientsBlockingVector::removeDeadClients() {
     std::unique_lock<std::mutex> lk(m);
-
-    if (clients.empty()) return;
+    if (clients.empty())
+        return;
 
     cv.wait(lk);
     std::vector<ClientHandler*> tmp;
@@ -36,7 +36,8 @@ void ClientsBlockingVector::removeDeadClients() {
 
 void ClientsBlockingVector::joinClients() {
     std::unique_lock<std::mutex> lk(m);
-    if (clients.empty()) return;
+    if (clients.empty())
+        return;
 
     size_t i;
     for (i = 0; i < clients.size(); i ++) {

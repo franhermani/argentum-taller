@@ -76,8 +76,6 @@ void ClientHandler::run() {
 
 void ClientHandler::stop() {
     keepRunning = false;
-    clientReceiver->stop();
-    clientSender->stop();
     clientReceiver->join();
     clientSender->join();
 }
