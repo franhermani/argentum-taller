@@ -1,10 +1,16 @@
+#include <map>
+#include <string>
 #include <random>
 #include <cstdlib>
 #include "world.h"
 #include "entities/npcs/priest.h"
+#include "game_exception.h"
 
-World::World(GameParams& params, ItemFactory& item_factory) :
-params(params), itemFactory(item_factory) {
+World::World(GameParams& params, ItemFactory& item_factory,
+        std::map<int,ProtectedQueue<std::string>>& messagesQueuePerPlayer) :
+params(params),
+itemFactory(item_factory),
+messagesQueuePerPlayer(messagesQueuePerPlayer) {
     json js;
     js = params.getWorldParams()["layers"][0];
     worldWidth = js["width"], worldHeight = js["height"];
@@ -78,7 +84,13 @@ void World::update(const int ms) {
 
     for (auto& attack : attacks) {
         attack->update(ms);
-        detectAttackCollision(attack);
+
+        try {
+            attackInCollision(attack);
+        } catch (GameException& e) {
+            std::string message(e.what());
+            messagesQueuePerPlayer[e.getPlayerId()].push(message);
+        }
     }
 }
 
@@ -227,7 +239,7 @@ const bool World::inCollision(const int pos_x, const int pos_y) {
     return false;
 }
 
-void World::detectAttackCollision(Attack* new_attack) {
+void World::attackInCollision(Attack* new_attack) {
     LivingBeing* owner = new_attack->owner;
     int pos_x = new_attack->posX, pos_y = new_attack->posY;
 
@@ -269,10 +281,24 @@ void World::detectAttackCollision(Attack* new_attack) {
         }
 }
 
-const bool World::itemInPosition(const int pos_x, const int pos_y) {
-    size_t i;
-    for (i = 0; i < items.size(); i ++)
-        if (items[i]->posX == pos_x && items[i]->posY == pos_y)
+const bool World::itemInCollision(const int pos_x, const int pos_y) {
+    // Terrenos impenetrables
+    if (entitiesImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
+        return true;
+
+    // NPCs
+    for (auto& npc : npcs)
+        if (npc->posX == pos_x && npc->posY == pos_y)
+            return true;
+
+    // Items
+    for (auto& item : items)
+        if (item->posX == pos_x && item->posY == pos_y)
+            return true;
+
+    // Oros
+    for (auto& gold : golds)
+        if (gold->posX == pos_x && gold->posY == pos_y)
             return true;
 
     return false;

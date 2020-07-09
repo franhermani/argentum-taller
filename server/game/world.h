@@ -3,8 +3,11 @@
 
 #include <vector>
 #include <set>
+#include <map>
+#include <string>
 #include "params.h"
 #include "entities/items/item_factory.h"
+#include "../../common/protected_queue.h"
 #include "../../common/defines/terrains.h"
 #include "entities/living_beings/player.h"
 #include "entities/living_beings/creature.h"
@@ -15,6 +18,7 @@
 class World {
     GameParams& params;
     ItemFactory& itemFactory;
+    std::map<int, ProtectedQueue<std::string>>& messagesQueuePerPlayer;
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> entitiesImpenetrableTerrains;
     std::set<Terrain> attacksImpenetrableTerrains;
@@ -40,15 +44,17 @@ class World {
     const bool inPlayerBoundaries(Player& player,
             const int pos_x, const int pos_y);
 
-    // Detecta una colision de ataque y lo ejecuta en caso de colisionar
-    void detectAttackCollision(Attack* new_attack);
+    // Determina si hay una colision de ataque
+    // Lo ejecuta en caso afirmativo
+    void attackInCollision(Attack* new_attack);
 
     // Elimina los ataques que llegaron a su rango de alcance
     void removeRangeReachedAttacks();
 
 public:
     // Constructor
-    explicit World(GameParams& params, ItemFactory& item_factory);
+    explicit World(GameParams& params, ItemFactory& item_factory,
+            std::map<int,ProtectedQueue<std::string>>& messagesQueuePerPlayer);
 
     // Constructor y asignacion por copia deshabilitados
     World(const World& other) = delete;
@@ -114,11 +120,13 @@ public:
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     const bool inMapBoundaries(const int pos_x, const int pos_y);
 
-    // Determina si hay algun Player o NPC en la posicion (x,y)
+    // Determina si hay una colision de entidad o terreno impenetrable
+    // en la posicion (x,y)
     const bool inCollision(const int pos_x, const int pos_y);
 
-    // Determina si hay algun Item en la posicion (x,y)
-    const bool itemInPosition(const int pos_x, const int pos_y);
+    // Determina si hay una colision de item o terreno impenetrable
+    // en la posicion (x,y)
+    const bool itemInCollision(const int pos_x, const int pos_y);
 
     // Agrega un item al mundo
     void addItem(Item* item);

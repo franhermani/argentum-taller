@@ -154,13 +154,13 @@ void GameRender::run() {
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
+        renderItems(current_world.items);
         renderPlayers(current_world.players);
         renderNpcs(current_world.npcs);
         renderCreatures(current_world.creatures);
         renderInventory(current_world.player_info.inventory.items);
         renderInventoryGolds(current_world.golds);
         renderEquipped(current_world.main_player);
-        renderItems(current_world.items);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages);
         //renderList();

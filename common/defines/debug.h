@@ -5,6 +5,4 @@
 
 bool debug = false;
 
-
-
 #endif // DEBUG_H

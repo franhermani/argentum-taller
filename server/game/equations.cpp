@@ -226,32 +226,25 @@ std::vector<int> Equations::eqCreatureDeathDrop(Creature &creature) {
 
     json js = configParams["creatures"]["death_prob_eq"];
     std::vector<double> p = {js["nothing"]["p"], js["gold"]["p"],
-                             js["potion"]["p"], js["other"]["p"]};
+                             js["potion"]["p"], js["item"]["p"]};
 
     double c1 = js["gold"]["quantity_eq"]["c1"],
-           c2 = js["gold"]["quantity_eq"]["c2"];
+           c2 = js["gold"]["quantity_eq"]["c2"],
+           n = randomDouble(0, 1);
 
-    std::default_random_engine generator;
-    std::discrete_distribution<int> dist = {p.begin(), p.end()};
+    int enum_drop = DROP_NOTHING, param_drop = 0;
 
-    int enum_drop = dist(generator), param_drop = 0;
-
-    switch (enum_drop) {
-        case DROP_NOTHING:
-            param_drop = 0;
-            break;
-        case DROP_GOLD:
-            param_drop = randomDouble(c1, c2) * creature.maxLife;
-            break;
-        case DROP_POTION:
-            param_drop = randomInt(POCION_VIDA, POCION_MANA);
-            break;
-        case DROP_ITEM:
-            param_drop = randomInt(ESPADA, ESCUDO_HIERRO);
-            break;
-        default:
-            break;
+    if (n > p[DROP_GOLD] && n <= p[DROP_POTION]) {
+        enum_drop = DROP_GOLD;
+        param_drop = randomDouble(c1, c2) * creature.maxLife;
+    } else if (n > p[DROP_POTION] && n <= p[DROP_ITEM]) {
+        enum_drop = DROP_POTION;
+        param_drop = randomInt(POCION_VIDA, POCION_MANA);
+    } else if (n > p[DROP_ITEM]) {
+        enum_drop = DROP_ITEM;
+        param_drop = randomInt(ESPADA, ESCUDO_HIERRO);
     }
+
     death_drop[0] = enum_drop;
     death_drop[1] = param_drop;
     return death_drop;

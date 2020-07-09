@@ -1,7 +1,7 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
-#include "../world.h"
+class World;
 
 class Command {
 public:

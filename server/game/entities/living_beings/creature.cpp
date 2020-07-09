@@ -144,6 +144,9 @@ void Creature::respawn() {
 }
 
 void Creature::dropItemOrGold() {
+    if (world.itemInCollision(posX, posY))
+        return;
+
     std::vector<int> death_drop = equations.eqCreatureDeathDrop(*this);
     int enum_drop = death_drop[0], param_drop = death_drop[1];
 

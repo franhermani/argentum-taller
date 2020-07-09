@@ -179,8 +179,15 @@ CommandDTO* GameInputHandler::handleThrow() {
 }
 
 CommandDTO* GameInputHandler::handleTake() {
-    std::vector<int> item_pos = mapMonitor.getItemLookingAt();
-    return new TakeCommandDTO(0, item_pos[0], item_pos[1]);
+    try {
+        std::vector<int> item_pos = mapMonitor.getItemStandingAt();
+        return new TakeCommandDTO(TAKE_ITEM, item_pos[0], item_pos[1]);
+    } catch (MapException& e) {
+        //si hay excepcion en getgold standing at, no la catcheamos
+        //porque queremos que la catchee la funcion que llama a esta
+        std::vector<int> gold_pos = mapMonitor.getGoldStandingAt();
+        return new TakeCommandDTO(TAKE_GOLD, gold_pos[0], gold_pos[1]);
+    }
 }
 
 CommandDTO* GameInputHandler::handleList() {
