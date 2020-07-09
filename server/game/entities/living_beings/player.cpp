@@ -88,7 +88,7 @@ void Player::loadInitialPosition() {
     std::uniform_int_distribution<int> dist_y(0, world.getHeight() - 1);
 
     int new_x = dist_x(mt), new_y = dist_y(mt);
-    while (world.inCollision(new_x, new_y)) {
+    while (world.entityInCollision(new_x, new_y)) {
         new_x = dist_x(mt);
         new_y = dist_y(mt);
     }
@@ -209,7 +209,7 @@ void Player::moveNextTo(const int pos_x, const int pos_y) {
 
     for (auto& pos : pos_tries) {
         if ((world.inMapBoundaries(pos[0], pos[1])) &&
-        (! world.inCollision(pos[0], pos[1]))) {
+           (! world.entityInCollision(pos[0], pos[1]))) {
             posX = pos[0];
             posY = pos[1];
             break;
@@ -337,7 +337,7 @@ void Player::moveTo(int direction) {
             break;
     }
     if ((world.inMapBoundaries(new_x, new_y)) &&
-        (! world.inCollision(new_x, new_y))) {
+       (! world.entityInCollision(new_x, new_y))) {
         posX = new_x;
         posY = new_y;
     }
