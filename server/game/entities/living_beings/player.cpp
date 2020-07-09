@@ -25,6 +25,7 @@ raceType(race_type),
 classType(class_type),
 maxExperience(LONG_MAX),
 actualExperience(0),
+prevLevelMaxExperience(0),
 isMeditating(false),
 isReviving(false),
 ableToUseMagic(classType != WARRIOR),
@@ -123,8 +124,10 @@ void Player::addExperience(int exp) {
     if (actualExperience > maxExperience)
         actualExperience = maxExperience;
 
-    // TODO: testear caso de subir mas de un nivel a la vez
-    if (actualExperience >= equations.eqExperienceLimit(*this)) {
+    long actual_exp_limit = equations.eqExperienceLimit(*this);
+
+    if (actualExperience >= actual_exp_limit) {
+        prevLevelMaxExperience = actual_exp_limit;
         level += 1;
         if (level > world.getMaxLevelNewbie())
             isNewbie = false;
@@ -646,4 +649,15 @@ Item* Player::sellItem(const int type) {
 
 const bool Player::isWaitingToRevive() const {
     return isReviving;
+}
+
+const long Player::levelActualExperience() const {
+    long actual_level_exp = actualExperience - prevLevelMaxExperience;
+    return actual_level_exp;
+}
+
+const long Player::levelMaxExperience() {
+    long max_level_exp = equations.eqExperienceLimit(*this) -
+            prevLevelMaxExperience;
+    return max_level_exp;
 }

@@ -23,6 +23,7 @@ class Player : public LivingBeing {
     int classType;
     long maxExperience;
     long actualExperience;
+    long prevLevelMaxExperience;
     bool isMeditating;
     bool isReviving;
     bool isNewbie;
@@ -188,6 +189,12 @@ public:
 
     // Devuelve true si esta reviviendo, false en caso contrario
     const bool isWaitingToRevive() const;
+
+    // Devuelve la experiencia actual en el nivel actual
+    const long levelActualExperience() const;
+
+    // Devuelve la experiencia maxima en el nivel actual
+    const long levelMaxExperience();
 };
 
 #endif // GAME_PLAYER_H
