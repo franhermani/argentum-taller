@@ -3,12 +3,17 @@
 #include "client_sender.h"
 #include "../../common/socket_error.h"
 
-ClientSender::ClientSender(Socket& socket, WorldMonitor& world_monitor,
-        ProtectedQueue<std::string>& messages_queue,
-        ProtectedQueue<list_t>& lists_queue, int ms_per_send) :
+ClientSender::ClientSender(Socket& socket, WorldMonitor* world_monitor,
+        ProtectedQueue<std::string>* messages_queue,
+        ProtectedQueue<list_t>* lists_queue, int ms_per_send) :
         protocol(socket), worldMonitor(world_monitor),
         messagesQueue(messages_queue), listsQueue(lists_queue),
         msPerSend(ms_per_send) {
+    keepRunning = true;
+    isRunning = true;
+}
+
+ClientSender::ClientSender(Socket& socket) : protocol(socket) {
     keepRunning = true;
     isRunning = true;
 }
@@ -21,14 +26,14 @@ void ClientSender::run() {
         protocol.sendUsernameId(*player);
 
         // Envio la vision para que el cliente sepa cuanto renderizar
-        protocol.sendBlocksAround(worldMonitor.getPlayerWidth(),
-                worldMonitor.getPlayerHeight());
+        protocol.sendBlocksAround(worldMonitor->getPlayerWidth(),
+                worldMonitor->getPlayerHeight());
 
         // Envio la matriz completa con todos los terrenos
-        protocol.sendMatrix(worldMonitor);
+        protocol.sendMatrix(*worldMonitor);
 
         // Envio la lista de NPCs
-        protocol.sendNPCs(worldMonitor);
+        protocol.sendNPCs(*worldMonitor);
 
         std::string game_message;
         list_t list;
@@ -38,12 +43,12 @@ void ClientSender::run() {
             std::this_thread::sleep_for(ms(msPerSend));
 
             // Envio actualizaciones del mundo
-            protocol.sendWorldUpdate(worldMonitor, *player);
+            protocol.sendWorldUpdate(*worldMonitor, *player);
 
             // Envio excepciones del juego
-            if (! messagesQueue.isEmpty()) {
+            if (! messagesQueue->isEmpty()) {
                 try {
-                    game_message = messagesQueue.pop();
+                    game_message = messagesQueue->pop();
                     protocol.sendGameMessage(game_message);
                 } catch (ClosedQueueException&) {
                     break;
@@ -53,9 +58,9 @@ void ClientSender::run() {
             }
 
             // Envio respuesta al comando listar
-            if (! listsQueue.isEmpty()) {
+            if (! listsQueue->isEmpty()) {
                 try {
-                    list = listsQueue.pop();
+                    list = listsQueue->pop();
                     protocol.sendItemsList(list);
                 } catch (ClosedQueueException&) {
                     break;
