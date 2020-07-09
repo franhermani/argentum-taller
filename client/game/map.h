@@ -83,6 +83,7 @@ public:
     //devuelve item/posicion donde se esta prado
     std::vector<int> getPositionStandingAt();
     std::vector<int> getItemStandingAt();
+    std::vector<int> getGoldStandingAt();
 
     // devuelve la matriz de pisos
     std::vector<std::vector<Terrain>> getTerrains();
