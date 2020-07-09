@@ -38,7 +38,7 @@ public:
 
     std::vector<int> getPriestLookingAt();
 
-    std::vector<int> getItemLookingAt();
+    std::vector<int> getItemStandingAt();
 
     std::vector<int> getGoldStandingAt();
 

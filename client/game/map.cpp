@@ -343,7 +343,7 @@ std::vector<int> Map::getGoldStandingAt() {
             && (world.golds[i].pos_y == player_position[1]))
             return std::move(player_position);
     }
-    throw MapException("No se encontro item");
+    throw MapException("No se encontro gold");
 }
 
 

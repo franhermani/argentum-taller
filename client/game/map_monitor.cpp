@@ -46,7 +46,7 @@ std::vector<int> MapMonitor::getNpcLookingAt() {
     return std::move(map.getNpcLookingAt());
 }
 
-std::vector<int> MapMonitor::getItemLookingAt() {
+std::vector<int> MapMonitor::getItemStandingAt() {
     std::unique_lock<std::mutex> lk(m);
     return std::move(map.getItemStandingAt());
 }
