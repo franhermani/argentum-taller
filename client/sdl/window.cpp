@@ -155,8 +155,6 @@ void SDLWindow::renderGameFrame(Surface* surface) {
 }
 
 void SDLWindow::renderInventoryGolds(Surface* surface, Surface* quantity) {
-    /*SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &measurements.inventoryGoldStaticRect);*/
     SDL_BlitScaled(quantity->getRenderableSurface(), NULL,
                    getSurface(), &measurements.inventoryGoldStaticRect);
 }
@@ -269,6 +267,13 @@ void SDLWindow::renderExperience(std::map<int, float>& player_info,
                    getSurface(), &stretchRect);
 }
 
+void SDLWindow::renderLevel(Surface* level_surface) {
+    std::cout << measurements.levelStaticRect.w << " " << measurements.levelStaticRect.h
+    << " " << measurements.levelStaticRect.x << " " << measurements.levelStaticRect.y;
+    SDL_BlitScaled(level_surface->getRenderableSurface(), NULL,
+                   getSurface(), &measurements.levelStaticRect);
+}
+
 void SDLWindow::renderText(Surface* surface) {
         SDL_Rect Message_rect; //create a rect
     Message_rect.x = 300;  //controls the rect's x coordinate
@@ -283,10 +288,12 @@ void SDLWindow::renderText(Surface* surface) {
 }
 
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
-        std::map<int, Surface *> info_surfaces_map) {
+        std::map<int, Surface *> info_surfaces_map,
+        Surface* level_surface) {
     renderLife(player_info, info_surfaces_map);
     renderMana(player_info, info_surfaces_map);
     renderExperience(player_info, info_surfaces_map);
+    renderLevel(level_surface);
 }
 
 

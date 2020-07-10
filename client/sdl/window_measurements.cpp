@@ -20,8 +20,8 @@ void WindowMeasurements::initialize(int numberOfTilesInWidth,
             numberOfTilesInHeight;
 
     initializeItemInfo(screenWidth, screenHeight);
-    initializeStaticAreas();
     initializePlayerInfo(screenWidth, screenHeight);
+    initializeStaticAreas();
 }
 
 void WindowMeasurements::initializeStaticAreas() {
@@ -39,6 +39,14 @@ void WindowMeasurements::initializeStaticAreas() {
                                  inventory_gold_area.x_pixel_begin);
     inventoryGoldStaticRect.h = (inventory_gold_area.y_pixel_end -
                                  inventory_gold_area.y_pixel_begin);
+
+    game_area_t& level_area = level;
+    levelStaticRect.x = level_area.x_pixel_begin;
+    levelStaticRect.y = level_area.y_pixel_begin;
+    levelStaticRect.w = (level_area.x_pixel_end -
+            level_area.x_pixel_begin);
+    levelStaticRect.h = (level_area.y_pixel_end -
+            level_area.y_pixel_begin);
 
 
     game_area_t& list_gold_area = listGold;
@@ -67,6 +75,12 @@ void WindowMeasurements::initializePlayerInfo(int screenWidth,
                   (int) ((screenWidth/100.0) * 96.8),
                   (int) ((screenHeight/100.0) * 84.9),
                   (int) ((screenHeight/100.0) * 86.4)};
+
+
+    level = {(int) ((screenWidth / 100.0) * 89.1),
+             (int) ((screenWidth / 100.0) * 91.8),
+             (int) ((screenHeight / 100.0) * 80.1),
+             (int) ((screenHeight /100.0) * 84)};
 }
 
 void WindowMeasurements::initializeItemInfo(int screenWidth,
