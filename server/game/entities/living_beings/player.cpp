@@ -283,15 +283,13 @@ void Player::update(int ms) {
             msMoveCounter += ms;
             if (msMoveCounter >= distanceInMsToPriest) {
                 msMoveCounter = 0;
-                position_t priest_pos =
-                        world.getClosestPriestPos(pos);
+                position_t priest_pos = world.getClosestPriestPos(pos);
                 moveNextTo(priest_pos);
                 shortTermRevive();
             }
         }
     } else {
         msRecoveryCounter += ms;
-
         if (msRecoveryCounter >= recoveryVelocity) {
             msRecoveryCounter = 0;
             recoverLifeAndMana();

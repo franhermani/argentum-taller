@@ -173,7 +173,7 @@ std::vector<std::vector<Terrain>> World::getMatrix() const {
     return matrix;
 }
 
-std::vector<NPC *> World::getNPCs() const {
+std::vector<NPC*> World::getNPCs() const {
     return npcs;
 }
 
