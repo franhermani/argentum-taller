@@ -115,6 +115,15 @@ void Creature::moveTo(position_t player_pos) {
     }
 }
 
+void Creature::orientTo(position_t player_pos) {
+    int x_player = player_pos.x, y_player = player_pos.y;
+    if (pos.x != x_player) {
+        orientation = (pos.x < x_player) ? RIGHT : LEFT;
+    } else {
+        orientation = (pos.y < y_player) ? DOWN : UP;
+    }
+}
+
 void Creature::die() {
     isAlive = false;
 }
@@ -153,6 +162,7 @@ void Creature::moveAndAttackPlayers() {
             pos, player_pos) <= attackRange;
 
     if (in_attack_range) {
+        orientTo(player_pos);
         world.addAttack(new Attack(this, MELEE, pos,
                 orientation, attackRange, attackVelocity));
     } else {

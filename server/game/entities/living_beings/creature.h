@@ -39,6 +39,9 @@ class Creature : public LivingBeing{
     // Mueve a la criatura
     void moveTo(position_t player_pos);
 
+    // Cambia la orientacion de la criatura apuntando al player
+    void orientTo(position_t player_pos);
+
     friend class World;
     friend class Equations;
     friend class ServerProtocol;

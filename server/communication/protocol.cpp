@@ -429,7 +429,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
 
 void ServerProtocol::sendItemsList(list_t& list) {
     int message_length = SIZE_8 + SIZE_16 + SIZE_16 +
-            list.num_items * (SIZE_8 + SIZE_16);
+            ntohs(list.num_items) * (SIZE_8 + SIZE_16);
 
     int pos = 0;
 
@@ -438,10 +438,8 @@ void ServerProtocol::sendItemsList(list_t& list) {
 
     memcpy(&byte_msg[pos], &list.show_price, SIZE_8);
     pos += SIZE_8;
-
     memcpy(&byte_msg[pos], &list.gold_quantity, SIZE_16);
     pos += SIZE_16;
-
     memcpy(&byte_msg[pos], &list.num_items, SIZE_16);
     pos += SIZE_16;
 
@@ -449,9 +447,17 @@ void ServerProtocol::sendItemsList(list_t& list) {
     for (i = 0; i < ntohs(list.num_items); i ++) {
         memcpy(&byte_msg[pos], &list.items[i].type, SIZE_8);
         pos += SIZE_8;
-
         memcpy(&byte_msg[pos], &list.items[i].price, SIZE_16);
         pos += SIZE_16;
+    }
+
+//    socket.sendBytes(byte_msg.data(), byte_msg.size());
+
+    if (debug) {
+        std::cout << "Lista de items enviada:\n";
+        for (char& c : byte_msg)
+            printf("%02X ", (unsigned) (unsigned char) c);
+        std::cout << "\n";
     }
 }
 
