@@ -178,7 +178,7 @@ void GameRender::run() {
         renderEquipped(current_world.main_player);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages, current_world.main_player.level);
-        renderList(current_world.);
+        //renderList(current_world.list.items);
         //window.renderListGold();
         window.UpdateWindowSurface();
         auto end = clock::now();
