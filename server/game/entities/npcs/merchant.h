@@ -11,8 +11,7 @@ class Merchant : public NPC {
 
 public:
     // Constructor
-    Merchant(ItemFactory& item_factory, const int pos_x,
-            const int pos_y, const int orient);
+    Merchant(ItemFactory& item_factory, position_t new_pos, const int orient);
 
     // Constructor y asignacion por copia deshabilitados
     Merchant(const Merchant& other) = delete;

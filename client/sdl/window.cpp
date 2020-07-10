@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_video.h>
 #include <SDL2/SDL_render.h>
+#include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "window.h"
 #include "../sdl/exception.h"
@@ -18,6 +19,11 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
+    //todo aca chequeo de excepciones
+    if (TTF_Init() < 0) {
+        throw SDLException("\nNo se pudo inicializar ttf", SDL_GetError());
+    }
+
 }
 
 SDLWindow::~SDLWindow() {
@@ -148,8 +154,8 @@ void SDLWindow::renderGameFrame(Surface* surface) {
                    getSurface(), &measurements.gameFrameStaticRect);
 }
 
-void SDLWindow::renderInventoryGolds(Surface* surface) {
-    SDL_BlitScaled(surface->getRenderableSurface(), NULL,
+void SDLWindow::renderInventoryGolds(Surface* surface, Surface* quantity) {
+    SDL_BlitScaled(quantity->getRenderableSurface(), NULL,
                    getSurface(), &measurements.inventoryGoldStaticRect);
 }
 
@@ -261,12 +267,34 @@ void SDLWindow::renderExperience(std::map<int, float>& player_info,
                    getSurface(), &stretchRect);
 }
 
+void SDLWindow::renderLevel(Surface* level_surface) {
+    SDL_BlitScaled(level_surface->getRenderableSurface(), NULL,
+                   getSurface(), &measurements.levelStaticRect);
+}
+
+void SDLWindow::renderText(Surface* surface) {
+        SDL_Rect Message_rect; //create a rect
+    Message_rect.x = 300;  //controls the rect's x coordinate
+    Message_rect.y = 300; // controls the rect's y coordinte
+    Message_rect.w = 120; // controls the width of the rect
+    Message_rect.h = 120; // controls the height of the rect
+
+    SDL_BlitScaled(surface->getRenderableSurface(), NULL,
+                   getSurface(), &Message_rect);
+    //el free se hace aca?
+
+}
+
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
-        std::map<int, Surface *> info_surfaces_map) {
+        std::map<int, Surface *> info_surfaces_map,
+        Surface* level_surface) {
     renderLife(player_info, info_surfaces_map);
     renderMana(player_info, info_surfaces_map);
     renderExperience(player_info, info_surfaces_map);
+    renderLevel(level_surface);
 }
+
+
 
 
 

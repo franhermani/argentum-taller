@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include "surface.h"
 #include "exception.h"
 #include "window.h"
@@ -30,6 +31,23 @@ Surface::Surface(const std::string filename, const SDLWindow& window,
     }
 }
 
+Surface::Surface(std::string text, const SDLWindow &window) {
+    //todo sacar 25 y color afuera
+    TTF_Font *font = TTF_OpenFont("../client/resources/fonts/goudy.ttf", 100);
+    if (font == NULL) {
+        throw SDLException("\nError al cargar font de surfaces", SDL_GetError());
+    }
+    SDL_Color White = {255, 255,255};
+    SDL_Surface *basic_surface = TTF_RenderText_Solid(font, text.c_str(), White);
+    SDL_Surface *optimized_surface = SDL_ConvertSurface(
+            basic_surface, window.getSurfaceFormat(), 0);
+    SDL_FreeSurface(basic_surface);
+    if (!optimized_surface)
+        throw SDLException("\nError al optimizar la surface",
+        SDL_GetError());
+    surface = optimized_surface;
+    TTF_CloseFont(font);
+}
 
 Surface::~Surface() {
     SDL_FreeSurface(surface);

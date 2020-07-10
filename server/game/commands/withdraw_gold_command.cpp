@@ -10,6 +10,6 @@ bankerPosX(banker_pos_x), bankerPosY(banker_pos_y) {}
 WithdrawGoldCommand::~WithdrawGoldCommand() = default;
 
 void WithdrawGoldCommand::execute(World& world) {
-    NPC* npc = world.getNPCByPos(bankerPosX, bankerPosY);
+    NPC* npc = world.getNPCByPos(position_t(bankerPosX, bankerPosY));
     npc->withdrawGold(player, quantity);
 }

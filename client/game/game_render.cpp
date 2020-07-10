@@ -2,13 +2,17 @@
 #include "game_render.h"
 #include <iostream>
 #include <exception>
+#include <string>
 #include <chrono>
 #include <unistd.h>
 #include "../client.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "../sdl/texture.h"
 #include "vector"
 #include "map"
 #include <utility>
+#include <SDL2/SDL_ttf.h>
 #include "../sdl/window.h"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
@@ -55,15 +59,16 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.
                 playerSurfacesMap[it->race_type][it->orientation]);
     }
 }
 
-void GameRender::renderPlayerInfo(std::map<int,float>& percentages) {
+void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
+    Surface* level_surface = surfacesManager.getTextSurface(std::to_string(level));
     window.renderPlayerInfo(current_world.percentages,
-                            surfacesManager.infoSurfacesMap);
+                            surfacesManager.infoSurfacesMap, level_surface);
 }
 
 
@@ -71,7 +76,7 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     surfacesManager.createNecessaryCreatures(creatures);
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.
                 creatureSurfacesMap[it->type][it->orientation]);
     }
@@ -83,7 +88,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
     surfacesManager.createNecessaryNpcs(npcs);
     for (auto it = std::begin(npcs);
          it != std::end(npcs); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.npcSurfacesMap[it->type][it->orientation]);
     }
 }
@@ -101,7 +106,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
     surfacesManager.createNecessaryItems(items);
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.itemSurfacesMap[it->type]);
     }
 }
@@ -109,7 +114,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
 void GameRender::renderGolds(std::vector<gold_t> &golds) {
     for (auto it = std::begin(golds);
          it != std::end(golds); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.goldSurface);
     }
 }
@@ -128,9 +133,8 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
 }
 
 void GameRender::renderInventoryGolds(uint16_t quantity) {
-    window.renderInventoryGolds(surfacesManager.goldSurface);
-    /* todo renderizar cnatidad de oro como texto
-     * ademas del logo ya renderizado*/
+    window.renderInventoryGolds(surfacesManager.goldSurface,
+            surfacesManager.getTextSurface(std::to_string(quantity)));
 }
 
 
@@ -138,6 +142,10 @@ void GameRender::setTilesSize(int width,int height) {
     blocksWidth = width;
     blocksHeight = height;
     window.setTilesSize(width,height);
+}
+
+void GameRender::renderText() {
+
 }
 
 
@@ -148,8 +156,11 @@ void GameRender::run() {
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     window.setTilesSize(blocksWidth,blocksHeight);
+
+
     while (keepRunning) {
         auto start = clock::now();
+
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
@@ -161,7 +172,7 @@ void GameRender::run() {
         renderInventoryGolds(current_world.player_info.actual_gold);
         renderEquipped(current_world.main_player);
         renderGolds(current_world.golds);
-        renderPlayerInfo(current_world.percentages);
+        renderPlayerInfo(current_world.percentages, current_world.main_player.level);
         //renderList();
         //window.renderListGold();
         window.UpdateWindowSurface();

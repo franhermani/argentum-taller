@@ -49,12 +49,13 @@ public:
     void renderPlayers(std::vector<player_t> &players);
     void renderNpcs(std::vector<npc_t>& npcs);
     void renderCreatures(std::vector<creature_t>& creatures);
-    void renderPlayerInfo(std::map<int,float>& percentages);
+    void renderPlayerInfo(std::map<int,float>& percentages, int level);
     void renderItems(std::vector<item_t>& items);
     void renderGolds(std::vector<gold_t> &golds);
     void renderEquipped(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
     void renderInventoryGolds(uint16_t quantity);
+    void renderText();
     void renderGameFrame();
 
 

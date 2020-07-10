@@ -10,6 +10,6 @@ NPCPosX(npc_pos_x), NPCPosY(npc_pos_y) {}
 BuyItemCommand::~BuyItemCommand() = default;
 
 void BuyItemCommand::execute(World& world) {
-    NPC* npc = world.getNPCByPos(NPCPosX, NPCPosY);
+    NPC* npc = world.getNPCByPos(position_t(NPCPosX, NPCPosY));
     npc->sellItem(player, itemType);
 }

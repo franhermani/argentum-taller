@@ -167,13 +167,13 @@ npcs_t ClientProtocol::receiveNPCs() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, npcs_buffer.data() + bytes_advanced, SIZE_16);
-        npc.pos_x = ntohs(pos_x);
+        npc.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, npcs_buffer.data() + bytes_advanced, SIZE_16);
-        npc.pos_y = ntohs(pos_y);
+        npc.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Enum type de la orientacion
@@ -187,8 +187,8 @@ npcs_t ClientProtocol::receiveNPCs() {
         if (debug) {
             std::cout << "NPC RECIBIDO:\n" <<
             "Tipo: " << (int) npc.type << "\n" <<
-            "Pos X: " << npc.pos_x << "\n" <<
-            "Pos Y: " << npc.pos_y << "\n" <<
+            "Pos X: " << npc.pos.x << "\n" <<
+            "Pos Y: " << npc.pos.y << "\n" <<
             "Orientacion: " << (int) npc.orientation << "\n";
         }
     }
@@ -327,13 +327,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        player.pos_x = ntohs(pos_x);
+        player.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        player.pos_y = ntohs(pos_y);
+        player.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Vida actual
@@ -419,8 +419,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
         if (debug) {
             std::cout << "\nPLAYER RECIBIDO\n" <<
             "Id: " << player.id << "\n" <<
-            "Pos X: " << player.pos_x << "\n" <<
-            "Pos Y: " << player.pos_y << "\n" <<
+            "Pos X: " << player.pos.x << "\n" <<
+            "Pos Y: " << player.pos.y << "\n" <<
             "Vida actual: " << player.actual_life << "\n" <<
             "Vida maxima: " << player.max_life << "\n" <<
             "Nivel: " << player.level << "\n" <<
@@ -457,13 +457,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        creature.pos_x = ntohs(pos_x);
+        creature.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        creature.pos_y = ntohs(pos_y);
+        creature.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Vida actual
@@ -500,8 +500,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "\nCRIATURA RECIBIDA\n" <<
-            "Pos X: " << (int) creature.pos_x << "\n" <<
-            "Pos Y: " << (int) creature.pos_y << "\n" <<
+            "Pos X: " << (int) creature.pos.x << "\n" <<
+            "Pos Y: " << (int) creature.pos.y << "\n" <<
             "Vida actual: " << (int) creature.actual_life << "\n" <<
             "Vida maxima: " << (int) creature.max_life << "\n" <<
             "Orientacion: " << (int) creature.orientation << "\n" <<
@@ -530,13 +530,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        item.pos_x = ntohs(pos_x);
+        item.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        item.pos_y = ntohs(pos_y);
+        item.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Enum type del item
@@ -549,8 +549,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "\nITEM RECIBIDO\n" <<
-            "Pos X: " << (int) item.pos_x << "\n" <<
-            "Pos Y: " << (int) item.pos_y << "\n" <<
+            "Pos X: " << (int) item.pos.x << "\n" <<
+            "Pos Y: " << (int) item.pos.y << "\n" <<
             "Tipo: " << (int) item.type << "\n";
         }
     }
@@ -576,13 +576,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        gold.pos_x = ntohs(pos_x);
+        gold.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        gold.pos_y = ntohs(pos_y);
+        gold.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Cantidad
@@ -595,8 +595,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "\nORO RECIBIDO\n" <<
-            "Pos X: " << (int) gold.pos_x << "\n" <<
-            "Pos Y: " << (int) gold.pos_y << "\n" <<
+            "Pos X: " << (int) gold.pos.x << "\n" <<
+            "Pos Y: " << (int) gold.pos.y << "\n" <<
             "Cantidad: " << (int) gold.quantity << "\n";
         }
     }
@@ -622,13 +622,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        attack.pos_x = ntohs(pos_x);
+        attack.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        attack.pos_y = ntohs(pos_y);
+        attack.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Enum type de la orientacion
@@ -653,8 +653,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "\nATAQUE RECIBIDO\n" <<
-            "Pos X: " << (int) attack.pos_x << "\n" <<
-            "Pos Y: " << (int) attack.pos_y << "\n" <<
+            "Pos X: " << (int) attack.pos.x << "\n" <<
+            "Pos Y: " << (int) attack.pos.y << "\n" <<
             "Orientacion: " << (int) attack.orientation << "\n" <<
             "Tipo: " << (int) attack.type << "\n" <<
             "Colisionando: " << (int) attack.is_colliding << "\n";

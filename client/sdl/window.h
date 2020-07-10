@@ -89,10 +89,13 @@ public:
     void renderEquipped(player_t& player,
             std::map<int, Surface*>& surfaces_map);
     void renderPlayerInfo(std::map<int, float>& player_info,
-            std::map<int, Surface *> info_surfaces_map);
+            std::map<int, Surface *> info_surfaces_map,
+            Surface* level_surface);
     void renderList(std::vector<Surface*>& surfaces);
     void renderListGold(Surface* surface);
-    void renderInventoryGolds(Surface* surface);
+    void renderInventoryGolds(Surface* surface, Surface* quantity);
+    void renderText(Surface* surface);
+    void renderLevel(Surface* level_surface);
 
 
     //Consultas a elementos o sectores renderizados

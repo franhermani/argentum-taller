@@ -11,8 +11,7 @@ class Priest : public NPC {
 
 public:
     // Constructor
-    Priest(ItemFactory& item_factory, const int pos_x,
-            const int pos_y, const int orient);
+    Priest(ItemFactory& item_factory, position_t new_pos, const int orient);
 
     // Constructor y asignacion por copia deshabilitados
     Priest(const Priest& other) = delete;

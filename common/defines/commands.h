@@ -17,7 +17,8 @@ enum commandType {
     CMD_THROW,
     CMD_MOVE,
     CMD_ATTACK,
-    CMD_EQUIP
+    CMD_EQUIP,
+    CMD_UNEQUIP
 };
 
 // Move Command
@@ -32,6 +33,14 @@ enum moveDirection {
 enum takeType {
     TAKE_ITEM,
     TAKE_GOLD
+};
+
+// Unequip Command
+enum unequipType {
+    UNEQUIP_WEAPON,
+    UNEQUIP_ARMOR,
+    UNEQUIP_HELMET,
+    UNEQUIP_SHIELD
 };
 
 #endif // COMMANDS_H

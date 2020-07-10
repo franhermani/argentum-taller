@@ -8,6 +8,6 @@ player(player), priestPosX(priest_pos_x), priestPosY(priest_pos_y) {}
 HealCommand::~HealCommand() = default;
 
 void HealCommand::execute(World& world) {
-    NPC* npc = world.getNPCByPos(priestPosX, priestPosY);
+    NPC* npc = world.getNPCByPos(position_t(priestPosX, priestPosY));
     npc->heal(player);
 }
