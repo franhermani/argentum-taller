@@ -4,25 +4,18 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "entities/living_beings/player.h"
 #include "../utilities/json.hpp"
+#include "../utilities/math_calculator.h"
+#include "entities/living_beings/player.h"
 
 using json = nlohmann::json;
 
 class Equations {
+    json configParams;
+    Math math;
+    std::map<int, std::string> creaturesMap;
     std::map<int, std::string> racesMap;
     std::map<int, std::string> classesMap;
-    std::map<int, std::string> creaturesMap;
-    json configParams;
-
-    // Devuelve un numero entero aleatorio entre 'a' y 'b'
-    const int randomInt(const int a, const int b);
-
-    // Devuelve un numero double aleatorio entre 'a' y 'b'
-    const double randomDouble(const double a, const double b);
-
-    // Devuelve el promedio entre 'a' y 'b'
-    const double average(const double a, const double b);
 
 public:
     // Constructor
