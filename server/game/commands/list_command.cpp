@@ -16,6 +16,6 @@ void ListCommand::execute(World& world) {
                                        "aprox. %d segundos",
                                        player.secondsToRevive());
 
-    NPC* npc = world.getNPCByPos(NPCPosX, NPCPosY);
+    NPC* npc = world.getNPCByPos(position_t(NPCPosX, NPCPosY));
     throw ListException(player.id, npc->listItems(player));
 }

@@ -1,32 +1,31 @@
 #include "attack.h"
 #include "../../../common/defines/commands.h"
 
-Attack::Attack(LivingBeing *owner, const int type, const int pos_x,
-        const int pos_y, const int direction, const int range,
-        const int move_velocity) : owner(owner), type(type), posX(pos_x),
-        posY(pos_y), direction(direction), range(range), blocksToRange(range),
-        isColliding(false), moveVelocity(move_velocity), msMoveCounter(0) {}
+Attack::Attack(LivingBeing *owner, const int type, position_t new_pos,
+        const int direction, const int range, const int move_velocity) :
+        owner(owner), type(type), pos(new_pos), direction(direction),
+        range(range), blocksToRange(range), isColliding(false),
+        moveVelocity(move_velocity), msMoveCounter(0) {}
 
 void Attack::updatePosition() {
-    int new_x = posX, new_y = posY;
+    position_t new_pos = pos;
     switch (direction) {
         case LEFT:
-            new_x -= 1;
+            new_pos.x -= 1;
             break;
         case RIGHT:
-            new_x += 1;
+            new_pos.x += 1;
             break;
         case DOWN:
-            new_y += 1;
+            new_pos.y += 1;
             break;
         case UP:
-            new_y -= 1;
+            new_pos.y -= 1;
             break;
         default:
             break;
     }
-    posX = new_x;
-    posY = new_y;
+    pos = new_pos;
     blocksToRange --;
 }
 

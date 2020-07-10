@@ -10,6 +10,6 @@ bankerPosX(banker_pos_x), bankerPosY(banker_pos_y) {}
 WithdrawItemCommand::~WithdrawItemCommand() = default;
 
 void WithdrawItemCommand::execute(World& world) {
-    NPC* npc = world.getNPCByPos(bankerPosX, bankerPosY);
+    NPC* npc = world.getNPCByPos(position_t(bankerPosX, bankerPosY));
     npc->withdrawItem(player, itemType);
 }

@@ -28,7 +28,7 @@ public:
     ItemFactory& operator=(const ItemFactory& other) = delete;
 
     // Recibe un itemType y una pos(x,y) y devuelve una clase derivada de item
-    Item* operator()(const int type, const int pos_x, const int pos_y);
+    Item* operator()(const int type, position_t new_pos);
 
     // Devuelve el precio asociado a un item segun 'type'
     const int getItemPrice(const int type);

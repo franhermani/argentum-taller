@@ -1,13 +1,15 @@
 #ifndef LIVING_BEING_H
 #define LIVING_BEING_H
 
+#include "../../../../common/defines/position.h"
+
 class Player;
 class Creature;
 
 class LivingBeing {
 protected:
     int id{};
-    int posX{}, posY{};
+    position_t pos{};
     int level{};
     bool isAlive{};
     int orientation{};

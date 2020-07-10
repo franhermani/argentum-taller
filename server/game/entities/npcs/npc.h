@@ -4,13 +4,14 @@
 #include <vector>
 #include "../../../../common/defines/items.h"
 #include "../../../../common/defines/world_structs.h"
+#include "../../../../common/defines/position.h"
 
 class Player;
 
 class NPC {
 protected:
     int type;
-    int posX, posY;
+    position_t pos;
     int orientation;
     std::vector<int> items;
 

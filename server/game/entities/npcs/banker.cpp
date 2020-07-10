@@ -4,11 +4,9 @@
 #include "../../../../common/defines/npcs.h"
 #include "../../game_exception.h"
 
-Banker::Banker(Bank& bank, const int pos_x, const int pos_y,
-        const int orient) : bank(bank) {
+Banker::Banker(Bank& bank, position_t new_pos, const int orient) : bank(bank) {
     type = BANKER;
-    posX = pos_x;
-    posY = pos_y;
+    pos = new_pos;
     orientation = orient;
 }
 

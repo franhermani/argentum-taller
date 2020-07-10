@@ -10,10 +10,10 @@ TakeCommand::~TakeCommand() = default;
 void TakeCommand::execute(World& world) {
     switch (takeType) {
         case TAKE_ITEM:
-            player.takeItemFromWorldToInventory(posX, posY);
+            player.takeItemFromWorldToInventory(position_t(posX, posY));
             break;
         case TAKE_GOLD:
-            player.takeGoldFromWorld(posX, posY);
+            player.takeGoldFromWorld(position_t(posX, posY));
             break;
         default:
             break;

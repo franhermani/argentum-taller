@@ -22,32 +22,14 @@ configParams(config_params) {
                      {ZOMBIE, ZOMBIE_STRING}, {SPIDER, SPIDER_STRING}};
 }
 
-const int Equations::randomInt(const int a, const int b) {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist(a, b);
-    return dist(mt);
-}
-
-const double Equations::randomDouble(const double a, const double b) {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_real_distribution<double> dist(a, b);
-    return dist(mt);
-}
-
-const double Equations::average(const double a, const double b) {
-    return (a + b)/2;
-}
-
 const int Equations::eqMaxLife(Player &player) {
     std::string race_type = racesMap[player.raceType],
                 class_type = classesMap[player.classType];
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
-    double constitution = average(race_params["constitution"],
-                                  class_params["constitution"]);
+    double constitution = math.average(race_params["constitution"],
+                                       class_params["constitution"]);
     int max_life = constitution * (int) race_params["life"] *
                    (int) class_params["life"] * player.level;
     return max_life;
@@ -79,8 +61,8 @@ const int Equations::eqMaxMana(Player &player) {
     json race_params = configParams["races"][race_type],
          class_params = configParams["classes"][class_type];
 
-    double intelligence = average(race_params["intelligence"],
-                                  class_params["intelligence"]);
+    double intelligence = math.average(race_params["intelligence"],
+                                       class_params["intelligence"]);
     int max_mana = intelligence * (int) race_params["mana"] *
                    (int) class_params["mana"] * player.level;
     return max_mana;
@@ -104,8 +86,8 @@ const int Equations::eqManaMeditation(Player &player) {
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
 
-    double intelligence = average(race_params["intelligence"],
-                                  class_params["intelligence"]);
+    double intelligence = math.average(race_params["intelligence"],
+                                       class_params["intelligence"]);
     int mana_recovery = (int) class_params["meditation"] * intelligence;
     return mana_recovery;
 }
@@ -149,7 +131,7 @@ const long Equations::eqExperienceKill(Player &player, LivingBeing &other) {
     json exp_params = configParams["player"]["experience"]["kill_eq"];
     double c1 = exp_params["c1"], c2 = exp_params["c2"];
     int c3 = exp_params["c3"];
-    long experience = randomDouble(c1, c2) * other.maxLife *
+    long experience = math.randomDouble(c1, c2) * other.maxLife *
                       std::max(other.level - player.level + c3, 0);
     return experience;
 }
@@ -162,11 +144,11 @@ const int Equations::eqDamageCaused(Player &player) {
     json attack_params = configParams["player"]["attack"]["no_weapon_eq"];
 
     double weapon_damage = player.weapon ?
-    randomDouble(player.weapon->minDamage, player.weapon->maxDamage) :
-    randomDouble(attack_params["c1"], attack_params["c2"]);
+    math.randomDouble(player.weapon->minDamage, player.weapon->maxDamage) :
+    math.randomDouble(attack_params["c1"], attack_params["c2"]);
 
-    double strength = average(race_params["strength"],
-                              class_params["strength"]);
+    double strength = math.average(race_params["strength"],
+                                   class_params["strength"]);
 
     int damage = strength * weapon_damage;
     return damage;
@@ -176,8 +158,9 @@ const int Equations::eqDamageCaused(Creature &creature) {
     std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
-    int damage = randomDouble(type_params["min_attack"],
-            type_params["max_attack"]) + creature.level;
+    int damage = math.randomDouble(type_params["min_attack"],
+                                   type_params["max_attack"]) +
+                 creature.level;
     return damage;
 }
 
@@ -187,23 +170,24 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
     json race_params = configParams["races"][race_type],
             class_params = configParams["classes"][class_type];
 
-    double agility = average(race_params["agility"], class_params["agility"]);
+    double agility = math.average(race_params["agility"],
+                                  class_params["agility"]);
     json dodge_params = configParams["player"]["defense"]["dodge_eq"];
     double c1 = dodge_params["c1"], c2 = dodge_params["c2"],
            c3 = dodge_params["c3"];
 
-    bool avoid_attack = pow(randomDouble(c1, c2), agility) < c3;
+    bool avoid_attack = pow(math.randomDouble(c1, c2), agility) < c3;
     if (avoid_attack)
         return 0;
 
     double armor_defense = player.armor ?
-    randomDouble(player.armor->minDefense, player.armor->maxDefense) : 0;
+    math.randomDouble(player.armor->minDefense, player.armor->maxDefense) : 0;
 
     double helmet_defense = player.helmet ?
-    randomDouble(player.helmet->minDefense, player.helmet->maxDefense) : 0;
+    math.randomDouble(player.helmet->minDefense, player.helmet->maxDefense) : 0;
 
     double shield_defense = player.shield ?
-    randomDouble(player.shield->minDefense, player.shield->maxDefense) : 0;
+    math.randomDouble(player.shield->minDefense, player.shield->maxDefense) : 0;
 
     int defense = armor_defense + helmet_defense + shield_defense;
     int damage_received = std::max(damage - defense, 0);
@@ -214,8 +198,8 @@ const int Equations::eqDamageReceived(Creature &creature, const int damage) {
     std::string type = creaturesMap[creature.type];
     json type_params = configParams["creatures"][type];
 
-    int defense = randomDouble(type_params["min_defense"],
-                               type_params["max_defense"]);
+    int defense = math.randomDouble(type_params["min_defense"],
+                                    type_params["max_defense"]);
 
     int damage_received = std::max(damage - defense, 0);
     return damage_received;
@@ -225,26 +209,30 @@ std::vector<int> Equations::eqCreatureDeathDrop(Creature &creature) {
     std::vector<int> death_drop = {0,0};
 
     json js = configParams["creatures"]["death_prob_eq"];
-    std::vector<double> p = {js["nothing"]["p"], js["gold"]["p"],
-                             js["potion"]["p"], js["item"]["p"]};
+    std::map<int, double> p = {{DROP_NOTHING, js["nothing"]["p"]},
+                               {DROP_GOLD, js["gold"]["p"]},
+                               {DROP_POTION, js["potion"]["p"]},
+                               {DROP_ITEM, js["item"]["p"]}};
 
     double c1 = js["gold"]["quantity_eq"]["c1"],
            c2 = js["gold"]["quantity_eq"]["c2"],
-           n = randomDouble(0, 1);
+           n = math.randomDouble(0, 1);
 
-    int enum_drop = DROP_NOTHING, param_drop = 0;
+    int enum_drop = 0, param_drop = 0;
 
-    if (n > p[DROP_GOLD] && n <= p[DROP_POTION]) {
+    if (n <= p[DROP_NOTHING]) {
+        enum_drop = DROP_NOTHING;
+        param_drop = 0;
+    } else if (n > p[DROP_NOTHING] && n <= p[DROP_GOLD]) {
         enum_drop = DROP_GOLD;
-        param_drop = randomDouble(c1, c2) * creature.maxLife;
-    } else if (n > p[DROP_POTION] && n <= p[DROP_ITEM]) {
-        enum_drop = DROP_POTION;
-        param_drop = randomInt(POCION_VIDA, POCION_MANA);
-    } else if (n > p[DROP_ITEM]) {
+        param_drop = math.randomDouble(c1, c2) * creature.maxLife;
+    } else if (n > p[DROP_GOLD] && n <= p[DROP_POTION]) {
         enum_drop = DROP_ITEM;
-        param_drop = randomInt(ESPADA, ESCUDO_HIERRO);
+        param_drop = math.randomInt(POCION_VIDA, POCION_MANA);
+    } else if (n > p[DROP_POTION]) {
+        enum_drop = DROP_ITEM;
+        param_drop = math.randomInt(ESPADA, ESCUDO_HIERRO);
     }
-
     death_drop[0] = enum_drop;
     death_drop[1] = param_drop;
     return death_drop;
