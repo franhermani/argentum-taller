@@ -155,10 +155,10 @@ void SDLWindow::renderGameFrame(Surface* surface) {
 }
 
 void SDLWindow::renderInventoryGolds(Surface* surface, Surface* quantity) {
-    SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &measurements.inventoryGoldStaticRect);
+    /*SDL_BlitScaled(surface->getRenderableSurface(), NULL,
+                   getSurface(), &measurements.inventoryGoldStaticRect);*/
     SDL_BlitScaled(quantity->getRenderableSurface(), NULL,
-                   getSurface(), &measurements.inventoryGoldQuantityStaticRect);
+                   getSurface(), &measurements.inventoryGoldStaticRect);
 }
 
 

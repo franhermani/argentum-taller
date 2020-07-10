@@ -41,11 +41,6 @@ void WindowMeasurements::initializeStaticAreas() {
                                  inventory_gold_area.y_pixel_begin);
 
 
-    inventoryGoldQuantityStaticRect = inventoryGoldStaticRect;
-    inventoryGoldQuantityStaticRect.x = inventoryGoldQuantityStaticRect.x
-            + inventoryGoldStaticRect.w;
-
-
     game_area_t& list_gold_area = listGold;
     listGoldStaticRect.x = list_gold_area.x_pixel_begin;
     listGoldStaticRect.y = list_gold_area.y_pixel_begin;
@@ -79,10 +74,17 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
     inventory = {(screenWidth / 100) * 84, (screenWidth / 100) * 102,
                  screenHeight / 4, (screenHeight /100) * 64};
 
-    inventoryGold = {(int) (screenWidth / 100.0) * 85,
+    /*TODO ESTO AHORA VA A SER LA POSICION DE LAS EXCEPCIONES
+    exceptions = {(int) (screenWidth / 100.0) * 85,
                       (int) (screenWidth / 100.0) * 89,
                      (int) ((screenHeight / 100.0) * 95),
                      (int) ((screenHeight /100.0) * 99)};
+*/
+
+    inventoryGold = {(int) ((screenWidth / 100.0) * 93),
+                (int) ((screenWidth / 100.0) * 98.0),
+                (int) ((screenHeight / 100.0) * 74.2),
+                (int) ((screenHeight /100.0) * 78)};
 
 
     list = {(int) (screenWidth / 100.0) * 44,
