@@ -71,16 +71,16 @@ void WindowMeasurements::initializePlayerInfo(int screenWidth,
             (int) ((screenHeight/100.0) * 84.8),
             (int) ((screenHeight/100.0) * 86.3)};
 
-    experience = {(int)  ((screenWidth/100.0) * 89.1),
-                  (int) ((screenWidth/100.0) * 96.8),
-                  (int) ((screenHeight/100.0) * 84.9),
-                  (int) ((screenHeight/100.0) * 86.4)};
+    experience = {(int)  ((screenWidth/100.0) *  78.8),
+                  (int) ((screenWidth/100.0) * 86.5),
+                  (int) ((screenHeight/100.0) * 88.7),
+                  (int) ((screenHeight/100.0) * 90.2)};
 
 
-    level = {(int) ((screenWidth / 100.0) * 89.1),
-             (int) ((screenWidth / 100.0) * 91.8),
-             (int) ((screenHeight / 100.0) * 80.1),
-             (int) ((screenHeight /100.0) * 84)};
+    level = {(int) ((screenWidth / 100.0) * 91.1),
+             (int) ((screenWidth / 100.0) * 93.8),
+             (int) ((screenHeight / 100.0) * 84.8),
+             (int) ((screenHeight /100.0) * 90)};
 }
 
 void WindowMeasurements::initializeItemInfo(int screenWidth,
