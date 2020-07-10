@@ -48,7 +48,7 @@ void World::loadEntitiesImpenetrableTerrains() {
 
 void World::loadAttacksImpenetrableTerrains() {
     attacksImpenetrableTerrains.insert(TERRAIN_WALL);
-    entitiesImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
+    attacksImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
 }
 
 void World::loadMatrix() {
@@ -68,6 +68,52 @@ void World::loadMatrix() {
         }
     }
 }
+
+const bool World::entityImpenetrableTerrainInPosition(const int pos_x,
+        const int pos_y) {
+    return entitiesImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0;
+}
+
+const bool World::attackImpenetrableTerrainInPosition(const int pos_x,
+        const int pos_y) {
+    return attacksImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0;
+}
+
+const bool World::playerInPosition(const int pos_x, const int pos_y) {
+    for (auto& player : players)
+        if (player->posX == pos_x && player->posY == pos_y)
+            return true;
+    return false;
+}
+
+const bool World::creatureInPosition(const int pos_x, const int pos_y) {
+    for (auto& creature : creatures)
+        if (creature->posX == pos_x && creature->posY == pos_y)
+            return true;
+    return false;
+}
+
+const bool World::NPCInPosition(const int pos_x, const int pos_y) {
+    for (auto& npc : npcs)
+        if (npc->posX == pos_x && npc->posY == pos_y)
+            return true;
+    return false;
+}
+
+const bool World::itemInPosition(const int pos_x, const int pos_y) {
+    for (auto& item : items)
+        if (item->posX == pos_x && item->posY == pos_y)
+            return true;
+    return false;
+}
+
+const bool World::goldInPosition(const int pos_x, const int pos_y) {
+    for (auto& gold : golds)
+        if (gold->posX == pos_x && gold->posY == pos_y)
+            return true;
+    return false;
+}
+
 
 // -------------------------------------------- //
 // Metodos accedidos por threads (WorldMonitor) //
@@ -216,27 +262,13 @@ const bool World::inMapBoundaries(const int pos_x, const int pos_y) {
     return x_in_boundaries && y_in_boundaries;
 }
 
-const bool World::inCollision(const int pos_x, const int pos_y) {
-    // Terrenos impenetrables
-    if (entitiesImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
-        return true;
+const bool World::entityInCollision(const int pos_x, const int pos_y) {
+    bool collision = entityImpenetrableTerrainInPosition(pos_x, pos_y) ||
+                     playerInPosition(pos_x, pos_y) ||
+                     creatureInPosition(pos_x, pos_y) ||
+                     NPCInPosition(pos_x, pos_y);
 
-    // Players
-    for (auto& player : players)
-        if (player->posX == pos_x && player->posY == pos_y)
-            return true;
-
-    // Criaturas
-    for (auto& creature : creatures)
-        if (creature->posX == pos_x && creature->posY == pos_y)
-            return true;
-
-    // NPCs
-    for (auto& npc : npcs)
-        if (npc->posX == pos_x && npc->posY == pos_y)
-            return true;
-
-    return false;
+    return collision;
 }
 
 void World::attackInCollision(Attack* new_attack) {
@@ -244,7 +276,7 @@ void World::attackInCollision(Attack* new_attack) {
     int pos_x = new_attack->posX, pos_y = new_attack->posY;
 
     // Terrenos impenetrables
-    if (attacksImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0) {
+    if (attackImpenetrableTerrainInPosition(pos_x, pos_y)) {
         new_attack->collision();
         return;
     }
@@ -282,26 +314,12 @@ void World::attackInCollision(Attack* new_attack) {
 }
 
 const bool World::itemInCollision(const int pos_x, const int pos_y) {
-    // Terrenos impenetrables
-    if (entitiesImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
-        return true;
+    bool collision = entityImpenetrableTerrainInPosition(pos_x, pos_y) ||
+                     NPCInPosition(pos_x, pos_y) ||
+                     itemInPosition(pos_x, pos_y) ||
+                     goldInPosition(pos_x, pos_y);
 
-    // NPCs
-    for (auto& npc : npcs)
-        if (npc->posX == pos_x && npc->posY == pos_y)
-            return true;
-
-    // Items
-    for (auto& item : items)
-        if (item->posX == pos_x && item->posY == pos_y)
-            return true;
-
-    // Oros
-    for (auto& gold : golds)
-        if (gold->posX == pos_x && gold->posY == pos_y)
-            return true;
-
-    return false;
+    return collision;
 }
 
 void World::addItem(Item *item) {
@@ -439,7 +457,7 @@ std::vector<int> World::loadNPCPosition() {
     std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
 
     int new_x = dist_x(mt), new_y = dist_y(mt);
-    while (inCollision(new_x, new_y)) {
+    while (entityInCollision(new_x, new_y)) {
         new_x = dist_x(mt);
         new_y = dist_y(mt);
     }
@@ -458,7 +476,7 @@ std::vector<int> World::loadCreaturePosition() {
     std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
 
     int new_x = dist_x(mt), new_y = dist_y(mt);
-    while (inCollision(new_x, new_y)) {
+    while (entityInCollision(new_x, new_y)) {
         new_x = dist_x(mt);
         new_y = dist_y(mt);
     }

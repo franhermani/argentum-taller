@@ -22,6 +22,4 @@ void Server::startGame() {
 void Server::endGame() {
     clientsAcceptor->stop();
     clientsAcceptor->join();
-    gameManager->stop();
-    gameManager->join();
 }

@@ -44,7 +44,7 @@ void Creature::loadPosition() {
     std::uniform_int_distribution<int> dist_y(0, world.getHeight() - 1);
 
     int new_x = dist_x(mt), new_y = dist_y(mt);
-    while (world.inCollision(new_x, new_y)) {
+    while (world.entityInCollision(new_x, new_y)) {
         new_x = dist_x(mt);
         new_y = dist_y(mt);
     }
@@ -116,7 +116,7 @@ void Creature::moveTo(std::vector<int>& player_pos) {
     bool move_available = true;
 
     while ((! world.inMapBoundaries(pos[0], pos[1])) ||
-           (world.inCollision(pos[0], pos[1]))) {
+          (world.entityInCollision(pos[0], pos[1]))) {
         if (tries_remaining.empty()) {
             move_available = false;
             break;

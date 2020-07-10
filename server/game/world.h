@@ -44,6 +44,31 @@ class World {
     const bool inPlayerBoundaries(Player& player,
             const int pos_x, const int pos_y);
 
+    // Determina si hay un terreno impenetrable por una entidad
+    // en la posicion (x,y)
+    const bool entityImpenetrableTerrainInPosition(const int pos_x,
+            const int pos_y);
+
+    // Determina si hay un terreno impenetrable por un ataque
+    // en la posicion (x,y)
+    const bool attackImpenetrableTerrainInPosition(const int pos_x,
+            const int pos_y);
+
+    // Determina si hay un player en la posicion (x,y)
+    const bool playerInPosition(const int pos_x, const int pos_y);
+
+    // Determina si hay una criatura en la posicion (x,y)
+    const bool creatureInPosition(const int pos_x, const int pos_y);
+
+    // Determina si hay un NPC en la posicion (x,y)
+    const bool NPCInPosition(const int pos_x, const int pos_y);
+
+    // Determina si hay un item en la posicion (x,y)
+    const bool itemInPosition(const int pos_x, const int pos_y);
+
+    // Determina si hay un oro en la posicion (x,y)
+    const bool goldInPosition(const int pos_x, const int pos_y);
+
     // Determina si hay una colision de ataque
     // Lo ejecuta en caso afirmativo
     void attackInCollision(Attack* new_attack);
@@ -120,12 +145,10 @@ public:
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     const bool inMapBoundaries(const int pos_x, const int pos_y);
 
-    // Determina si hay una colision de entidad o terreno impenetrable
-    // en la posicion (x,y)
-    const bool inCollision(const int pos_x, const int pos_y);
+    // Determina si hay una colision de entidad en la posicion (x,y)
+    const bool entityInCollision(const int pos_x, const int pos_y);
 
-    // Determina si hay una colision de item o terreno impenetrable
-    // en la posicion (x,y)
+    // Determina si hay una colision de item en la posicion (x,y)
     const bool itemInCollision(const int pos_x, const int pos_y);
 
     // Agrega un item al mundo
