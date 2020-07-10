@@ -19,6 +19,7 @@ messagesQueuePerPlayer(messagesQueuePerPlayer) {
 
     loadEntitiesImpenetrableTerrains();
     loadAttacksImpenetrableTerrains();
+    loadSafeZonesTerrains();
     loadMatrix();
 }
 
@@ -48,6 +49,11 @@ void World::loadEntitiesImpenetrableTerrains() {
 void World::loadAttacksImpenetrableTerrains() {
     attacksImpenetrableTerrains.insert(TERRAIN_WALL);
     attacksImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
+}
+
+void World::loadSafeZonesTerrains() {
+    // TODO: ...
+//    safeZonesTerrains.insert();
 }
 
 void World::loadMatrix() {

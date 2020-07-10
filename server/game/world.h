@@ -24,6 +24,7 @@ class World {
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> entitiesImpenetrableTerrains;
     std::set<Terrain> attacksImpenetrableTerrains;
+    std::set<Terrain> safeZonesTerrains;
     std::vector<Player*> players;
     std::vector<Creature*> creatures;
     std::vector<NPC*> npcs;
@@ -38,6 +39,9 @@ class World {
 
     // Llena el vector de terrenos impenetrables por un ataque
     void loadAttacksImpenetrableTerrains();
+
+    // Llena el vector de terrenos considerados zona segura
+    void loadSafeZonesTerrains();
 
     // Llena la matriz (mapa) segun el json generado por Tiled
     void loadMatrix();
