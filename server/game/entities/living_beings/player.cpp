@@ -514,6 +514,33 @@ void Player::equipItemFromInventory(const int type) {
     }
 }
 
+void Player::unequipItem(const int type) {
+    try {
+        switch (type) {
+            case UNEQUIP_WEAPON:
+                inventory.addItem(weapon);
+                weapon = nullptr;
+                break;
+            case UNEQUIP_ARMOR:
+                inventory.addItem(armor);
+                armor = nullptr;
+                break;
+            case UNEQUIP_HELMET:
+                inventory.addItem(helmet);
+                helmet = nullptr;
+                break;
+            case UNEQUIP_SHIELD:
+                inventory.addItem(shield);
+                shield = nullptr;
+                break;
+            default:
+                break;
+        }
+    } catch (GameException& e) {
+        throw GameException(id, e.what());
+    }
+}
+
 void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
     if (isWaitingToRevive())
         throw GameException(id, "No puedes ejecutar ningun comando hasta que "

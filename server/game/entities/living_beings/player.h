@@ -159,6 +159,9 @@ public:
     // Saca un item del inventario segun 'type' y lo equipa
     void equipItemFromInventory(const int type);
 
+    // Saca un item equipado y lo guarda en el inventario
+    void unequipItem(const int type);
+
     // Saca un item del mundo segun su pos (x,y) y lo guarda en el inventario
     void takeItemFromWorldToInventory(const int pos_x, const int pos_y);
 

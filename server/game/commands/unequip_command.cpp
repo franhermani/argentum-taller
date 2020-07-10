@@ -6,5 +6,5 @@ UnequipCommand::UnequipCommand(Player &player, const int unequip_type) :
 UnequipCommand::~UnequipCommand() = default;
 
 void UnequipCommand::execute(World& world) {
-    // TODO: ...
+    player.unequipItem(unequipType);
 }
