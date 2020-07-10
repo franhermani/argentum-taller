@@ -50,8 +50,7 @@ distanceInMsToPriest(0) {
     maxSafeGold = equations.eqMaxSafeGold(*this);
     maxExcessGold = equations.eqMaxExcessGold(*this);
     actualGold = equations.eqInitialGold(*this);
-
-    loadInitialPosition();
+    pos = world.loadPlayerPosition();
 
     bool debug = true;
     if (debug) {
@@ -80,21 +79,6 @@ Player::~Player() {
 // --------------- //
 // Private methods //
 // --------------- //
-
-void Player::loadInitialPosition() {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, world.getWidth() - 1);
-    std::uniform_int_distribution<int> dist_y(0, world.getHeight() - 1);
-
-    position_t new_pos{};
-    new_pos.x = dist_x(mt), new_pos.y = dist_y(mt);
-    while (world.entityInCollision(new_pos)) {
-        new_pos.x = dist_x(mt);
-        new_pos.y = dist_y(mt);
-    }
-    pos = new_pos;
-}
 
 void Player::addLife(int life) {
     actualLife += life;

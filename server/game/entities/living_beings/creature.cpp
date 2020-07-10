@@ -27,8 +27,7 @@ msRespawnCounter(0) {
     orientation = DOWN;
     maxLife = equations.eqMaxLife(*this);
     actualLife = maxLife;
-
-    loadPosition();
+    pos = world.loadCreaturePosition();
 }
 
 Creature::~Creature() = default;
@@ -36,21 +35,6 @@ Creature::~Creature() = default;
 // --------------- //
 // Private methods //
 // --------------- //
-
-void Creature::loadPosition() {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, world.getWidth() - 1);
-    std::uniform_int_distribution<int> dist_y(0, world.getHeight() - 1);
-
-    position_t new_pos{};
-    new_pos.x = dist_x(mt), new_pos.y = dist_y(mt);
-    while (world.entityInCollision(new_pos)) {
-        new_pos.x = dist_x(mt);
-        new_pos.y = dist_y(mt);
-    }
-    pos = new_pos;
-}
 
 std::queue<int> Creature::getMovementPriorities(position_t player_pos) {
     std::queue<int> priorities;
@@ -123,7 +107,7 @@ void Creature::moveTo(position_t player_pos) {
         }
         direction = tries_remaining.front();
         tries_remaining.pop();
-        pos = getMovementPosition(direction);
+        new_pos = getMovementPosition(direction);
     }
     if (move_available) {
         pos = new_pos;
@@ -138,7 +122,7 @@ void Creature::die() {
 // TODO: enviarlos a un cementerio, no a una posicion aleatoria
 void Creature::respawn() {
     dropItemOrGold();
-    loadPosition();
+    pos = world.loadCreaturePosition();
     isAlive = true;
 }
 

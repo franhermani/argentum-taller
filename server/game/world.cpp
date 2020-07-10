@@ -1,7 +1,6 @@
 #include <map>
 #include <string>
 #include <random>
-#include <cstdlib>
 #include "world.h"
 #include "entities/npcs/priest.h"
 #include "game_exception.h"
@@ -270,10 +269,10 @@ const bool World::entityInCollision(position_t new_pos) {
 
 void World::attackInCollision(Attack* new_attack) {
     LivingBeing* owner = new_attack->owner;
-    position_t new_pos = new_attack->pos;
+    position_t attack_pos = new_attack->pos;
 
     // Terrenos impenetrables
-    if (attackImpenetrableTerrainInPosition(new_pos)) {
+    if (attackImpenetrableTerrainInPosition(attack_pos)) {
         new_attack->collision();
         return;
     }
@@ -283,7 +282,7 @@ void World::attackInCollision(Attack* new_attack) {
         if (owner->id == p->id && dynamic_cast<Player*>(owner))
             continue;
 
-        if (p->pos == new_pos) {
+        if (p->pos == attack_pos) {
             new_attack->collision();
             owner->attack(*p);
             return;
@@ -295,7 +294,7 @@ void World::attackInCollision(Attack* new_attack) {
         if (owner->id == c->id && dynamic_cast<Creature*>(owner))
             continue;
 
-        if (c->pos == new_pos) {
+        if (c->pos == attack_pos) {
             new_attack->collision();
             owner->attack(*c);
             return;
@@ -304,7 +303,7 @@ void World::attackInCollision(Attack* new_attack) {
 
     // NPCs
     for (auto& npc : npcs)
-        if (npc->pos == new_pos) {
+        if (npc->pos == attack_pos) {
             new_attack->collision();
             return;
         }
@@ -439,34 +438,40 @@ void World::addCreature(Creature *creature) {
     creatures.push_back(creature);
 }
 
-// TODO: dentro de safe zones
-position_t World::loadNPCPosition() {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, worldWidth - 1);
-    std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
-
+position_t World::loadPlayerPosition() {
     position_t new_pos{};
-    new_pos.x = dist_x(mt), new_pos.y = dist_y(mt);
+    new_pos.x = math.randomInt(0, worldWidth - 1);
+    new_pos.y = math.randomInt(0, worldHeight - 1);
+
     while (entityInCollision(new_pos)) {
-        new_pos.x = dist_x(mt);
-        new_pos.y = dist_y(mt);
+        new_pos.x = math.randomInt(0, worldWidth - 1);
+        new_pos.y = math.randomInt(0, worldHeight - 1);
     }
     return new_pos;
 }
 
 // TODO: fuera de safe zones
 position_t World::loadCreaturePosition() {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, worldWidth - 1);
-    std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
-
     position_t new_pos{};
-    new_pos.x = dist_x(mt), new_pos.y = dist_y(mt);
+    new_pos.x = math.randomInt(0, worldWidth - 1);
+    new_pos.y = math.randomInt(0, worldHeight - 1);
+
     while (entityInCollision(new_pos)) {
-        new_pos.x = dist_x(mt);
-        new_pos.y = dist_y(mt);
+        new_pos.x = math.randomInt(0, worldWidth - 1);
+        new_pos.y = math.randomInt(0, worldHeight - 1);
+    }
+    return new_pos;
+}
+
+// TODO: dentro de safe zones
+position_t World::loadNPCPosition() {
+    position_t new_pos{};
+    new_pos.x = math.randomInt(0, worldWidth - 1);
+    new_pos.y = math.randomInt(0, worldHeight - 1);
+
+    while (entityInCollision(new_pos)) {
+        new_pos.x = math.randomInt(0, worldWidth - 1);
+        new_pos.y = math.randomInt(0, worldHeight - 1);
     }
     return new_pos;
 }

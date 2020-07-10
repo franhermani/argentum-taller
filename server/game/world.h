@@ -5,6 +5,7 @@
 #include <set>
 #include <map>
 #include <string>
+#include "../utilities/math_calculator.h"
 #include "params.h"
 #include "entities/items/item_factory.h"
 #include "../../common/protected_queue.h"
@@ -16,6 +17,7 @@
 #include "entities/attack.h"
 
 class World {
+    Math math;
     GameParams& params;
     ItemFactory& itemFactory;
     std::map<int, ProtectedQueue<std::string>>& messagesQueuePerPlayer;
@@ -204,11 +206,14 @@ public:
     // Agrega una criatura al mundo
     void addCreature(Creature* creature);
 
-    // Devuelve una posicion random para un NPC dentro de una zona segura
-    position_t loadNPCPosition();
+    // Devuelve una posicion random para un player
+    position_t loadPlayerPosition();
 
     // Devuelve una posicion random para una criatura fuera de una zona segura
     position_t loadCreaturePosition();
+
+    // Devuelve una posicion random para un NPC dentro de una zona segura
+    position_t loadNPCPosition();
 };
 
 #endif // GAME_WORLD_H

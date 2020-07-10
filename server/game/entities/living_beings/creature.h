@@ -17,9 +17,6 @@ class Creature : public LivingBeing{
     int moveVelocity, attackVelocity, respawnVelocity;
     int msMoveCounter, msRespawnCounter;
 
-    // Genera una posicion aleatoria para la criatura
-    void loadPosition();
-
     // Setea 'isAlive' en false
     void die() override;
 

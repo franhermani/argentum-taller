@@ -41,9 +41,6 @@ class Player : public LivingBeing {
     int msMoveCounter, msRecoveryCounter;
     int distanceInMsToPriest;
 
-    // Genera posiciones iniciales aleatorias para el player
-    void loadInitialPosition();
-
     // Suma puntos de vida al player
     void addLife(int life);
 
