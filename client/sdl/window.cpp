@@ -268,8 +268,6 @@ void SDLWindow::renderExperience(std::map<int, float>& player_info,
 }
 
 void SDLWindow::renderLevel(Surface* level_surface) {
-    std::cout << measurements.levelStaticRect.w << " " << measurements.levelStaticRect.h
-    << " " << measurements.levelStaticRect.x << " " << measurements.levelStaticRect.y;
     SDL_BlitScaled(level_surface->getRenderableSurface(), NULL,
                    getSurface(), &measurements.levelStaticRect);
 }
