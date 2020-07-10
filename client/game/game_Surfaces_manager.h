@@ -29,6 +29,8 @@ class GameSurfacesManager {
     std::vector<std::vector<Terrain>> floor;
     SDLWindow& window;
 
+    Surface* getTextSurface(std::string text);
+
     friend class GameRender;
 
 

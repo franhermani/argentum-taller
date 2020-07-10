@@ -41,6 +41,11 @@ void WindowMeasurements::initializeStaticAreas() {
                                  inventory_gold_area.y_pixel_begin);
 
 
+    inventoryGoldQuantityStaticRect = inventoryGoldStaticRect;
+    inventoryGoldQuantityStaticRect.x = inventoryGoldQuantityStaticRect.x
+            + inventoryGoldStaticRect.w;
+
+
     game_area_t& list_gold_area = listGold;
     listGoldStaticRect.x = list_gold_area.x_pixel_begin;
     listGoldStaticRect.y = list_gold_area.y_pixel_begin;

@@ -32,6 +32,9 @@ GameSurfacesManager::~GameSurfacesManager(){
     delete gameFrameSurface;
 }
 
+Surface* GameSurfacesManager::getTextSurface(std::string text) {
+    return new Surface(text, window);
+}
 
 
 void GameSurfacesManager::createNecessaryTerrains(

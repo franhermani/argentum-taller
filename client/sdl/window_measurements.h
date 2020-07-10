@@ -25,6 +25,7 @@ struct WindowMeasurements {
 
     SDL_Rect gameFrameStaticRect;
     SDL_Rect inventoryGoldStaticRect;
+    SDL_Rect inventoryGoldQuantityStaticRect;
     SDL_Rect listGoldStaticRect;
     WindowMeasurements();
     ~WindowMeasurements();
