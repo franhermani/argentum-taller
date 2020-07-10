@@ -55,7 +55,7 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.
                 playerSurfacesMap[it->race_type][it->orientation]);
     }
@@ -71,7 +71,7 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     surfacesManager.createNecessaryCreatures(creatures);
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.
                 creatureSurfacesMap[it->type][it->orientation]);
     }
@@ -83,7 +83,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
     surfacesManager.createNecessaryNpcs(npcs);
     for (auto it = std::begin(npcs);
          it != std::end(npcs); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.npcSurfacesMap[it->type][it->orientation]);
     }
 }
@@ -101,7 +101,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
     surfacesManager.createNecessaryItems(items);
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.itemSurfacesMap[it->type]);
     }
 }
@@ -109,7 +109,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
 void GameRender::renderGolds(std::vector<gold_t> &golds) {
     for (auto it = std::begin(golds);
          it != std::end(golds); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.goldSurface);
     }
 }

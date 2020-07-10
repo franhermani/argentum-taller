@@ -41,33 +41,30 @@ class World {
     void loadMatrix();
 
     // Determina si una posicion (x,y) esta dentro de los limites de 'player'
-    const bool inPlayerBoundaries(Player& player,
-            const int pos_x, const int pos_y);
+    const bool inPlayerBoundaries(Player& player, position_t new_pos);
 
     // Determina si hay un terreno impenetrable por una entidad
     // en la posicion (x,y)
-    const bool entityImpenetrableTerrainInPosition(const int pos_x,
-            const int pos_y);
+    const bool entityImpenetrableTerrainInPosition(position_t new_pos);
 
     // Determina si hay un terreno impenetrable por un ataque
     // en la posicion (x,y)
-    const bool attackImpenetrableTerrainInPosition(const int pos_x,
-            const int pos_y);
+    const bool attackImpenetrableTerrainInPosition(position_t new_pos);
 
     // Determina si hay un player en la posicion (x,y)
-    const bool playerInPosition(const int pos_x, const int pos_y);
+    const bool playerInPosition(position_t new_pos);
 
     // Determina si hay una criatura en la posicion (x,y)
-    const bool creatureInPosition(const int pos_x, const int pos_y);
+    const bool creatureInPosition(position_t new_pos);
 
     // Determina si hay un NPC en la posicion (x,y)
-    const bool NPCInPosition(const int pos_x, const int pos_y);
+    const bool NPCInPosition(position_t new_pos);
 
     // Determina si hay un item en la posicion (x,y)
-    const bool itemInPosition(const int pos_x, const int pos_y);
+    const bool itemInPosition(position_t new_pos);
 
     // Determina si hay un oro en la posicion (x,y)
-    const bool goldInPosition(const int pos_x, const int pos_y);
+    const bool goldInPosition(position_t new_pos);
 
     // Determina si hay una colision de ataque
     // Lo ejecuta en caso afirmativo
@@ -143,50 +140,49 @@ public:
     // ------------------------------------------- //
 
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
-    const bool inMapBoundaries(const int pos_x, const int pos_y);
+    const bool inMapBoundaries(position_t new_pos);
 
     // Determina si hay una colision de entidad en la posicion (x,y)
-    const bool entityInCollision(const int pos_x, const int pos_y);
+    const bool entityInCollision(position_t new_pos);
 
     // Determina si hay una colision de item en la posicion (x,y)
-    const bool itemInCollision(const int pos_x, const int pos_y);
+    const bool itemInCollision(position_t new_pos);
 
     // Agrega un item al mundo
     void addItem(Item* item);
 
     // Agrega un item al mundo segun 'type'
-    void addItem(const int type, const int pos_x, const int pos_y);
+    void addItem(const int type, position_t new_pos);
 
     // Remueve un item del mundo segun su pos (x,y)
-    Item* removeItem(const int pos_x, const int pos_y);
+    Item* removeItem(position_t new_pos);
 
     // Agrega un oro al mundo
     void addGold(Gold* gold);
 
     // Remueve un oro del mundo segun su pos (x,y)
-    Gold* removeGold(const int pos_x, const int pos_y);
+    Gold* removeGold(position_t new_pos);
 
     // Agrega un ataque al mundo
     void addAttack(Attack* new_attack);
 
     // Devuelve el NPC asociado a la posicion (pos_x, pos_y)
-    NPC* getNPCByPos(const int pos_x, const int pos_y) const;
+    NPC* getNPCByPos(position_t new_pos) const;
 
     // Devuelve la posicion del player mas cercano
     // a la posicion (pos_x, pos_y)
-    std::vector<int> getClosestPlayerPos(const int pos_x, const int pos_y);
+    position_t getClosestPlayerPos(position_t new_pos);
 
     // Devuelve la distancia en bloques de una posicion (x, y) a otra
-    const int distanceInBlocks(const int x1, const int y1,
-            const int x2, const int y2);
+    const int distanceInBlocks(position_t pos1, position_t pos2);
 
     // Devuelve la posicion del sacerdote mas cercano
     // a la posicion (pos_x, pos_y)
-    std::vector<int> getClosestPriestPos(const int pos_x, const int pos_y);
+    position_t getClosestPriestPos(position_t new_pos);
 
     // Devuelve la distancia en ms de una posicion (pos_x, pos_y)
     // a la del sacerdote mas cercano segun la velocidad dada
-    const int distanceInMsToClosestPriest(const int pos_x, const int pos_y,
+    const int distanceInMsToClosestPriest(position_t new_pos,
             const int velocity);
 
     // Devuelve el largo maximo del inventario
@@ -209,10 +205,10 @@ public:
     void addCreature(Creature* creature);
 
     // Devuelve una posicion random para un NPC dentro de una zona segura
-    std::vector<int> loadNPCPosition();
+    position_t loadNPCPosition();
 
     // Devuelve una posicion random para una criatura fuera de una zona segura
-    std::vector<int> loadCreaturePosition();
+    position_t loadCreaturePosition();
 };
 
 #endif // GAME_WORLD_H

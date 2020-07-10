@@ -75,8 +75,8 @@ class Player : public LivingBeing {
     // Recupera vida y mana por el paso del tiempo
     void recoverLifeAndMana();
 
-    // Mueve al player al lado de la posicion (pos_x, pos_y)
-    void moveNextTo(const int pos_x, const int pos_y);
+    // Mueve al player al lado de la posicion (x,y)
+    void moveNextTo(position_t new_pos);
 
     // Devuelve los segundos faltantes para revivir (aprox)
     const int secondsToRevive();
@@ -163,7 +163,7 @@ public:
     void unequipItem(const int type);
 
     // Saca un item del mundo segun su pos (x,y) y lo guarda en el inventario
-    void takeItemFromWorldToInventory(const int pos_x, const int pos_y);
+    void takeItemFromWorldToInventory(position_t new_pos);
 
     // Saca un item del inventario segun 'type' y lo tira al mundo
     void dropItemFromInventoryToWorld(const int type);
@@ -181,7 +181,7 @@ public:
     void removeGold(const int quant);
 
     // Saca un oro del mundo segun su pos (x,y) y guarda su cantidad
-    void takeGoldFromWorld(const int pos_x, const int pos_y);
+    void takeGoldFromWorld(position_t new_pos);
 
     // Compra un item
     void buyItem(Item* item);

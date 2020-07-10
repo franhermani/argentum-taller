@@ -5,11 +5,10 @@
 #include "../../../../common/defines/npcs.h"
 #include "../../game_exception.h"
 
-Merchant::Merchant(ItemFactory& item_factory, const int pos_x,
-        const int pos_y, const int orient) : itemFactory(item_factory) {
+Merchant::Merchant(ItemFactory& item_factory, position_t new_pos,
+        const int orient) : itemFactory(item_factory) {
     type = MERCHANT;
-    posX = pos_x;
-    posY = pos_y;
+    pos = new_pos;
     orientation = orient;
 
     items = {ESPADA, HACHA, MARTILLO, ARCO_SIMPLE, ARCO_COMPUESTO,
@@ -48,7 +47,7 @@ void Merchant::sellItem(Player &player, int type) {
     if (std::find(items.begin(), items.end(), type) != items.end())
         return;
 
-    Item* item = itemFactory(type, player.posX, player.posY);
+    Item* item = itemFactory(type, player.pos);
     if (! item)
         return;
 

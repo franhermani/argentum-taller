@@ -113,24 +113,24 @@ std::vector<std::vector<Terrain>> Map::getTerrains() {
 }
 
 int Map::getPlayerXStart(player_t& player) {
-    int x_start = player.pos_x - playerVisionWidth/2;
+    int x_start = player.pos.x - playerVisionWidth/2;
     if (x_start < 0) return 0;
     return x_start;
 }
 int Map::getPlayerYStart(player_t& player) {
-    int y_start = player.pos_y - playerVisionHeight/2;
+    int y_start = player.pos.y - playerVisionHeight/2;
     if (y_start < 0) return 0;
     return y_start;
 }
 
 int Map::getPlayerXEnd(player_t& player) {
-    int x_finish = player.pos_x  + (playerVisionWidth / 2) + 1;
+    int x_finish = player.pos.x  + (playerVisionWidth / 2) + 1;
     if (x_finish >= terrainMatrixWidth) return terrainMatrixWidth;
     return x_finish;
 }
 
 int Map::getPlayerYEnd(player_t& player) {
-    int y_finish = player.pos_y  + (playerVisionHeight / 2) + 1;
+    int y_finish = player.pos.y  + (playerVisionHeight / 2) + 1;
     if (y_finish >= terrainMatrixHeight) return terrainMatrixHeight;
     return y_finish;
 }
@@ -147,16 +147,16 @@ std::vector<player_t> Map::getRenderablePlayers() {
     // nos quedamos con los jugadores que esten
     //dentro del rango de vision del principal
     for (auto& player: world.players) {
-        if (not betweenPlayerBorders(player.pos_x, player.pos_y)) {
+        if (not betweenPlayerBorders(player.pos.x, player.pos.y)) {
             continue;
         } else {
             player_t converted_player = player;
-            converted_player.pos_x = player.pos_x -
+            converted_player.pos.x = player.pos.x -
                     getPlayerXStart(main_player);
-            if (converted_player.pos_x < 0) converted_player.pos_x = 0;
-            converted_player.pos_y = player.pos_y -
+            if (converted_player.pos.x < 0) converted_player.pos.x = 0;
+            converted_player.pos.y = player.pos.y -
                     getPlayerYStart(main_player);
-            if (converted_player.pos_y < 0) converted_player.pos_y = 0;
+            if (converted_player.pos.y < 0) converted_player.pos.y = 0;
             visible_players.push_back(converted_player);
         }
     }
@@ -197,14 +197,14 @@ std::vector<npc_t> Map::getRenderableNpcs() {
     // nos quedamos con los jugadores que esten
     //dentro del rango de vision del principal
     for (auto& npc: npcs.npcs) {
-        if (not betweenPlayerBorders(npc.pos_x, npc.pos_y)) {
+        if (not betweenPlayerBorders(npc.pos.x, npc.pos.y)) {
             continue;
         } else {
             npc_t converted_npc = npc;
-            converted_npc.pos_x = npc.pos_x - getPlayerXStart(main_player);
-            if (converted_npc.pos_x < 0) converted_npc.pos_x = 0;
-            converted_npc.pos_y = npc.pos_y - getPlayerYStart(main_player);
-            if (converted_npc.pos_y < 0) converted_npc.pos_y = 0;
+            converted_npc.pos.x = npc.pos.x - getPlayerXStart(main_player);
+            if (converted_npc.pos.x < 0) converted_npc.pos.x = 0;
+            converted_npc.pos.y = npc.pos.y - getPlayerYStart(main_player);
+            if (converted_npc.pos.y < 0) converted_npc.pos.y = 0;
             visible_npcs.push_back(converted_npc);
         }
     }
@@ -224,16 +224,16 @@ std::vector<creature_t> Map::getRenderableCreatures() {
     // nos quedamos con las criaturas que esten
     //dentro del rango de vision del principal
     for (auto& creature: world.creatures) {
-        if (not betweenPlayerBorders(creature.pos_x, creature.pos_y)) {
+        if (not betweenPlayerBorders(creature.pos.x, creature.pos.y)) {
             continue;
         } else {
             creature_t converted_creature = creature;
-            converted_creature.pos_x = creature.pos_x -
+            converted_creature.pos.x = creature.pos.x -
                     getPlayerXStart(main_player);
-            if (converted_creature.pos_x < 0) converted_creature.pos_x = 0;
-            converted_creature.pos_y = creature.pos_y -
+            if (converted_creature.pos.x < 0) converted_creature.pos.x = 0;
+            converted_creature.pos.y = creature.pos.y -
                     getPlayerYStart(main_player);
-            if (converted_creature.pos_y < 0) converted_creature.pos_y = 0;
+            if (converted_creature.pos.y < 0) converted_creature.pos.y = 0;
             visible_creatures.push_back(converted_creature);
         }
     }
@@ -247,14 +247,14 @@ std::vector<gold_t> Map::getRenderableGolds() {
     // nos quedamos con los items que esten
     //dentro del rango de vision del principal
     for (auto& gold: world.golds) {
-        if (not betweenPlayerBorders(gold.pos_x, gold.pos_y)) {
+        if (not betweenPlayerBorders(gold.pos.x, gold.pos.y)) {
             continue;
         } else {
             gold_t converted_gold = gold;
-            converted_gold.pos_x = gold.pos_x - getPlayerXStart(main_player);
-            if (converted_gold.pos_x < 0) converted_gold.pos_x = 0;
-            converted_gold.pos_y = gold.pos_y - getPlayerYStart(main_player);
-            if (converted_gold.pos_y < 0) converted_gold.pos_y = 0;
+            converted_gold.pos.x = gold.pos.x - getPlayerXStart(main_player);
+            if (converted_gold.pos.x < 0) converted_gold.pos.x = 0;
+            converted_gold.pos.y = gold.pos.y - getPlayerYStart(main_player);
+            if (converted_gold.pos.y < 0) converted_gold.pos.y = 0;
             visible_gold.push_back(converted_gold);
         }
     }
@@ -269,14 +269,14 @@ std::vector<item_t> Map::getRenderableItems() {
     // nos quedamos con los items que esten
     //dentro del rango de vision del principal
     for (auto& item: world.items) {
-        if (not betweenPlayerBorders(item.pos_x, item.pos_y)) {
+        if (not betweenPlayerBorders(item.pos.x, item.pos.y)) {
             continue;
         } else {
             item_t converted_item = item;
-            converted_item.pos_x = item.pos_x - getPlayerXStart(main_player);
-            if (converted_item.pos_x < 0) converted_item.pos_x = 0;
-            converted_item.pos_y = item.pos_y - getPlayerYStart(main_player);
-            if (converted_item.pos_y < 0) converted_item.pos_y = 0;
+            converted_item.pos.x = item.pos.x - getPlayerXStart(main_player);
+            if (converted_item.pos.x < 0) converted_item.pos.x = 0;
+            converted_item.pos.y = item.pos.y - getPlayerYStart(main_player);
+            if (converted_item.pos.y < 0) converted_item.pos.y = 0;
             visible_items.push_back(converted_item);
         }
     }
@@ -295,17 +295,17 @@ std::vector<int> Map::getPositionLookingAt() {
     player_t player = getMainPlayer();
     std::vector<int> position;
     if (player.orientation == LEFT) {
-        position.push_back(player.pos_x - 1);
-        position.push_back(player.pos_y);
+        position.push_back(player.pos.x - 1);
+        position.push_back(player.pos.y);
     } else if (player.orientation == RIGHT) {
-        position.push_back(player.pos_x + 1);
-        position.push_back(player.pos_y);
+        position.push_back(player.pos.x + 1);
+        position.push_back(player.pos.y);
     } else if (player.orientation == UP) {
-        position.push_back(player.pos_x);
-        position.push_back(player.pos_y - 1);
+        position.push_back(player.pos.x);
+        position.push_back(player.pos.y - 1);
     } else {
-        position.push_back(player.pos_x);
-        position.push_back(player.pos_y + 1);
+        position.push_back(player.pos.x);
+        position.push_back(player.pos.y + 1);
     }
     return std::move(position);
 }
@@ -314,8 +314,8 @@ std::vector<int> Map::getPriestLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();
     for (int i=0; i<npcs.length; i++) {
         if (npcs.npcs[i].type==PRIEST
-            and npcs.npcs[i].pos_x == looking_at[0]
-            and npcs.npcs[i].pos_y == looking_at[1])
+            and npcs.npcs[i].pos.x == looking_at[0]
+            and npcs.npcs[i].pos.y == looking_at[1])
             return std::move(looking_at);
     }
     throw MapException("No se encontro priest");
@@ -324,10 +324,10 @@ std::vector<int> Map::getPriestLookingAt() {
 
 std::vector<int> Map::getItemStandingAt() {
     player_t player = getMainPlayer();
-    std::vector<int> player_position = {player.pos_x, player.pos_y};
+    std::vector<int> player_position = {player.pos.x, player.pos.y};
     for (int i=0; i<world.num_items; i++) {
-        if ((world.items[i].pos_x == player_position[0])
-            && (world.items[i].pos_y == player_position[1]))
+        if ((world.items[i].pos.x == player_position[0])
+            && (world.items[i].pos.y == player_position[1]))
             return std::move(player_position);
     }
     throw MapException("No se encontro item");
@@ -337,10 +337,10 @@ std::vector<int> Map::getItemStandingAt() {
 //TODO  codigo repetido con get item standing at, hacer refactor
 std::vector<int> Map::getGoldStandingAt() {
     player_t player = getMainPlayer();
-    std::vector<int> player_position = {player.pos_x, player.pos_y};
+    std::vector<int> player_position = {player.pos.x, player.pos.y};
     for (int i=0; i<world.num_golds; i++) {
-        if ((world.golds[i].pos_x == player_position[0])
-            && (world.golds[i].pos_y == player_position[1]))
+        if ((world.golds[i].pos.x == player_position[0])
+            && (world.golds[i].pos.y == player_position[1]))
             return std::move(player_position);
     }
     throw MapException("No se encontro gold");
@@ -350,8 +350,8 @@ std::vector<int> Map::getGoldStandingAt() {
 std::vector<int> Map::getNpcLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();
     for (int i=0; i<npcs.length; i++) {
-        if (npcs.npcs[i].pos_x == looking_at[0]
-            and npcs.npcs[i].pos_y == looking_at[1]) {
+        if (npcs.npcs[i].pos.x == looking_at[0]
+            and npcs.npcs[i].pos.y == looking_at[1]) {
             return std::move(looking_at);
         }
     }

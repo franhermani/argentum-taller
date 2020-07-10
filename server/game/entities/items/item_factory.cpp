@@ -47,33 +47,32 @@ itemParams(std::move(item_params)) {
     potions = {POCION_VIDA, POCION_MANA};
 }
 
-Item* ItemFactory::operator()(const int type, const int pos_x,
-        const int pos_y) {
+Item* ItemFactory::operator()(const int type, position_t new_pos) {
     json js;
 
     if (weapons.count(type) > 0) {
         js = itemParams["weapons"][itemsMap[type]];
         return new Weapon(type, attackTypesMap[js["attack_type"]],
-                pos_x, pos_y,js["min_damage"],js["max_damage"],
+                new_pos,js["min_damage"],js["max_damage"],
                 js["mana_consumption"],js["range"],
                 js["move_velocity"], js["is_magic"],
                 js["is_life_restorer"], js["price"]);
     } else if (armors.count(type) > 0) {
         js = itemParams["armors"][itemsMap[type]];
-        return new Armor(type, pos_x, pos_y, js["min_defense"],
+        return new Armor(type, new_pos, js["min_defense"],
                 js["max_defense"], js["price"]);
     } else if (helmets.count(type) > 0) {
         js = itemParams["helmets"][itemsMap[type]];
-        return new Helmet(type, pos_x, pos_y, js["min_defense"],
+        return new Helmet(type, new_pos, js["min_defense"],
                           js["max_defense"], js["is_magic"],
                           js["price"]);
     } else if (shields.count(type) > 0) {
         js = itemParams["shields"][itemsMap[type]];
-        return new Shield(type, pos_x, pos_y, js["min_defense"],
+        return new Shield(type, new_pos, js["min_defense"],
                 js["max_defense"], js["price"]);
     } else if (potions.count(type) > 0) {
         js = itemParams["potions"][itemsMap[type]];
-        return new Potion(type, pos_x, pos_y, js["life_points"],
+        return new Potion(type, new_pos, js["life_points"],
                 js["mana_points"], js["price"]);
     } else {
         return nullptr;

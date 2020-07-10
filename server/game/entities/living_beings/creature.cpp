@@ -43,21 +43,21 @@ void Creature::loadPosition() {
     std::uniform_int_distribution<int> dist_x(0, world.getWidth() - 1);
     std::uniform_int_distribution<int> dist_y(0, world.getHeight() - 1);
 
-    int new_x = dist_x(mt), new_y = dist_y(mt);
-    while (world.entityInCollision(new_x, new_y)) {
-        new_x = dist_x(mt);
-        new_y = dist_y(mt);
+    position_t new_pos{};
+    new_pos.x = dist_x(mt), new_pos.y = dist_y(mt);
+    while (world.entityInCollision(new_pos)) {
+        new_pos.x = dist_x(mt);
+        new_pos.y = dist_y(mt);
     }
-    posX = new_x;
-    posY = new_y;
+    pos = new_pos;
 }
 
-std::queue<int> Creature::getMovementPriorities(std::vector<int>& player_pos) {
+std::queue<int> Creature::getMovementPriorities(position_t player_pos) {
     std::queue<int> priorities;
-    int x_player = player_pos[0], y_player = player_pos[1];
+    int x_player = player_pos.x, y_player = player_pos.y;
 
-    if (posX != x_player) {
-        if (posX < x_player) {
+    if (pos.x != x_player) {
+        if (pos.x < x_player) {
             priorities.push(RIGHT);
             priorities.push(DOWN);
             priorities.push(UP);
@@ -69,7 +69,7 @@ std::queue<int> Creature::getMovementPriorities(std::vector<int>& player_pos) {
             priorities.push(RIGHT);
         }
     } else {
-        if (posY < y_player) {
+        if (pos.y < y_player) {
             priorities.push(DOWN);
             priorities.push(LEFT);
             priorities.push(RIGHT);
@@ -84,39 +84,39 @@ std::queue<int> Creature::getMovementPriorities(std::vector<int>& player_pos) {
     return priorities;
 }
 
-std::vector<int> Creature::getMovementPosition(const int direction) {
-    std::vector<int> pos = {posX, posY};
+position_t Creature::getMovementPosition(const int direction) {
+    position_t new_pos = pos;
 
     switch (direction) {
         case LEFT:
-            pos[0] -= 1;
+            new_pos.x -= 1;
             break;
         case RIGHT:
-            pos[0] += 1;
+            new_pos.x += 1;
             break;
         case DOWN:
-            pos[1] += 1;
+            new_pos.y += 1;
             break;
         case UP:
-            pos[1] -= 1;
+            new_pos.y -= 1;
             break;
         default:
             break;
     }
-    return pos;
+    return new_pos;
 }
 
-void Creature::moveTo(std::vector<int>& player_pos) {
+void Creature::moveTo(position_t player_pos) {
     std::queue<int> tries_remaining = getMovementPriorities(player_pos);
 
     int direction = tries_remaining.front();
     tries_remaining.pop();
 
-    std::vector<int> pos = getMovementPosition(direction);
+    position_t new_pos = getMovementPosition(direction);
     bool move_available = true;
 
-    while ((! world.inMapBoundaries(pos[0], pos[1])) ||
-          (world.entityInCollision(pos[0], pos[1]))) {
+    while ((! world.inMapBoundaries(new_pos)) ||
+          (world.entityInCollision(new_pos))) {
         if (tries_remaining.empty()) {
             move_available = false;
             break;
@@ -126,8 +126,7 @@ void Creature::moveTo(std::vector<int>& player_pos) {
         pos = getMovementPosition(direction);
     }
     if (move_available) {
-        posX = pos[0];
-        posY = pos[1];
+        pos = new_pos;
         orientation = direction;
     }
 }
@@ -144,7 +143,7 @@ void Creature::respawn() {
 }
 
 void Creature::dropItemOrGold() {
-    if (world.itemInCollision(posX, posY))
+    if (world.itemInCollision(pos))
         return;
 
     std::vector<int> death_drop = equations.eqCreatureDeathDrop(*this);
@@ -154,13 +153,13 @@ void Creature::dropItemOrGold() {
         case DROP_NOTHING:
             break;
         case DROP_GOLD:
-            world.addGold(new Gold(param_drop, posX, posY));
+            world.addGold(new Gold(param_drop, pos));
             break;
         case DROP_POTION:
-            world.addItem(param_drop, posX, posY);
+            world.addItem(param_drop, pos);
             break;
         case DROP_ITEM:
-            world.addItem(param_drop, posX, posY);
+            world.addItem(param_drop, pos);
             break;
         default:
             break;
@@ -168,12 +167,12 @@ void Creature::dropItemOrGold() {
 }
 
 void Creature::moveAndAttackPlayers() {
-    std::vector<int> player_pos = world.getClosestPlayerPos(posX, posY);
-    bool in_attack_range = world.distanceInBlocks(posX, posY,
-            player_pos[0], player_pos[1]) <= attackRange;
+    position_t player_pos = world.getClosestPlayerPos(pos);
+    bool in_attack_range = world.distanceInBlocks(
+            pos, player_pos) <= attackRange;
 
     if (in_attack_range) {
-        world.addAttack(new Attack(this, MELEE, posX, posY,
+        world.addAttack(new Attack(this, MELEE, pos,
                 orientation, attackRange, attackVelocity));
     } else {
         moveTo(player_pos);
