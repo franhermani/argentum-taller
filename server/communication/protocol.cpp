@@ -451,7 +451,7 @@ void ServerProtocol::sendItemsList(list_t& list) {
         pos += SIZE_16;
     }
 
-//    socket.sendBytes(byte_msg.data(), byte_msg.size());
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
 
     if (debug) {
         std::cout << "Lista de items enviada:\n";

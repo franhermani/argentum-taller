@@ -35,8 +35,14 @@ void ClientSender::run() {
         // Envio la lista de NPCs
         protocol.sendNPCs(*worldMonitor);
 
-        std::string game_message;
-        list_t list;
+        // Excepciones del juego
+        std::string game_message, empty_message = "";
+
+        // Respuesta al comando Listar
+        list_t list, empty_list;
+        empty_list.show_price = 0;
+        empty_list.gold_quantity = 0;
+        empty_list.num_items = 0;
 
         // Envio actualizaciones del juego
         while (keepRunning) {
@@ -54,7 +60,7 @@ void ClientSender::run() {
                     break;
                 }
             } else {
-                protocol.sendGameMessage("");
+                protocol.sendGameMessage(empty_message);
             }
 
             // Envio respuesta al comando listar
@@ -65,6 +71,8 @@ void ClientSender::run() {
                 } catch (ClosedQueueException&) {
                     break;
                 }
+            } else {
+                protocol.sendItemsList(empty_list);
             }
         }
     } catch (SocketError&) {
