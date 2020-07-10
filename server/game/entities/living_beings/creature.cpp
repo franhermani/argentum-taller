@@ -139,9 +139,6 @@ void Creature::dropItemOrGold() {
         case DROP_GOLD:
             world.addGold(new Gold(param_drop, pos));
             break;
-        case DROP_POTION:
-            world.addItem(param_drop, pos);
-            break;
         case DROP_ITEM:
             world.addItem(param_drop, pos);
             break;
