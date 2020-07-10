@@ -33,7 +33,7 @@ Surface::Surface(const std::string filename, const SDLWindow& window,
 
 Surface::Surface(std::string text, const SDLWindow &window) {
     //todo sacar 25 y color afuera
-    TTF_Font *font = TTF_OpenFont("../client/resources/fonts/arial.ttf", 25);
+    TTF_Font *font = TTF_OpenFont("../client/resources/fonts/arial.ttf", 100);
     if (font == NULL) {
         throw (::std::runtime_error("Font failed to load! ERROR: "));
     }

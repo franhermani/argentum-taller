@@ -19,8 +19,10 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
-    //excepcion
-    TTF_Init();
+    //todo aca chequeo de excepciones
+    if (TTF_Init() < 0) {
+        throw SDLException("\nNo se pudo inicializar ttf", SDL_GetError());
+    }
 
 }
 
