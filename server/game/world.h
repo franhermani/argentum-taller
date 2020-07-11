@@ -148,6 +148,10 @@ public:
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     const bool inMapBoundaries(position_t new_pos);
 
+    // Determina si hay un terreno considerado zona segura
+    // en la posicion (x,y)
+    const bool inSafeZone(position_t new_pos);
+
     // Determina si hay una colision de entidad en la posicion (x,y)
     const bool entityInCollision(position_t new_pos);
 

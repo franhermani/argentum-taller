@@ -1,6 +1,5 @@
 #include <map>
 #include <string>
-#include <random>
 #include "world.h"
 #include "entities/npcs/priest.h"
 #include "game_exception.h"
@@ -116,7 +115,6 @@ const bool World::goldInPosition(position_t new_pos) {
             return true;
     return false;
 }
-
 
 // -------------------------------------------- //
 // Metodos accedidos por threads (WorldMonitor) //
@@ -264,6 +262,10 @@ const bool World::inMapBoundaries(position_t new_pos) {
     return x_in_boundaries && y_in_boundaries;
 }
 
+const bool World::inSafeZone(position_t new_pos) {
+    return safeZonesTerrains.count(matrix[new_pos.y][new_pos.x]) > 0;
+}
+
 const bool World::entityInCollision(position_t new_pos) {
     bool collision = entityImpenetrableTerrainInPosition(new_pos) ||
                      playerInPosition(new_pos) ||
@@ -279,6 +281,12 @@ void World::attackInCollision(Attack* new_attack) {
 
     // Terrenos impenetrables
     if (attackImpenetrableTerrainInPosition(attack_pos)) {
+        new_attack->collision();
+        return;
+    }
+
+    // Zonas seguras
+    if (inSafeZone(attack_pos)) {
         new_attack->collision();
         return;
     }
@@ -376,9 +384,9 @@ position_t World::getClosestPlayerPos(position_t new_pos) {
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& player : players) {
-        // TODO: no buscar players en safe zones
         // TODO: buscar players dentro de un rango
-        if (player->isDead() || player->isReviving)
+        if (player->isDead() || player->isReviving ||
+            safeZoneTerrainInPosition(player->pos))
             continue;
 
         actual_distance = distanceInBlocks(new_pos, player->pos);

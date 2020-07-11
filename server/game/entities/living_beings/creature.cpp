@@ -100,7 +100,8 @@ void Creature::moveTo(position_t player_pos) {
     bool move_available = true;
 
     while ((! world.inMapBoundaries(new_pos)) ||
-          (world.entityInCollision(new_pos))) {
+           (world.inSafeZone(new_pos)) ||
+           (world.entityInCollision(new_pos))) {
         if (tries_remaining.empty()) {
             move_available = false;
             break;

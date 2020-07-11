@@ -387,7 +387,8 @@ void Player::attack() {
 
     stopMeditating();
 
-    // TODO: chequear safe zones!!!
+    if (world.inSafeZone(pos))
+        throw GameException(id, "No puedes atacar en una zona segura");
 
     if (isDead())
         throw GameException(id, "Eres un fantasma. No puedes atacar");

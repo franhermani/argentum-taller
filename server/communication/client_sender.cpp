@@ -18,6 +18,7 @@ ClientSender::ClientSender(Socket& socket) : protocol(socket) {
     isRunning = true;
 }
 
+// TODO: modularizar esta funcion
 void ClientSender::run() {
     using ms = std::chrono::milliseconds;
 
