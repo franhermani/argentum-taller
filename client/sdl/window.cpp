@@ -356,6 +356,26 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
     return -1;
 }
 
+int SDLWindow::getRenderedEquipedTypeByPosition(int x, int y) {
+    game_area_t& equipped_area = measurements.equipped;
+    int equipped_width = (equipped_area.x_pixel_end -
+                          equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
+    SDL_Rect stretchRect;
+    stretchRect.x = equipped_area.x_pixel_begin;
+    stretchRect.y = equipped_area.y_pixel_begin;
+    stretchRect.w = equipped_width;
+    stretchRect.h = equipped_area.y_pixel_end-equipped_area.y_pixel_begin;
+    if (isInsideArea(stretchRect, x, y)) return UNEQUIP_WEAPON;
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (isInsideArea(stretchRect, x, y)) return UNEQUIP_ARMOR;
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (isInsideArea(stretchRect, x, y)) return UNEQUIP_HELMET;
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (isInsideArea(stretchRect, x, y)) return UNEQUIP_SHIELD;
+    return -1;
+}
+
+
 
 int SDLWindow::getRenderedListIndexByPosition(int xClicked,
         int yClicked, size_t list_length) {

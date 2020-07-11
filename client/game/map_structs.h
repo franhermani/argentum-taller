@@ -12,6 +12,7 @@ typedef struct {
     player_info_t player_info;
     player_t main_player;
     std::map<int, float> percentages;
+    list_t list;
 } client_world_t;
 
 #endif //ARGENTUM_MAP_STRUCTS_H

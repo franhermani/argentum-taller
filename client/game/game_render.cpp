@@ -144,8 +144,14 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
-void GameRender::renderText() {
-
+void GameRender::renderList(std::vector<list_item_t> &items) {
+    surfacesManager.createNecessaryListItems(items);
+    std::vector<Surface*> surfaces;
+    std::cout << "size \n\nde items"<< items.size();
+    for (auto it = std::begin(items); it != std::end(items); ++it) {
+         surfaces.push_back(surfacesManager.itemSurfacesMap[it->type]);
+    }
+    window.renderList(surfaces);
 }
 
 
@@ -173,7 +179,7 @@ void GameRender::run() {
         renderEquipped(current_world.main_player);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages, current_world.main_player.level);
-        //renderList();
+        renderList(current_world.list.items);
         //window.renderListGold();
         window.UpdateWindowSurface();
         auto end = clock::now();
@@ -193,6 +199,14 @@ int GameRender::getInventoryItemByPosition(int x, int y) {
             ItemException("El inventario ya no tiene ese item");
     return current_world.player_info.inventory.items[position];
 }
+int GameRender::getEquippedTypeByPosition(int x, int y) {
+    int type = window.getRenderedEquipedTypeByPosition(x, y);
+    if (type < 0) throw ItemException(
+            "No hay nada equipado en esa posicion");
+    return window.getRenderedEquipedTypeByPosition(x, y);
+}
+
+
 
 
 int GameRender::getListItemByPosition(int x, int y) {

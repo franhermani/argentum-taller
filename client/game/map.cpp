@@ -15,7 +15,7 @@ Map::Map() {
 // destructor
 Map::~Map() {}
 
-void Map::updateWorld(world_t receivedWorld) {
+void Map::updateWorld(world_t receivedWorld, list_t received_list) {
     //actualizo players
     world.players = std::move(receivedWorld.players);
     world.num_players = std::move(receivedWorld.num_players);
@@ -28,6 +28,7 @@ void Map::updateWorld(world_t receivedWorld) {
     world.num_attacks = std::move(receivedWorld.num_attacks);
     world.golds = std::move(receivedWorld.golds);
     world.num_golds = std::move(receivedWorld.num_golds);
+    list = std::move(received_list);
 
     //el resto falta recibirlo
 }
@@ -380,6 +381,7 @@ client_world_t Map::getCurrentWorld() {
     current_world.npcs = getRenderableNpcs();
     current_world.terrains = getTerrains();
     current_world.percentages = getPercentages();
+    current_world.list = list;
 
     return std::move(current_world);
 }

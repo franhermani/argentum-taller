@@ -55,8 +55,8 @@ public:
     void renderEquipped(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
     void renderInventoryGolds(uint16_t quantity);
-    void renderText();
     void renderGameFrame();
+    void renderList(std::vector<list_item_t> &items);
 
 
     //Inicializador de SDL
@@ -67,6 +67,7 @@ public:
     //Consultas por posicion de click a cosas renderizadas
     int getInventoryItemByPosition(int x, int y);
     int getListItemByPosition(int x, int y);
+    int getEquippedTypeByPosition(int x, int y);
 
     // Consultas de clicks dentro de areas renderizadas
     int isClickingListItems(int x, int y);
