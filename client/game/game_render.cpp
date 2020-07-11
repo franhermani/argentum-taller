@@ -66,7 +66,8 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
 }
 
 void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
-    Surface* level_surface = surfacesManager.getTextSurface(std::to_string(level));
+    Surface* level_surface = surfacesManager.
+            getTextSurface(std::to_string(level));
     window.renderPlayerInfo(current_world.percentages,
                             surfacesManager.infoSurfacesMap, level_surface);
 }
@@ -177,7 +178,8 @@ void GameRender::run() {
         renderInventoryGolds(current_world.player_info.actual_gold);
         renderEquipped(current_world.main_player);
         renderGolds(current_world.golds);
-        renderPlayerInfo(current_world.percentages, current_world.main_player.level);
+        renderPlayerInfo(current_world.percentages,
+                current_world.main_player.level);
         renderList(current_world.list.items);
         //window.renderListGold();
         window.UpdateWindowSurface();

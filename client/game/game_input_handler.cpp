@@ -57,7 +57,9 @@ void GameInputHandler::play() {
                             command = handleWithdraw();
                         } else if (key == SDLK_b) {
                             command = handleBuy();
-                        } else continue;
+                        } else {
+                            continue;
+                        }
                     } else {
                         if (key == SDLK_a) {
                             command = handleAttack();
@@ -112,13 +114,11 @@ CommandDTO* GameInputHandler::handleBuy() {
     if (gameRender->isClickingListItems(x, y)) {
         return new BuyItemCommandDTO(gameRender->
             getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
-    }
-    else{
+    } else {
         throw CommandCreationException(
                 "No se dieron las condiciones "
                 "para la creacion del comando Buy");
     }
-
 }
 
 CommandDTO* GameInputHandler::handleAttack() {

@@ -29,7 +29,8 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
     world.num_attacks = std::move(receivedWorld.num_attacks);
     world.golds = std::move(receivedWorld.golds);
     world.num_golds = std::move(receivedWorld.num_golds);
-    if ((not interactingWithNpc) || (interactingWithNpc && received_list.num_items != 0))
+    if ((not interactingWithNpc) || (interactingWithNpc &&
+                received_list.num_items != 0))
         list = std::move(received_list);
 
     //el resto falta recibirlo

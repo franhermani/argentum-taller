@@ -50,7 +50,6 @@ public:
     void interact();
     void uninteract();
     int isInteracting();
-
     };
 
 

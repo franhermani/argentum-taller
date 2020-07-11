@@ -66,7 +66,6 @@ client_world_t MapMonitor::getCurrentWorld() {
 void MapMonitor::interact() {
     std::unique_lock<std::mutex> lk(m);
     map.interact();
-
 }
 void MapMonitor::uninteract() {
     std::unique_lock<std::mutex> lk(m);

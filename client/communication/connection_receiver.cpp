@@ -32,7 +32,6 @@ void ConnectionReceiver::run() {
             // TODO: mandar estos al mapMonitor o gameRender en un struct
             list_t list = protocol.receiveItemsList();
             mapMonitor.updateWorld(std::move(world), std::move(list));
-
         }
     } catch(SocketError&) {
         // Do nothing
