@@ -19,6 +19,7 @@ class GameInputHandler {
 
 
     CommandDTO* handleEquip();
+    CommandDTO* handleUnequip();
     CommandDTO* handleHeal();
     CommandDTO* handleList();
     CommandDTO* handleTake();

@@ -9,6 +9,7 @@
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/items.h"
+#include "../../common/defines/commands.h"
 #include "area.h"
 #include "window_measurements.h"
 
@@ -101,6 +102,7 @@ public:
     //Consultas a elementos o sectores renderizados
     int getRenderedItemIndexByPosition(int x, int y, size_t inventory_length);
     int getRenderedListIndexByPosition(int x, int y, size_t inventory_length);
+    int getRenderedEquipedTypeByPosition(int x, int y);
     int isInsideArea(SDL_Rect& stretchRect, int x, int y);
     int isInsideGameArea(game_area_t& area, int x, int y);
     int isClickingListItems(int x, int y);

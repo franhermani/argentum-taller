@@ -67,6 +67,7 @@ public:
     //Consultas por posicion de click a cosas renderizadas
     int getInventoryItemByPosition(int x, int y);
     int getListItemByPosition(int x, int y);
+    int getEquippedTypeByPosition(int x, int y);
 
     // Consultas de clicks dentro de areas renderizadas
     int isClickingListItems(int x, int y);
