@@ -11,6 +11,7 @@
 
 // constructor
 Map::Map() {
+    interactingWithNpc = false;
 }
 // destructor
 Map::~Map() {}
@@ -28,7 +29,8 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
     world.num_attacks = std::move(receivedWorld.num_attacks);
     world.golds = std::move(receivedWorld.golds);
     world.num_golds = std::move(receivedWorld.num_golds);
-    list = std::move(received_list);
+    if ((not interactingWithNpc) || (interactingWithNpc && received_list.num_items != 0))
+        list = std::move(received_list);
 
     //el resto falta recibirlo
 }
@@ -347,6 +349,14 @@ std::vector<int> Map::getGoldStandingAt() {
     throw MapException("No se encontro gold");
 }
 
+
+void Map::interact() {
+    std::cout << "\n\n\n TE LO PONGO EN TRUE EH";
+    interactingWithNpc = true;
+}
+void Map::uninteract() {
+    interactingWithNpc = false;
+}
 
 std::vector<int> Map::getNpcLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();

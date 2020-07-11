@@ -45,6 +45,11 @@ public:
     std::vector<int> getNpcLookingAt();
 
     client_world_t getCurrentWorld();
+
+
+    void interact();
+    void uninteract();
+
     };
 
 

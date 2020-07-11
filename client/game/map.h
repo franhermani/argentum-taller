@@ -5,13 +5,14 @@
 #include "map_structs.h"
 #include <map>
 #include <vector>
+#include <atomic>
 
 class Map {
     world_t world;
     matrix_t matrix;
     npcs_t npcs;
     list_t list;
-
+    std::atomic<bool> interactingWithNpc;
     int username_id;
     std::vector<std::vector<Terrain>> terrainMatrix;
     int terrainMatrixHeight;
@@ -101,6 +102,9 @@ public:
     client_world_t getCurrentWorld();
 
     std::map<int, float> getPercentages();
+
+    void interact();
+    void uninteract();
     };
 
 

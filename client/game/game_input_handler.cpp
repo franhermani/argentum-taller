@@ -39,12 +39,16 @@ void GameInputHandler::play() {
                 int key = keyEvent.keysym.sym;
                 try {
                     if (key == SDLK_LEFT) {
+                        mapMonitor.uninteract();
                         command = new MoveCommandDTO(LEFT);
                     } else if (key == SDLK_RIGHT) {
+                        mapMonitor.uninteract();
                         command = new MoveCommandDTO(RIGHT);
                     } else if (key == SDLK_UP) {
+                        mapMonitor.uninteract();
                         command = new MoveCommandDTO(UP);
                     } else if (key == SDLK_DOWN) {
+                        mapMonitor.uninteract();
                         command = new MoveCommandDTO(DOWN);
                     } else if (key == SDLK_ESCAPE) {
                         running = false;
@@ -196,6 +200,7 @@ CommandDTO* GameInputHandler::handleTake() {
 CommandDTO* GameInputHandler::handleList() {
     std::vector<int> npc_position =
             mapMonitor.getNpcLookingAt();
+    mapMonitor.interact();
     return new ListCommandDTO(npc_position[0], npc_position[1]);
 }
 CommandDTO* GameInputHandler::handleHeal() {
