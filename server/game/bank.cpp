@@ -19,9 +19,6 @@ void Bank::depositItem(const int player_id, Item *item) {
 Item* Bank::withdrawItem(const int player_id, const int type) {
     std::unique_lock<std::mutex> lk(m);
 
-    if (itemsPerPlayer.find(player_id) == itemsPerPlayer.end())
-        throw GameException(player_id, "No tienes este item en el banco");
-
     size_t i;
     for (i = 0; i < itemsPerPlayer[player_id].size(); i ++) {
         if (itemsPerPlayer[player_id][i]->type == type) {

@@ -36,7 +36,7 @@ void Merchant::buyItem(Player &player, int type) {
         return;
 
     int item_type = item->type;
-    if (std::find(items.begin(), items.end(), item_type) == items.end()) {
+    if (std::find(items.begin(), items.end(), item_type) != items.end()) {
         items.push_back(item_type);
     }
 
@@ -44,7 +44,7 @@ void Merchant::buyItem(Player &player, int type) {
 }
 
 void Merchant::sellItem(Player &player, int type) {
-    if (std::find(items.begin(), items.end(), type) != items.end())
+    if (std::find(items.begin(), items.end(), type) == items.end())
         return;
 
     Item* item = itemFactory(type, player.pos);
