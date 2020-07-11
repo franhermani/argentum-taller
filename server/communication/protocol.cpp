@@ -434,7 +434,7 @@ void ServerProtocol::sendItemsList(list_t& list) {
     int pos = 0;
 
     std::vector<char> byte_msg;
-    byte_msg.resize( message_length);
+    byte_msg.resize(message_length);
 
     memcpy(&byte_msg[pos], &list.show_price, SIZE_8);
     pos += SIZE_8;
@@ -471,6 +471,6 @@ void ServerProtocol::sendGameMessage(const std::string& message) {
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
-    if (debug)
+    if (! message.empty())
         std::cout << message << "\n";
 }

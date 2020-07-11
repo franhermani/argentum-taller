@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <random>
 #include <climits>
 #include <algorithm>
 #include "player.h"
@@ -654,7 +653,12 @@ Item* Player::sellItem(const int type) {
     if (! item)
         return nullptr;
 
-    addGold(item->price);
+    try {
+        addGold(item->price);
+    } catch (GameException& e) {
+        inventory.addItem(item);
+        throw GameException(id, e.what());
+    }
     return item;
 }
 
