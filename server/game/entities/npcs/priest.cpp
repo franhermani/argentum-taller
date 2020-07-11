@@ -30,7 +30,7 @@ void Priest::buyItem(Player &player, int type) {
 }
 
 void Priest::sellItem(Player &player, const int type) {
-    if (std::find(items.begin(), items.end(), type) != items.end())
+    if (std::find(items.begin(), items.end(), type) == items.end())
         return;
 
     Item* item = itemFactory(type, player.pos);

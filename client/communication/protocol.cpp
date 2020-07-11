@@ -677,7 +677,8 @@ list_t ClientProtocol::receiveItemsList() {
     list.show_price = show_price;
     bytes_advanced += SIZE_8;
     uint16_t gold_quantity;
-    memcpy(&gold_quantity, item_static_buffer.data() + bytes_advanced,  SIZE_16);
+    memcpy(&gold_quantity, item_static_buffer.data() + bytes_advanced,
+            SIZE_16);
     list.gold_quantity = ntohs(gold_quantity);
     bytes_advanced += SIZE_16;
     uint16_t num_items;
