@@ -352,7 +352,6 @@ std::vector<int> Map::getGoldStandingAt() {
 
 
 void Map::interact() {
-    std::cout << "\n\n\n TE LO PONGO EN TRUE EH";
     interactingWithNpc = true;
 }
 void Map::uninteract() {

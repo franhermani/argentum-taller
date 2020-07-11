@@ -17,6 +17,7 @@ struct WindowMeasurements {
     game_area_t inventory;
     game_area_t inventoryGold;
     game_area_t list;
+    game_area_t list_prices;
     game_area_t listGold;
     game_area_t equipped;
     game_area_t life;
@@ -28,6 +29,7 @@ struct WindowMeasurements {
     SDL_Rect gameFrameStaticRect;
     SDL_Rect inventoryGoldStaticRect;
     SDL_Rect listGoldStaticRect;
+    SDL_Rect listGoldQuantityStaticRect;
     WindowMeasurements();
     ~WindowMeasurements();
 
