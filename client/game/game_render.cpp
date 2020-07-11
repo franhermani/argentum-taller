@@ -144,9 +144,10 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
-void GameRender::renderList(std::vector<item_t> &items) {
-    surfacesManager.createNecessaryItems(items);
+void GameRender::renderList(std::vector<list_item_t> &items) {
+    surfacesManager.createNecessaryListItems(items);
     std::vector<Surface*> surfaces;
+    std::cout << "size \n\nde items"<< items.size();
     for (auto it = std::begin(items); it != std::end(items); ++it) {
          surfaces.push_back(surfacesManager.itemSurfacesMap[it->type]);
     }
@@ -178,7 +179,7 @@ void GameRender::run() {
         renderEquipped(current_world.main_player);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages, current_world.main_player.level);
-        //renderList(current_world.list.items);
+        renderList(current_world.list.items);
         //window.renderListGold();
         window.UpdateWindowSurface();
         auto end = clock::now();

@@ -381,6 +381,7 @@ client_world_t Map::getCurrentWorld() {
     current_world.npcs = getRenderableNpcs();
     current_world.terrains = getTerrains();
     current_world.percentages = getPercentages();
+    current_world.list = list;
 
     return std::move(current_world);
 }

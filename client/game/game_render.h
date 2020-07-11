@@ -56,7 +56,7 @@ public:
     void renderInventory(std::vector<uint8_t>& inventory);
     void renderInventoryGolds(uint16_t quantity);
     void renderGameFrame();
-    void renderList(std::vector<item_t> &items);
+    void renderList(std::vector<list_item_t> &items);
 
 
     //Inicializador de SDL
