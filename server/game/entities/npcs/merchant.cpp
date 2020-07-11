@@ -6,16 +6,20 @@
 #include "../../game_exception.h"
 
 Merchant::Merchant(ItemFactory& item_factory, position_t new_pos,
-        const int orient) : itemFactory(item_factory) {
+        const int orient, const int max_items) :
+        itemFactory(item_factory), maxItems(max_items) {
     type = MERCHANT;
     pos = new_pos;
     orientation = orient;
 
-    items = {ESPADA, HACHA, MARTILLO, ARCO_SIMPLE, ARCO_COMPUESTO,
+    std::vector<int> all_items =
+            {ESPADA, HACHA, MARTILLO, ARCO_SIMPLE, ARCO_COMPUESTO,
              ARMADURA_CUERO, ARMADURA_PLACAS, TUNICA_AZUL,
              CAPUCHA, CASCO_HIERRO, SOMBRERO_MAGICO,
              ESCUDO_TORTUGA, ESCUDO_HIERRO,
              POCION_VIDA, POCION_MANA};
+
+    items = math.randomVector(all_items, maxItems);
 }
 
 Merchant::~Merchant() = default;

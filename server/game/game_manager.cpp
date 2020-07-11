@@ -110,7 +110,8 @@ void GameManager::spawnNPCs() {
     for (i = 0; i < num_merchants; i ++) {
         new_pos = world.loadNPCPosition();
         orientation = math.randomInt(LEFT, DOWN);
-        world.addNPC(new Merchant(itemFactory, new_pos, orientation));
+        world.addNPC(new Merchant(itemFactory, new_pos, orientation,
+                js["merchant"]["max_items"]));
     }
     for (i = 0; i < num_bankers; i ++) {
         new_pos = world.loadNPCPosition();
