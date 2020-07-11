@@ -37,7 +37,7 @@ void ClientSender::run() {
         protocol.sendNPCs(*worldMonitor);
 
         // Excepciones del juego
-        std::string game_message, empty_message = "";
+        std::string game_message, empty_message;
 
         // Respuesta al comando Listar
         list_t list, empty_list;

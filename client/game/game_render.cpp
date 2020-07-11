@@ -66,7 +66,8 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
 }
 
 void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
-    Surface* level_surface = surfacesManager.getTextSurface(std::to_string(level));
+    Surface* level_surface = surfacesManager.
+            getTextSurface(std::to_string(level));
     window.renderPlayerInfo(current_world.percentages,
                             surfacesManager.infoSurfacesMap, level_surface);
 }
@@ -147,7 +148,6 @@ void GameRender::setTilesSize(int width,int height) {
 void GameRender::renderList(std::vector<list_item_t> &items) {
     surfacesManager.createNecessaryListItems(items);
     std::vector<Surface*> surfaces;
-    std::cout << "size \n\nde items"<< items.size();
     for (auto it = std::begin(items); it != std::end(items); ++it) {
          surfaces.push_back(surfacesManager.itemSurfacesMap[it->type]);
     }
@@ -178,7 +178,8 @@ void GameRender::run() {
         renderInventoryGolds(current_world.player_info.actual_gold);
         renderEquipped(current_world.main_player);
         renderGolds(current_world.golds);
-        renderPlayerInfo(current_world.percentages, current_world.main_player.level);
+        renderPlayerInfo(current_world.percentages,
+                current_world.main_player.level);
         renderList(current_world.list.items);
         //window.renderListGold();
         window.UpdateWindowSurface();
@@ -210,16 +211,14 @@ int GameRender::getEquippedTypeByPosition(int x, int y) {
 
 
 int GameRender::getListItemByPosition(int x, int y) {
-    //TODO cuando se reciba la lista de items de banquero/merchanat descomentar
-    //size_t inventory_length = current_world.player_info.list.length;
-    /*int position = window.getRenderedListIndexByPosition(x, y, inventory_length);
+    int list_length = current_world.list.num_items;
+    int position = window.getRenderedListIndexByPosition(x, y, list_length);
+
     if (position < 0) throw ItemException(
                 "la lista no tiene items en la posicion clickeada");
-    if (current_world.player_info.inventory.length < position) throw
+    if (list_length < position) throw
                 ItemException("la lista ya no tiene ese item");
-    //return current_world.player_info.inventory.items[position];
-     */
-    return 1;
+    return current_world.list.items[position].type;
 }
 
 int GameRender::isClickingListItems(int x, int y) {

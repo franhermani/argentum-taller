@@ -23,7 +23,6 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (TTF_Init() < 0) {
         throw SDLException("\nNo se pudo inicializar ttf", SDL_GetError());
     }
-
 }
 
 SDLWindow::~SDLWindow() {
@@ -281,8 +280,7 @@ void SDLWindow::renderText(Surface* surface) {
 
     SDL_BlitScaled(surface->getRenderableSurface(), NULL,
                    getSurface(), &Message_rect);
-    //el free se hace aca?
-
+    //todo el free se hace aca?
 }
 
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
@@ -359,7 +357,7 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
 int SDLWindow::getRenderedEquipedTypeByPosition(int x, int y) {
     game_area_t& equipped_area = measurements.equipped;
     int equipped_width = (equipped_area.x_pixel_end -
-                          equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
+            equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
     SDL_Rect stretchRect;
     stretchRect.x = equipped_area.x_pixel_begin;
     stretchRect.y = equipped_area.y_pixel_begin;

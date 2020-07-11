@@ -138,7 +138,8 @@ void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
     }
 }
 //todo refactor codigo repetido
-void GameSurfacesManager::createNecessaryListItems(std::vector<list_item_t> items) {
+void GameSurfacesManager::createNecessaryListItems(
+        std::vector<list_item_t> items) {
     for (auto& item: items) {
         int type = item.type;
         if (itemSurfacesMap.find(type)
