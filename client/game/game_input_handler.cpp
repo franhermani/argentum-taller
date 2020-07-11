@@ -6,6 +6,7 @@
 #include "../data_transfer_objects/take_command_dto.h"
 #include "../data_transfer_objects/list_command_dto.h"
 #include "../data_transfer_objects/equip_command_dto.h"
+#include "../data_transfer_objects/unequip_command_dto.h"
 #include "../data_transfer_objects/throw_command_dto.h"
 #include "../data_transfer_objects/revive_command_dto.h"
 #include "../data_transfer_objects/meditate_command_dto.h"
@@ -64,6 +65,8 @@ void GameInputHandler::play() {
                         command = handleThrow();
                     } else if (key == SDLK_e) {
                         command = handleEquip();
+                    } else if (key == SDLK_u) {
+                        command = handleUnequip();
                     } else if (key == SDLK_d) {
                         command = handleDeposit();
                     } else if (key == SDLK_w) {
@@ -207,6 +210,13 @@ CommandDTO* GameInputHandler::handleEquip() {
     waitForLeftClick(x, y);
     return new EquipCommandDTO(
             gameRender->getInventoryItemByPosition(x, y));
+}
+
+CommandDTO* GameInputHandler::handleUnequip() {
+    int x,y;
+    waitForLeftClick(x, y);
+    return new UnequipCommandDTO(
+            gameRender->getEquippedTypeByPosition(x, y));
 }
 
 void GameInputHandler::waitForLeftClick(int& x, int& y) {

@@ -193,6 +193,14 @@ int GameRender::getInventoryItemByPosition(int x, int y) {
             ItemException("El inventario ya no tiene ese item");
     return current_world.player_info.inventory.items[position];
 }
+int GameRender::getEquippedTypeByPosition(int x, int y) {
+    int type = window.getRenderedEquipedTypeByPosition(x, y);
+    if (type < 0) throw ItemException(
+            "No hay nada equipado en esa posicion");
+    return window.getRenderedEquipedTypeByPosition(x, y);
+}
+
+
 
 
 int GameRender::getListItemByPosition(int x, int y) {
