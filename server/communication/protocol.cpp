@@ -434,7 +434,7 @@ void ServerProtocol::sendItemsList(list_t& list) {
     int pos = 0;
 
     std::vector<char> byte_msg;
-    byte_msg.resize(SIZE_16 + message_length);
+    byte_msg.resize( message_length);
 
     memcpy(&byte_msg[pos], &list.show_price, SIZE_8);
     pos += SIZE_8;

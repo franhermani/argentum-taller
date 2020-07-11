@@ -24,14 +24,16 @@ void ConnectionReceiver::run() {
 
         while (keepRunning) {
             world_t world = protocol.receiveWorldUpdate();
-            mapMonitor.updateWorld(std::move(world));
-            // TODO: mandar estos al mapMonitor o gameRender en un struct
-            protocol.receiveItemsList();
-
             game_message = protocol.receiveGameMessage();
             if (game_message.empty()) {
                 // Do nothing
             }
+
+            std::cout << "\n\n\n\nAAAAAAAAAAAAAAAAAAAA\n\n\n";
+            // TODO: mandar estos al mapMonitor o gameRender en un struct
+            list_t list = protocol.receiveItemsList();
+            mapMonitor.updateWorld(std::move(world), std::move(list));
+
         }
     } catch(SocketError&) {
         // Do nothing

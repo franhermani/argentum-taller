@@ -665,8 +665,51 @@ world_t ClientProtocol::receiveWorldUpdate() {
     return std::move(w);
 }
 
-void ClientProtocol::receiveItemsList() {
-    // TODO: ...
+list_t ClientProtocol::receiveItemsList() {
+    list_t list;
+    int static_part_size = SIZE_16 + SIZE_16 + SIZE_8;
+    std::vector<char> item_static_buffer(static_part_size, 0);
+    socket.receiveBytes(item_static_buffer.data(), item_static_buffer.size());
+
+    int bytes_advanced = 0;
+    uint8_t show_price;
+    memcpy(&show_price, item_static_buffer.data() + bytes_advanced, SIZE_8);
+    list.show_price = show_price;
+    bytes_advanced += SIZE_8;
+    uint16_t gold_quantity;
+    memcpy(&gold_quantity, item_static_buffer.data() + bytes_advanced,  SIZE_16);
+    list.gold_quantity = ntohs(gold_quantity);
+    bytes_advanced += SIZE_16;
+    uint16_t num_items;
+    memcpy(&num_items, item_static_buffer.data() + bytes_advanced, SIZE_16);
+    list.num_items = ntohs(num_items);
+    bytes_advanced += SIZE_16;
+
+    if (list.num_items == 0) {
+        return list;
+    }
+
+    bytes_advanced = 0;
+    int size = (SIZE_8 + SIZE_16) * list.num_items;
+    std::vector<char> item_buffer(size, 0);
+    socket.receiveBytes(item_buffer.data(), item_buffer.size());
+    int i;
+    std::vector<list_item_t> items;
+    for (i = 0; i < list.num_items; i ++) {
+        list_item_t item;
+        uint8_t type;
+        memcpy(&type, item_buffer.data() + bytes_advanced, SIZE_8);
+        item.type = type;
+        bytes_advanced += SIZE_8;
+        uint16_t price;
+        memcpy(&price, item_buffer.data() + bytes_advanced, SIZE_16);
+        item.price = ntohs(price);
+        bytes_advanced += SIZE_16;
+
+        items.push_back(item);
+    }
+    list.items = items;
+    return list;
 }
 
 const std::string ClientProtocol::receiveGameMessage() {

@@ -27,7 +27,7 @@ public:
             matrix_t& received_matrix, npcs_t& npcs);
 
     //actualiza el vector de jugadores
-    void updateWorld(world_t receivedWorld);
+    void updateWorld(world_t receivedWorld, list_t list);
 
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
