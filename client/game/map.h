@@ -103,8 +103,11 @@ public:
 
     std::map<int, float> getPercentages();
 
+
+    //npc interaction related functions
     void interact();
     void uninteract();
+    int isInteracting();
     };
 
 

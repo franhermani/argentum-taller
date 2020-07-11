@@ -72,3 +72,8 @@ void MapMonitor::uninteract() {
     std::unique_lock<std::mutex> lk(m);
     map.uninteract();
 }
+
+int MapMonitor::isInteracting() {
+    std::unique_lock<std::mutex> lk(m);
+    return map.isInteracting();
+}

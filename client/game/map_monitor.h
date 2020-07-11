@@ -46,9 +46,10 @@ public:
 
     client_world_t getCurrentWorld();
 
-
+    //npc interaction related functions
     void interact();
     void uninteract();
+    int isInteracting();
 
     };
 

@@ -210,16 +210,14 @@ int GameRender::getEquippedTypeByPosition(int x, int y) {
 
 
 int GameRender::getListItemByPosition(int x, int y) {
-    //TODO cuando se reciba la lista de items de banquero/merchanat descomentar
-    //size_t inventory_length = current_world.player_info.list.length;
-    /*int position = window.getRenderedListIndexByPosition(x, y, inventory_length);
+    int list_length = current_world.list.num_items;
+    int position = window.getRenderedListIndexByPosition(x, y, list_length);
+
     if (position < 0) throw ItemException(
                 "la lista no tiene items en la posicion clickeada");
-    if (current_world.player_info.inventory.length < position) throw
+    if (list_length < position) throw
                 ItemException("la lista ya no tiene ese item");
-    //return current_world.player_info.inventory.items[position];
-     */
-    return 1;
+    return current_world.list.items[position].type;
 }
 
 int GameRender::isClickingListItems(int x, int y) {

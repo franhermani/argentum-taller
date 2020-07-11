@@ -357,6 +357,9 @@ void Map::interact() {
 void Map::uninteract() {
     interactingWithNpc = false;
 }
+int Map::isInteracting() {
+    return interactingWithNpc;
+}
 
 std::vector<int> Map::getNpcLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();

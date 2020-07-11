@@ -29,7 +29,6 @@ GameInputHandler::~GameInputHandler() = default;
 void GameInputHandler::play() {
     try {
         bool running = true;
-        //bool interacting_with_npc = true;
         while (running) {
             SDL_Event event;
             SDL_WaitEvent(&event);
@@ -53,34 +52,38 @@ void GameInputHandler::play() {
                     } else if (key == SDLK_ESCAPE) {
                         running = false;
                         continue;
-                    } else if (key == SDLK_a) {
-                        command = handleAttack();
-                    } else if (key == SDLK_h) {
-                        command = handleHeal();
-                    } else if (key == SDLK_l) {
-                        command = handleList();
-                    } else if (key == SDLK_m) {
-                        command = handleMeditate();
-                    } else if (key == SDLK_r) {
-                        command = handleRevive();
-                    } else if (key == SDLK_t) {
-                        command = handleTake();
-                    } else if (key == SDLK_y) {
-                        command = handleThrow();
-                    } else if (key == SDLK_e) {
-                        command = handleEquip();
-                    } else if (key == SDLK_u) {
-                        command = handleUnequip();
-                    } else if (key == SDLK_d) {
-                        command = handleDeposit();
-                    } else if (key == SDLK_w) {
-                        command = handleWithdraw();
-                    } else if (key == SDLK_s) {
-                        command = handleSell();
-                    } else if (key == SDLK_b) {
-                        command = handleBuy();
+                    } else if (mapMonitor.isInteracting()) {
+                        if (key == SDLK_w) {
+                            command = handleWithdraw();
+                        } else if (key == SDLK_b) {
+                            command = handleBuy();
+                        } else continue;
                     } else {
-                        continue;
+                        if (key == SDLK_a) {
+                            command = handleAttack();
+                        } else if (key == SDLK_h) {
+                            command = handleHeal();
+                        } else if (key == SDLK_l) {
+                            command = handleList();
+                        } else if (key == SDLK_m) {
+                            command = handleMeditate();
+                        } else if (key == SDLK_r) {
+                            command = handleRevive();
+                        } else if (key == SDLK_t) {
+                            command = handleTake();
+                        } else if (key == SDLK_y) {
+                            command = handleThrow();
+                        } else if (key == SDLK_e) {
+                            command = handleEquip();
+                        } else if (key == SDLK_u) {
+                            command = handleUnequip();
+                        }  else if (key == SDLK_s) {
+                            command = handleSell();
+                        } else if (key == SDLK_d) {
+                            command = handleDeposit();
+                        } else {
+                            continue;
+                        }
                     }
                     commandQueue.push(command);
                 }
@@ -106,13 +109,16 @@ CommandDTO* GameInputHandler::handleBuy() {
     int x,y;
     waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
-    if (gameRender->isClickingListItems(x, y))
+    if (gameRender->isClickingListItems(x, y)) {
         return new BuyItemCommandDTO(gameRender->
             getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
-    else
+    }
+    else{
         throw CommandCreationException(
                 "No se dieron las condiciones "
                 "para la creacion del comando Buy");
+    }
+
 }
 
 CommandDTO* GameInputHandler::handleAttack() {
