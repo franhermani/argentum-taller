@@ -147,7 +147,6 @@ void GameRender::setTilesSize(int width,int height) {
 void GameRender::renderList(std::vector<list_item_t> &items) {
     surfacesManager.createNecessaryListItems(items);
     std::vector<Surface*> surfaces;
-    //std::cout << "size \n\nde items"<< items.size();
     for (auto it = std::begin(items); it != std::end(items); ++it) {
          surfaces.push_back(surfacesManager.itemSurfacesMap[it->type]);
     }
