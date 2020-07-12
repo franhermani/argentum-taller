@@ -154,7 +154,7 @@ void GameRender::setTilesSize(int width,int height) {
 }
 
 void GameRender::renderList(list_t list) {
-    if ((list.num_items == 0) && (list.gold_quantity == 0)) return;
+    //if ((list.num_items == 0) && (list.gold_quantity == 0)) return;
     surfacesManager.createNecessaryListItems(list.items);
     std::vector<Surface*> surfaces;
     for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
@@ -204,7 +204,7 @@ void GameRender::run() {
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages,
                 current_world.main_player.level);
-        renderList(current_world.list);
+        if (mapMonitor.isInteracting()) renderList(current_world.list);
         window.UpdateWindowSurface();
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
