@@ -150,7 +150,7 @@ CommandDTO* GameInputHandler::handleWithdraw() {
         return new WithdrawItemCommandDTO(gameRender->
             getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
     else if (gameRender->isClickingListGold(x, y))
-        return new WithdrawGoldCommandDTO(1, npc_pos[0], npc_pos[1]);
+        return new WithdrawGoldCommandDTO(npc_pos[0], npc_pos[1]);
     else
         throw CommandCreationException(
             "No se cumplen las condiciones para "
@@ -165,8 +165,7 @@ CommandDTO* GameInputHandler::handleDeposit() {
         return new DepositItemCommandDTO(gameRender->
         getInventoryItemByPosition(x, y), npc_pos[0], npc_pos[1]);
     else if (gameRender->isClickingInventoryGold(x, y))
-        return new DepositGoldCommandDTO(1,
-                npc_pos[0], npc_pos[1]);
+        return new DepositGoldCommandDTO(npc_pos[0], npc_pos[1]);
     else
         throw CommandCreationException(
             "No se cumplen las condiciones para la "

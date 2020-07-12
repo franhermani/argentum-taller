@@ -50,12 +50,12 @@ void Priest::withdrawItem(Player &player, const int type) {
                                    "acceso al banco");
 }
 
-void Priest::depositGold(Player &player, const int quant) {
+void Priest::depositGold(Player &player) {
     throw GameException(player.id, "Un sacerdote no tiene"
                                    "acceso al banco");
 }
 
-void Priest::withdrawGold(Player &player, const int quant) {
+void Priest::withdrawGold(Player &player) {
     throw GameException(player.id, "Un sacerdote no tiene"
                                    "acceso al banco");
 }

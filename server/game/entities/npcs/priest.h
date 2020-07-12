@@ -39,10 +39,10 @@ public:
     void withdrawItem(Player& player, const int type) override;
 
     // Lanza una excepcion
-    void depositGold(Player& player, const int quant) override;
+    void depositGold(Player& player) override;
 
     // Lanza una excepcion
-    void withdrawGold(Player& player, const int quant) override;
+    void withdrawGold(Player& player) override;
 
     // Lista los items que tiene para vender
     list_t listItems(Player& player) const override;

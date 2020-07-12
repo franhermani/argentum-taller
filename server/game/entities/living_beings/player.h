@@ -171,11 +171,14 @@ public:
     // Agrega un item al inventario
     void addItemToInventory(Item* item);
 
-    // Agrega 'quant' oro al player
+    // Agrega la cantidad recibida al oro al player
     void addGold(const int quant);
 
-    // Remueve 'quant' oro del player
-    void removeGold(const int quant);
+    // Devuelve el espacio para guardar oro de forma segura
+    const int getSafeGoldSpace();
+
+    // Remueve el oro en exceso del player
+    const int removeExcessGold();
 
     // Saca un oro del mundo segun su pos (x,y) y guarda su cantidad
     void takeGoldFromWorld(position_t new_pos);

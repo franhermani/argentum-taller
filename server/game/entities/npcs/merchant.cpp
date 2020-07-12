@@ -59,12 +59,12 @@ void Merchant::withdrawItem(Player &player, const int type) {
                                    "acceso al banco");
 }
 
-void Merchant::depositGold(Player &player, const int quant) {
+void Merchant::depositGold(Player &player) {
     throw GameException(player.id, "Un comerciante no tiene"
                                    "acceso al banco");
 }
 
-void Merchant::withdrawGold(Player &player, const int quant) {
+void Merchant::withdrawGold(Player &player) {
     throw GameException(player.id, "Un comerciante no tiene"
                                    "acceso al banco");
 }

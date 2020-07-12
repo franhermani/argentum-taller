@@ -50,19 +50,19 @@ void Banker::withdrawItem(Player &player, int type) {
     }
 }
 
-void Banker::depositGold(Player &player, int quantity) {
-    player.removeGold(quantity);
-    bank.depositGold(player.id, quantity);
+void Banker::depositGold(Player &player) {
+    int excess_gold = player.removeExcessGold();
+    bank.depositGold(player.id, excess_gold);
 }
 
-void Banker::withdrawGold(Player &player, int quantity) {
-    bank.withdrawGold(player.id, quantity);
-    try {
-        player.addGold(quantity);
-    } catch (GameException& e) {
-        depositGold(player, quantity);
-        throw GameException(player.id, e.what());
-    }
+void Banker::withdrawGold(Player &player) {
+    int safe_gold_space = player.getSafeGoldSpace();
+    int gold_in_bank = bank.getGoldQuantity(player.id);
+    int gold_to_extract = (gold_in_bank > safe_gold_space) ?
+                           safe_gold_space : gold_in_bank;
+
+    bank.withdrawGold(player.id, gold_to_extract);
+    player.addGold(gold_to_extract);
 }
 
 list_t Banker::listItems(Player& player) const {

@@ -12,10 +12,10 @@
     },
     "player": {
       "life": {
-        "initial_percentage": 0.25
+        "initial_percentage": 0.5
       },
       "mana": {
-        "initial_percentage": 0.25
+        "initial_percentage": 0.5
       },
       "gold": {
         "initial_percentage": 0.25,
@@ -101,7 +101,7 @@
         }
       },
       "goblin": {
-        "quantity": 3,
+        "quantity": 25,
         "max_life": 50,
         "min_defense": 5,
         "max_defense": 10,
@@ -112,7 +112,7 @@
         "respawn_velocity": 2000
       },
       "skeleton": {
-        "quantity": 3,
+        "quantity": 25,
         "max_life": 50,
         "min_defense": 7,
         "max_defense": 12,
@@ -123,7 +123,7 @@
         "respawn_velocity": 2000
       },
       "zombie": {
-        "quantity": 3,
+        "quantity": 25,
         "max_life": 40,
         "min_defense": 3,
         "max_defense": 8,
@@ -134,7 +134,7 @@
         "respawn_velocity": 2000
       },
       "spider": {
-        "quantity": 3,
+        "quantity": 25,
         "max_life": 80,
         "min_defense": 5,
         "max_defense": 10,
