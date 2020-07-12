@@ -30,6 +30,7 @@ GameSurfacesManager::~GameSurfacesManager(){
     }
     delete goldSurface;
     delete gameFrameSurface;
+    delete worldSurface;
 }
 
 Surface* GameSurfacesManager::getTextSurface(std::string text) {

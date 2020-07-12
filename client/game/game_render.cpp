@@ -190,6 +190,7 @@ void GameRender::run() {
         renderInventory(current_world.player_info.inventory.items);
         renderInventoryGolds(current_world.player_info.actual_gold);
         renderEquipped(current_world.main_player);
+        renderAttacks(current_world.)
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages,
                 current_world.main_player.level);
