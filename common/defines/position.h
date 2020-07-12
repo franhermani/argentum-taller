@@ -23,9 +23,14 @@ struct position_t {
         return *this;
     }
 
-    // Comparacion
+    // Igualdad
     bool operator==(const position_t& other) const {
         return (x == other.x) && (y == other.y);
+    }
+
+    // Diferencia
+    bool operator!=(const position_t& other) const {
+        return (x != other.x) || (y != other.y);
     }
 
     // Distancia
