@@ -19,7 +19,7 @@ void ConnectionReceiver::run() {
         std::vector<int> map_dimensions = protocol.receiveMapDimensions();
         npcs_t npcs = protocol.receiveNPCs();
 
-        mapMonitor.initialize(username_id, blocks_around, npcs);
+        mapMonitor.initialize(username_id, blocks_around, npcs, map_dimensions);
 
         std::string game_message;
 

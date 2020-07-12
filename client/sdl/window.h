@@ -100,7 +100,7 @@ public:
 
 
         //Consultas a elementos o sectores renderizado
-    SDL_Rect getFrameRectByPosition(Surface* surface, position_t position, int vision_width, int vision_height);
+    SDL_Rect getFrameRectByPosition(Surface* surface, position_t position);
     int getRenderedItemIndexByPosition(int x, int y, size_t inventory_length);
     int getRenderedListIndexByPosition(int x, int y, size_t inventory_length);
     int getRenderedEquipedTypeByPosition(int x, int y);

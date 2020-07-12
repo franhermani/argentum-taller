@@ -12,6 +12,7 @@ class Map {
     matrix_t matrix;
     npcs_t npcs;
     list_t list;
+    std::vector<int> mapDimensions;
     std::atomic<bool> interactingWithNpc;
     int username_id;
     std::vector<std::vector<Terrain>> terrainMatrix;
@@ -68,7 +69,7 @@ public:
 
     //inicializa matriz
     void initialize(int username_id, std::vector<int>&
-            blocks_around, npcs_t& npcs);
+            blocks_around, npcs_t& npcs, std::vector<int>& map_dimensions);
 
     //actualiza el vector de jugadores recibido del server
     void updateWorld(world_t receivedWorld, list_t list);

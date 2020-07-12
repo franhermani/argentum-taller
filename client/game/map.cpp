@@ -39,7 +39,7 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
 
 void Map::initialize(int received_id,
         std::vector<int>& blocks_around,
-        npcs_t& received_npcs) {
+        npcs_t& received_npcs, std::vector<int>& map_dimensions) {
     // TODO ESTO SE RECIBE DESDE SERVER
     terrainMatrixHeight = 108;
     terrainMatrixWidth = 108;
@@ -47,6 +47,8 @@ void Map::initialize(int received_id,
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
     npcs = std::move(received_npcs);
+    mapDimensions = std::move(map_dimensions);
+
 }
 
 

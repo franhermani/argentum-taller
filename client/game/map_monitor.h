@@ -23,7 +23,8 @@ public:
     MapMonitor& operator=(const MapMonitor& other) = delete;
 
     //inicializa matriz
-    void initialize(int username_id, std::vector<int>& blocks_around, npcs_t& npcs);
+    void initialize(int username_id, std::vector<int>& blocks_around, npcs_t& npcs,
+            std::vector<int>& map_dimensions);
 
     //actualiza el vector de jugadores
     void updateWorld(world_t receivedWorld, list_t list);
