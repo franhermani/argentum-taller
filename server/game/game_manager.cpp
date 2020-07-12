@@ -98,25 +98,20 @@ void GameManager::spawnNPCs() {
         num_merchants = js["merchant"]["quantity"],
         num_bankers = js["banker"]["quantity"];
 
-    int orientation;
-
     position_t new_pos{};
     int i;
     for (i = 0; i < num_priests; i ++) {
         new_pos = world.loadNPCPosition();
-        orientation = math.randomInt(LEFT, DOWN);
-        world.addNPC(new Priest(itemFactory, new_pos, orientation));
+        world.addNPC(new Priest(itemFactory, new_pos, DOWN));
     }
     for (i = 0; i < num_merchants; i ++) {
         new_pos = world.loadNPCPosition();
-        orientation = math.randomInt(LEFT, DOWN);
-        world.addNPC(new Merchant(itemFactory, new_pos, orientation,
+        world.addNPC(new Merchant(itemFactory, new_pos, DOWN,
                 js["merchant"]["max_items"]));
     }
     for (i = 0; i < num_bankers; i ++) {
         new_pos = world.loadNPCPosition();
-        orientation = math.randomInt(LEFT, DOWN);
-        world.addNPC(new Banker(bank, new_pos, orientation));
+        world.addNPC(new Banker(bank, new_pos, DOWN));
     }
 }
 
