@@ -21,10 +21,17 @@ class World {
     GameParams& params;
     ItemFactory& itemFactory;
     std::map<int, ProtectedQueue<std::string>>& messagesQueuePerPlayer;
+
+    std::vector<position_t> safeZonesPositions;
+    std::vector<position_t> impenetrablePositions;
+    std::vector<position_t> cemeteryPositions;
+
+    // TODO: borrar esto
     std::vector<std::vector<Terrain>> matrix;
     std::set<Terrain> entitiesImpenetrableTerrains;
     std::set<Terrain> attacksImpenetrableTerrains;
     std::set<Terrain> safeZonesTerrains;
+
     std::vector<Player*> players;
     std::vector<Creature*> creatures;
     std::vector<NPC*> npcs;
@@ -34,15 +41,22 @@ class World {
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
 
+    // Llena el vector de posiciones de zonas seguras
+    void loadSafeZonesPositions();
+
+    // Llena el vector de posiciones del cementerio de criaturas
+    void loadCemeteryPositions();
+
+    // Llena el vector de posiciones de terrenos impenetrables
+    void loadImpenetrablePositions();
+
+    // TODO: borrar esto
     // Llena el vector de terrenos impenetrables por un player o criatura
     void loadEntitiesImpenetrableTerrains();
-
     // Llena el vector de terrenos impenetrables por un ataque
     void loadAttacksImpenetrableTerrains();
-
     // Llena el vector de terrenos considerados zona segura
     void loadSafeZonesTerrains();
-
     // Llena la matriz (mapa) segun el json generado por Tiled
     void loadMatrix();
 

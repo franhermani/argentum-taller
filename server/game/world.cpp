@@ -10,16 +10,21 @@ params(params),
 itemFactory(item_factory),
 messagesQueuePerPlayer(messagesQueuePerPlayer) {
     json js;
-    js = params.getWorldParams()["layers"][0];
+    js = params.getWorldParams();
     worldWidth = js["width"], worldHeight = js["height"];
 
     js = params.getConfigParams()["blocks_around_player"];
     playerWidth = js["width"], playerHeight = js["height"];
 
-    loadEntitiesImpenetrableTerrains();
-    loadAttacksImpenetrableTerrains();
-    loadSafeZonesTerrains();
-    loadMatrix();
+    loadSafeZonesPositions();
+    loadImpenetrablePositions();
+    loadCemeteryPositions();
+
+    // TODO: borrar esto
+//    loadEntitiesImpenetrableTerrains();
+//    loadAttacksImpenetrableTerrains();
+//    loadSafeZonesTerrains();
+//    loadMatrix();
 }
 
 World::~World() {
@@ -39,22 +44,74 @@ World::~World() {
         delete attack;
 }
 
+void World::loadSafeZonesPositions() {
+    std::vector<int> terrains = params.getWorldParams()["layers"][1]["data"];
+
+    size_t i, row = 0;
+    for (i = 0; i < terrains.size(); i ++) {
+        if (i != 0 && i % worldWidth == 0)
+            row ++;
+
+        if (terrains[i] == 0)
+            continue;
+
+        position_t pos(i % worldWidth, row);
+        safeZonesPositions.push_back(pos);
+    }
+}
+
+void World::loadCemeteryPositions() {
+    std::vector<int> terrains = params.getWorldParams()["layers"][2]["data"];
+
+    size_t i, row = 0;
+    for (i = 0; i < terrains.size(); i ++) {
+        if (i != 0 && i % worldWidth == 0)
+            row ++;
+
+        if (terrains[i] == 0)
+            continue;
+
+        position_t pos(i % worldWidth, row);
+        cemeteryPositions.push_back(pos);
+    }
+}
+
+void World::loadImpenetrablePositions() {
+    std::vector<int> terrains = params.getWorldParams()["layers"][3]["data"];
+
+    size_t i, row = 0;
+    for (i = 0; i < terrains.size(); i ++) {
+        if (i != 0 && i % worldWidth == 0)
+            row ++;
+
+        if (terrains[i] == 0)
+            continue;
+
+        position_t pos(i % worldWidth, row);
+        impenetrablePositions.push_back(pos);
+    }
+}
+
+// TODO: borrar esto
 void World::loadEntitiesImpenetrableTerrains() {
     entitiesImpenetrableTerrains.insert(TERRAIN_WALL);
     entitiesImpenetrableTerrains.insert(TERRAIN_WATER);
     entitiesImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
 }
 
+// TODO: borrar esto
 void World::loadAttacksImpenetrableTerrains() {
     attacksImpenetrableTerrains.insert(TERRAIN_WALL);
     attacksImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
 }
 
+// TODO: borrar esto
 void World::loadSafeZonesTerrains() {
     // TODO: ...
 //    safeZonesTerrains.insert();
 }
 
+// TODO: borrar esto
 void World::loadMatrix() {
     json js = params.getWorldParams()["layers"][0];
     auto terrains = js["data"];
@@ -385,8 +442,8 @@ position_t World::getClosestPlayerPos(position_t new_pos) {
 
     for (auto& player : players) {
         // TODO: buscar players dentro de un rango
-        if (player->isDead() || player->isReviving ||
-            safeZoneTerrainInPosition(player->pos))
+        // TODO: no buscar players en zonas seguras
+        if (player->isDead() || player->isReviving)
             continue;
 
         actual_distance = distanceInBlocks(new_pos, player->pos);
