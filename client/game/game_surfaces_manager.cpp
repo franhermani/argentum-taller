@@ -235,7 +235,7 @@ void GameSurfacesManager::loadAttackPaths() {
             {UP, "../client/resources/images/triple_arrow_up_t.png"},
             {DOWN, "../client/resources/images/triple_arrow_down_t.png"},
             {LEFT, "../client/resources/images/triple_arrow_left_t.png"},
-            {RIGHT, "../client/resources/images/triple_arrow_t.png"}
+            {RIGHT, "../client/resources/images/triple_arrow_right_t.png"}
     };
     std::map<int, std::string> single_arrow_orientations = {
             {UP, "../client/resources/images/single_arrow_up_t.png"},
@@ -245,13 +245,23 @@ void GameSurfacesManager::loadAttackPaths() {
     };
     attackSurfacesPaths = {
             {MULTIPLE_ARROW, multiple_arrow_orientations},
-            {SINGLE_ARROW, single_arrow_orientations}
+            {SINGLE_ARROW, single_arrow_orientations},
+            {MELEE, single_arrow_orientations},
+            {MAGIC_ARROW_SPELL, single_arrow_orientations},
+            {HEAL_SPELL, single_arrow_orientations},
+            {MISSILE_SPELL, single_arrow_orientations},
+            {EXPLOSION_SPELL, single_arrow_orientations}
     };
     std::map<int, Surface*> multiple_arrow_surfaces;
     std::map<int, Surface*> single_arrow_surfaces;
     playerSurfacesMap = {{MULTIPLE_ARROW, multiple_arrow_surfaces},
                          {SINGLE_ARROW,   single_arrow_surfaces},
-    }
+                         {MELEE, single_arrow_surfaces},
+                         {MAGIC_ARROW_SPELL, single_arrow_surfaces},
+                         {HEAL_SPELL, single_arrow_surfaces},
+                         {MISSILE_SPELL, single_arrow_surfaces},
+                         {EXPLOSION_SPELL, single_arrow_surfaces}
+    };
 }
 
 void GameSurfacesManager::loadPlayerPaths() {
