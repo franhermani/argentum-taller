@@ -599,7 +599,7 @@ void Player::addGold(const int quant) {
 }
 
 const int Player::getSafeGoldSpace() {
-    if (actualGold > maxSafeGold)
+    if (actualGold >= maxSafeGold)
         throw GameException(id, "No tienes mas espacio "
                                 "para guardar oro de forma segura");
 
@@ -608,7 +608,7 @@ const int Player::getSafeGoldSpace() {
 }
 
 const int Player::removeExcessGold() {
-    if (actualGold < maxSafeGold)
+    if (actualGold <= maxSafeGold)
         throw GameException(id, "No tienes oro en exceso para depositar");
 
     int excess_gold = actualGold - maxSafeGold;
