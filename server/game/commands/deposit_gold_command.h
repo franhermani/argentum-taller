@@ -6,13 +6,12 @@
 
 class DepositGoldCommand : public Command {
     Player& player;
-    uint16_t quantity;
     uint16_t bankerPosX, bankerPosY;
 
 public:
     // Constructor
-    DepositGoldCommand(Player& player, const uint16_t quantity,
-    const uint16_t banker_pos_x, const uint16_t banker_pos_y);
+    DepositGoldCommand(Player& player, const uint16_t banker_pos_x,
+            const uint16_t banker_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
     DepositGoldCommand(const DepositGoldCommand&) = delete;
@@ -21,7 +20,7 @@ public:
     // Destructor
     ~DepositGoldCommand() override;
 
-    // Deposita una cantidad de oro en el banco
+    // Deposita el oro en exceso en el banco
     void execute(World& world) override;
 };
 

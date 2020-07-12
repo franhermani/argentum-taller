@@ -598,16 +598,22 @@ void Player::addGold(const int quant) {
     actualGold += quant;
 }
 
-void Player::removeGold(const int quant) {
-    if (isWaitingToRevive())
-        throw GameException(id, "No puedes ejecutar ningun comando hasta que "
-                                "termines de revivir. Quedan aprox. %d "
-                                "segundos", secondsToRevive());
+const int Player::getSafeGoldSpace() {
+    if (actualGold > maxSafeGold)
+        throw GameException(id, "No tienes mas espacio "
+                                "para guardar oro de forma segura");
 
-    if (actualGold < quant)
-        throw GameException(id, "No tienes suficiente oro para extraer");
+    int safe_gold_space = maxSafeGold - actualGold;
+    return safe_gold_space;
+}
 
-    actualGold -= quant;
+const int Player::removeExcessGold() {
+    if (actualGold < maxSafeGold)
+        throw GameException(id, "No tienes oro en exceso para depositar");
+
+    int excess_gold = actualGold - maxSafeGold;
+    subtractGold(excess_gold);
+    return excess_gold;
 }
 
 void Player::takeGoldFromWorld(position_t new_pos) {

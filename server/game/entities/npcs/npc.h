@@ -46,13 +46,13 @@ public:
     // Metodo a definir por las clases derivadas
     virtual void withdrawItem(Player& player, const int type) = 0;
 
-    // Deposita la cantidad recibida de oro del player en el banco
+    // Deposita el oro en exceso del player en el banco
     // Metodo a definir por las clases derivadas
-    virtual void depositGold(Player& player, const int quant) = 0;
+    virtual void depositGold(Player& player) = 0;
 
-    // Retira la cantidad recibida de oro del player del banco
+    // Retira oro del player del banco
     // Metodo a definir por las clases derivadas
-    virtual void withdrawGold(Player& player, const int quant) = 0;
+    virtual void withdrawGold(Player& player) = 0;
 
     // Lista los items que tiene para ofrecer
     // Metodo a definir por las clases derivadas
