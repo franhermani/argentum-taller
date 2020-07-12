@@ -20,12 +20,6 @@ messagesQueuePerPlayer(messagesQueuePerPlayer) {
     loadSafePositions();
     loadImpenetrablePositions();
     loadCemeteryPositions();
-
-    // TODO: borrar esto
-//    loadEntitiesImpenetrableTerrains();
-//    loadAttacksImpenetrableTerrains();
-//    loadSafeZonesTerrains();
-//    loadMatrix();
 }
 
 World::~World() {
@@ -108,54 +102,6 @@ void World::loadImpenetrablePositions() {
         impenetrablePositions.push_back(pos);
     }
 }
-
-// TODO: borrar esto
-//void World::loadEntitiesImpenetrableTerrains() {
-//    entitiesImpenetrableTerrains.insert(TERRAIN_WALL);
-//    entitiesImpenetrableTerrains.insert(TERRAIN_WATER);
-//    entitiesImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
-//}
-
-// TODO: borrar esto
-//void World::loadAttacksImpenetrableTerrains() {
-//    attacksImpenetrableTerrains.insert(TERRAIN_WALL);
-//    attacksImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
-//}
-
-// TODO: borrar esto
-//void World::loadSafeZonesTerrains() {
-    // TODO: ...
-//    safeZonesTerrains.insert();
-//}
-
-// TODO: borrar esto
-//void World::loadMatrix() {
-//    json js = params.getWorldParams()["layers"][0];
-//    auto terrains = js["data"];
-//
-//    matrix.resize(worldHeight);
-//    int i, j, pos, terrain_type;
-//    for (i = 0; i < worldHeight; i ++) {
-//        std::vector<Terrain> row;
-//        row.resize(worldWidth);
-//        matrix.push_back(row);
-//        for (j = 0; j < worldWidth; j ++) {
-//            pos = (worldWidth * i) + j;
-//            terrain_type = terrains[pos];
-//            matrix[i].push_back(static_cast<Terrain>(terrain_type));
-//        }
-//    }
-//}
-
-// TODO: borrar esto
-//const bool World::entityImpenetrableTerrainInPosition(position_t new_pos) {
-//    return entitiesImpenetrableTerrains.count(matrix[new_pos.y][new_pos.x]) > 0;
-//}
-
-// TODO: borrar esto
-//const bool World::attackImpenetrableTerrainInPosition(position_t new_pos) {
-//    return attacksImpenetrableTerrains.count(matrix[new_pos.y][new_pos.x]) > 0;
-//}
 
 const bool World::playerInPosition(position_t new_pos) {
     for (auto& player : players)
@@ -248,11 +194,6 @@ const int World::getPlayerWidth() {
 const int World::getPlayerHeight() {
     return playerHeight;
 }
-
-// TODO: borrar esto
-//std::vector<std::vector<Terrain>> World::getMatrix() const {
-//    return matrix;
-//}
 
 std::vector<NPC*> World::getNPCs() const {
     return npcs;
@@ -542,18 +483,27 @@ void World::addCreature(Creature *creature) {
 position_t World::loadPlayerPosition() {
     position_t new_pos = math.randomPosition(safePositions);
 
-    while (entityInCollision(new_pos)) {
+    while (entityInCollision(new_pos))
         new_pos = math.randomPosition(safePositions);
-    }
+
     return new_pos;
 }
 
 position_t World::loadCreaturePosition() {
     position_t new_pos = math.randomPosition(unsafePositions);
 
-    while (entityInCollision(new_pos)) {
+    while (entityInCollision(new_pos))
         new_pos = math.randomPosition(unsafePositions);
-    }
+
+    return new_pos;
+}
+
+position_t World::loadCreaturePositionInCemetery() {
+    position_t new_pos = math.randomPosition(cemeteryPositions);
+
+    while (entityInCollision(new_pos))
+        new_pos = math.randomPosition(cemeteryPositions);
+
     return new_pos;
 }
 
@@ -561,8 +511,8 @@ position_t World::loadCreaturePosition() {
 position_t World::loadNPCPosition() {
     position_t new_pos = math.randomPosition(safePositions);
 
-    while (entityInCollision(new_pos)) {
+    while (entityInCollision(new_pos))
         new_pos = math.randomPosition(safePositions);
-    }
+
     return new_pos;
 }

@@ -129,10 +129,9 @@ void Creature::die() {
     isAlive = false;
 }
 
-// TODO: enviarlos a un cementerio, no a una posicion aleatoria
 void Creature::respawn() {
     dropItemOrGold();
-    pos = world.loadCreaturePosition();
+    pos = world.loadCreaturePositionInCemetery();
     isAlive = true;
 }
 

@@ -211,6 +211,9 @@ public:
     // Devuelve una posicion random para una criatura fuera de una zona segura
     position_t loadCreaturePosition();
 
+    // Devuelve una posicion random para una criatura dentro del cementerio
+    position_t loadCreaturePositionInCemetery();
+
     // Devuelve una posicion random para un NPC dentro de una zona segura
     position_t loadNPCPosition();
 };
