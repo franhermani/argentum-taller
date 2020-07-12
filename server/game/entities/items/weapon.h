@@ -9,7 +9,7 @@ class Weapon : public Item {
     int manaConsumption;
     int range;
     int moveVelocity;
-    bool isMagic, isLifeRestorer;
+    bool isLifeRestorer;
 
     friend class Player;
     friend class Equations;

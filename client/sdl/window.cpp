@@ -159,7 +159,9 @@ void SDLWindow::renderInventoryGolds(Surface* surface, Surface* quantity) {
 }
 
 
-void SDLWindow::renderListGold(Surface* surface) {
+void SDLWindow::renderListGold(Surface* surface, Surface* quantity_surface) {
+    SDL_BlitScaled(quantity_surface->getRenderableSurface(), NULL,
+                   getSurface(), &measurements.listGoldQuantityStaticRect);
     SDL_BlitScaled(surface->getRenderableSurface(), NULL,
                    getSurface(), &measurements.listGoldStaticRect);
 }
@@ -298,6 +300,29 @@ void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
 
 void SDLWindow::renderList(std::vector<Surface*>& surfaces) {
     game_area_t& list_area = measurements.list;
+    int x,y, w, h;
+    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/LIST_MAX_TILES_WIDTH;
+    h = w;
+    x = list_area.x_pixel_begin;
+    y = list_area.y_pixel_begin;
+    int surfaces_size = surfaces.size();
+    int current_index = 0;
+    SDL_Rect stretchRect;
+    while (current_index < surfaces_size) {
+        stretchRect.x = x;
+        stretchRect.y = y;
+        stretchRect.w = w;
+        stretchRect.h = h;
+        SDL_BlitScaled(surfaces[current_index]->getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+        x = x + w;
+        current_index ++;
+    }
+}
+
+
+void SDLWindow::renderListPrices(std::vector<Surface*>& surfaces) {
+    game_area_t& list_area = measurements.list_prices;
     int x,y, w, h;
     w = (list_area.x_pixel_end-list_area.x_pixel_begin)/LIST_MAX_TILES_WIDTH;
     h = w;

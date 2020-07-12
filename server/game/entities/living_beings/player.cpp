@@ -654,6 +654,11 @@ Item* Player::sellItem(const int type) {
     if (! item)
         return nullptr;
 
+    if (item->isMagic) {
+        inventory.addItem(item);
+        throw GameException(id, "No se pueden vender items magicos");
+    }
+
     try {
         addGold(item->price);
     } catch (GameException& e) {

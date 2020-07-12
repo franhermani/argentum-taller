@@ -14,7 +14,7 @@ public:
     // Constructor
     Armor(const int new_type, position_t new_pos,
             const int min_defense, const int max_defense,
-            const int new_price);
+            const bool is_magic, const int new_price);
 
     // Constructor y asignacion por copia deshabilitados
     Armor(const Armor& other) = delete;

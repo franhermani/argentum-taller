@@ -145,13 +145,26 @@ void GameRender::setTilesSize(int width,int height) {
     window.setTilesSize(width,height);
 }
 
-void GameRender::renderList(std::vector<list_item_t> &items) {
-    surfacesManager.createNecessaryListItems(items);
+void GameRender::renderList(list_t list) {
+    if ((list.num_items == 0) && (list.gold_quantity == 0)) return;
+    surfacesManager.createNecessaryListItems(list.items);
     std::vector<Surface*> surfaces;
-    for (auto it = std::begin(items); it != std::end(items); ++it) {
+    for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
          surfaces.push_back(surfacesManager.itemSurfacesMap[it->type]);
     }
     window.renderList(surfaces);
+    if (list.show_price) {
+        std::vector<Surface*> price_surfaces;
+        for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
+            price_surfaces.push_back(surfacesManager.getTextSurface(std::to_string(it->price)));
+        }
+        window.renderListPrices(price_surfaces);
+    }
+    else {
+        Surface* quantity = surfacesManager.getTextSurface(std::to_string(list.gold_quantity));
+        window.renderListGold(surfacesManager.goldSurface, quantity);
+    }
+
 }
 
 
@@ -180,8 +193,7 @@ void GameRender::run() {
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages,
                 current_world.main_player.level);
-        renderList(current_world.list.items);
-        //window.renderListGold();
+        renderList(current_world.list);
         window.UpdateWindowSurface();
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
