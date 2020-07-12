@@ -56,6 +56,13 @@ void WindowMeasurements::initializeStaticAreas() {
                             list_gold_area.x_pixel_begin);
     listGoldStaticRect.h = (list_gold_area.y_pixel_end -
                             list_gold_area.y_pixel_begin);
+    listGoldQuantityStaticRect.x = listGoldStaticRect.x;
+    listGoldQuantityStaticRect.y = listGoldStaticRect.y + (int) (listGoldStaticRect.h *1.1);
+    listGoldQuantityStaticRect.w = (list_gold_area.x_pixel_end -
+                            list_gold_area.x_pixel_begin);
+    listGoldQuantityStaticRect.h = (list_gold_area.y_pixel_end -
+                            list_gold_area.y_pixel_begin);
+
 }
 
 
@@ -104,6 +111,11 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
     list = {(int) (screenWidth / 100.0) * 44,
             (int) (screenWidth / 100.0) * 74,
             (int) (screenHeight / 100.0) * 5,
+            (int) (screenHeight /100.0) * 15};
+
+    list_prices = {(int) (screenWidth / 100.0) * 44,
+            (int) (screenWidth / 100.0) * 74,
+            (int) (screenHeight / 100.0) * 10,
             (int) (screenHeight /100.0) * 15};
 
     listGold = {(int) (screenWidth / 100.0) * 75,

@@ -93,7 +93,8 @@ public:
             std::map<int, Surface *> info_surfaces_map,
             Surface* level_surface);
     void renderList(std::vector<Surface*>& surfaces);
-    void renderListGold(Surface* surface);
+    void renderListPrices(std::vector<Surface*>& surfaces);
+    void renderListGold(Surface* surface, Surface* quantity);
     void renderInventoryGolds(Surface* surface, Surface* quantity);
     void renderText(Surface* surface);
     void renderLevel(Surface* level_surface);
