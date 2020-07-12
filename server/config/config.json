@@ -3,7 +3,7 @@
     "port": "8080"
   },
   "game_params": {
-    "world_path": "../server/config/world_test.json",
+    "world_path": "../tiled/world.json",
     "ms_per_update": 60,
     "ms_per_send": 120,
     "blocks_around_player": {

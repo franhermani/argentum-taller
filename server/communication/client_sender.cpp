@@ -18,6 +18,7 @@ ClientSender::ClientSender(Socket& socket) : protocol(socket) {
     isRunning = true;
 }
 
+// TODO: modularizar esta funcion
 void ClientSender::run() {
     using ms = std::chrono::milliseconds;
 
@@ -28,9 +29,6 @@ void ClientSender::run() {
         // Envio la vision para que el cliente sepa cuanto renderizar
         protocol.sendBlocksAround(worldMonitor->getPlayerWidth(),
                 worldMonitor->getPlayerHeight());
-
-        // Envio la matriz completa con todos los terrenos
-        protocol.sendMatrix(*worldMonitor);
 
         // Envio la lista de NPCs
         protocol.sendNPCs(*worldMonitor);

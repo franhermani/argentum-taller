@@ -36,9 +36,6 @@ public:
     // Envia la vision del player medida en bloques (alto y ancho)
     void sendBlocksAround(int width, int height);
 
-    // Envia la matriz de terrenos a traves del socket
-    void sendMatrix(WorldMonitor& world_monitor);
-
     // Envia la lista de NPCs a traves del socket
     void sendNPCs(WorldMonitor& world_monitor);
 
