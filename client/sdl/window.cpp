@@ -123,7 +123,8 @@ void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
 }
 
-SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface, position_t position) {
+SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface, position_t position,
+        int dimensions_width, int dimensions_height) {
     float tile_size_pix_x = surface->getRenderableSurface()->w/108;
     float tile_size_pix_y = surface->getRenderableSurface()->h/108;
     int vision_width = measurements.numberOfTilesInWidth;
@@ -137,10 +138,11 @@ SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface, position_t position
 }
 
 void SDLWindow::renderWorld(Surface* surface,  position_t positon,
-                            int vision_width, int vision_height) {
+                            int dimensions_width, int dimensions_height) {
     //todo una vez temriando esto matar render terrains
     SDL_Rect src_rect =
-            getFrameRectByPosition(surface, positon);
+            getFrameRectByPosition(surface, positon,
+                    dimensions_width, dimensions_height);
 
     SDL_BlitScaled(surface->getRenderableSurface(), &src_rect,
                    getSurface(), &measurements.worldStaticRect);

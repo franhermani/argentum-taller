@@ -12,12 +12,12 @@ class Map {
     matrix_t matrix;
     npcs_t npcs;
     list_t list;
+    //el 108
     std::vector<int> mapDimensions;
     std::atomic<bool> interactingWithNpc;
     int username_id;
     std::vector<std::vector<Terrain>> terrainMatrix;
-    int terrainMatrixHeight;
-    int terrainMatrixWidth;
+    //el 9
     int playerVisionWidth;
     int playerVisionHeight;
 
@@ -90,6 +90,7 @@ public:
     // getters de campo de vision del jugador
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
+    std::vector<int> getDimensions();
 
     //imprime por consola la matriz recibida de terrains para debugeo
     void printDebugTerrainMatrix(std::vector<

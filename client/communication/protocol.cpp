@@ -92,10 +92,13 @@ const std::vector<int> ClientProtocol::receiveMapDimensions() {
     byte_msg.resize(message_length);
     socket.receiveBytes(byte_msg.data(), message_length);
 
-    blocks.resize(message_length);
-    blocks[0] = ntohs(byte_msg[0]);
-    blocks[2] = ntohs(byte_msg[2]);
-
+    blocks.resize(2* sizeof(int));
+    uint16_t width;
+    memcpy(&width, byte_msg.data(), SIZE_16);
+    blocks[0] = ntohs(width);
+    uint16_t height;
+    memcpy(&height, byte_msg.data()+SIZE_16, SIZE_16);
+    blocks[1] = ntohs(height);
     return std::move(blocks);
 }
 

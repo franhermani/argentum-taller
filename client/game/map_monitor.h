@@ -31,6 +31,7 @@ public:
 
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
+    std::vector<int> getDimensions();
 
     // devuelve la posicion mas cercana apuntando
     // a la orientacion del jugador principal

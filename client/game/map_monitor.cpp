@@ -61,6 +61,10 @@ client_world_t MapMonitor::getCurrentWorld() {
     return std::move(map.getCurrentWorld());
 }
 
+std::vector<int> MapMonitor::getDimensions(){
+    return std::move(map.getDimensions());
+}
+
 
 
 void MapMonitor::interact() {
