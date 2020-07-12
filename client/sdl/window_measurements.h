@@ -26,6 +26,7 @@ struct WindowMeasurements {
     game_area_t level;
 
     SDL_Rect levelStaticRect;
+    SDL_Rect worldStaticRect;
     SDL_Rect gameFrameStaticRect;
     SDL_Rect inventoryGoldStaticRect;
     SDL_Rect listGoldStaticRect;

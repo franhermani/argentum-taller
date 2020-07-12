@@ -18,8 +18,10 @@ class GameRender : public Thread {
     const int screenWidth;
     const int screenHeight;
     MapMonitor& mapMonitor;
+    //todo renombrar estos dos para diferenciar el 9 del 108
     int blocksWidth;
     int blocksHeight;
+    std::vector<int> mapDimensions;
     SDLWindow window;
     GameSurfacesManager surfacesManager;
     //conservamos mundo renderizado en el momento
@@ -45,7 +47,6 @@ public:
     bool isDead() override;
 
     //Renderizadores
-    void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
     void renderPlayers(std::vector<player_t> &players);
     void renderNpcs(std::vector<npc_t>& npcs);
     void renderCreatures(std::vector<creature_t>& creatures);
@@ -57,6 +58,7 @@ public:
     void renderInventoryGolds(uint16_t quantity);
     void renderGameFrame();
     void renderList(list_t list);
+    void renderWorld(position_t position);
 
 
     //Inicializador de SDL

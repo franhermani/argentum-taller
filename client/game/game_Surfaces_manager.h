@@ -13,7 +13,6 @@
 #include "../sdl/window.h"
 
 class GameSurfacesManager {
-    std::map<Terrain, Surface *> terrainSurfacesMap;
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
@@ -21,7 +20,7 @@ class GameSurfacesManager {
     std::map<int, Surface *> infoSurfacesMap;
     Surface* goldSurface;
     Surface* gameFrameSurface;
-    std::map<Terrain, std::string> terrainSurfacesPaths;
+    Surface* worldSurface;
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;

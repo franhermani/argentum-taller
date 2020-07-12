@@ -12,11 +12,12 @@ class Map {
     matrix_t matrix;
     npcs_t npcs;
     list_t list;
+    //el 108
+    std::vector<int> mapDimensions;
     std::atomic<bool> interactingWithNpc;
     int username_id;
     std::vector<std::vector<Terrain>> terrainMatrix;
-    int terrainMatrixHeight;
-    int terrainMatrixWidth;
+    //el 9
     int playerVisionWidth;
     int playerVisionHeight;
 
@@ -41,10 +42,6 @@ class Map {
 
     //busca en la lista actual de jugadores y devuelve el principal
     player_t getMainPlayer();
-
-    //convierte un vector de terrains a matriz
-    void initializeMatrixFromVector(matrix_t& received_matrix);
-
 
 
     int getNewBordersXPosition(int pos_x, player_t& main_player);
@@ -72,7 +69,7 @@ public:
 
     //inicializa matriz
     void initialize(int username_id, std::vector<int>&
-            blocks_around, matrix_t& received_terrains, npcs_t& npcs);
+            blocks_around, npcs_t& npcs, std::vector<int>& map_dimensions);
 
     //actualiza el vector de jugadores recibido del server
     void updateWorld(world_t receivedWorld, list_t list);
@@ -93,6 +90,7 @@ public:
     // getters de campo de vision del jugador
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
+    std::vector<int> getDimensions();
 
     //imprime por consola la matriz recibida de terrains para debugeo
     void printDebugTerrainMatrix(std::vector<

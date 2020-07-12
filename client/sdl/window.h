@@ -78,9 +78,6 @@ public:
     int getXPixelPos(int x_tile_position);
     int getYPixelPos(int y_tile_position);
 
-    //renderizadores dentro de la pantalla del mapa
-    void renderTerrain(std::vector<std::vector<Terrain>> &matrix,
-            std::map<Terrain, Surface *> &surfaces_map);
     void renderMapObject(int x, int y, Surface *character_surface);
 
     //renderizadores marco + lo que contiene
@@ -98,9 +95,13 @@ public:
     void renderInventoryGolds(Surface* surface, Surface* quantity);
     void renderText(Surface* surface);
     void renderLevel(Surface* level_surface);
+    void renderWorld(Surface* surface, position_t positon,
+                     int dimensions_width, int dimensions_height);
 
 
-    //Consultas a elementos o sectores renderizados
+        //Consultas a elementos o sectores renderizado
+    SDL_Rect getFrameRectByPosition(Surface* surface, position_t position,
+        int dimensions_width, int dimensions_height);
     int getRenderedItemIndexByPosition(int x, int y, size_t inventory_length);
     int getRenderedListIndexByPosition(int x, int y, size_t inventory_length);
     int getRenderedEquipedTypeByPosition(int x, int y);
