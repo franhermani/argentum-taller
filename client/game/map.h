@@ -68,7 +68,7 @@ public:
 
     //inicializa matriz
     void initialize(int username_id, std::vector<int>&
-            blocks_around, matrix_t& received_terrains, npcs_t& npcs);
+            blocks_around, npcs_t& npcs);
 
     //actualiza el vector de jugadores recibido del server
     void updateWorld(world_t receivedWorld, list_t list);

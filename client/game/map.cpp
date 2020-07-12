@@ -38,11 +38,11 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
 
 
 void Map::initialize(int received_id,
-        std::vector<int>& blocks_around, matrix_t& received_matrix,
+        std::vector<int>& blocks_around,
         npcs_t& received_npcs) {
-    //initializeMatrixFromVector(received_matrix);
-    terrainMatrixHeight = 100;
-    terrainMatrixWidth = 100;
+    // TODO ESTO SE RECIBE DESDE SERVER
+    terrainMatrixHeight = 108;
+    terrainMatrixWidth = 108;
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
