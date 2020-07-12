@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <random>
 #include <climits>
 #include <algorithm>
 #include "player.h"
@@ -50,14 +49,13 @@ distanceInMsToPriest(0) {
     maxSafeGold = equations.eqMaxSafeGold(*this);
     maxExcessGold = equations.eqMaxExcessGold(*this);
     actualGold = equations.eqInitialGold(*this);
-
-    loadInitialPosition();
+    pos = world.loadPlayerPosition();
 
     bool debug = true;
     if (debug) {
         std::cout << "Player " << id << " creado!\n" <<
-        "- Pos X: " << posX << "\n" <<
-        "- Pos Y: " << posY << "\n" <<
+        "- Pos X: " << pos.x << "\n" <<
+        "- Pos Y: " << pos.y << "\n" <<
         "- Raza: " << raceType << "\n" <<
         "- Clase: " << classType << "\n" <<
         "- Vida maxima: " << maxLife << "\n" <<
@@ -80,21 +78,6 @@ Player::~Player() {
 // --------------- //
 // Private methods //
 // --------------- //
-
-void Player::loadInitialPosition() {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, world.getWidth() - 1);
-    std::uniform_int_distribution<int> dist_y(0, world.getHeight() - 1);
-
-    int new_x = dist_x(mt), new_y = dist_y(mt);
-    while (world.inCollision(new_x, new_y)) {
-        new_x = dist_x(mt);
-        new_y = dist_y(mt);
-    }
-    posX = new_x;
-    posY = new_y;
-}
 
 void Player::addLife(int life) {
     actualLife += life;
@@ -123,12 +106,14 @@ void Player::addExperience(int exp) {
     if (actualExperience > maxExperience)
         actualExperience = maxExperience;
 
-    // TODO: testear caso de subir mas de un nivel a la vez
-    if (actualExperience >= equations.eqExperienceLimit(*this)) {
-        level += 1;
-        if (level > world.getMaxLevelNewbie())
-            isNewbie = false;
+    long exp_limit = equations.eqExperienceLimit(level);
+
+    while (actualExperience >= exp_limit) {
+        level ++;
+        exp_limit = equations.eqExperienceLimit(level);
     }
+    if (level > world.getMaxLevelNewbie())
+        isNewbie = false;
 }
 
 void Player::die() {
@@ -144,7 +129,7 @@ void Player::dropExcessGold() {
 
     if (excess_gold > 0) {
         subtractGold(excess_gold);
-        world.addGold(new Gold(excess_gold, posX, posY));
+        world.addGold(new Gold(excess_gold, pos));
     }
 }
 
@@ -156,6 +141,7 @@ void Player::subtractGold(int gold) {
 }
 
 void Player::dropInventoryItems() {
+    position_t new_pos{};
     bool item_positioned;
     int i, j, diameter = 0, max_diameter = 10;
 
@@ -167,11 +153,13 @@ void Player::dropInventoryItems() {
         diameter = 1;
 
         while (! item_positioned) {
-            for (i = posX - diameter; i <= posX + diameter; i ++) {
-                for (j = posY - diameter; j <= posY + diameter; j++) {
-                    if ((world.inMapBoundaries(i, j)) &&
-                       (! world.itemInCollision(i, j))) {
-                        item->updatePosition(i, j);
+            for (i = pos.x - diameter; i <= pos.x + diameter; i ++) {
+                for (j = pos.y - diameter; j <= pos.y + diameter; j++) {
+                    new_pos.x = i;
+                    new_pos.y = j;
+                    if ((world.inMapBoundaries(new_pos)) &&
+                       (! world.itemInCollision(new_pos))) {
+                        item->updatePosition(new_pos);
                         world.addItem(item);
                         item_positioned = true;
                         break;
@@ -200,16 +188,17 @@ void Player::recoverLifeAndMana() {
         addMana(equations.eqManaMeditation(*this));
 }
 
-void Player::moveNextTo(const int pos_x, const int pos_y) {
-    std::vector<std::vector<int>> pos_tries =
-            {{pos_x + 1, pos_y}, {pos_x - 1, pos_y},
-             {pos_x, pos_y + 1}, {pos_x, pos_y - 1}};
+void Player::moveNextTo(position_t new_pos) {
+    std::vector<position_t> pos_tries =
+            {position_t(new_pos.x + 1, new_pos.y),
+             position_t(new_pos.x - 1, new_pos.y),
+             position_t(new_pos.x, new_pos.y + 1),
+             position_t(new_pos.x, new_pos.y - 1)};
 
-    for (auto& pos : pos_tries) {
-        if ((world.inMapBoundaries(pos[0], pos[1])) &&
-        (! world.inCollision(pos[0], pos[1]))) {
-            posX = pos[0];
-            posY = pos[1];
+    for (auto& pos_t : pos_tries) {
+        if ((world.inMapBoundaries(pos_t)) &&
+           (! world.entityInCollision(pos_t))) {
+            pos = pos_t;
             break;
         }
     }
@@ -229,7 +218,7 @@ void Player::equipWeapon(Weapon* new_weapon) {
         try {
             inventory.addItem(weapon);
         } catch (GameException& e) {
-            weapon->updatePosition(posX, posY);
+            weapon->updatePosition(pos);
             world.addItem(weapon);
         }
     }
@@ -241,7 +230,7 @@ void Player::equipArmor(Armor* new_armor) {
         try {
             inventory.addItem(armor);
         } catch (GameException& e) {
-            armor->updatePosition(posX, posY);
+            armor->updatePosition(pos);
             world.addItem(armor);
         }
     }
@@ -258,7 +247,7 @@ void Player::equipHelmet(Helmet* new_helmet) {
         try {
             inventory.addItem(helmet);
         } catch (GameException& e) {
-            helmet->updatePosition(posX, posY);
+            helmet->updatePosition(pos);
             world.addItem(helmet);
         }
     }
@@ -270,7 +259,7 @@ void Player::equipShield(Shield* new_shield) {
         try {
             inventory.addItem(shield);
         } catch (GameException& e) {
-            shield->updatePosition(posX, posY);
+            shield->updatePosition(pos);
             world.addItem(shield);
         }
     }
@@ -293,15 +282,13 @@ void Player::update(int ms) {
             msMoveCounter += ms;
             if (msMoveCounter >= distanceInMsToPriest) {
                 msMoveCounter = 0;
-                std::vector<int> priest_pos =
-                        world.getClosestPriestPos(posX, posY);
-                moveNextTo(priest_pos[0], priest_pos[1]);
+                position_t priest_pos = world.getClosestPriestPos(pos);
+                moveNextTo(priest_pos);
                 shortTermRevive();
             }
         }
     } else {
         msRecoveryCounter += ms;
-
         if (msRecoveryCounter >= recoveryVelocity) {
             msRecoveryCounter = 0;
             recoverLifeAndMana();
@@ -316,28 +303,27 @@ void Player::moveTo(int direction) {
                                 "segundos", secondsToRevive());
 
     stopMeditating();
+    position_t new_pos = pos;
 
-    int new_x = posX, new_y = posY;
     switch (direction) {
         case LEFT:
-            new_x -= 1;
+            new_pos.x -= 1;
             break;
         case RIGHT:
-            new_x += 1;
+            new_pos.x += 1;
             break;
         case DOWN:
-            new_y += 1;
+            new_pos.y += 1;
             break;
         case UP:
-            new_y -= 1;
+            new_pos.y -= 1;
             break;
         default:
             break;
     }
-    if ((world.inMapBoundaries(new_x, new_y)) &&
-        (! world.inCollision(new_x, new_y))) {
-        posX = new_x;
-        posY = new_y;
+    if ((world.inMapBoundaries(new_pos)) &&
+       (! world.entityInCollision(new_pos))) {
+        pos = new_pos;
     }
     orientation = direction;
 }
@@ -376,7 +362,7 @@ void Player::longTermRevive() {
         throw GameException(id, "No eres un fantasma. No puedes revivir");
 
     isReviving = true;
-    distanceInMsToPriest = world.distanceInMsToClosestPriest(posX, posY,
+    distanceInMsToPriest = world.distanceInMsToClosestPriest(pos,
             moveVelocity);
 }
 
@@ -424,7 +410,7 @@ void Player::attack() {
         weapon_range = weapon ? weapon->range : NO_WEAPON_RANGE,
         weapon_velocity = weapon ? weapon->moveVelocity : NO_WEAPON_VELOCITY;
 
-    world.addAttack(new Attack(this, weapon_attack_type, posX, posY,
+    world.addAttack(new Attack(this, weapon_attack_type, pos,
             orientation, weapon_range, weapon_velocity));
 }
 
@@ -512,7 +498,34 @@ void Player::equipItemFromInventory(const int type) {
     }
 }
 
-void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
+void Player::unequipItem(const int type) {
+    try {
+        switch (type) {
+            case UNEQUIP_WEAPON:
+                inventory.addItem(weapon);
+                weapon = nullptr;
+                break;
+            case UNEQUIP_ARMOR:
+                inventory.addItem(armor);
+                armor = nullptr;
+                break;
+            case UNEQUIP_HELMET:
+                inventory.addItem(helmet);
+                helmet = nullptr;
+                break;
+            case UNEQUIP_SHIELD:
+                inventory.addItem(shield);
+                shield = nullptr;
+                break;
+            default:
+                break;
+        }
+    } catch (GameException& e) {
+        throw GameException(id, e.what());
+    }
+}
+
+void Player::takeItemFromWorldToInventory(position_t new_pos) {
     if (isWaitingToRevive())
         throw GameException(id, "No puedes ejecutar ningun comando hasta que "
                                 "termines de revivir. Quedan aprox. %d "
@@ -524,7 +537,7 @@ void Player::takeItemFromWorldToInventory(const int pos_x, const int pos_y) {
         throw GameException(id, "Eres un fantasma. No puedes tomar items "
                                 "del mundo");
 
-    Item* item = world.removeItem(pos_x, pos_y);
+    Item* item = world.removeItem(new_pos);
     if (! item)
         return;
 
@@ -548,14 +561,14 @@ void Player::dropItemFromInventoryToWorld(const int type) {
         throw GameException(id, "Eres un fantasma. No puedes tirar items "
                                 "al mundo");
 
-    if (world.itemInCollision(posX, posY))
+    if (world.itemInCollision(pos))
         throw GameException(id, "Ya hay un item en esta posicion");
 
     Item* item = inventory.removeItem(type);
     if (! item)
         return;
 
-    item->updatePosition(posX, posY);
+    item->updatePosition(pos);
     world.addItem(item);
 }
 
@@ -596,7 +609,7 @@ void Player::removeGold(const int quant) {
     actualGold -= quant;
 }
 
-void Player::takeGoldFromWorld(const int pos_x, const int pos_y) {
+void Player::takeGoldFromWorld(position_t new_pos) {
     if (isWaitingToRevive())
         throw GameException(id, "No puedes ejecutar ningun comando hasta que "
                                 "termines de revivir. Quedan aprox. %d "
@@ -608,7 +621,7 @@ void Player::takeGoldFromWorld(const int pos_x, const int pos_y) {
         throw GameException(id, "Eres un fantasma. No puedes tomar oro "
                                 "del mundo");
 
-    Gold* gold = world.removeGold(pos_x, pos_y);
+    Gold* gold = world.removeGold(new_pos);
 
     try {
         addGold(gold->quantity);
@@ -640,10 +653,32 @@ Item* Player::sellItem(const int type) {
     if (! item)
         return nullptr;
 
-    addGold(item->price);
+    if (item->isMagic) {
+        inventory.addItem(item);
+        throw GameException(id, "No se pueden vender items magicos");
+    }
+
+    try {
+        addGold(item->price);
+    } catch (GameException& e) {
+        inventory.addItem(item);
+        throw GameException(id, e.what());
+    }
     return item;
 }
 
 const bool Player::isWaitingToRevive() const {
     return isReviving;
+}
+
+const long Player::levelActualExperience() const {
+    long prev_level_max_exp = equations.eqExperienceLimit(level - 1);
+    long actual_level_exp = actualExperience;
+    return actual_level_exp - prev_level_max_exp;
+}
+
+const long Player::levelMaxExperience() const {
+    long prev_level_max_exp = equations.eqExperienceLimit(level - 1);
+    long actual_level_max_exp = equations.eqExperienceLimit(level);
+    return actual_level_max_exp - prev_level_max_exp;
 }

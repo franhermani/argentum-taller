@@ -12,9 +12,9 @@ class Potion : public Item {
 
 public:
     // Constructor
-    Potion(const int new_type, const int pos_x, const int pos_y,
+    Potion(const int new_type, position_t new_pos,
             const int life_points, const int mana_points,
-            const int new_price);
+            const bool is_magic, const int new_price);
 
     // Constructor y asignacion por copia deshabilitados
     Potion(const Potion& other) = delete;

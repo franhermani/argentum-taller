@@ -1,7 +1,6 @@
 #include <map>
 #include <string>
 #include <random>
-#include <cstdlib>
 #include "world.h"
 #include "entities/npcs/priest.h"
 #include "game_exception.h"
@@ -48,7 +47,7 @@ void World::loadEntitiesImpenetrableTerrains() {
 
 void World::loadAttacksImpenetrableTerrains() {
     attacksImpenetrableTerrains.insert(TERRAIN_WALL);
-    entitiesImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
+    attacksImpenetrableTerrains.insert(TERRAIN_OUT_OF_BOUNDARIES);
 }
 
 void World::loadMatrix() {
@@ -68,6 +67,50 @@ void World::loadMatrix() {
         }
     }
 }
+
+const bool World::entityImpenetrableTerrainInPosition(position_t new_pos) {
+    return entitiesImpenetrableTerrains.count(matrix[new_pos.y][new_pos.x]) > 0;
+}
+
+const bool World::attackImpenetrableTerrainInPosition(position_t new_pos) {
+    return attacksImpenetrableTerrains.count(matrix[new_pos.y][new_pos.x]) > 0;
+}
+
+const bool World::playerInPosition(position_t new_pos) {
+    for (auto& player : players)
+        if (player->pos == new_pos)
+            return true;
+    return false;
+}
+
+const bool World::creatureInPosition(position_t new_pos) {
+    for (auto& creature : creatures)
+        if (creature->pos == new_pos)
+            return true;
+    return false;
+}
+
+const bool World::NPCInPosition(position_t new_pos) {
+    for (auto& npc : npcs)
+        if (npc->pos == new_pos)
+            return true;
+    return false;
+}
+
+const bool World::itemInPosition(position_t new_pos) {
+    for (auto& item : items)
+        if (item->pos == new_pos)
+            return true;
+    return false;
+}
+
+const bool World::goldInPosition(position_t new_pos) {
+    for (auto& gold : golds)
+        if (gold->pos == new_pos)
+            return true;
+    return false;
+}
+
 
 // -------------------------------------------- //
 // Metodos accedidos por threads (WorldMonitor) //
@@ -130,7 +173,7 @@ std::vector<std::vector<Terrain>> World::getMatrix() const {
     return matrix;
 }
 
-std::vector<NPC *> World::getNPCs() const {
+std::vector<NPC*> World::getNPCs() const {
     return npcs;
 }
 
@@ -138,7 +181,7 @@ std::vector<Player*> World::getPlayersAround(Player& player) {
     std::vector<Player*> players_around;
 
     for (auto& p : players)
-        if (inPlayerBoundaries(player, p->posX, p->posY))
+        if (inPlayerBoundaries(player, p->pos))
             players_around.push_back(p);
 
     return players_around;
@@ -148,7 +191,7 @@ std::vector<Creature*> World::getCreaturesAround(Player& player) {
     std::vector<Creature*> creatures_around;
 
     for (auto& c : creatures)
-        if (inPlayerBoundaries(player, c->posX, c->posY))
+        if (inPlayerBoundaries(player, c->pos))
             creatures_around.push_back(c);
 
     return creatures_around;
@@ -158,7 +201,7 @@ std::vector<Item*> World::getItemsAround(Player& player) {
     std::vector<Item*> items_around;
 
     for (auto& i : items)
-        if (inPlayerBoundaries(player, i->posX, i->posY))
+        if (inPlayerBoundaries(player, i->pos))
             items_around.push_back(i);
 
     return items_around;
@@ -168,7 +211,7 @@ std::vector<Gold*> World::getGoldsAround(Player& player) {
     std::vector<Gold*> golds_around;
 
     for (auto& g : golds)
-        if (inPlayerBoundaries(player, g->posX, g->posY))
+        if (inPlayerBoundaries(player, g->pos))
             golds_around.push_back(g);
 
     return golds_around;
@@ -178,21 +221,20 @@ std::vector<Attack*> World::getAttacksAround(Player& player) {
     std::vector<Attack*> attacks_around;
 
     for (auto& a : attacks)
-        if (inPlayerBoundaries(player, a->posX, a->posY))
+        if (inPlayerBoundaries(player, a->pos))
             attacks_around.push_back(a);
 
     return attacks_around;
 }
 
-const bool World::inPlayerBoundaries(Player &player,
-        const int pos_x, const int pos_y) {
-    int player_xi = player.posX - playerWidth/2,
-        player_xf = player.posX + playerWidth/2,
-        player_yi = player.posY - playerHeight/2,
-        player_yf = player.posY + playerHeight/2;
+const bool World::inPlayerBoundaries(Player &player, position_t new_pos) {
+    int player_xi = player.pos.x - playerWidth/2,
+        player_xf = player.pos.x + playerWidth/2,
+        player_yi = player.pos.y - playerHeight/2,
+        player_yf = player.pos.y + playerHeight/2;
 
-    bool x_in_boundaries = (pos_x >= player_xi) && (pos_x < player_xf),
-         y_in_boundaries = (pos_y >= player_yi) && (pos_y < player_yf);
+    bool x_in_boundaries = (new_pos.x >= player_xi) && (new_pos.x < player_xf),
+         y_in_boundaries = (new_pos.y >= player_yi) && (new_pos.y < player_yf);
 
     return x_in_boundaries && y_in_boundaries;
 }
@@ -209,42 +251,28 @@ const int World::getHeight() const {
 // Metodos accedidos por entidades del dominio //
 // ------------------------------------------- //
 
-const bool World::inMapBoundaries(const int pos_x, const int pos_y) {
-    bool x_in_boundaries = (pos_x >= 0) && (pos_x < worldWidth),
-         y_in_boundaries = (pos_y >= 0) && (pos_y < worldHeight);
+const bool World::inMapBoundaries(position_t new_pos) {
+    bool x_in_boundaries = (new_pos.x >= 0) && (new_pos.x < worldWidth),
+         y_in_boundaries = (new_pos.y >= 0) && (new_pos.y < worldHeight);
 
     return x_in_boundaries && y_in_boundaries;
 }
 
-const bool World::inCollision(const int pos_x, const int pos_y) {
-    // Terrenos impenetrables
-    if (entitiesImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
-        return true;
+const bool World::entityInCollision(position_t new_pos) {
+    bool collision = entityImpenetrableTerrainInPosition(new_pos) ||
+                     playerInPosition(new_pos) ||
+                     creatureInPosition(new_pos) ||
+                     NPCInPosition(new_pos);
 
-    // Players
-    for (auto& player : players)
-        if (player->posX == pos_x && player->posY == pos_y)
-            return true;
-
-    // Criaturas
-    for (auto& creature : creatures)
-        if (creature->posX == pos_x && creature->posY == pos_y)
-            return true;
-
-    // NPCs
-    for (auto& npc : npcs)
-        if (npc->posX == pos_x && npc->posY == pos_y)
-            return true;
-
-    return false;
+    return collision;
 }
 
 void World::attackInCollision(Attack* new_attack) {
     LivingBeing* owner = new_attack->owner;
-    int pos_x = new_attack->posX, pos_y = new_attack->posY;
+    position_t attack_pos = new_attack->pos;
 
     // Terrenos impenetrables
-    if (attacksImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0) {
+    if (attackImpenetrableTerrainInPosition(attack_pos)) {
         new_attack->collision();
         return;
     }
@@ -254,7 +282,7 @@ void World::attackInCollision(Attack* new_attack) {
         if (owner->id == p->id && dynamic_cast<Player*>(owner))
             continue;
 
-        if (p->posX == pos_x && p->posY == pos_y) {
+        if (p->pos == attack_pos) {
             new_attack->collision();
             owner->attack(*p);
             return;
@@ -266,7 +294,7 @@ void World::attackInCollision(Attack* new_attack) {
         if (owner->id == c->id && dynamic_cast<Creature*>(owner))
             continue;
 
-        if (c->posX == pos_x && c->posY == pos_y) {
+        if (c->pos == attack_pos) {
             new_attack->collision();
             owner->attack(*c);
             return;
@@ -275,48 +303,34 @@ void World::attackInCollision(Attack* new_attack) {
 
     // NPCs
     for (auto& npc : npcs)
-        if (npc->posX == pos_x && npc->posY == pos_y) {
+        if (npc->pos == attack_pos) {
             new_attack->collision();
             return;
         }
 }
 
-const bool World::itemInCollision(const int pos_x, const int pos_y) {
-    // Terrenos impenetrables
-    if (entitiesImpenetrableTerrains.count(matrix[pos_y][pos_x]) > 0)
-        return true;
+const bool World::itemInCollision(position_t new_pos) {
+    bool collision = entityImpenetrableTerrainInPosition(new_pos) ||
+                     NPCInPosition(new_pos) ||
+                     itemInPosition(new_pos) ||
+                     goldInPosition(new_pos);
 
-    // NPCs
-    for (auto& npc : npcs)
-        if (npc->posX == pos_x && npc->posY == pos_y)
-            return true;
-
-    // Items
-    for (auto& item : items)
-        if (item->posX == pos_x && item->posY == pos_y)
-            return true;
-
-    // Oros
-    for (auto& gold : golds)
-        if (gold->posX == pos_x && gold->posY == pos_y)
-            return true;
-
-    return false;
+    return collision;
 }
 
 void World::addItem(Item *item) {
     items.push_back(item);
 }
 
-void World::addItem(const int type, const int pos_x, const int pos_y) {
-    Item *item = itemFactory(type, pos_x, pos_y);
+void World::addItem(const int type, position_t new_pos) {
+    Item *item = itemFactory(type, new_pos);
     items.push_back(item);
 }
 
-Item* World::removeItem(const int pos_x, const int pos_y) {
+Item* World::removeItem(position_t new_pos) {
     size_t i;
     for (i = 0; i < items.size(); i ++)
-        if (items[i]->posX == pos_x && items[i]->posY == pos_y) {
+        if (items[i]->pos == new_pos) {
             Item* item = items[i];
             items.erase(items.begin() + i);
             return item;
@@ -328,10 +342,10 @@ void World::addGold(Gold *gold) {
     golds.push_back(gold);
 }
 
-Gold* World::removeGold(const int pos_x, const int pos_y) {
+Gold* World::removeGold(position_t new_pos) {
     size_t i;
     for (i = 0; i < golds.size(); i ++)
-        if (golds[i]->posX == pos_x && golds[i]->posY == pos_y) {
+        if (golds[i]->pos == new_pos) {
             Gold* gold = golds[i];
             golds.erase(golds.begin() + i);
             return gold;
@@ -343,66 +357,60 @@ void World::addAttack(Attack* new_attack) {
     attacks.push_back(new_attack);
 }
 
-NPC* World::getNPCByPos(const int pos_x, const int pos_y) const {
+NPC* World::getNPCByPos(position_t new_pos) const {
     for (auto& npc : npcs)
-        if (npc->posX == pos_x && npc->posY == pos_y)
+        if (npc->pos == new_pos)
             return npc;
 
     return nullptr;
 }
 
-std::vector<int> World::getClosestPlayerPos(const int pos_x, const int pos_y) {
-    std::vector<int> pos = {0,0};
+position_t World::getClosestPlayerPos(position_t new_pos) {
+    position_t closest_pos(0,0);
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& player : players) {
         // TODO: no buscar players en safe zones
+        // TODO: buscar players dentro de un rango
         if (player->isDead() || player->isReviving)
             continue;
 
-        actual_distance = distanceInBlocks(pos_x, pos_y,
-                player->posX, player->posY);
+        actual_distance = distanceInBlocks(new_pos, player->pos);
 
         if (actual_distance < min_distance) {
             min_distance = actual_distance;
-            pos[0] = player->posX;
-            pos[1] = player->posY;
+            closest_pos = player->pos;
         }
     }
-    return pos;
+    return closest_pos;
 }
 
-const int World::distanceInBlocks(const int x1, const int y1,
-        const int x2, const int y2) {
-    int dist_x = abs(x1 - x2), dist_y = abs(y1 - y2);
-    return dist_x + dist_y;
+const int World::distanceInBlocks(position_t pos1, position_t pos2) {
+    return pos1.distance(pos2);
 }
 
-std::vector<int> World::getClosestPriestPos(const int pos_x, const int pos_y) {
-    std::vector<int> pos = {0,0};
+position_t World::getClosestPriestPos(position_t new_pos) {
+    position_t closest_pos(0,0);
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& npc : npcs) {
         if (! dynamic_cast<Priest*>(npc))
             continue;
 
-        actual_distance = distanceInBlocks(pos_x, pos_y,
-                npc->posX, npc->posY);
+        actual_distance = distanceInBlocks(new_pos, npc->pos);
 
         if (actual_distance < min_distance) {
             min_distance = actual_distance;
-            pos[0] = npc->posX;
-            pos[1] = npc->posY;
+            closest_pos = npc->pos;
         }
     }
-    return pos;
+    return closest_pos;
 }
 
-const int World::distanceInMsToClosestPriest(const int pos_x, const int pos_y,
+const int World::distanceInMsToClosestPriest(position_t new_pos,
         const int velocity) {
-    std::vector<int> priest_pos = getClosestPriestPos(pos_x, pos_y);
-    int distance = distanceInBlocks(pos_x, pos_y,
-            priest_pos[0], priest_pos[1]);
+    position_t priest_pos = getClosestPriestPos(new_pos);
+    int distance = distanceInBlocks(new_pos, priest_pos);
     return distance * velocity;
 }
 
@@ -430,40 +438,40 @@ void World::addCreature(Creature *creature) {
     creatures.push_back(creature);
 }
 
-// TODO: dentro de safe zones
-std::vector<int> World::loadNPCPosition() {
-    std::vector<int> pos = {0,0};
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, worldWidth - 1);
-    std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
+position_t World::loadPlayerPosition() {
+    position_t new_pos{};
+    new_pos.x = math.randomInt(0, worldWidth - 1);
+    new_pos.y = math.randomInt(0, worldHeight - 1);
 
-    int new_x = dist_x(mt), new_y = dist_y(mt);
-    while (inCollision(new_x, new_y)) {
-        new_x = dist_x(mt);
-        new_y = dist_y(mt);
+    while (entityInCollision(new_pos)) {
+        new_pos.x = math.randomInt(0, worldWidth - 1);
+        new_pos.y = math.randomInt(0, worldHeight - 1);
     }
-    pos[0] = new_x;
-    pos[1] = new_y;
-
-    return pos;
+    return new_pos;
 }
 
 // TODO: fuera de safe zones
-std::vector<int> World::loadCreaturePosition() {
-    std::vector<int> pos = {0,0};
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<int> dist_x(0, worldWidth - 1);
-    std::uniform_int_distribution<int> dist_y(0, worldHeight - 1);
+position_t World::loadCreaturePosition() {
+    position_t new_pos{};
+    new_pos.x = math.randomInt(0, worldWidth - 1);
+    new_pos.y = math.randomInt(0, worldHeight - 1);
 
-    int new_x = dist_x(mt), new_y = dist_y(mt);
-    while (inCollision(new_x, new_y)) {
-        new_x = dist_x(mt);
-        new_y = dist_y(mt);
+    while (entityInCollision(new_pos)) {
+        new_pos.x = math.randomInt(0, worldWidth - 1);
+        new_pos.y = math.randomInt(0, worldHeight - 1);
     }
-    pos[0] = new_x;
-    pos[1] = new_y;
+    return new_pos;
+}
 
-    return pos;
+// TODO: dentro de safe zones
+position_t World::loadNPCPosition() {
+    position_t new_pos{};
+    new_pos.x = math.randomInt(0, worldWidth - 1);
+    new_pos.y = math.randomInt(0, worldHeight - 1);
+
+    while (entityInCollision(new_pos)) {
+        new_pos.x = math.randomInt(0, worldWidth - 1);
+        new_pos.y = math.randomInt(0, worldHeight - 1);
+    }
+    return new_pos;
 }

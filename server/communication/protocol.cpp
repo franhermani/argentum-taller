@@ -121,8 +121,8 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     int i;
     for (i = 0; i < num_npcs; i ++) {
         n.npcs[i].type = npcs[i]->type;
-        n.npcs[i].pos_x = htons(npcs[i]->posX);
-        n.npcs[i].pos_y = htons(npcs[i]->posY);
+        n.npcs[i].pos.x = htons(npcs[i]->pos.x);
+        n.npcs[i].pos.y = htons(npcs[i]->pos.y);
         n.npcs[i].orientation = npcs[i]->orientation;
     }
 
@@ -138,8 +138,8 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
     memcpy(&byte_msg[pos+=SIZE_16], &n.num_npcs, SIZE_16);
     for (i = 0; i < num_npcs; i ++) {
         memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].type, SIZE_8);
-        memcpy(&byte_msg[pos+=SIZE_8], &n.npcs[i].pos_x, SIZE_16);
-        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_8], &n.npcs[i].pos.x, SIZE_16);
+        memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].pos.y, SIZE_16);
         memcpy(&byte_msg[pos+=SIZE_16], &n.npcs[i].orientation, SIZE_8);
         pos -= SIZE_8;
     }
@@ -174,7 +174,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     // Longitud total del mensaje
     size_t message_length =
             // player_info_t
-            4 * SIZE_16 + SIZE_32 +
+            4 * SIZE_16 + 2 * SIZE_32 +
 
             // inventory_t
             SIZE_8 + inventory_length * SIZE_8 +
@@ -206,7 +206,10 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.player_info.max_mana = htons(player.maxMana);
     w.player_info.actual_gold = htons(player.actualGold);
     w.player_info.max_gold = htons(player.maxSafeGold);
-    w.player_info.actual_experience = htonl(player.actualExperience);
+    w.player_info.level_actual_experience =
+            htonl(player.levelActualExperience());
+    w.player_info.level_max_experience =
+            htonl(player.levelMaxExperience());
 
     // Lista de Players (incluido el del cliente)
     w.num_players = htons(num_players);
@@ -215,8 +218,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     int i;
     for (i = 0; i < num_players; i ++) {
         w.players[i].id = htons(players[i]->id);
-        w.players[i].pos_x = htons(players[i]->posX);
-        w.players[i].pos_y = htons(players[i]->posY);
+        w.players[i].pos.x = htons(players[i]->pos.x);
+        w.players[i].pos.y = htons(players[i]->pos.y);
         w.players[i].actual_life = htons(players[i]->actualLife);
         w.players[i].max_life = htons(players[i]->maxLife);
         w.players[i].level = htons(players[i]->level);
@@ -241,8 +244,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.creatures.resize(num_creatures * sizeof(creature_t));
 
     for (i = 0; i < num_creatures; i ++) {
-        w.creatures[i].pos_x = htons(creatures[i]->posX);
-        w.creatures[i].pos_y = htons(creatures[i]->posY);
+        w.creatures[i].pos.x = htons(creatures[i]->pos.x);
+        w.creatures[i].pos.y = htons(creatures[i]->pos.y);
         w.creatures[i].actual_life = htons(creatures[i]->actualLife);
         w.creatures[i].max_life = htons(creatures[i]->maxLife);
         w.creatures[i].level = htons(creatures[i]->level);
@@ -255,8 +258,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.items.resize(num_items * sizeof(item_t));
 
     for (i = 0; i < num_items; i ++) {
-        w.items[i].pos_x = htons(items[i]->posX);
-        w.items[i].pos_y = htons(items[i]->posY);
+        w.items[i].pos.x = htons(items[i]->pos.x);
+        w.items[i].pos.y = htons(items[i]->pos.y);
         w.items[i].type = items[i]->type;
     }
 
@@ -265,8 +268,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.golds.resize(num_golds * sizeof(gold_t));
 
     for (i = 0; i < num_golds; i ++) {
-        w.golds[i].pos_x = htons(golds[i]->posX);
-        w.golds[i].pos_y = htons(golds[i]->posY);
+        w.golds[i].pos.x = htons(golds[i]->pos.x);
+        w.golds[i].pos.y = htons(golds[i]->pos.y);
         w.golds[i].quantity = golds[i]->quantity;
     }
 
@@ -275,8 +278,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     w.attacks.resize(num_attacks * sizeof(attack_t));
 
     for (i = 0; i < num_attacks; i ++) {
-        w.attacks[i].pos_x = htons(attacks[i]->posX);
-        w.attacks[i].pos_y = htons(attacks[i]->posY);
+        w.attacks[i].pos.x = htons(attacks[i]->pos.x);
+        w.attacks[i].pos.y = htons(attacks[i]->pos.y);
         w.attacks[i].orientation = attacks[i]->direction;
         w.attacks[i].type = attacks[i]->type;
         w.attacks[i].is_colliding = attacks[i]->isColliding;
@@ -303,7 +306,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     pos += SIZE_16;
     memcpy(&byte_msg[pos], &w.player_info.max_gold, SIZE_16);
     pos += SIZE_16;
-    memcpy(&byte_msg[pos], &w.player_info.actual_experience, SIZE_32);
+    memcpy(&byte_msg[pos], &w.player_info.level_actual_experience, SIZE_32);
+    pos += SIZE_32;
+    memcpy(&byte_msg[pos], &w.player_info.level_max_experience, SIZE_32);
     pos += SIZE_32;
 
     // Inventario
@@ -320,9 +325,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     for (i = 0; i < num_players; i ++) {
         memcpy(&byte_msg[pos], &w.players[i].id, SIZE_16);
         pos += SIZE_16;
-        memcpy(&byte_msg[pos], &w.players[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos], &w.players[i].pos.x, SIZE_16);
         pos += SIZE_16;
-        memcpy(&byte_msg[pos], &w.players[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos], &w.players[i].pos.y, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.players[i].actual_life, SIZE_16);
         pos += SIZE_16;
@@ -356,9 +361,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     memcpy(&byte_msg[pos], &w.num_creatures, SIZE_16);
     pos += SIZE_16;
     for (i = 0; i < num_creatures; i ++) {
-        memcpy(&byte_msg[pos], &w.creatures[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos], &w.creatures[i].pos.x, SIZE_16);
         pos += SIZE_16;
-        memcpy(&byte_msg[pos], &w.creatures[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos], &w.creatures[i].pos.y, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.creatures[i].actual_life, SIZE_16);
         pos += SIZE_16;
@@ -376,9 +381,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     memcpy(&byte_msg[pos], &w.num_items, SIZE_16);
     pos += SIZE_16;
     for (i = 0; i < num_items; i ++) {
-        memcpy(&byte_msg[pos], &w.items[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos], &w.items[i].pos.x, SIZE_16);
         pos += SIZE_16;
-        memcpy(&byte_msg[pos], &w.items[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos], &w.items[i].pos.y, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.items[i].type, SIZE_8);
         pos += SIZE_8;
@@ -388,9 +393,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     memcpy(&byte_msg[pos], &w.num_golds, SIZE_16);
     pos += SIZE_16;
     for (i = 0; i < num_golds; i ++) {
-        memcpy(&byte_msg[pos], &w.golds[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos], &w.golds[i].pos.x, SIZE_16);
         pos += SIZE_16;
-        memcpy(&byte_msg[pos], &w.golds[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos], &w.golds[i].pos.y, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.golds[i].quantity, SIZE_16);
         pos += SIZE_16;
@@ -400,9 +405,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     memcpy(&byte_msg[pos], &w.num_attacks, SIZE_16);
     pos += SIZE_16;
     for (i = 0; i < num_attacks; i ++) {
-        memcpy(&byte_msg[pos], &w.attacks[i].pos_x, SIZE_16);
+        memcpy(&byte_msg[pos], &w.attacks[i].pos.x, SIZE_16);
         pos += SIZE_16;
-        memcpy(&byte_msg[pos], &w.attacks[i].pos_y, SIZE_16);
+        memcpy(&byte_msg[pos], &w.attacks[i].pos.y, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.attacks[i].orientation, SIZE_8);
         pos += SIZE_8;
@@ -424,19 +429,17 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
 
 void ServerProtocol::sendItemsList(list_t& list) {
     int message_length = SIZE_8 + SIZE_16 + SIZE_16 +
-            list.num_items * (SIZE_8 + SIZE_16);
+            ntohs(list.num_items) * (SIZE_8 + SIZE_16);
 
     int pos = 0;
 
     std::vector<char> byte_msg;
-    byte_msg.resize(SIZE_16 + message_length);
+    byte_msg.resize(message_length);
 
     memcpy(&byte_msg[pos], &list.show_price, SIZE_8);
     pos += SIZE_8;
-
     memcpy(&byte_msg[pos], &list.gold_quantity, SIZE_16);
     pos += SIZE_16;
-
     memcpy(&byte_msg[pos], &list.num_items, SIZE_16);
     pos += SIZE_16;
 
@@ -444,9 +447,17 @@ void ServerProtocol::sendItemsList(list_t& list) {
     for (i = 0; i < ntohs(list.num_items); i ++) {
         memcpy(&byte_msg[pos], &list.items[i].type, SIZE_8);
         pos += SIZE_8;
-
         memcpy(&byte_msg[pos], &list.items[i].price, SIZE_16);
         pos += SIZE_16;
+    }
+
+    socket.sendBytes(byte_msg.data(), byte_msg.size());
+
+    if (debug) {
+        std::cout << "Lista de items enviada:\n";
+        for (char& c : byte_msg)
+            printf("%02X ", (unsigned) (unsigned char) c);
+        std::cout << "\n";
     }
 }
 
@@ -460,6 +471,6 @@ void ServerProtocol::sendGameMessage(const std::string& message) {
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 
-    if (debug)
+    if (! message.empty())
         std::cout << message << "\n";
 }

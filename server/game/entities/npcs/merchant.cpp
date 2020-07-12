@@ -5,18 +5,20 @@
 #include "../../../../common/defines/npcs.h"
 #include "../../game_exception.h"
 
-Merchant::Merchant(ItemFactory& item_factory, const int pos_x,
-        const int pos_y, const int orient) : itemFactory(item_factory) {
+Merchant::Merchant(ItemFactory& item_factory, position_t new_pos,
+        const int orient, const int max_items) :
+        itemFactory(item_factory), maxItems(max_items) {
     type = MERCHANT;
-    posX = pos_x;
-    posY = pos_y;
+    pos = new_pos;
     orientation = orient;
 
-    items = {ESPADA, HACHA, MARTILLO, ARCO_SIMPLE, ARCO_COMPUESTO,
+    std::vector<int> all_items =
+            {ESPADA, HACHA, MARTILLO, ARCO_SIMPLE, ARCO_COMPUESTO,
              ARMADURA_CUERO, ARMADURA_PLACAS, TUNICA_AZUL,
-             CAPUCHA, CASCO_HIERRO, SOMBRERO_MAGICO,
-             ESCUDO_TORTUGA, ESCUDO_HIERRO,
+             CAPUCHA, CASCO_HIERRO, ESCUDO_TORTUGA, ESCUDO_HIERRO,
              POCION_VIDA, POCION_MANA};
+
+    items = math.randomVector(all_items, maxItems);
 }
 
 Merchant::~Merchant() = default;
@@ -33,22 +35,14 @@ void Merchant::heal(Player &player) {
 
 void Merchant::buyItem(Player &player, int type) {
     Item* item = player.sellItem(type);
-    if (! item)
-        return;
-
-    int item_type = item->type;
-    if (std::find(items.begin(), items.end(), item_type) != items.end()) {
-        items.push_back(item_type);
-    }
-
     delete item;
 }
 
 void Merchant::sellItem(Player &player, int type) {
-    if (std::find(items.begin(), items.end(), type) != items.end())
+    if (std::find(items.begin(), items.end(), type) == items.end())
         return;
 
-    Item* item = itemFactory(type, player.posX, player.posY);
+    Item* item = itemFactory(type, player.pos);
     if (! item)
         return;
 

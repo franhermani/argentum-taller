@@ -25,7 +25,7 @@
           "c2": 0.2
         },
         "max_safe_eq": {
-          "c1": 100,
+          "c1": 500,
           "c2": 1.1
         }
       },
@@ -69,7 +69,8 @@
         "quantity": 3
       },
       "merchant": {
-        "quantity": 3
+        "quantity": 3,
+        "max_items": 8
       },
       "banker": {
         "quantity": 3
@@ -83,20 +84,20 @@
       },
       "death_prob_eq": {
         "nothing": {
-          "p": 0.4
+          "p": 0.3
         },
         "gold": {
-          "p": 0.1,
+          "p": 0.5,
           "quantity_eq": {
             "c1": 0.01,
             "c2": 0.2
           }
         },
         "potion": {
-          "p": 0.3
+          "p": 0.7
         },
         "item": {
-          "p": 0.2
+          "p": 1
         }
       },
       "goblin": {
@@ -105,7 +106,7 @@
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 5,
-        "max_attack": 10,
+        "max_attack": 14,
         "move_velocity": 1000,
         "attack_velocity": 400,
         "respawn_velocity": 2000
@@ -126,8 +127,8 @@
         "max_life": 40,
         "min_defense": 3,
         "max_defense": 8,
-        "min_attack": 2,
-        "max_attack": 7,
+        "min_attack": 8,
+        "max_attack": 15,
         "move_velocity": 2000,
         "attack_velocity": 800,
         "respawn_velocity": 2000
@@ -247,7 +248,7 @@
           "move_velocity": 500,
           "is_magic": false,
           "is_life_restorer": false,
-          "price": 200
+          "price": 50
         },
         "hacha": {
           "attack_type": "melee",
@@ -258,7 +259,7 @@
           "move_velocity": 1000,
           "is_magic": false,
           "is_life_restorer": false,
-          "price": 300
+          "price": 60
         },
         "martillo": {
           "attack_type": "melee",
@@ -269,7 +270,7 @@
           "move_velocity": 700,
           "is_magic": false,
           "is_life_restorer": false,
-          "price": 500
+          "price": 70
         },
         "vara_fresno": {
           "attack_type": "magic_arrow_spell",
@@ -280,7 +281,7 @@
           "move_velocity": 500,
           "is_magic": true,
           "is_life_restorer": false,
-          "price": 350
+          "price": 100
         },
         "flauta_elfica": {
           "attack_type": "heal_spell",
@@ -291,7 +292,7 @@
           "move_velocity": 500,
           "is_magic": true,
           "is_life_restorer": true,
-          "price": 400
+          "price": 110
         },
         "baculo_nudoso": {
           "attack_type": "missile_spell",
@@ -302,7 +303,7 @@
           "move_velocity": 500,
           "is_magic": true,
           "is_life_restorer": false,
-          "price": 500
+          "price": 120
         },
         "baculo_engarzado": {
           "attack_type": "explosion_spell",
@@ -313,7 +314,7 @@
           "move_velocity": 500,
           "is_magic": true,
           "is_life_restorer": false,
-          "price": 700
+          "price": 150
         },
         "arco_simple": {
           "attack_type": "single_arrow",
@@ -324,7 +325,7 @@
           "move_velocity": 700,
           "is_magic": false,
           "is_life_restorer": false,
-          "price": 150
+          "price": 50
         },
         "arco_compuesto": {
           "attack_type": "multiple_arrow",
@@ -335,24 +336,27 @@
           "move_velocity": 600,
           "is_magic": false,
           "is_life_restorer": false,
-          "price": 300
+          "price": 75
         }
       },
       "armors": {
         "armadura_cuero": {
           "min_defense": 2,
           "max_defense": 6,
-          "price": 100
+          "is_magic": false,
+          "price": 50
         },
         "armadura_placas": {
           "min_defense": 15,
           "max_defense": 30,
-          "price": 800
+          "is_magic": false,
+          "price": 150
         },
         "tunica_azul": {
           "min_defense": 6,
           "max_defense": 10,
-          "price": 250
+          "is_magic": false,
+          "price": 75
         }
       },
       "helmets": {
@@ -360,43 +364,47 @@
           "min_defense": 1,
           "max_defense": 4,
           "is_magic": false,
-          "price": 150
+          "price": 50
         },
         "casco_hierro": {
           "min_defense": 4,
           "max_defense": 8,
           "is_magic": false,
-          "price": 300
+          "price": 60
         },
         "sombrero_magico": {
           "min_defense": 4,
           "max_defense": 12,
           "is_magic": true,
-          "price": 450
+          "price": 80
         }
       },
       "shields": {
         "escudo_tortuga": {
           "min_defense": 1,
           "max_defense": 2,
-          "price": 100
+          "is_magic": false,
+          "price": 40
         },
         "escudo_hierro": {
           "min_defense": 1,
           "max_defense": 4,
-          "price": 200
+          "is_magic": false,
+          "price": 70
         }
       },
       "potions": {
         "pocion_vida": {
           "life_points": 50,
           "mana_points": 0,
-          "price": 75
+          "is_magic": false,
+          "price": 25
         },
         "pocion_mana": {
           "life_points": 0,
           "mana_points": 50,
-          "price": 75
+          "is_magic": false,
+          "price": 25
         }
       }
     }

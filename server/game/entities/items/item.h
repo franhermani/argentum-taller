@@ -1,15 +1,18 @@
 #ifndef ITEM_H
 #define ITEM_H
 
+#include "../../../../common/defines/position.h"
+
 class Item {
 protected:
     int type{};
-    int posX{}, posY{};
+    position_t pos{};
     int price{};
     bool uniqueInInventory{};
+    bool isMagic{};
 
     // Actualiza la posicion (posX, posY) del item
-    void updatePosition(const int new_x, const int new_y);
+    void updatePosition(position_t new_pos);
 
     friend class World;
     friend class Player;

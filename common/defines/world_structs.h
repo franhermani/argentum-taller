@@ -4,6 +4,17 @@
 #include <cstdint>
 #include <vector>
 #include "terrains.h"
+#include "position.h"
+
+// ---------------- //
+// Barras de estado //
+// ---------------- //
+
+typedef struct {
+    uint16_t life;                  // Porcentaje de vida
+    uint16_t mana;                  // Porcentaje de mana
+    uint16_t experience;            // Porcentaje de experiencia
+} player_percentages_t;
 
 // ---------------------- //
 // Listado de items y oro //
@@ -26,28 +37,24 @@ typedef struct {
 // -------------- //
 
 typedef struct {
-    uint16_t pos_x;             // Pos x en la matriz
-    uint16_t pos_y;             // Pos y en la matriz
+    position_t pos;             // Posicion (x,y) en la matriz
     uint8_t orientation;        // Enum type de la orietntacion
     uint8_t type;               // Enum type del tipo de ataque
     uint8_t is_colliding;       // 1 si esta colisionando, 0 si no
 } attack_t;
 
 typedef struct {
-    uint16_t pos_x;             // Pos x en la matriz
-    uint16_t pos_y;             // Pos y en la matriz
+    position_t pos;             // Posicion (x,y) en la matriz
     uint16_t quantity;          // Cantidad de oro
 } gold_t;
 
 typedef struct {
-    uint16_t pos_x;             // Pos x en la matriz
-    uint16_t pos_y;             // Pos y en la matriz
+    position_t pos;             // Posicion (x,y) en la matriz
     uint8_t type;               // Enum type del item
 } item_t;
 
 typedef struct {
-    uint16_t pos_x;             // Pos x en la matriz
-    uint16_t pos_y;             // Pos y en la matriz
+    position_t pos;             // Posicion (x,y) en la matriz
     uint16_t actual_life;       // Vida actual
     uint16_t max_life;          // Vida maxima
     uint16_t level;             // Nivel
@@ -57,8 +64,7 @@ typedef struct {
 
 typedef struct {
     uint16_t id;                // Id
-    uint16_t pos_x;             // Pos x en la matriz
-    uint16_t pos_y;             // Pos y en la matriz
+    position_t pos;             // Posicion (x,y) en la matriz
     uint16_t actual_life;       // Vida actual
     uint16_t max_life;          // Vida maxima
     uint16_t level;             // Nivel
@@ -80,20 +86,14 @@ typedef struct {
 } inventory_t;
 
 typedef struct {
-    uint16_t actual_mana;           // Mana actual
-    uint16_t max_mana;              // Mana maxima
-    uint16_t actual_gold;           // Oro actual
-    uint16_t max_gold;              // Oro maximo
-    uint32_t actual_experience;     // Experiencia
-    inventory_t inventory;          // Inventario
+    uint16_t actual_mana;               // Mana actual
+    uint16_t max_mana;                  // Mana maxima
+    uint16_t actual_gold;               // Oro actual
+    uint16_t max_gold;                  // Oro maximo
+    uint32_t level_actual_experience;   // Experiencia actual del nivel
+    uint32_t level_max_experience;      // Experiencia maxima del nivel
+    inventory_t inventory;              // Inventario
 } player_info_t;
-
-typedef struct {
-    uint16_t life;                  // Porcentaje de vida
-    uint16_t mana;                  // Porcentaje de mana
-    uint16_t experience;            // Porcentaje de experiencia
-} player_percentages_t;
-
 
 typedef struct {
     uint16_t length;                    // Longitud total del mensaje
@@ -116,8 +116,7 @@ typedef struct {
 
 typedef struct {
     uint8_t type;               // Enum type del tipo de NPC
-    uint16_t pos_x;             // Pos x en la matriz
-    uint16_t pos_y;             // Pos y en la matriz
+    position_t pos;             // Posicion (x,y) en la matriz
     uint8_t orientation;        // Enum type de la orientacion
 } npc_t;
 

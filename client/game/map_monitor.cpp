@@ -17,9 +17,9 @@ void MapMonitor::initialize(int username_id,
 }
 
 //actualiza el vector de jugadores
-void MapMonitor::updateWorld(world_t receivedWorld) {
+void MapMonitor::updateWorld(world_t receivedWorld, list_t list) {
     std::unique_lock<std::mutex> lk(m);
-    map.updateWorld(std::move(receivedWorld));
+    map.updateWorld(std::move(receivedWorld), std::move(list));
 }
 
 int MapMonitor::getPlayerVisionWidth() {
@@ -61,3 +61,18 @@ client_world_t MapMonitor::getCurrentWorld() {
     return std::move(map.getCurrentWorld());
 }
 
+
+
+void MapMonitor::interact() {
+    std::unique_lock<std::mutex> lk(m);
+    map.interact();
+}
+void MapMonitor::uninteract() {
+    std::unique_lock<std::mutex> lk(m);
+    map.uninteract();
+}
+
+int MapMonitor::isInteracting() {
+    std::unique_lock<std::mutex> lk(m);
+    return map.isInteracting();
+}

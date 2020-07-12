@@ -12,7 +12,7 @@ ReviveCommand::~ReviveCommand() = default;
 
 void ReviveCommand::execute(World& world) {
     if (priestPosX && priestPosY) {
-        NPC* npc = world.getNPCByPos(priestPosX, priestPosY);
+        NPC* npc = world.getNPCByPos(position_t(priestPosX, priestPosY));
         npc->revive(player);
     } else {
         player.longTermRevive();

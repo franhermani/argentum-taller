@@ -1,12 +1,14 @@
 #ifndef ATTACK_H
 #define ATTACK_H
 
+#include "../../../common/defines/position.h"
+
 class LivingBeing;
 
 class Attack {
     LivingBeing* owner;
     int type;
-    int posX, posY;
+    position_t pos;
     int direction;
     int range, blocksToRange;
     bool isColliding;
@@ -20,8 +22,8 @@ class Attack {
 
 public:
     // Constructor
-    Attack(LivingBeing* owner, const int type, const int pos_x,
-            const int pos_y, const int direction, const int range,
+    Attack(LivingBeing* owner, const int type, position_t new_pos,
+            const int direction, const int range,
             const int move_velocity);
 
     // Constructor y asignacion por copia deshabilitados

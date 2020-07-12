@@ -29,6 +29,8 @@ class GameSurfacesManager {
     std::vector<std::vector<Terrain>> floor;
     SDLWindow& window;
 
+    Surface* getTextSurface(std::string text);
+
     friend class GameRender;
 
 
@@ -48,6 +50,7 @@ class GameSurfacesManager {
     void createNecessaryNpcs(std::vector<npc_t>& npcs);
     void createNecessaryCreatures(std::vector<creature_t>& creatures);
     void createNecessaryItems(std::vector<item_t>& items);
+    void createNecessaryListItems(std::vector<list_item_t> items);
     void createNecessaryFrameItems(std::vector<uint8_t>& items);
 
 

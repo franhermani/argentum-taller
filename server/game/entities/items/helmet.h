@@ -5,7 +5,6 @@
 
 class Helmet : public Item {
     int minDefense, maxDefense;
-    bool isMagic;
 
     friend class Player;
     friend class Equations;
@@ -13,7 +12,7 @@ class Helmet : public Item {
 
 public:
     // Constructor
-    Helmet(const int new_type, const int pos_x, const int pos_y,
+    Helmet(const int new_type, position_t new_pos,
             const int min_defense, const int max_defense, const bool is_magic,
             const int new_price);
 

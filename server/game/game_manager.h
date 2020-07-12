@@ -6,6 +6,7 @@
 #include <map>
 #include "../../common/thread.h"
 #include "../utilities/json_parser.h"
+#include "../utilities/math_calculator.h"
 #include "params.h"
 #include "equations.h"
 #include "world.h"
@@ -18,6 +19,7 @@ class ClientHandler;
 
 class GameManager : public Thread {
     JsonParser jsonParser;
+    Math math;
     File worldFile;
     GameParams params;
     ItemFactory itemFactory;

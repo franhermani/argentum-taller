@@ -13,6 +13,8 @@ public:
     // Constructor
     Surface(const std::string filename, const SDLWindow& window,
             int isTransparent);
+    // Constructor surface de texto
+    Surface(const std::string text, const SDLWindow &window);
 
     // Destructor
     ~Surface();

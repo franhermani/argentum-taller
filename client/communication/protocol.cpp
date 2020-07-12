@@ -167,13 +167,13 @@ npcs_t ClientProtocol::receiveNPCs() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, npcs_buffer.data() + bytes_advanced, SIZE_16);
-        npc.pos_x = ntohs(pos_x);
+        npc.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, npcs_buffer.data() + bytes_advanced, SIZE_16);
-        npc.pos_y = ntohs(pos_y);
+        npc.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Enum type de la orientacion
@@ -187,8 +187,8 @@ npcs_t ClientProtocol::receiveNPCs() {
         if (debug) {
             std::cout << "NPC RECIBIDO:\n" <<
             "Tipo: " << (int) npc.type << "\n" <<
-            "Pos X: " << npc.pos_x << "\n" <<
-            "Pos Y: " << npc.pos_y << "\n" <<
+            "Pos X: " << npc.pos.x << "\n" <<
+            "Pos Y: " << npc.pos.y << "\n" <<
             "Orientacion: " << (int) npc.orientation << "\n";
         }
     }
@@ -256,10 +256,16 @@ world_t ClientProtocol::receiveWorldUpdate() {
     w.player_info.max_gold = ntohs(max_gold);
     bytes_advanced += SIZE_16;
 
-    // Experiencia actual
-    uint32_t actual_experience;
-    memcpy(&actual_experience, world_buffer.data() + bytes_advanced, SIZE_32);
-    w.player_info.actual_experience = ntohl(actual_experience);
+    // Experiencia actual del nivel
+    uint32_t level_actual_exp;
+    memcpy(&level_actual_exp, world_buffer.data() + bytes_advanced, SIZE_32);
+    w.player_info.level_actual_experience = ntohl(level_actual_exp);
+    bytes_advanced += SIZE_32;
+
+    // Experiencia maxima del nivel
+    uint32_t level_max_exp;
+    memcpy(&level_max_exp, world_buffer.data() + bytes_advanced, SIZE_32);
+    w.player_info.level_max_experience = ntohl(level_max_exp);
     bytes_advanced += SIZE_32;
 
     if (debug) {
@@ -268,7 +274,10 @@ world_t ClientProtocol::receiveWorldUpdate() {
         "Mana maxima: " << w.player_info.max_mana << "\n" <<
         "Oro actual: " << w.player_info.actual_gold << "\n" <<
         "Oro maximo: " << w.player_info.max_gold << "\n" <<
-        "Experiencia actual: " << w.player_info.actual_experience << "\n" <<
+        "Experiencia actual del nivel: " <<
+        w.player_info.level_actual_experience << "\n" <<
+        "Experiencia maxima del nivel: " <<
+        w.player_info.level_max_experience << "\n" <<
         "Inventario:\n";
     }
 
@@ -288,7 +297,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "Item " << (i+1) << ": " <<
-            w.player_info.inventory.items[i] << "\n";
+            (int) w.player_info.inventory.items[i] << "\n";
         }
     }
 
@@ -318,13 +327,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        player.pos_x = ntohs(pos_x);
+        player.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        player.pos_y = ntohs(pos_y);
+        player.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Vida actual
@@ -410,8 +419,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
         if (debug) {
             std::cout << "\nPLAYER RECIBIDO\n" <<
             "Id: " << player.id << "\n" <<
-            "Pos X: " << player.pos_x << "\n" <<
-            "Pos Y: " << player.pos_y << "\n" <<
+            "Pos X: " << player.pos.x << "\n" <<
+            "Pos Y: " << player.pos.y << "\n" <<
             "Vida actual: " << player.actual_life << "\n" <<
             "Vida maxima: " << player.max_life << "\n" <<
             "Nivel: " << player.level << "\n" <<
@@ -448,13 +457,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        creature.pos_x = ntohs(pos_x);
+        creature.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        creature.pos_y = ntohs(pos_y);
+        creature.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Vida actual
@@ -491,8 +500,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "\nCRIATURA RECIBIDA\n" <<
-            "Pos X: " << (int) creature.pos_x << "\n" <<
-            "Pos Y: " << (int) creature.pos_y << "\n" <<
+            "Pos X: " << (int) creature.pos.x << "\n" <<
+            "Pos Y: " << (int) creature.pos.y << "\n" <<
             "Vida actual: " << (int) creature.actual_life << "\n" <<
             "Vida maxima: " << (int) creature.max_life << "\n" <<
             "Orientacion: " << (int) creature.orientation << "\n" <<
@@ -521,13 +530,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        item.pos_x = ntohs(pos_x);
+        item.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        item.pos_y = ntohs(pos_y);
+        item.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Enum type del item
@@ -540,8 +549,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "\nITEM RECIBIDO\n" <<
-            "Pos X: " << (int) item.pos_x << "\n" <<
-            "Pos Y: " << (int) item.pos_y << "\n" <<
+            "Pos X: " << (int) item.pos.x << "\n" <<
+            "Pos Y: " << (int) item.pos.y << "\n" <<
             "Tipo: " << (int) item.type << "\n";
         }
     }
@@ -567,13 +576,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        gold.pos_x = ntohs(pos_x);
+        gold.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        gold.pos_y = ntohs(pos_y);
+        gold.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Cantidad
@@ -586,8 +595,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "\nORO RECIBIDO\n" <<
-            "Pos X: " << (int) gold.pos_x << "\n" <<
-            "Pos Y: " << (int) gold.pos_y << "\n" <<
+            "Pos X: " << (int) gold.pos.x << "\n" <<
+            "Pos Y: " << (int) gold.pos.y << "\n" <<
             "Cantidad: " << (int) gold.quantity << "\n";
         }
     }
@@ -613,13 +622,13 @@ world_t ClientProtocol::receiveWorldUpdate() {
         // Pos x en la matriz
         uint16_t pos_x;
         memcpy(&pos_x, world_buffer.data() + bytes_advanced, SIZE_16);
-        attack.pos_x = ntohs(pos_x);
+        attack.pos.x = ntohs(pos_x);
         bytes_advanced += SIZE_16;
 
         // Pos y en la matriz
         uint16_t pos_y;
         memcpy(&pos_y, world_buffer.data() + bytes_advanced, SIZE_16);
-        attack.pos_y = ntohs(pos_y);
+        attack.pos.y = ntohs(pos_y);
         bytes_advanced += SIZE_16;
 
         // Enum type de la orientacion
@@ -644,8 +653,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         if (debug) {
             std::cout << "\nATAQUE RECIBIDO\n" <<
-            "Pos X: " << (int) attack.pos_x << "\n" <<
-            "Pos Y: " << (int) attack.pos_y << "\n" <<
+            "Pos X: " << (int) attack.pos.x << "\n" <<
+            "Pos Y: " << (int) attack.pos.y << "\n" <<
             "Orientacion: " << (int) attack.orientation << "\n" <<
             "Tipo: " << (int) attack.type << "\n" <<
             "Colisionando: " << (int) attack.is_colliding << "\n";
@@ -656,8 +665,52 @@ world_t ClientProtocol::receiveWorldUpdate() {
     return std::move(w);
 }
 
-void ClientProtocol::receiveItemsList() {
-    // TODO: ...
+list_t ClientProtocol::receiveItemsList() {
+    list_t list;
+    int static_part_size = SIZE_16 + SIZE_16 + SIZE_8;
+    std::vector<char> item_static_buffer(static_part_size, 0);
+    socket.receiveBytes(item_static_buffer.data(), item_static_buffer.size());
+
+    int bytes_advanced = 0;
+    uint8_t show_price;
+    memcpy(&show_price, item_static_buffer.data() + bytes_advanced, SIZE_8);
+    list.show_price = show_price;
+    bytes_advanced += SIZE_8;
+    uint16_t gold_quantity;
+    memcpy(&gold_quantity, item_static_buffer.data() + bytes_advanced,
+            SIZE_16);
+    list.gold_quantity = ntohs(gold_quantity);
+    bytes_advanced += SIZE_16;
+    uint16_t num_items;
+    memcpy(&num_items, item_static_buffer.data() + bytes_advanced, SIZE_16);
+    list.num_items = ntohs(num_items);
+    bytes_advanced += SIZE_16;
+
+    if (list.num_items == 0) {
+        return list;
+    }
+
+    bytes_advanced = 0;
+    int size = (SIZE_8 + SIZE_16) * list.num_items;
+    std::vector<char> item_buffer(size, 0);
+    socket.receiveBytes(item_buffer.data(), item_buffer.size());
+    int i;
+    std::vector<list_item_t> items;
+    for (i = 0; i < list.num_items; i ++) {
+        list_item_t item;
+        uint8_t type;
+        memcpy(&type, item_buffer.data() + bytes_advanced, SIZE_8);
+        item.type = type;
+        bytes_advanced += SIZE_8;
+        uint16_t price;
+        memcpy(&price, item_buffer.data() + bytes_advanced, SIZE_16);
+        item.price = ntohs(price);
+        bytes_advanced += SIZE_16;
+
+        items.push_back(item);
+    }
+    list.items = items;
+    return list;
 }
 
 const std::string ClientProtocol::receiveGameMessage() {

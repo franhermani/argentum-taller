@@ -5,12 +5,14 @@
 #include "map_structs.h"
 #include <map>
 #include <vector>
+#include <atomic>
 
 class Map {
     world_t world;
     matrix_t matrix;
     npcs_t npcs;
-
+    list_t list;
+    std::atomic<bool> interactingWithNpc;
     int username_id;
     std::vector<std::vector<Terrain>> terrainMatrix;
     int terrainMatrixHeight;
@@ -73,7 +75,7 @@ public:
             blocks_around, matrix_t& received_terrains, npcs_t& npcs);
 
     //actualiza el vector de jugadores recibido del server
-    void updateWorld(world_t receivedWorld);
+    void updateWorld(world_t receivedWorld, list_t list);
 
     // devuelve npc/posicion al que se mira
     std::vector<int> getPositionLookingAt();
@@ -100,6 +102,12 @@ public:
     client_world_t getCurrentWorld();
 
     std::map<int, float> getPercentages();
+
+
+    //npc interaction related functions
+    void interact();
+    void uninteract();
+    int isInteracting();
     };
 
 

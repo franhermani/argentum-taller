@@ -11,6 +11,7 @@ Link GitHub: https://github.com/franhermani/taller-tp4
 sudo apt-get install cmake
 sudo apt-get install libsdl2-dev
 sudo apt-get install libsdl2-image-dev
+sudo apt-get install libsdl2-ttf-dev
 sudo apt-get install tiled
 ```
 

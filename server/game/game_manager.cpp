@@ -98,21 +98,25 @@ void GameManager::spawnNPCs() {
         num_merchants = js["merchant"]["quantity"],
         num_bankers = js["banker"]["quantity"];
 
-    // TODO: hacer random la orientacion
+    int orientation;
 
-    std::vector<int> pos = {0,0};
+    position_t new_pos{};
     int i;
     for (i = 0; i < num_priests; i ++) {
-        pos = world.loadNPCPosition();
-        world.addNPC(new Priest(itemFactory, pos[0], pos[1], DOWN));
+        new_pos = world.loadNPCPosition();
+        orientation = math.randomInt(LEFT, DOWN);
+        world.addNPC(new Priest(itemFactory, new_pos, orientation));
     }
     for (i = 0; i < num_merchants; i ++) {
-        pos = world.loadNPCPosition();
-        world.addNPC(new Merchant(itemFactory, pos[0], pos[1], DOWN));
+        new_pos = world.loadNPCPosition();
+        orientation = math.randomInt(LEFT, DOWN);
+        world.addNPC(new Merchant(itemFactory, new_pos, orientation,
+                js["merchant"]["max_items"]));
     }
     for (i = 0; i < num_bankers; i ++) {
-        pos = world.loadNPCPosition();
-        world.addNPC(new Banker(bank, pos[0], pos[1], DOWN));
+        new_pos = world.loadNPCPosition();
+        orientation = math.randomInt(LEFT, DOWN);
+        world.addNPC(new Banker(bank, new_pos, orientation));
     }
 }
 
@@ -127,10 +131,8 @@ void GameManager::spawnCreatures() {
         num_zombies = js["zombie"]["quantity"],
         num_spiders = js["spider"]["quantity"];
 
-    std::vector<int> pos = {0,0};
     int i;
     for (i = 0; i < num_goblins; i ++) {
-        pos = world.loadCreaturePosition();
         level = (i * interval) % max_level;
         if (level < min_level) level = min_level;
         world.addCreature(new Creature(world, equations,
@@ -140,7 +142,6 @@ void GameManager::spawnCreatures() {
                 js["goblin"]["respawn_velocity"]));
     }
     for (i = 0; i < num_skeletons; i ++) {
-        pos = world.loadCreaturePosition();
         level = (i * interval) % max_level;
         if (level < min_level) level = min_level;
         world.addCreature(new Creature(world, equations,
@@ -150,7 +151,6 @@ void GameManager::spawnCreatures() {
                 js["skeleton"]["respawn_velocity"]));
     }
     for (i = 0; i < num_zombies; i ++) {
-        pos = world.loadCreaturePosition();
         level = (i * interval) % max_level;
         if (level < min_level) level = min_level;
         world.addCreature(new Creature(world, equations,
@@ -160,7 +160,6 @@ void GameManager::spawnCreatures() {
                 js["zombie"]["respawn_velocity"]));
     }
     for (i = 0; i < num_spiders; i ++) {
-        pos = world.loadCreaturePosition();
         level = (i * interval) % max_level;
         if (level < min_level) level = min_level;
         world.addCreature(new Creature(world, equations,

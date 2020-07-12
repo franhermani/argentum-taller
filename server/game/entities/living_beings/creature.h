@@ -17,9 +17,6 @@ class Creature : public LivingBeing{
     int moveVelocity, attackVelocity, respawnVelocity;
     int msMoveCounter, msRespawnCounter;
 
-    // Genera una posicion aleatoria para la criatura
-    void loadPosition();
-
     // Setea 'isAlive' en false
     void die() override;
 
@@ -33,14 +30,17 @@ class Creature : public LivingBeing{
     void moveAndAttackPlayers();
 
     // Devuelve la nueva pos (x,y) a la cual se moveria segun una direccion
-    std::vector<int> getMovementPosition(const int direction);
+    position_t getMovementPosition(const int direction);
 
     // Devuelve las direcciones a moverse para acercarse al player
     // en orden de conveniencia
-    std::queue<int> getMovementPriorities(std::vector<int>& player_pos);
+    std::queue<int> getMovementPriorities(position_t player_pos);
 
     // Mueve a la criatura
-    void moveTo(std::vector<int>& player_pos);
+    void moveTo(position_t player_pos);
+
+    // Cambia la orientacion de la criatura apuntando al player
+    void orientTo(position_t player_pos);
 
     friend class World;
     friend class Equations;

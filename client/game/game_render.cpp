@@ -2,13 +2,17 @@
 #include "game_render.h"
 #include <iostream>
 #include <exception>
+#include <string>
 #include <chrono>
 #include <unistd.h>
 #include "../client.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "../sdl/texture.h"
 #include "vector"
 #include "map"
 #include <utility>
+#include <SDL2/SDL_ttf.h>
 #include "../sdl/window.h"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
@@ -55,15 +59,17 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.
                 playerSurfacesMap[it->race_type][it->orientation]);
     }
 }
 
-void GameRender::renderPlayerInfo(std::map<int,float>& percentages) {
+void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
+    Surface* level_surface = surfacesManager.
+            getTextSurface(std::to_string(level));
     window.renderPlayerInfo(current_world.percentages,
-                            surfacesManager.infoSurfacesMap);
+                            surfacesManager.infoSurfacesMap, level_surface);
 }
 
 
@@ -71,7 +77,7 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     surfacesManager.createNecessaryCreatures(creatures);
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.
                 creatureSurfacesMap[it->type][it->orientation]);
     }
@@ -83,7 +89,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
     surfacesManager.createNecessaryNpcs(npcs);
     for (auto it = std::begin(npcs);
          it != std::end(npcs); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.npcSurfacesMap[it->type][it->orientation]);
     }
 }
@@ -101,7 +107,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
     surfacesManager.createNecessaryItems(items);
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.itemSurfacesMap[it->type]);
     }
 }
@@ -109,7 +115,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
 void GameRender::renderGolds(std::vector<gold_t> &golds) {
     for (auto it = std::begin(golds);
          it != std::end(golds); ++it) {
-        window.renderMapObject(it->pos_x, it->pos_y,
+        window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.goldSurface);
     }
 }
@@ -128,9 +134,8 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
 }
 
 void GameRender::renderInventoryGolds(uint16_t quantity) {
-    window.renderInventoryGolds(surfacesManager.goldSurface);
-    /* todo renderizar cnatidad de oro como texto
-     * ademas del logo ya renderizado*/
+    window.renderInventoryGolds(surfacesManager.goldSurface,
+            surfacesManager.getTextSurface(std::to_string(quantity)));
 }
 
 
@@ -138,6 +143,28 @@ void GameRender::setTilesSize(int width,int height) {
     blocksWidth = width;
     blocksHeight = height;
     window.setTilesSize(width,height);
+}
+
+void GameRender::renderList(list_t list) {
+    if ((list.num_items == 0) && (list.gold_quantity == 0)) return;
+    surfacesManager.createNecessaryListItems(list.items);
+    std::vector<Surface*> surfaces;
+    for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
+         surfaces.push_back(surfacesManager.itemSurfacesMap[it->type]);
+    }
+    window.renderList(surfaces);
+    if (list.show_price) {
+        std::vector<Surface*> price_surfaces;
+        for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
+            price_surfaces.push_back(surfacesManager.getTextSurface(std::to_string(it->price)));
+        }
+        window.renderListPrices(price_surfaces);
+    }
+    else {
+        Surface* quantity = surfacesManager.getTextSurface(std::to_string(list.gold_quantity));
+        window.renderListGold(surfacesManager.goldSurface, quantity);
+    }
+
 }
 
 
@@ -148,8 +175,11 @@ void GameRender::run() {
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     window.setTilesSize(blocksWidth,blocksHeight);
+
+
     while (keepRunning) {
         auto start = clock::now();
+
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
         renderTerrain(current_world.terrains);
@@ -161,9 +191,9 @@ void GameRender::run() {
         renderInventoryGolds(current_world.player_info.actual_gold);
         renderEquipped(current_world.main_player);
         renderGolds(current_world.golds);
-        renderPlayerInfo(current_world.percentages);
-        //renderList();
-        //window.renderListGold();
+        renderPlayerInfo(current_world.percentages,
+                current_world.main_player.level);
+        renderList(current_world.list);
         window.UpdateWindowSurface();
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
@@ -182,19 +212,25 @@ int GameRender::getInventoryItemByPosition(int x, int y) {
             ItemException("El inventario ya no tiene ese item");
     return current_world.player_info.inventory.items[position];
 }
+int GameRender::getEquippedTypeByPosition(int x, int y) {
+    int type = window.getRenderedEquipedTypeByPosition(x, y);
+    if (type < 0) throw ItemException(
+            "No hay nada equipado en esa posicion");
+    return window.getRenderedEquipedTypeByPosition(x, y);
+}
+
+
 
 
 int GameRender::getListItemByPosition(int x, int y) {
-    //TODO cuando se reciba la lista de items de banquero/merchanat descomentar
-    //size_t inventory_length = current_world.player_info.list.length;
-    /*int position = window.getRenderedListIndexByPosition(x, y, inventory_length);
+    int list_length = current_world.list.num_items;
+    int position = window.getRenderedListIndexByPosition(x, y, list_length);
+
     if (position < 0) throw ItemException(
                 "la lista no tiene items en la posicion clickeada");
-    if (current_world.player_info.inventory.length < position) throw
+    if (list_length < position) throw
                 ItemException("la lista ya no tiene ese item");
-    //return current_world.player_info.inventory.items[position];
-     */
-    return 1;
+    return current_world.list.items[position].type;
 }
 
 int GameRender::isClickingListItems(int x, int y) {

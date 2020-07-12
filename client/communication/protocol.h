@@ -45,7 +45,7 @@ public:
 
     // Recibe un listado de items (incluye oro)
     // TODO: devolver vector de structs
-    void receiveItemsList();
+    list_t receiveItemsList();
 
     // Recibe un mensaje del juego
     const std::string receiveGameMessage();

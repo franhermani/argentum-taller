@@ -5,14 +5,17 @@
 #include "npc.h"
 #include "../living_beings/player.h"
 #include "../items/item_factory.h"
+#include "../../../utilities/math_calculator.h"
 
 class Merchant : public NPC {
     ItemFactory& itemFactory;
+    Math math;
+    int maxItems;
 
 public:
     // Constructor
-    Merchant(ItemFactory& item_factory, const int pos_x,
-            const int pos_y, const int orient);
+    Merchant(ItemFactory& item_factory, position_t new_pos, const int orient,
+            const int max_items);
 
     // Constructor y asignacion por copia deshabilitados
     Merchant(const Merchant& other) = delete;

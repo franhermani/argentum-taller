@@ -17,15 +17,19 @@ struct WindowMeasurements {
     game_area_t inventory;
     game_area_t inventoryGold;
     game_area_t list;
+    game_area_t list_prices;
     game_area_t listGold;
     game_area_t equipped;
     game_area_t life;
     game_area_t mana;
     game_area_t experience;
+    game_area_t level;
 
+    SDL_Rect levelStaticRect;
     SDL_Rect gameFrameStaticRect;
     SDL_Rect inventoryGoldStaticRect;
     SDL_Rect listGoldStaticRect;
+    SDL_Rect listGoldQuantityStaticRect;
     WindowMeasurements();
     ~WindowMeasurements();
 

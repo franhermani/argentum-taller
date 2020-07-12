@@ -1,9 +1,11 @@
 #ifndef GOLD_H
 #define GOLD_H
 
+#include "../../../common/defines/position.h"
+
 class Gold {
     int quantity;
-    int posX, posY;
+    position_t pos;
 
     friend class World;
     friend class Player;
@@ -11,14 +13,14 @@ class Gold {
 
 public:
     // Constructor
-    Gold(const int quantity, const int pos_x, const int pos_y);
+    Gold(const int quantity, position_t new_pos);
 
     // Constructor y asignacion por copia deshabilitados
     Gold(const Gold& other) = delete;
     Gold& operator=(const Gold& other) = delete;
 
     // Actualiza la posicion (posX, posY) del oro
-    void updatePosition(const int new_x, const int new_y);
+    void updatePosition(position_t new_pos);
 };
 
 #endif // GOLD_H

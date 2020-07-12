@@ -4,11 +4,10 @@
 #include "../../../../common/defines/npcs.h"
 #include "../../game_exception.h"
 
-Priest::Priest(ItemFactory& item_factory, const int pos_x, const int pos_y,
+Priest::Priest(ItemFactory& item_factory, position_t new_pos,
         const int orient) : itemFactory(item_factory) {
     type = PRIEST;
-    posX = pos_x;
-    posY = pos_y;
+    pos = new_pos;
     orientation = orient;
 
     items = {VARA_FRESNO, FLAUTA_ELFICA, BACULO_NUDOSO, BACULO_ENGARZADO,
@@ -31,10 +30,10 @@ void Priest::buyItem(Player &player, int type) {
 }
 
 void Priest::sellItem(Player &player, const int type) {
-    if (std::find(items.begin(), items.end(), type) != items.end())
+    if (std::find(items.begin(), items.end(), type) == items.end())
         return;
 
-    Item* item = itemFactory(type, player.posX, player.posY);
+    Item* item = itemFactory(type, player.pos);
     if (! item)
         return;
 

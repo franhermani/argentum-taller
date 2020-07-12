@@ -20,8 +20,8 @@ void WindowMeasurements::initialize(int numberOfTilesInWidth,
             numberOfTilesInHeight;
 
     initializeItemInfo(screenWidth, screenHeight);
-    initializeStaticAreas();
     initializePlayerInfo(screenWidth, screenHeight);
+    initializeStaticAreas();
 }
 
 void WindowMeasurements::initializeStaticAreas() {
@@ -40,6 +40,14 @@ void WindowMeasurements::initializeStaticAreas() {
     inventoryGoldStaticRect.h = (inventory_gold_area.y_pixel_end -
                                  inventory_gold_area.y_pixel_begin);
 
+    game_area_t& level_area = level;
+    levelStaticRect.x = level_area.x_pixel_begin;
+    levelStaticRect.y = level_area.y_pixel_begin;
+    levelStaticRect.w = (level_area.x_pixel_end -
+            level_area.x_pixel_begin);
+    levelStaticRect.h = (level_area.y_pixel_end -
+            level_area.y_pixel_begin);
+
 
     game_area_t& list_gold_area = listGold;
     listGoldStaticRect.x = list_gold_area.x_pixel_begin;
@@ -48,6 +56,13 @@ void WindowMeasurements::initializeStaticAreas() {
                             list_gold_area.x_pixel_begin);
     listGoldStaticRect.h = (list_gold_area.y_pixel_end -
                             list_gold_area.y_pixel_begin);
+    listGoldQuantityStaticRect.x = listGoldStaticRect.x;
+    listGoldQuantityStaticRect.y = listGoldStaticRect.y + (int) (listGoldStaticRect.h *1.1);
+    listGoldQuantityStaticRect.w = (list_gold_area.x_pixel_end -
+                            list_gold_area.x_pixel_begin);
+    listGoldQuantityStaticRect.h = (list_gold_area.y_pixel_end -
+                            list_gold_area.y_pixel_begin);
+
 }
 
 
@@ -55,18 +70,24 @@ void WindowMeasurements::initializePlayerInfo(int screenWidth,
         int screenHeight) {
     life = {(int) ((screenWidth/100.0) * 78.8),
             (int) ((screenWidth/100.0) * 86.5),
-            (int) ((screenHeight/100.0) * 87),
-            (int) ((screenHeight/100.0) * 88.5)};
+            (int) ((screenHeight/100.0) * 81.1),
+            (int) ((screenHeight/100.0) * 82.6)};
 
     mana = {(int) ((screenWidth/100.0) * 78.8),
             (int) ((screenWidth/100.0) * 86.5),
-            (int) ((screenHeight/100.0) * 84.1),
-            (int) ((screenHeight/100.0) * 85.6)};
+            (int) ((screenHeight/100.0) * 84.8),
+            (int) ((screenHeight/100.0) * 86.3)};
 
-    experience = {(int)  ((screenWidth/100.0) * 78.8),
+    experience = {(int)  ((screenWidth/100.0) *  78.8),
                   (int) ((screenWidth/100.0) * 86.5),
-                  (int) ((screenHeight/100.0) * 89.9),
-                  (int) ((screenHeight/100.0) * 91.4)};
+                  (int) ((screenHeight/100.0) * 88.7),
+                  (int) ((screenHeight/100.0) * 90.2)};
+
+
+    level = {(int) ((screenWidth / 100.0) * 91.1),
+             (int) ((screenWidth / 100.0) * 93.8),
+             (int) ((screenHeight / 100.0) * 84.8),
+             (int) ((screenHeight /100.0) * 90)};
 }
 
 void WindowMeasurements::initializeItemInfo(int screenWidth,
@@ -74,15 +95,27 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
     inventory = {(screenWidth / 100) * 84, (screenWidth / 100) * 102,
                  screenHeight / 4, (screenHeight /100) * 64};
 
-    inventoryGold = {(int) (screenWidth / 100.0) * 85,
+    /*TODO ESTO AHORA VA A SER LA POSICION DE LAS EXCEPCIONES
+    exceptions = {(int) (screenWidth / 100.0) * 85,
                       (int) (screenWidth / 100.0) * 89,
                      (int) ((screenHeight / 100.0) * 95),
                      (int) ((screenHeight /100.0) * 99)};
+*/
+
+    inventoryGold = {(int) ((screenWidth / 100.0) * 93),
+                (int) ((screenWidth / 100.0) * 98.0),
+                (int) ((screenHeight / 100.0) * 74.2),
+                (int) ((screenHeight /100.0) * 78)};
 
 
     list = {(int) (screenWidth / 100.0) * 44,
             (int) (screenWidth / 100.0) * 74,
             (int) (screenHeight / 100.0) * 5,
+            (int) (screenHeight /100.0) * 15};
+
+    list_prices = {(int) (screenWidth / 100.0) * 44,
+            (int) (screenWidth / 100.0) * 74,
+            (int) (screenHeight / 100.0) * 10,
             (int) (screenHeight /100.0) * 15};
 
     listGold = {(int) (screenWidth / 100.0) * 75,

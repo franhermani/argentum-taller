@@ -32,6 +32,9 @@ GameSurfacesManager::~GameSurfacesManager(){
     delete gameFrameSurface;
 }
 
+Surface* GameSurfacesManager::getTextSurface(std::string text) {
+    return new Surface(text, window);
+}
 
 
 void GameSurfacesManager::createNecessaryTerrains(
@@ -124,6 +127,19 @@ void GameSurfacesManager::createNecessaryFrameItems(
 
 
 void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
+    for (auto& item: items) {
+        int type = item.type;
+        if (itemSurfacesMap.find(type)
+            == itemSurfacesMap.end()) {
+            Surface* surface = new Surface(
+                    itemSurfacesPaths[type], window, 1);
+            itemSurfacesMap.insert({type, surface});
+        }
+    }
+}
+//todo refactor codigo repetido
+void GameSurfacesManager::createNecessaryListItems(
+        std::vector<list_item_t> items) {
     for (auto& item: items) {
         int type = item.type;
         if (itemSurfacesMap.find(type)

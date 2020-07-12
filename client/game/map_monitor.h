@@ -27,7 +27,7 @@ public:
             matrix_t& received_matrix, npcs_t& npcs);
 
     //actualiza el vector de jugadores
-    void updateWorld(world_t receivedWorld);
+    void updateWorld(world_t receivedWorld, list_t list);
 
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
@@ -45,6 +45,11 @@ public:
     std::vector<int> getNpcLookingAt();
 
     client_world_t getCurrentWorld();
+
+    //npc interaction related functions
+    void interact();
+    void uninteract();
+    int isInteracting();
     };
 
 

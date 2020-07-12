@@ -33,7 +33,7 @@ const std::vector<char> WithdrawItemCommandDTO::serialize() const {
     byte_msg[1] = arguments_size;
 
     // Argumentos
-    uint8_t item_type = htons(itemType);
+    uint8_t item_type = itemType;
     uint16_t pos_x = htons(bankerPosX),
              pos_y = htons(bankerPosY);
 

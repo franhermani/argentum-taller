@@ -9,7 +9,7 @@ class Weapon : public Item {
     int manaConsumption;
     int range;
     int moveVelocity;
-    bool isMagic, isLifeRestorer;
+    bool isLifeRestorer;
 
     friend class Player;
     friend class Equations;
@@ -17,8 +17,8 @@ class Weapon : public Item {
 
 public:
     // Constructor
-    Weapon(const int weapon_type, const int attack_type, const int pos_x,
-            const int pos_y, const int min_damage, const int max_damage,
+    Weapon(const int weapon_type, const int attack_type, position_t new_pos,
+            const int min_damage, const int max_damage,
             const int mana_consumption, const int range,
             const int move_velocity, const bool is_magic,
             const bool is_life_restorer, const int new_price);
