@@ -72,31 +72,6 @@ void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
             getSurface(), &stretchRect);
 }
 
-void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
-                              std::map<Terrain, Surface*>& surfaces_map) {
-    int height_size = matrix.size();
-    if (height_size <= 0) return;
-    int width_size = matrix[0].size();
-    if (width_size <= 0) return;
-    SDL_Rect stretchRect;
-    for (int y=0; y < height_size; y++) {
-        for (int x=0; x < width_size; x++) {
-            stretchRect.x = getXPixelPos(x);
-            stretchRect.y = getYPixelPos(y);
-            stretchRect.w = measurements.xWidthTileSize;
-            stretchRect.h = measurements.yHeightTileSize;
-            if (surfaces_map.find(matrix[y][x]) != surfaces_map.end()) {
-                SDL_BlitScaled(surfaces_map.at(matrix[y][x])->
-                getRenderableSurface(), NULL,
-                getSurface(), &stretchRect);
-            } else {
-                SDL_BlitScaled(surfaces_map.at(TERRAIN_GRASS)->
-                getRenderableSurface(), NULL,
-                getSurface(), &stretchRect);
-            }
-        }
-    }
-}
 void SDLWindow::renderEquipped(player_t& player,
                               std::map<int, Surface*>& surfaces_map) {
     game_area_t& equipped_area = measurements.equipped;

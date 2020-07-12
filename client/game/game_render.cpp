@@ -48,13 +48,6 @@ int GameRender::init() {
     return true;
 }
 
-
-void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
-    surfacesManager.createNecessaryTerrains(matrix);
-    window.renderTerrain(matrix, surfacesManager.terrainSurfacesMap);
-}
-
-
 void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);

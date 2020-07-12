@@ -10,9 +10,9 @@
 
 GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window){}
 GameSurfacesManager::~GameSurfacesManager(){
-    for (auto const& surface : terrainSurfacesMap) {
-        delete surface.second;
-    }
+
+    //TODO CHEQUEO DE MATAR TODO
+
     for (auto const& surface : infoSurfacesMap) {
         delete surface.second;
     }
@@ -36,27 +36,6 @@ Surface* GameSurfacesManager::getTextSurface(std::string text) {
     return new Surface(text, window);
 }
 
-
-void GameSurfacesManager::createNecessaryTerrains(
-        std::vector<std::vector<Terrain>>& matrix) {
-    int height_size = matrix.size();
-    if (height_size < 1) return;
-    int width_size = matrix[0].size();
-    for (int i=0; i < height_size; i++) {
-        for (int j=0; j < width_size; j++){
-            if (terrainSurfacesMap.find(matrix[i][j])
-                == terrainSurfacesMap.end()) {
-                if (terrainSurfacesPaths.find(matrix[i][j])
-                    == terrainSurfacesPaths.end()) {
-                    continue;
-                }
-                Surface *surface = new Surface(
-                        terrainSurfacesPaths[matrix[i][j]], window, 0);
-                terrainSurfacesMap.insert({matrix[i][j], surface});
-            }
-        }
-    }
-}
 
 
 void GameSurfacesManager::createNecessaryPlayers(
@@ -309,17 +288,6 @@ void GameSurfacesManager::loadItemPaths() {
 }
 
 void GameSurfacesManager::loadSurfacePaths() {
-    //PISOS
-    terrainSurfacesPaths = {
-            {TERRAIN_WATER, "../client/resources/images/24082.png"},
-            {TERRAIN_LAND, "../client/resources/images/24086.png"},
-            {TERRAIN_GRASS, "../client/resources/images/24083.png"},
-            {TERRAIN_SAND, "../client/resources/images/24086.png"},
-            {TERRAIN_STONE, "../client/resources/images/12013.png"},
-            {TERRAIN_WALL, "../client/resources/images/12017.png"},
-            {TERRAIN_OUT_OF_BOUNDARIES,
-                            "../client/resources/images/12050.png"}};
-
     loadCreaturePaths();
     loadNpcPaths();
     loadPlayerPaths();
@@ -330,7 +298,7 @@ void GameSurfacesManager::createFrameSurfaces() {
     gameFrameSurface = new Surface(
             "../client/resources/images/game_frame.jpeg", window, 0);
     worldSurface = new Surface(
-            "../client/resources/images/world.png", window, 0);
+            "../tiled/world.png", window, 0);
     goldSurface = new Surface(
             "../client/resources/images/gold_t.png", window, 1);
     Surface* life_bar = new Surface("../client/resources/images/life_bar.png",

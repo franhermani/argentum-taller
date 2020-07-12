@@ -42,10 +42,6 @@ class Map {
     //busca en la lista actual de jugadores y devuelve el principal
     player_t getMainPlayer();
 
-    //convierte un vector de terrains a matriz
-    void initializeMatrixFromVector(matrix_t& received_matrix);
-
-
 
     int getNewBordersXPosition(int pos_x, player_t& main_player);
     int getNewBordersYPosition(int pos_y, player_t& main_player);

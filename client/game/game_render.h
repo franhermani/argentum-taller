@@ -45,7 +45,6 @@ public:
     bool isDead() override;
 
     //Renderizadores
-    void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
     void renderPlayers(std::vector<player_t> &players);
     void renderNpcs(std::vector<npc_t>& npcs);
     void renderCreatures(std::vector<creature_t>& creatures);
