@@ -182,7 +182,8 @@ void GameRender::run() {
 
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
-        renderTerrain(current_world.terrains);
+        //renderTerrain(current_world.terrains);
+        window.renderWorld(surfacesManager.worldSurface, current_world.main_player.pos);
         renderItems(current_world.items);
         renderPlayers(current_world.players);
         renderNpcs(current_world.npcs);
