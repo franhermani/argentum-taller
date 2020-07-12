@@ -6,6 +6,7 @@
 #include "../../common/defines/creatures.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/items.h"
+#include "../../common/defines/attacks.h"
 
 
 GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window){}
@@ -105,7 +106,22 @@ void GameSurfacesManager::createNecessaryFrameItems(
     }
 }
 
-
+void GameSurfacesManager::createNecessaryAttacks(std::vector<attack_t>& attacks) {
+    for (auto& attack:attacks) {
+        int type = attack.type;
+        int orientation = attack.orientation;
+        if (attackSurfacesMap[type].find(orientation)
+            == attackSurfacesMap[type].end()) {
+            if (attackSurfacesPaths[type].find(orientation)
+                == attackSurfacesPaths[type].end()) {
+                continue;
+            }
+            Surface* surface = new Surface(
+                    attackSurfacesPaths[type][orientation], window, 1);
+            attackSurfacesMap[type].insert({orientation, surface});
+        }
+    }
+}
 void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
     for (auto& item: items) {
         int type = item.type;
@@ -213,6 +229,30 @@ void GameSurfacesManager::loadNpcPaths() {
     };
 }
 
+void GameSurfacesManager::loadAttackPaths() {
+
+    std::map<int, std::string> multiple_arrow_orientations = {
+            {UP, "../client/resources/images/triple_arrow_up_t.png"},
+            {DOWN, "../client/resources/images/triple_arrow_down_t.png"},
+            {LEFT, "../client/resources/images/triple_arrow_left_t.png"},
+            {RIGHT, "../client/resources/images/triple_arrow_t.png"}
+    };
+    std::map<int, std::string> single_arrow_orientations = {
+            {UP, "../client/resources/images/single_arrow_up_t.png"},
+            {DOWN, "../client/resources/images/single_arrow_down_t.png"},
+            {LEFT, "../client/resources/images/single_arrow_left_t.png"},
+            {RIGHT, "../client/resources/images/single_arrow_right_t.png"}
+    };
+    attackSurfacesPaths = {
+            {MULTIPLE_ARROW, multiple_arrow_orientations},
+            {SINGLE_ARROW, single_arrow_orientations}
+    };
+    std::map<int, Surface*> multiple_arrow_surfaces;
+    std::map<int, Surface*> single_arrow_surfaces;
+    playerSurfacesMap = {{MULTIPLE_ARROW, multiple_arrow_surfaces},
+                         {SINGLE_ARROW,   single_arrow_surfaces},
+    }
+}
 
 void GameSurfacesManager::loadPlayerPaths() {
     //JUGADORES
@@ -293,6 +333,7 @@ void GameSurfacesManager::loadSurfacePaths() {
     loadNpcPaths();
     loadPlayerPaths();
     loadItemPaths();
+    loadAttackPaths();
     createFrameSurfaces();
 }
 void GameSurfacesManager::createFrameSurfaces() {
