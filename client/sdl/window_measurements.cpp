@@ -5,12 +5,13 @@
 WindowMeasurements::WindowMeasurements() {}
 
 
-void WindowMeasurements::initialize(int numberOfTilesInWidth,
-        int numberOfTilesInHeight, int screenWidth, int screenHeight) {
-    numberOfTilesInWidth = numberOfTilesInWidth;
-    numberOfTilesInHeight = numberOfTilesInHeight;
-    screenWidth = screenWidth;
-    screenHeight = screenHeight;
+void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
+        int receivedNumberOfTilesInHeight, int receivedScreenWidth,
+        int receivedScreenHeight) {
+    numberOfTilesInWidth = receivedNumberOfTilesInWidth;
+    numberOfTilesInHeight = receivedNumberOfTilesInHeight;
+    screenWidth = receivedScreenWidth;
+    screenHeight = receivedScreenHeight;
     frame = {screenWidth / 50, (screenWidth / 4) * 3,
              screenHeight / 5, (screenHeight / 100) * 99};
 

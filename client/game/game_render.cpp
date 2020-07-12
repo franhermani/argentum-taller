@@ -115,7 +115,7 @@ void GameRender::renderGolds(std::vector<gold_t> &golds) {
 
 void GameRender::renderWorld(position_t position) {
     window.renderWorld(surfacesManager.worldSurface,
-        position, blocksWidth, blocksHeight);
+        position, mapDimensions[0], mapDimensions[1]);
 }
 
 void GameRender::renderGameFrame() {
@@ -172,6 +172,7 @@ void GameRender::run() {
     std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
+    mapDimensions = mapMonitor.getDimensions();
     window.setTilesSize(blocksWidth,blocksHeight);
 
 

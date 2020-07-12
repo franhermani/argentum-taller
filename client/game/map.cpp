@@ -39,14 +39,14 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
 
 void Map::initialize(int received_id,
         std::vector<int>& blocks_around,
-        npcs_t& received_npcs) {
+        npcs_t& received_npcs, std::vector<int>& map_dimensions) {
     // TODO ESTO SE RECIBE DESDE SERVER
-    terrainMatrixHeight = 108;
-    terrainMatrixWidth = 108;
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
     npcs = std::move(received_npcs);
+    mapDimensions = std::move(map_dimensions);
+
 }
 
 
@@ -74,13 +74,13 @@ int Map::getPlayerYStart(player_t& player) {
 
 int Map::getPlayerXEnd(player_t& player) {
     int x_finish = player.pos.x  + (playerVisionWidth / 2) + 1;
-    if (x_finish >= terrainMatrixWidth) return terrainMatrixWidth;
+    if (x_finish >= mapDimensions[0]) return mapDimensions[0];
     return x_finish;
 }
 
 int Map::getPlayerYEnd(player_t& player) {
     int y_finish = player.pos.y  + (playerVisionHeight / 2) + 1;
-    if (y_finish >= terrainMatrixHeight) return terrainMatrixHeight;
+    if (y_finish >= mapDimensions[1]) return mapDimensions[1];
     return y_finish;
 }
 
@@ -238,6 +238,10 @@ int Map::getPlayerVisionWidth() {
 }
 int Map::getPlayerVisionHeight() {
     return playerVisionHeight;
+}
+
+std::vector<int> Map::getDimensions() {
+    return mapDimensions;
 }
 
 std::vector<int> Map::getPositionLookingAt() {

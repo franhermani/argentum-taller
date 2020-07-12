@@ -18,8 +18,10 @@ class GameRender : public Thread {
     const int screenWidth;
     const int screenHeight;
     MapMonitor& mapMonitor;
+    //todo renombrar estos dos para diferenciar el 9 del 108
     int blocksWidth;
     int blocksHeight;
+    std::vector<int> mapDimensions;
     SDLWindow window;
     GameSurfacesManager surfacesManager;
     //conservamos mundo renderizado en el momento
