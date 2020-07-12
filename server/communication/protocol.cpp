@@ -66,13 +66,15 @@ void ServerProtocol::sendBlocksAround(int width, int height) {
 }
 
 void ServerProtocol::sendMapDimensions(WorldMonitor &world_monitor) {
-    uint16_t width = world_monitor.getWidth();
-    uint16_t height = world_monitor.getHeight();
+    uint16_t width = htons(world_monitor.getWidth());
+    uint16_t height = htons(world_monitor.getHeight());
 
     std::vector<char> byte_msg;
     byte_msg.resize(2 * SIZE_16);
-    byte_msg[0] = htons(width);
-    byte_msg[2] = htons(height);
+
+    memcpy(&byte_msg[0], &width, SIZE_16);
+    memcpy(&byte_msg[SIZE_16], &height, SIZE_16);
+
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
