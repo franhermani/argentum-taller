@@ -96,6 +96,16 @@ void GameRender::renderEquipped(player_t& player) {
 }
 
 
+void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
+    surfacesManager.createNecessaryAttacks(attacks);
+    for (auto it = std::begin(attacks);
+         it != std::end(attacks); ++it) {
+        window.renderMapObject(it->pos.x, it->pos.y,
+                               surfacesManager.attackSurfacesMap[it->type][it->orientation]);
+    }
+}
+
+
 void GameRender::renderItems(std::vector<item_t> &items) {
     surfacesManager.createNecessaryItems(items);
     for (auto it = std::begin(items);
@@ -190,6 +200,7 @@ void GameRender::run() {
         renderInventory(current_world.player_info.inventory.items);
         renderInventoryGolds(current_world.player_info.actual_gold);
         renderEquipped(current_world.main_player);
+        renderAttacks(current_world.attacks);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages,
                 current_world.main_player.level);

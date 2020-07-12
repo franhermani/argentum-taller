@@ -56,6 +56,7 @@ class Map {
     std::vector<creature_t> getRenderableCreatures();
     std::vector<item_t> getRenderableItems();
     std::vector<gold_t> getRenderableGolds();
+    std::vector<attack_t> getRenderableAttacks();
 
 public:
     // constructor

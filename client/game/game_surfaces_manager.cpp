@@ -6,6 +6,7 @@
 #include "../../common/defines/creatures.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/items.h"
+#include "../../common/defines/attacks.h"
 
 
 GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window){}
@@ -28,8 +29,12 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto & orientations : npcSurfacesMap) {
         for (auto const& surface : orientations.second) delete surface.second;
     }
+    for (auto & orientations : attackSurfacesMap) {
+        for (auto const& surface : orientations.second) delete surface.second;
+    }
     delete goldSurface;
     delete gameFrameSurface;
+    delete worldSurface;
 }
 
 Surface* GameSurfacesManager::getTextSurface(std::string text) {
@@ -104,7 +109,22 @@ void GameSurfacesManager::createNecessaryFrameItems(
     }
 }
 
-
+void GameSurfacesManager::createNecessaryAttacks(std::vector<attack_t>& attacks) {
+    for (auto& attack:attacks) {
+        int type = attack.type;
+        int orientation = attack.orientation;
+        if (attackSurfacesMap[type].find(orientation)
+            == attackSurfacesMap[type].end()) {
+            if (attackSurfacesPaths[type].find(orientation)
+                == attackSurfacesPaths[type].end()) {
+                continue;
+            }
+            Surface* surface = new Surface(
+                    attackSurfacesPaths[type][orientation], window, 1);
+            attackSurfacesMap[type].insert({orientation, surface});
+        }
+    }
+}
 void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
     for (auto& item: items) {
         int type = item.type;
@@ -212,6 +232,71 @@ void GameSurfacesManager::loadNpcPaths() {
     };
 }
 
+void GameSurfacesManager::loadAttackPaths() {
+
+    std::map<int, std::string> multiple_arrow_orientations = {
+            {UP, "../client/resources/images/triple_arrow_up_t.png"},
+            {DOWN, "../client/resources/images/triple_arrow_down_t.png"},
+            {LEFT, "../client/resources/images/triple_arrow_left_t.png"},
+            {RIGHT, "../client/resources/images/triple_arrow_right_t.png"}
+    };
+    std::map<int, std::string> magic_arrow_orientations = {
+            {UP, "../client/resources/images/magic_arrow_up_t.png"},
+            {DOWN, "../client/resources/images/magic_arrow_down_t.png"},
+            {LEFT, "../client/resources/images/magic_arrow_left_t.png"},
+            {RIGHT, "../client/resources/images/magic_arrow_right_t.png"}
+    };
+    std::map<int, std::string> single_arrow_orientations = {
+            {UP, "../client/resources/images/single_arrow_up_t.png"},
+            {DOWN, "../client/resources/images/single_arrow_down_t.png"},
+            {LEFT, "../client/resources/images/single_arrow_left_t.png"},
+            {RIGHT, "../client/resources/images/single_arrow_right_t.png"}
+    };
+    std::map<int, std::string> missile_orientations = {
+            {UP, "../client/resources/images/missile_up_t.png"},
+            {DOWN, "../client/resources/images/missile_down_t.png"},
+            {LEFT, "../client/resources/images/missile_left_t.png"},
+            {RIGHT, "../client/resources/images/missile_right_t.png"}
+    };
+
+    std::map<int, std::string> explosion_spell_orientations = {
+            {UP, "../client/resources/images/explosion_t.png"},
+            {DOWN, "../client/resources/images/explosion_t.png"},
+            {LEFT, "../client/resources/images/explosion_t.png"},
+            {RIGHT, "../client/resources/images/explosion_t.png"}
+    };
+
+    std::map<int, std::string> heal_spell_orientations = {
+            {UP, "../client/resources/images/heal_t.png"},
+            {DOWN, "../client/resources/images/heal_t.png"},
+            {LEFT, "../client/resources/images/heal_t.png"},
+            {RIGHT, "../client/resources/images/heal_t.png"}
+    };
+
+    attackSurfacesPaths = {
+            {MULTIPLE_ARROW, multiple_arrow_orientations},
+            {SINGLE_ARROW, single_arrow_orientations},
+            {MELEE, single_arrow_orientations},
+            {MAGIC_ARROW_SPELL, magic_arrow_orientations},
+            {HEAL_SPELL, heal_spell_orientations},
+            {MISSILE_SPELL, missile_orientations},
+            {EXPLOSION_SPELL, explosion_spell_orientations}
+    };
+    std::map<int, Surface*> multiple_arrow_surfaces;
+    std::map<int, Surface*> single_arrow_surfaces;
+    std::map<int, Surface*> missile_surfaces;
+    std::map<int, Surface*> magic_arrow_surfaces;
+    std::map<int, Surface*> explosion_spell_surfaces;
+    std::map<int, Surface*> heal_spell_surfaces;
+    playerSurfacesMap = {{MULTIPLE_ARROW, multiple_arrow_surfaces},
+                         {SINGLE_ARROW,   single_arrow_surfaces},
+                         {MELEE, single_arrow_surfaces},
+                         {MAGIC_ARROW_SPELL, magic_arrow_surfaces},
+                         {HEAL_SPELL, heal_spell_surfaces},
+                         {MISSILE_SPELL, missile_surfaces},
+                         {EXPLOSION_SPELL, explosion_spell_surfaces}
+    };
+}
 
 void GameSurfacesManager::loadPlayerPaths() {
     //JUGADORES
@@ -292,6 +377,7 @@ void GameSurfacesManager::loadSurfacePaths() {
     loadNpcPaths();
     loadPlayerPaths();
     loadItemPaths();
+    loadAttackPaths();
     createFrameSurfaces();
 }
 void GameSurfacesManager::createFrameSurfaces() {
