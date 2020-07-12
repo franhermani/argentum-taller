@@ -21,17 +21,10 @@ class World {
     GameParams& params;
     ItemFactory& itemFactory;
     std::map<int, ProtectedQueue<std::string>>& messagesQueuePerPlayer;
-
-    std::vector<position_t> safeZonesPositions;
+    std::vector<position_t> unsafePositions;
+    std::vector<position_t> safePositions;
     std::vector<position_t> impenetrablePositions;
     std::vector<position_t> cemeteryPositions;
-
-    // TODO: borrar esto
-    std::vector<std::vector<Terrain>> matrix;
-    std::set<Terrain> entitiesImpenetrableTerrains;
-    std::set<Terrain> attacksImpenetrableTerrains;
-    std::set<Terrain> safeZonesTerrains;
-
     std::vector<Player*> players;
     std::vector<Creature*> creatures;
     std::vector<NPC*> npcs;
@@ -41,8 +34,11 @@ class World {
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
 
+    // Llena el vector de posiciones de zonas inseguras
+    void loadUnsafePositions();
+
     // Llena el vector de posiciones de zonas seguras
-    void loadSafeZonesPositions();
+    void loadSafePositions();
 
     // Llena el vector de posiciones del cementerio de criaturas
     void loadCemeteryPositions();
@@ -50,26 +46,8 @@ class World {
     // Llena el vector de posiciones de terrenos impenetrables
     void loadImpenetrablePositions();
 
-    // TODO: borrar esto
-    // Llena el vector de terrenos impenetrables por un player o criatura
-    void loadEntitiesImpenetrableTerrains();
-    // Llena el vector de terrenos impenetrables por un ataque
-    void loadAttacksImpenetrableTerrains();
-    // Llena el vector de terrenos considerados zona segura
-    void loadSafeZonesTerrains();
-    // Llena la matriz (mapa) segun el json generado por Tiled
-    void loadMatrix();
-
     // Determina si una posicion (x,y) esta dentro de los limites de 'player'
     const bool inPlayerBoundaries(Player& player, position_t new_pos);
-
-    // Determina si hay un terreno impenetrable por una entidad
-    // en la posicion (x,y)
-    const bool entityImpenetrableTerrainInPosition(position_t new_pos);
-
-    // Determina si hay un terreno impenetrable por un ataque
-    // en la posicion (x,y)
-    const bool attackImpenetrableTerrainInPosition(position_t new_pos);
 
     // Determina si hay un player en la posicion (x,y)
     const bool playerInPosition(position_t new_pos);
@@ -127,9 +105,6 @@ public:
     // Devuelve los bloques de vision del player (en alto)
     const int getPlayerHeight();
 
-    // Devuelve la matriz del mapa completo
-    std::vector<std::vector<Terrain>> getMatrix() const;
-
     // Devuelve un vector de todos los npcs
     std::vector<NPC*> getNPCs() const;
 
@@ -162,9 +137,11 @@ public:
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     const bool inMapBoundaries(position_t new_pos);
 
-    // Determina si hay un terreno considerado zona segura
-    // en la posicion (x,y)
-    const bool inSafeZone(position_t new_pos);
+    // Determina si hay un terreno impenetrable en la posicion (x,y
+    const bool inImpenetrablePosition(position_t new_pos);
+
+    // Determina si hay un terreno seguro en la posicion (x,y)
+    const bool inSafePosition(position_t new_pos);
 
     // Determina si hay una colision de entidad en la posicion (x,y)
     const bool entityInCollision(position_t new_pos);

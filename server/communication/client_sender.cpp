@@ -30,9 +30,6 @@ void ClientSender::run() {
         protocol.sendBlocksAround(worldMonitor->getPlayerWidth(),
                 worldMonitor->getPlayerHeight());
 
-        // Envio la matriz completa con todos los terrenos
-        protocol.sendMatrix(*worldMonitor);
-
         // Envio la lista de NPCs
         protocol.sendNPCs(*worldMonitor);
 

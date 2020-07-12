@@ -386,7 +386,7 @@ void Player::attack() {
 
     stopMeditating();
 
-    if (world.inSafeZone(pos))
+    if (world.inSafePosition(pos))
         throw GameException(id, "No puedes atacar en una zona segura");
 
     if (isDead())
