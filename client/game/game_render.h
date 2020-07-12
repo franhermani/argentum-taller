@@ -45,7 +45,6 @@ public:
     bool isDead() override;
 
     //Renderizadores
-    void renderTerrain(std::vector<std::vector<Terrain>>& matrix);
     void renderPlayers(std::vector<player_t> &players);
     void renderNpcs(std::vector<npc_t>& npcs);
     void renderCreatures(std::vector<creature_t>& creatures);
@@ -57,6 +56,7 @@ public:
     void renderInventoryGolds(uint16_t quantity);
     void renderGameFrame();
     void renderList(list_t list);
+    void renderWorld(position_t position);
 
 
     //Inicializador de SDL

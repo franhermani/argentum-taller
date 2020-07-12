@@ -15,8 +15,8 @@ void ConnectionReceiver::run() {
     try {
         int username_id = protocol.receiveUsernameId();
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
-        matrix_t matrix = protocol.receiveMatrix();
         npcs_t npcs = protocol.receiveNPCs();
+        matrix_t matrix;
         mapMonitor.initialize(username_id, blocks_around,
                 matrix, npcs);
 

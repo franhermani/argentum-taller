@@ -48,13 +48,6 @@ int GameRender::init() {
     return true;
 }
 
-
-void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
-    surfacesManager.createNecessaryTerrains(matrix);
-    window.renderTerrain(matrix, surfacesManager.terrainSurfacesMap);
-}
-
-
 void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
@@ -120,6 +113,11 @@ void GameRender::renderGolds(std::vector<gold_t> &golds) {
     }
 }
 
+void GameRender::renderWorld(position_t position) {
+    window.renderWorld(surfacesManager.worldSurface,
+        position, blocksWidth, blocksHeight);
+}
+
 void GameRender::renderGameFrame() {
     window.renderGameFrame(surfacesManager.gameFrameSurface);
 }
@@ -180,9 +178,10 @@ void GameRender::run() {
     while (keepRunning) {
         auto start = clock::now();
 
+
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
-        renderTerrain(current_world.terrains);
+        renderWorld(current_world.main_player.pos);
         renderItems(current_world.items);
         renderPlayers(current_world.players);
         renderNpcs(current_world.npcs);

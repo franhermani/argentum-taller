@@ -8,8 +8,6 @@
 #define SIZE_8                      sizeof(uint8_t)
 #define SIZE_16                     sizeof(uint16_t)
 #define SIZE_32                     sizeof(uint32_t)
-#define STATIC_TERRAIN_PART_SIZE    6
-#define HEIGHT_PLUS_WIDTH_SIZE      4
 
 ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 
@@ -79,51 +77,6 @@ const std::vector<int> ClientProtocol::receiveBlocksAround() {
     return std::move(blocks);
 }
 
-matrix_t ClientProtocol::receiveMatrix() {
-    matrix_t m;
-
-    // Parte estatica
-    std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
-    socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
-
-    int bytes_advanced = 0;
-
-    // Longitud del vector de terrenos
-    uint16_t length;
-    memcpy(&length, matrix_data_buffer.data() + bytes_advanced, SIZE_16);
-    m.length = ntohs(length);
-    bytes_advanced += SIZE_16;
-
-    // Ancho de la matriz
-    uint16_t width;
-    memcpy(&width, matrix_data_buffer.data() + bytes_advanced, SIZE_16);
-    m.width = ntohs(width);
-    bytes_advanced += SIZE_16;
-
-    // Alto de la matriz
-    uint16_t height;
-    memcpy(&height, matrix_data_buffer.data() + bytes_advanced, SIZE_16);
-    m.height = ntohs(height);
-
-    int matrix_length = m.length - HEIGHT_PLUS_WIDTH_SIZE;
-
-    std::vector<char> matrix_buffer(matrix_length,0);
-    socket.receiveBytes(matrix_buffer.data(), matrix_length);
-
-    // Vector de terrenos
-    std::vector<Terrain> terrains;
-    terrains.resize(m.height * m.width);
-
-    int i, current_index = 0;
-    for (i = 0; i < m.height * m.width; i++) {
-        auto terrain_type = (uint8_t) matrix_buffer[current_index];
-        terrains[i] = static_cast<Terrain>(terrain_type);
-        current_index++;
-    }
-    m.terrains = terrains;
-    
-    return std::move(m);
-}
 
 npcs_t ClientProtocol::receiveNPCs() {
     npcs_t n;

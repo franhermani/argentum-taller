@@ -72,31 +72,6 @@ void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
             getSurface(), &stretchRect);
 }
 
-void SDLWindow::renderTerrain(std::vector<std::vector<Terrain>>& matrix,
-                              std::map<Terrain, Surface*>& surfaces_map) {
-    int height_size = matrix.size();
-    if (height_size <= 0) return;
-    int width_size = matrix[0].size();
-    if (width_size <= 0) return;
-    SDL_Rect stretchRect;
-    for (int y=0; y < height_size; y++) {
-        for (int x=0; x < width_size; x++) {
-            stretchRect.x = getXPixelPos(x);
-            stretchRect.y = getYPixelPos(y);
-            stretchRect.w = measurements.xWidthTileSize;
-            stretchRect.h = measurements.yHeightTileSize;
-            if (surfaces_map.find(matrix[y][x]) != surfaces_map.end()) {
-                SDL_BlitScaled(surfaces_map.at(matrix[y][x])->
-                getRenderableSurface(), NULL,
-                getSurface(), &stretchRect);
-            } else {
-                SDL_BlitScaled(surfaces_map.at(TERRAIN_GRASS)->
-                getRenderableSurface(), NULL,
-                getSurface(), &stretchRect);
-            }
-        }
-    }
-}
 void SDLWindow::renderEquipped(player_t& player,
                               std::map<int, Surface*>& surfaces_map) {
     game_area_t& equipped_area = measurements.equipped;
@@ -147,6 +122,29 @@ int SDLWindow::getYPixelPos(int y_tile_position) {
 void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
 }
+
+SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface, position_t position, int vision_width, int vision_height) {
+    int tile_size_pix_x = surface->getRenderableSurface()->w/100;
+    int tile_size_pix_y = surface->getRenderableSurface()->h/100;
+    SDL_Rect src_rect;
+    src_rect.x = tile_size_pix_x*(position.x-(vision_width/2));
+    src_rect.y = tile_size_pix_y*(position.y-(vision_height/2));
+    src_rect.w = tile_size_pix_x*vision_width;
+    src_rect.h = tile_size_pix_y*vision_height;
+    return src_rect;
+}
+
+void SDLWindow::renderWorld(Surface* surface,  position_t positon,
+                            int vision_width, int vision_height) {
+    //todo una vez temriando esto matar render terrains
+    SDL_Rect src_rect =
+            getFrameRectByPosition(surface, positon,
+                    vision_width, vision_height);
+
+    SDL_BlitScaled(surface->getRenderableSurface(), &src_rect,
+                   getSurface(), &measurements.worldStaticRect);
+}
+
 
 void SDLWindow::renderGameFrame(Surface* surface) {
     SDL_BlitScaled(surface->getRenderableSurface(), NULL,

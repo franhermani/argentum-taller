@@ -3,7 +3,6 @@
 #include <vector>
 #include <map>
 typedef struct {
-    std::vector<std::vector<Terrain>> terrains;
     std::vector<player_t> players;
     std::vector<npc_t> npcs;
     std::vector<creature_t> creatures;

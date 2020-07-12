@@ -36,23 +36,13 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
     //el resto falta recibirlo
 }
 
-void Map::initializeMatrixFromVector(matrix_t& received_matrix) {
-    int current_index = 0;
-    for (int i=0; i<received_matrix.height; i++) {
-        std::vector<Terrain> row;
-        terrainMatrix.push_back(row);
-        for (int j = 0; j < received_matrix.width; ++j) {
-            terrainMatrix[i].push_back(received_matrix.terrains[current_index]);
-            ++current_index;
-        }
-    }
-}
+
 void Map::initialize(int received_id,
         std::vector<int>& blocks_around, matrix_t& received_matrix,
         npcs_t& received_npcs) {
-    initializeMatrixFromVector(received_matrix);
-    terrainMatrixHeight = received_matrix.height;
-    terrainMatrixWidth = received_matrix.width;
+    //initializeMatrixFromVector(received_matrix);
+    terrainMatrixHeight = 100;
+    terrainMatrixWidth = 100;
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
@@ -69,53 +59,8 @@ player_t Map::getMainPlayer() {
     throw MapException("main player not found");
 }
 
-void Map::printDebugTerrainMatrix(
-        std::vector<std::vector<Terrain>>& received_matrix){
-    int col_size = received_matrix.size();
-    if (col_size <=0) return;
-    int row_size = received_matrix[0].size();
-    if (row_size <=0) return;
-    std::cout << "\n\n\n ASI QUEDO LA MATRIZ\n\n\n";
-    for (int i=0; i<col_size; i++) {
-        for (int j=0; j< row_size; j++) {
-            std::cout << received_matrix[i][j] << " ";
-        }
-        std::cout << "\n";
-    }
-}
-
-std::vector<std::vector<Terrain>> Map::getTerrains() {
-    //TODO hacer lo que dijo eze de mandar una estructura con la matriz
-    // y solo mostrar la parte que hay en vision
-    // para no tener que crear una submatriz cada vez
-    //printDebugTerrainMatrix(terrainMatrix);
-    player_t player = getMainPlayer();
-
-    std::vector<std::vector<Terrain>> sub_matrix;
-
-    sub_matrix.resize(playerVisionHeight);
-    int x_start, y_start, x_finish, y_finish;
-    x_start = getPlayerXStart(player);
-    y_start = getPlayerYStart(player);
-    x_finish = getPlayerXEnd(player);
-    y_finish = getPlayerYEnd(player);
-    
-    int current_column_index = 0;
-    for (int i=y_start; i<y_finish; i++) {
-        std::vector<Terrain> row;
-        row.resize(playerVisionWidth);
-        int current_row_index = 0;
-        for (int j = x_start; j < x_finish; j++) {
-            row[current_row_index] = terrainMatrix[i][j];
-            ++current_row_index;
-        }
-        sub_matrix[current_column_index] = row;
-        ++current_column_index;
-    }
-    //printDebugTerrainMatrix(sub_matrix);
-    return sub_matrix;
-}
-
+//TODO RENOMBRAR estoas variables terrain porque
+// ya no hay terrain
 int Map::getPlayerXStart(player_t& player) {
     int x_start = player.pos.x - playerVisionWidth/2;
     if (x_start < 0) return 0;
@@ -178,7 +123,7 @@ int Map::betweenPlayerBorders(int pos_x, int pos_y) {
     && (pos_y >= y_start) && (pos_y < y_finish));
 }
 
-
+//todo ver que hacemos con estas 2
 int Map::getNewBordersXPosition(int pos_x, player_t& main_player) {
     int pos;
     pos = pos_x - getPlayerXStart(main_player);
@@ -392,7 +337,6 @@ client_world_t Map::getCurrentWorld() {
     current_world.golds = getRenderableGolds();
     current_world.creatures = getRenderableCreatures();
     current_world.npcs = getRenderableNpcs();
-    current_world.terrains = getTerrains();
     current_world.percentages = getPercentages();
     current_world.list = list;
 
