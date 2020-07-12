@@ -329,6 +329,8 @@ void GameSurfacesManager::loadSurfacePaths() {
 void GameSurfacesManager::createFrameSurfaces() {
     gameFrameSurface = new Surface(
             "../client/resources/images/game_frame.jpeg", window, 0);
+    worldSurface = new Surface(
+            "../client/resources/images/world.png", window, 0);
     goldSurface = new Surface(
             "../client/resources/images/gold_t.png", window, 1);
     Surface* life_bar = new Surface("../client/resources/images/life_bar.png",
