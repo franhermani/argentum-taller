@@ -9,6 +9,7 @@ protected:
     position_t pos{};
     int price{};
     bool uniqueInInventory{};
+    bool isMagic{};
 
     // Actualiza la posicion (posX, posY) del item
     void updatePosition(position_t new_pos);

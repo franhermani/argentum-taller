@@ -60,7 +60,7 @@ Item* ItemFactory::operator()(const int type, position_t new_pos) {
     } else if (armors.count(type) > 0) {
         js = itemParams["armors"][itemsMap[type]];
         return new Armor(type, new_pos, js["min_defense"],
-                js["max_defense"], js["price"]);
+                js["max_defense"], js["is_magic"], js["price"]);
     } else if (helmets.count(type) > 0) {
         js = itemParams["helmets"][itemsMap[type]];
         return new Helmet(type, new_pos, js["min_defense"],
@@ -69,11 +69,11 @@ Item* ItemFactory::operator()(const int type, position_t new_pos) {
     } else if (shields.count(type) > 0) {
         js = itemParams["shields"][itemsMap[type]];
         return new Shield(type, new_pos, js["min_defense"],
-                js["max_defense"], js["price"]);
+                js["max_defense"], js["is_magic"], js["price"]);
     } else if (potions.count(type) > 0) {
         js = itemParams["potions"][itemsMap[type]];
         return new Potion(type, new_pos, js["life_points"],
-                js["mana_points"], js["price"]);
+                js["mana_points"], js["is_magic"], js["price"]);
     } else {
         return nullptr;
     }

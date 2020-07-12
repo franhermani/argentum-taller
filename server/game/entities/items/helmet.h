@@ -5,7 +5,6 @@
 
 class Helmet : public Item {
     int minDefense, maxDefense;
-    bool isMagic;
 
     friend class Player;
     friend class Equations;

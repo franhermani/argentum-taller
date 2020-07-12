@@ -343,16 +343,19 @@
         "armadura_cuero": {
           "min_defense": 2,
           "max_defense": 6,
+          "is_magic": false,
           "price": 50
         },
         "armadura_placas": {
           "min_defense": 15,
           "max_defense": 30,
+          "is_magic": false,
           "price": 150
         },
         "tunica_azul": {
           "min_defense": 6,
           "max_defense": 10,
+          "is_magic": false,
           "price": 75
         }
       },
@@ -380,11 +383,13 @@
         "escudo_tortuga": {
           "min_defense": 1,
           "max_defense": 2,
+          "is_magic": false,
           "price": 40
         },
         "escudo_hierro": {
           "min_defense": 1,
           "max_defense": 4,
+          "is_magic": false,
           "price": 70
         }
       },
@@ -392,11 +397,13 @@
         "pocion_vida": {
           "life_points": 50,
           "mana_points": 0,
+          "is_magic": false,
           "price": 25
         },
         "pocion_mana": {
           "life_points": 0,
           "mana_points": 50,
+          "is_magic": false,
           "price": 25
         }
       }

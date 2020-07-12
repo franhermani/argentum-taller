@@ -11,12 +11,12 @@ maxDamage(max_damage),
 manaConsumption(mana_consumption),
 range(range),
 moveVelocity(move_velocity),
-isMagic(is_magic),
 isLifeRestorer(is_life_restorer) {
     type = weapon_type;
     pos = new_pos;
     price = new_price;
     uniqueInInventory = true;
+    isMagic = is_magic;
 }
 
 Weapon::~Weapon() = default;
