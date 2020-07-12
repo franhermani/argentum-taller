@@ -120,6 +120,11 @@ void GameRender::renderGolds(std::vector<gold_t> &golds) {
     }
 }
 
+void GameRender::renderWorld(position_t position) {
+    window.renderWorld(surfacesManager.worldSurface,
+        position, blocksWidth, blocksHeight);
+}
+
 void GameRender::renderGameFrame() {
     window.renderGameFrame(surfacesManager.gameFrameSurface);
 }
@@ -183,7 +188,7 @@ void GameRender::run() {
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
         //renderTerrain(current_world.terrains);
-        window.renderWorld(surfacesManager.worldSurface, current_world.main_player.pos);
+        renderWorld(current_world.main_player.pos);
         renderItems(current_world.items);
         renderPlayers(current_world.players);
         renderNpcs(current_world.npcs);

@@ -148,18 +148,23 @@ void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
 }
 
-void SDLWindow::renderWorld(Surface* surface,  position_t positon) {
-    //todo una vez temriando esto matar render terrains
-    SDL_Surface* sur = surface->getRenderableSurface();
-    int total_width = sur->w;
-    int total_height = sur->h;
-    int tile_size_pix_x = total_width/100;
-    int tile_size_pix_y = total_height/100;
+SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface, position_t position, int vision_width, int vision_height) {
+    int tile_size_pix_x = surface->getRenderableSurface()->w/100;
+    int tile_size_pix_y = surface->getRenderableSurface()->h/100;
     SDL_Rect src_rect;
-    src_rect.x = tile_size_pix_x*(positon.x-4);
-    src_rect.y = tile_size_pix_y*(positon.y-4);
-    src_rect.w = tile_size_pix_x*9;
-    src_rect.h = tile_size_pix_y*9;
+    src_rect.x = tile_size_pix_x*(position.x-(vision_width/2));
+    src_rect.y = tile_size_pix_y*(position.y-(vision_height/2));
+    src_rect.w = tile_size_pix_x*vision_width;
+    src_rect.h = tile_size_pix_y*vision_height;
+    return src_rect;
+}
+
+void SDLWindow::renderWorld(Surface* surface,  position_t positon,
+                            int vision_width, int vision_height) {
+    //todo una vez temriando esto matar render terrains
+    SDL_Rect src_rect =
+            getFrameRectByPosition(surface, positon,
+                    vision_width, vision_height);
 
     SDL_BlitScaled(surface->getRenderableSurface(), &src_rect,
                    getSurface(), &measurements.worldStaticRect);

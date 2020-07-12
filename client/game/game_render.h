@@ -57,6 +57,7 @@ public:
     void renderInventoryGolds(uint16_t quantity);
     void renderGameFrame();
     void renderList(list_t list);
+    void renderWorld(position_t position);
 
 
     //Inicializador de SDL

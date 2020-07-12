@@ -98,10 +98,12 @@ public:
     void renderInventoryGolds(Surface* surface, Surface* quantity);
     void renderText(Surface* surface);
     void renderLevel(Surface* level_surface);
-    void renderWorld(Surface* surface, position_t positon);
+    void renderWorld(Surface* surface, position_t positon,
+            int vision_width, int vision_height);
 
 
-        //Consultas a elementos o sectores renderizados
+        //Consultas a elementos o sectores renderizado
+    SDL_Rect getFrameRectByPosition(Surface* surface, position_t position, int vision_width, int vision_height);
     int getRenderedItemIndexByPosition(int x, int y, size_t inventory_length);
     int getRenderedListIndexByPosition(int x, int y, size_t inventory_length);
     int getRenderedEquipedTypeByPosition(int x, int y);
