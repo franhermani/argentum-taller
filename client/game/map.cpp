@@ -211,6 +211,29 @@ std::vector<gold_t> Map::getRenderableGolds() {
 }
 
 
+std::vector<attack_t> Map::getRenderableAttacks() {
+    player_t main_player = getMainPlayer();
+    std::vector<attack_t> visible_attacks;
+    //traducimos posiciones a la vision del jugador y
+    // nos quedamos con los items que esten
+    //dentro del rango de vision del principal
+    for (auto& attack: world.attacks) {
+        if (not betweenPlayerBorders(attack.pos.x, attack.pos.y)) {
+            continue;
+        } else {
+            attack_t converted_attack = attack;
+            converted_attack.pos.x = attack.pos.x - getPlayerXStart(main_player);
+            if (converted_attack.pos.x < 0) converted_attack.pos.x = 0;
+            converted_attack.pos.y = attack.pos.y - getPlayerYStart(main_player);
+            if (converted_attack.pos.y < 0) converted_attack.pos.y = 0;
+            visible_attacks.push_back(converted_attack);
+        }
+    }
+    return visible_attacks;
+}
+
+
+
 std::vector<item_t> Map::getRenderableItems() {
     player_t main_player = getMainPlayer();
     std::vector<item_t> visible_items;
@@ -342,6 +365,7 @@ client_world_t Map::getCurrentWorld() {
     current_world.creatures = getRenderableCreatures();
     current_world.npcs = getRenderableNpcs();
     current_world.percentages = getPercentages();
+    current_world.attacks = getRenderableAttacks();
     current_world.list = list;
 
     return std::move(current_world);
