@@ -185,9 +185,9 @@ void GameRender::run() {
     while (keepRunning) {
         auto start = clock::now();
 
+
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
-        //renderTerrain(current_world.terrains);
         renderWorld(current_world.main_player.pos);
         renderItems(current_world.items);
         renderPlayers(current_world.players);
