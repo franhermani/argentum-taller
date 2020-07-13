@@ -5,12 +5,13 @@
 WindowMeasurements::WindowMeasurements() {}
 
 
-void WindowMeasurements::initialize(int numberOfTilesInWidth,
-        int numberOfTilesInHeight, int screenWidth, int screenHeight) {
-    numberOfTilesInWidth = numberOfTilesInWidth;
-    numberOfTilesInHeight = numberOfTilesInHeight;
-    screenWidth = screenWidth;
-    screenHeight = screenHeight;
+void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
+        int receivedNumberOfTilesInHeight, int receivedScreenWidth,
+        int receivedScreenHeight) {
+    numberOfTilesInWidth = receivedNumberOfTilesInWidth;
+    numberOfTilesInHeight = receivedNumberOfTilesInHeight;
+    screenWidth = receivedScreenWidth;
+    screenHeight = receivedScreenHeight;
     frame = {screenWidth / 50, (screenWidth / 4) * 3,
              screenHeight / 5, (screenHeight / 100) * 99};
 
@@ -25,6 +26,13 @@ void WindowMeasurements::initialize(int numberOfTilesInWidth,
 }
 
 void WindowMeasurements::initializeStaticAreas() {
+
+    //TODO ver si frame sigue teniendo sentido que exista
+    worldStaticRect.x = frame.x_pixel_begin;
+    worldStaticRect.y = frame.y_pixel_begin;
+    worldStaticRect.w = frame.x_pixel_end - frame.x_pixel_begin;
+    worldStaticRect.h = frame.y_pixel_end - frame.y_pixel_begin;
+
     gameFrameStaticRect.x = 0;
     gameFrameStaticRect.y = 0;
     gameFrameStaticRect.w = screenWidth;

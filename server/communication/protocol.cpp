@@ -65,37 +65,16 @@ void ServerProtocol::sendBlocksAround(int width, int height) {
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 
-void ServerProtocol::sendMatrix(WorldMonitor &world_monitor) {
-    std::vector<std::vector<Terrain>> matrix = world_monitor.getMatrix();
-    int width = world_monitor.getWidth();
-    int height = world_monitor.getHeight();
-    int matrix_length = width * height;
-
-    // ------------------------- //
-    // Carga del struct matrix_t //
-    // ------------------------- //
-
-    matrix_t m;
-    m.length = htons(2 * SIZE_16 + matrix_length * SIZE_8);
-    m.width = htons(width);
-    m.height = htons(height);
-
-    // ------------------------- //
-    // Carga del struct byte_msg //
-    // ------------------------- //
+void ServerProtocol::sendMapDimensions(WorldMonitor &world_monitor) {
+    uint16_t width = htons(world_monitor.getWidth());
+    uint16_t height = htons(world_monitor.getHeight());
 
     std::vector<char> byte_msg;
-    byte_msg.resize(3 * SIZE_16 + matrix_length);
-    memcpy(&byte_msg[0], &m.length, SIZE_16);
-    memcpy(&byte_msg[2], &m.width, SIZE_16);
-    memcpy(&byte_msg[4], &m.height, SIZE_16);
+    byte_msg.resize(2 * SIZE_16);
 
-    int i, j, k = 0;
-    for (i = 0; i < height; i ++) {
-        for (j = 0; j < width; j ++) {
-            byte_msg[6+(k++)] = matrix[i][j];
-        }
-    }
+    memcpy(&byte_msg[0], &width, SIZE_16);
+    memcpy(&byte_msg[SIZE_16], &height, SIZE_16);
+
     socket.sendBytes(byte_msg.data(), byte_msg.size());
 }
 

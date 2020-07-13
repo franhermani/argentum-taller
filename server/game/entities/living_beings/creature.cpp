@@ -100,7 +100,8 @@ void Creature::moveTo(position_t player_pos) {
     bool move_available = true;
 
     while ((! world.inMapBoundaries(new_pos)) ||
-          (world.entityInCollision(new_pos))) {
+           (world.inSafePosition(new_pos)) ||
+           (world.entityInCollision(new_pos))) {
         if (tries_remaining.empty()) {
             move_available = false;
             break;
@@ -128,10 +129,9 @@ void Creature::die() {
     isAlive = false;
 }
 
-// TODO: enviarlos a un cementerio, no a una posicion aleatoria
 void Creature::respawn() {
     dropItemOrGold();
-    pos = world.loadCreaturePosition();
+    pos = world.loadCreaturePositionInCemetery();
     isAlive = true;
 }
 
@@ -158,6 +158,7 @@ void Creature::dropItemOrGold() {
 
 void Creature::moveAndAttackPlayers() {
     position_t player_pos = world.getClosestPlayerPos(pos);
+
     bool in_attack_range = world.distanceInBlocks(
             pos, player_pos) <= attackRange;
 

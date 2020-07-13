@@ -28,9 +28,6 @@ public:
     // de todos los players y npcs
     void update(int ms);
 
-    // Devuelve la matriz del mapa completo
-    std::vector<std::vector<Terrain>> getMatrix();
-
     // Devuelve un vector de todos los npcs
     std::vector<NPC*> getNPCs();
 

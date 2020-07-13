@@ -18,11 +18,6 @@ void WorldMonitor::update(int ms) {
     world.update(ms);
 }
 
-std::vector<std::vector<Terrain>> WorldMonitor::getMatrix() {
-    std::unique_lock<std::mutex> lk(m);
-    return world.getMatrix();
-}
-
 std::vector<NPC *> WorldMonitor::getNPCs() {
     std::unique_lock<std::mutex> lk(m);
     return world.getNPCs();

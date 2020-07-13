@@ -3,7 +3,7 @@
     "port": "8080"
   },
   "game_params": {
-    "world_path": "../server/config/world_test.json",
+    "world_path": "../tiled/world.json",
     "ms_per_update": 60,
     "ms_per_send": 120,
     "blocks_around_player": {
@@ -12,10 +12,10 @@
     },
     "player": {
       "life": {
-        "initial_percentage": 0.25
+        "initial_percentage": 0.5
       },
       "mana": {
-        "initial_percentage": 0.25
+        "initial_percentage": 0.5
       },
       "gold": {
         "initial_percentage": 0.25,
@@ -65,15 +65,8 @@
       }
     },
     "npcs": {
-      "priest": {
-        "quantity": 3
-      },
       "merchant": {
-        "quantity": 3,
         "max_items": 8
-      },
-      "banker": {
-        "quantity": 3
       }
     },
     "creatures": {
@@ -101,7 +94,7 @@
         }
       },
       "goblin": {
-        "quantity": 3,
+        "quantity": 25,
         "max_life": 50,
         "min_defense": 5,
         "max_defense": 10,
@@ -112,7 +105,7 @@
         "respawn_velocity": 2000
       },
       "skeleton": {
-        "quantity": 3,
+        "quantity": 25,
         "max_life": 50,
         "min_defense": 7,
         "max_defense": 12,
@@ -123,7 +116,7 @@
         "respawn_velocity": 2000
       },
       "zombie": {
-        "quantity": 3,
+        "quantity": 25,
         "max_life": 40,
         "min_defense": 3,
         "max_defense": 8,
@@ -134,7 +127,7 @@
         "respawn_velocity": 2000
       },
       "spider": {
-        "quantity": 3,
+        "quantity": 25,
         "max_life": 80,
         "min_defense": 5,
         "max_defense": 10,

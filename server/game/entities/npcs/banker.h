@@ -11,7 +11,7 @@ class Banker : public NPC {
 
 public:
     // Constructor
-    Banker(Bank& bank, position_t new_pos, const int orient);
+    Banker(Bank& bank, position_t new_pos);
 
     // Constructor y asignacion por copia deshabilitados
     Banker(const Banker& other) = delete;
@@ -38,11 +38,12 @@ public:
     // Retira el item del player del banco
     void withdrawItem(Player& player, const int type) override;
 
-    // Deposita la cantidad recibida de oro del player en el banco
-    void depositGold(Player& player, const int quant) override;
+    // Deposita el oro en exceso del player en el banco
+    void depositGold(Player& player) override;
 
-    // Retira la cantidad recibida de oro del player del banco
-    void withdrawGold(Player& player, const int quant) override;
+    // Retira oro del player del banco
+    // Retira el maximo entre el oro en el banco y el oro seguro disponible
+    void withdrawGold(Player& player) override;
 
     // Lista los items y la cantidad de oro que tiene el player en el banco
     list_t listItems(Player& player) const override;

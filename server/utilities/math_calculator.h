@@ -2,6 +2,7 @@
 #define MATH_H
 
 #include <vector>
+#include "../../common/defines/position.h"
 
 class Math {
 public:
@@ -13,6 +14,9 @@ public:
 
     // Devuelve un sub-vector random de largo n del vector recibido
     std::vector<int> randomVector(const std::vector<int>& v, const int n);
+
+    // Devuelve una posicion aleatoria segun el vector recibido
+    position_t randomPosition(const std::vector<position_t>& p);
 
     // Devuelve el promedio entre 'a' y 'b'
     const double average(const double a, const double b);

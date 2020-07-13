@@ -15,10 +15,11 @@ void ConnectionReceiver::run() {
     try {
         int username_id = protocol.receiveUsernameId();
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
-        matrix_t matrix = protocol.receiveMatrix();
+        // TODO: pasarle esto al mapMonitor
+        std::vector<int> map_dimensions = protocol.receiveMapDimensions();
         npcs_t npcs = protocol.receiveNPCs();
-        mapMonitor.initialize(username_id, blocks_around,
-                matrix, npcs);
+
+        mapMonitor.initialize(username_id, blocks_around, npcs, map_dimensions);
 
         std::string game_message;
 
@@ -28,8 +29,6 @@ void ConnectionReceiver::run() {
             if (game_message.empty()) {
                 // Do nothing
             }
-
-            // TODO: mandar estos al mapMonitor o gameRender en un struct
             list_t list = protocol.receiveItemsList();
             mapMonitor.updateWorld(std::move(world), std::move(list));
         }

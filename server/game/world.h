@@ -21,9 +21,13 @@ class World {
     GameParams& params;
     ItemFactory& itemFactory;
     std::map<int, ProtectedQueue<std::string>>& messagesQueuePerPlayer;
-    std::vector<std::vector<Terrain>> matrix;
-    std::set<Terrain> entitiesImpenetrableTerrains;
-    std::set<Terrain> attacksImpenetrableTerrains;
+    std::vector<position_t> unsafePositions,
+                            safePositions,
+                            impenetrablePositions,
+                            cemeteryPositions,
+                            priestsPositions,
+                            merchantsPositions,
+                            bankersPositions;
     std::vector<Player*> players;
     std::vector<Creature*> creatures;
     std::vector<NPC*> npcs;
@@ -33,25 +37,29 @@ class World {
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
 
-    // Llena el vector de terrenos impenetrables por un player o criatura
-    void loadEntitiesImpenetrableTerrains();
+    // Llena el vector de posiciones de sacerdotes
+    void loadPriestsPositions();
 
-    // Llena el vector de terrenos impenetrables por un ataque
-    void loadAttacksImpenetrableTerrains();
+    // Llena el vector de posiciones de comerciantes
+    void loadMerchantsPositions();
 
-    // Llena la matriz (mapa) segun el json generado por Tiled
-    void loadMatrix();
+    // Llena el vector de posiciones de banqueros
+    void loadBankersPositions();
+
+    // Llena el vector de posiciones de zonas inseguras
+    void loadUnsafePositions();
+
+    // Llena el vector de posiciones de zonas seguras
+    void loadSafePositions();
+
+    // Llena el vector de posiciones del cementerio de criaturas
+    void loadCemeteryPositions();
+
+    // Llena el vector de posiciones de terrenos impenetrables
+    void loadImpenetrablePositions();
 
     // Determina si una posicion (x,y) esta dentro de los limites de 'player'
     const bool inPlayerBoundaries(Player& player, position_t new_pos);
-
-    // Determina si hay un terreno impenetrable por una entidad
-    // en la posicion (x,y)
-    const bool entityImpenetrableTerrainInPosition(position_t new_pos);
-
-    // Determina si hay un terreno impenetrable por un ataque
-    // en la posicion (x,y)
-    const bool attackImpenetrableTerrainInPosition(position_t new_pos);
 
     // Determina si hay un player en la posicion (x,y)
     const bool playerInPosition(position_t new_pos);
@@ -109,9 +117,6 @@ public:
     // Devuelve los bloques de vision del player (en alto)
     const int getPlayerHeight();
 
-    // Devuelve la matriz del mapa completo
-    std::vector<std::vector<Terrain>> getMatrix() const;
-
     // Devuelve un vector de todos los npcs
     std::vector<NPC*> getNPCs() const;
 
@@ -143,6 +148,12 @@ public:
 
     // Determina si la posicion (x,y) esta dentro de los limites del mapa
     const bool inMapBoundaries(position_t new_pos);
+
+    // Determina si hay un terreno impenetrable en la posicion (x,y
+    const bool inImpenetrablePosition(position_t new_pos);
+
+    // Determina si hay un terreno seguro en la posicion (x,y)
+    const bool inSafePosition(position_t new_pos);
 
     // Determina si hay una colision de entidad en la posicion (x,y)
     const bool entityInCollision(position_t new_pos);
@@ -212,8 +223,26 @@ public:
     // Devuelve una posicion random para una criatura fuera de una zona segura
     position_t loadCreaturePosition();
 
-    // Devuelve una posicion random para un NPC dentro de una zona segura
-    position_t loadNPCPosition();
+    // Devuelve una posicion random para una criatura dentro del cementerio
+    position_t loadCreaturePositionInCemetery();
+
+    // Devuelve la cantidad de sacerdotes en el mapa
+    const int getNumberOfPriests() const;
+
+    // Devuelve la cantidad de comerciantes en el mapa
+    const int getNumberOfMerchants() const;
+
+    // Devuelve la cantidad de banqueros en el mapa
+    const int getNumberOfBankers() const;
+
+    // Devuelve una posicion para un sacerdote
+    position_t loadPriestPosition();
+
+    // Devuelve una posicion para un comerciante
+    position_t loadMerchantPosition();
+
+    // Devuelve una posicion para un banquero
+    position_t loadBankerPosition();
 };
 
 #endif // GAME_WORLD_H

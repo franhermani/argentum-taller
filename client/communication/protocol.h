@@ -31,11 +31,11 @@ public:
     // Recibe el id del username
     const int receiveUsernameId();
 
-    // Recibe la vision del player medida en bloques (alto y ancho)
+    // Recibe la vision del player en bloques (alto y ancho)
     const std::vector<int> receiveBlocksAround();
 
-    // Recibe la matriz (vector de terrenos)
-    matrix_t receiveMatrix();
+    // Recibe las dimensiones del mapa en bloques (alto y ancho)
+    const std::vector<int> receiveMapDimensions();
 
     // Recibe la lista de NPCs
     npcs_t receiveNPCs();

@@ -4,6 +4,7 @@
 #include <vector>
 #include <queue>
 #include "living_being.h"
+#include "../../../utilities/math_calculator.h"
 
 class World;
 class Player;
@@ -12,6 +13,7 @@ class Equations;
 class Creature : public LivingBeing{
     World& world;
     Equations& equations;
+    Math math;
     int type;
     int attackRange;
     int moveVelocity, attackVelocity, respawnVelocity;
@@ -36,7 +38,7 @@ class Creature : public LivingBeing{
     // en orden de conveniencia
     std::queue<int> getMovementPriorities(position_t player_pos);
 
-    // Mueve a la criatura
+    // Mueve a la criatura en direccion al player
     void moveTo(position_t player_pos);
 
     // Cambia la orientacion de la criatura apuntando al player

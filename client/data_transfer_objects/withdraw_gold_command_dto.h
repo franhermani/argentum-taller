@@ -5,13 +5,12 @@
 #include "command_dto.h"
 
 class WithdrawGoldCommandDTO : public CommandDTO {
-    uint16_t quantity;
     uint16_t bankerPosX, bankerPosY;
 
 public:
     // Constructor
-    WithdrawGoldCommandDTO(const uint16_t quantity,
-            const uint16_t banker_pos_x, const uint16_t banker_pos_y);
+    WithdrawGoldCommandDTO(const uint16_t banker_pos_x,
+            const uint16_t banker_pos_y);
 
     // Constructor y asignacion por copia deshabilitados
     WithdrawGoldCommandDTO(const WithdrawGoldCommandDTO&) = delete;

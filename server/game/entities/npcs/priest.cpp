@@ -2,13 +2,14 @@
 #include <netinet/in.h>
 #include "priest.h"
 #include "../../../../common/defines/npcs.h"
+#include "../../../../common/defines/commands.h"
 #include "../../game_exception.h"
 
-Priest::Priest(ItemFactory& item_factory, position_t new_pos,
-        const int orient) : itemFactory(item_factory) {
+Priest::Priest(ItemFactory& item_factory, position_t new_pos) :
+itemFactory(item_factory) {
     type = PRIEST;
     pos = new_pos;
-    orientation = orient;
+    orientation = DOWN;
 
     items = {VARA_FRESNO, FLAUTA_ELFICA, BACULO_NUDOSO, BACULO_ENGARZADO,
              POCION_VIDA, POCION_MANA};
@@ -50,12 +51,12 @@ void Priest::withdrawItem(Player &player, const int type) {
                                    "acceso al banco");
 }
 
-void Priest::depositGold(Player &player, const int quant) {
+void Priest::depositGold(Player &player) {
     throw GameException(player.id, "Un sacerdote no tiene"
                                    "acceso al banco");
 }
 
-void Priest::withdrawGold(Player &player, const int quant) {
+void Priest::withdrawGold(Player &player) {
     throw GameException(player.id, "Un sacerdote no tiene"
                                    "acceso al banco");
 }

@@ -10,10 +10,10 @@ MapMonitor::~MapMonitor() {}
 
 //inicializa matriz
 void MapMonitor::initialize(int username_id,
-        std::vector<int>& blocks_around, matrix_t& received_matrix,
-        npcs_t& npcs) {
+        std::vector<int>& blocks_around,
+        npcs_t& npcs, std::vector<int>& map_dimensions) {
     std::unique_lock<std::mutex> lk(m);
-    map.initialize(username_id, blocks_around, received_matrix, npcs);
+    map.initialize(username_id, blocks_around, npcs, map_dimensions);
 }
 
 //actualiza el vector de jugadores
@@ -59,6 +59,10 @@ std::vector<int> MapMonitor::getGoldStandingAt() {
 client_world_t MapMonitor::getCurrentWorld() {
     std::unique_lock<std::mutex> lk(m);
     return std::move(map.getCurrentWorld());
+}
+
+std::vector<int> MapMonitor::getDimensions(){
+    return std::move(map.getDimensions());
 }
 
 

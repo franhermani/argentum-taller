@@ -66,22 +66,16 @@ Command* CommandFactory::operator()(Player& player, int type,
                 ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_DEPOSIT_GOLD) {
-        uint16_t quantity;
         uint16_t pos_x, pos_y;
-        memcpy(&quantity, arguments.data(), SIZE_16);
-        memcpy(&pos_x, arguments.data() + SIZE_16, SIZE_16);
-        memcpy(&pos_y, arguments.data() + SIZE_16 + SIZE_16, SIZE_16);
-        return new DepositGoldCommand(player, quantity,
-                ntohs(pos_x), ntohs(pos_y));
+        memcpy(&pos_x, arguments.data(), SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
+        return new DepositGoldCommand(player, ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_WITHDRAW_GOLD) {
-        uint16_t quantity;
         uint16_t pos_x, pos_y;
-        memcpy(&quantity, arguments.data(), SIZE_16);
-        memcpy(&pos_x, arguments.data() + SIZE_16, SIZE_16);
-        memcpy(&pos_y, arguments.data() + SIZE_16 + SIZE_16, SIZE_16);
-        return new WithdrawGoldCommand(player, quantity,
-                ntohs(pos_x), ntohs(pos_y));
+        memcpy(&pos_x, arguments.data(), SIZE_16);
+        memcpy(&pos_y, arguments.data() + SIZE_16, SIZE_16);
+        return new WithdrawGoldCommand(player, ntohs(pos_x), ntohs(pos_y));
 
     } else if (type == CMD_LIST) {
         uint16_t pos_x, pos_y;

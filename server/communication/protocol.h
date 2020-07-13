@@ -33,11 +33,11 @@ public:
     // Envia el id del username para que el cliente lo almacene
     void sendUsernameId(Player& player);
 
-    // Envia la vision del player medida en bloques (alto y ancho)
+    // Envia la vision del player en bloques (alto y ancho)
     void sendBlocksAround(int width, int height);
 
-    // Envia la matriz de terrenos a traves del socket
-    void sendMatrix(WorldMonitor& world_monitor);
+    // Envia las dimensiones del mapa en bloques (alto y ancho)
+    void sendMapDimensions(WorldMonitor& world_monitor);
 
     // Envia la lista de NPCs a traves del socket
     void sendNPCs(WorldMonitor& world_monitor);

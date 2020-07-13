@@ -8,8 +8,6 @@
 #define SIZE_8                      sizeof(uint8_t)
 #define SIZE_16                     sizeof(uint16_t)
 #define SIZE_32                     sizeof(uint32_t)
-#define STATIC_TERRAIN_PART_SIZE    6
-#define HEIGHT_PLUS_WIDTH_SIZE      4
 
 ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 
@@ -28,14 +26,14 @@ void ClientProtocol::sendCommand(CommandDTO& command) {
 void ClientProtocol::sendPlayerInfo(const std::string& username,
         const uint8_t race_type, const uint8_t class_type) {
     // Longitud total
-    size_t total_size = 3*SIZE_8 + username.length();
+    size_t total_size = 3 * SIZE_8 + username.length();
 
     // Vector serializado
     std::vector<char> byte_msg;
     byte_msg.resize(total_size);
 
     // Longitud del username
-    byte_msg[0] = 2*SIZE_8 + username.length();
+    byte_msg[0] = 2 * SIZE_8 + username.length();
 
     // Raza
     byte_msg[1] = race_type;
@@ -52,77 +50,56 @@ void ClientProtocol::sendPlayerInfo(const std::string& username,
 
 const int ClientProtocol::receiveUsernameConfirmation() {
     std::vector<char> code;
-    code.resize(SIZE_8);
-    socket.receiveBytes(code.data(), SIZE_8);
+    int message_length = SIZE_8;
+
+    code.resize(message_length);
+    socket.receiveBytes(code.data(), message_length);
     return (int) code[0];
 }
 
 const int ClientProtocol::receiveUsernameId() {
     std::vector<char> byte_msg;
     uint16_t id;
-    byte_msg.resize(SIZE_16);
-    socket.receiveBytes(byte_msg.data(), SIZE_16);
-    memcpy(&id, byte_msg.data(), SIZE_16);
+    int message_length = SIZE_16;
+
+    byte_msg.resize(message_length);
+    socket.receiveBytes(byte_msg.data(), message_length);
+    memcpy(&id, byte_msg.data(), message_length);
     return ntohs(id);
 }
 
 const std::vector<int> ClientProtocol::receiveBlocksAround() {
     std::vector<char> byte_msg;
     std::vector<int> blocks;
-    byte_msg.resize(SIZE_16);
-    socket.receiveBytes(byte_msg.data(), SIZE_16);
+    int message_length = SIZE_16;
 
-    blocks.resize(SIZE_16);
+    byte_msg.resize(message_length);
+    socket.receiveBytes(byte_msg.data(), message_length);
+
+    blocks.resize(message_length);
     blocks[0] = (int) byte_msg[0];
     blocks[1] = (int) byte_msg[1];
 
     return std::move(blocks);
 }
 
-matrix_t ClientProtocol::receiveMatrix() {
-    matrix_t m;
 
-    // Parte estatica
-    std::vector<char> matrix_data_buffer(STATIC_TERRAIN_PART_SIZE, 0);
-    socket.receiveBytes(matrix_data_buffer.data(), STATIC_TERRAIN_PART_SIZE);
+const std::vector<int> ClientProtocol::receiveMapDimensions() {
+    std::vector<char> byte_msg;
+    std::vector<int> blocks;
+    int message_length = 2 * SIZE_16;
 
-    int bytes_advanced = 0;
+    byte_msg.resize(message_length);
+    socket.receiveBytes(byte_msg.data(), message_length);
 
-    // Longitud del vector de terrenos
-    uint16_t length;
-    memcpy(&length, matrix_data_buffer.data() + bytes_advanced, SIZE_16);
-    m.length = ntohs(length);
-    bytes_advanced += SIZE_16;
-
-    // Ancho de la matriz
+    blocks.resize(2* sizeof(int));
     uint16_t width;
-    memcpy(&width, matrix_data_buffer.data() + bytes_advanced, SIZE_16);
-    m.width = ntohs(width);
-    bytes_advanced += SIZE_16;
-
-    // Alto de la matriz
+    memcpy(&width, byte_msg.data(), SIZE_16);
+    blocks[0] = ntohs(width);
     uint16_t height;
-    memcpy(&height, matrix_data_buffer.data() + bytes_advanced, SIZE_16);
-    m.height = ntohs(height);
-
-    int matrix_length = m.length - HEIGHT_PLUS_WIDTH_SIZE;
-
-    std::vector<char> matrix_buffer(matrix_length,0);
-    socket.receiveBytes(matrix_buffer.data(), matrix_length);
-
-    // Vector de terrenos
-    std::vector<Terrain> terrains;
-    terrains.resize(m.height * m.width);
-
-    int i, current_index = 0;
-    for (i = 0; i < m.height * m.width; i++) {
-        auto terrain_type = (uint8_t) matrix_buffer[current_index];
-        terrains[i] = static_cast<Terrain>(terrain_type);
-        current_index++;
-    }
-    m.terrains = terrains;
-    
-    return std::move(m);
+    memcpy(&height, byte_msg.data()+SIZE_16, SIZE_16);
+    blocks[1] = ntohs(height);
+    return std::move(blocks);
 }
 
 npcs_t ClientProtocol::receiveNPCs() {
@@ -672,36 +649,40 @@ list_t ClientProtocol::receiveItemsList() {
     socket.receiveBytes(item_static_buffer.data(), item_static_buffer.size());
 
     int bytes_advanced = 0;
+
     uint8_t show_price;
     memcpy(&show_price, item_static_buffer.data() + bytes_advanced, SIZE_8);
     list.show_price = show_price;
     bytes_advanced += SIZE_8;
+
     uint16_t gold_quantity;
     memcpy(&gold_quantity, item_static_buffer.data() + bytes_advanced,
             SIZE_16);
     list.gold_quantity = ntohs(gold_quantity);
     bytes_advanced += SIZE_16;
+
     uint16_t num_items;
     memcpy(&num_items, item_static_buffer.data() + bytes_advanced, SIZE_16);
     list.num_items = ntohs(num_items);
     bytes_advanced += SIZE_16;
 
-    if (list.num_items == 0) {
+    if (list.num_items == 0)
         return list;
-    }
 
     bytes_advanced = 0;
     int size = (SIZE_8 + SIZE_16) * list.num_items;
     std::vector<char> item_buffer(size, 0);
     socket.receiveBytes(item_buffer.data(), item_buffer.size());
-    int i;
+
     std::vector<list_item_t> items;
+    int i;
     for (i = 0; i < list.num_items; i ++) {
         list_item_t item;
         uint8_t type;
         memcpy(&type, item_buffer.data() + bytes_advanced, SIZE_8);
         item.type = type;
         bytes_advanced += SIZE_8;
+
         uint16_t price;
         memcpy(&price, item_buffer.data() + bytes_advanced, SIZE_16);
         item.price = ntohs(price);

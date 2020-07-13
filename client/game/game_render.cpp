@@ -48,13 +48,6 @@ int GameRender::init() {
     return true;
 }
 
-
-void GameRender::renderTerrain(std::vector<std::vector<Terrain>>& matrix) {
-    surfacesManager.createNecessaryTerrains(matrix);
-    window.renderTerrain(matrix, surfacesManager.terrainSurfacesMap);
-}
-
-
 void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
@@ -103,6 +96,16 @@ void GameRender::renderEquipped(player_t& player) {
 }
 
 
+void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
+    surfacesManager.createNecessaryAttacks(attacks);
+    for (auto it = std::begin(attacks);
+         it != std::end(attacks); ++it) {
+        window.renderMapObject(it->pos.x, it->pos.y,
+                               surfacesManager.attackSurfacesMap[it->type][it->orientation]);
+    }
+}
+
+
 void GameRender::renderItems(std::vector<item_t> &items) {
     surfacesManager.createNecessaryItems(items);
     for (auto it = std::begin(items);
@@ -118,6 +121,11 @@ void GameRender::renderGolds(std::vector<gold_t> &golds) {
         window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.goldSurface);
     }
+}
+
+void GameRender::renderWorld(position_t position) {
+    window.renderWorld(surfacesManager.worldSurface,
+        position, mapDimensions[0], mapDimensions[1]);
 }
 
 void GameRender::renderGameFrame() {
@@ -146,7 +154,7 @@ void GameRender::setTilesSize(int width,int height) {
 }
 
 void GameRender::renderList(list_t list) {
-    if ((list.num_items == 0) && (list.gold_quantity == 0)) return;
+    //if ((list.num_items == 0) && (list.gold_quantity == 0)) return;
     surfacesManager.createNecessaryListItems(list.items);
     std::vector<Surface*> surfaces;
     for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
@@ -174,15 +182,17 @@ void GameRender::run() {
     std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
     blocksWidth = mapMonitor.getPlayerVisionWidth();
     blocksHeight = mapMonitor.getPlayerVisionHeight();
+    mapDimensions = mapMonitor.getDimensions();
     window.setTilesSize(blocksWidth,blocksHeight);
 
 
     while (keepRunning) {
         auto start = clock::now();
 
+
         renderGameFrame();
         current_world = mapMonitor.getCurrentWorld();
-        renderTerrain(current_world.terrains);
+        renderWorld(current_world.main_player.pos);
         renderItems(current_world.items);
         renderPlayers(current_world.players);
         renderNpcs(current_world.npcs);
@@ -190,10 +200,11 @@ void GameRender::run() {
         renderInventory(current_world.player_info.inventory.items);
         renderInventoryGolds(current_world.player_info.actual_gold);
         renderEquipped(current_world.main_player);
+        renderAttacks(current_world.attacks);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages,
                 current_world.main_player.level);
-        renderList(current_world.list);
+        if (mapMonitor.isInteracting()) renderList(current_world.list);
         window.UpdateWindowSurface();
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();

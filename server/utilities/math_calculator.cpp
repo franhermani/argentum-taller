@@ -23,6 +23,11 @@ std::vector<int> Math::randomVector(const std::vector<int> &v, const int n) {
     return std::vector<int>(random_v.begin(), random_v.begin() + n);
 }
 
+position_t Math::randomPosition(const std::vector<position_t>& p) {
+    int index = randomInt(0, p.size());
+    return p[index];
+}
+
 const double Math::average(const double a, const double b) {
     return (a + b)/2;
 }
