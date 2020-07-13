@@ -2,12 +2,13 @@
 #include <netinet/in.h>
 #include "banker.h"
 #include "../../../../common/defines/npcs.h"
+#include "../../../../common/defines/commands.h"
 #include "../../game_exception.h"
 
-Banker::Banker(Bank& bank, position_t new_pos, const int orient) : bank(bank) {
+Banker::Banker(Bank& bank, position_t new_pos) : bank(bank) {
     type = BANKER;
     pos = new_pos;
-    orientation = orient;
+    orientation = DOWN;
 }
 
 Banker::~Banker() = default;

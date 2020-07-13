@@ -3,14 +3,15 @@
 #include <netinet/in.h>
 #include "merchant.h"
 #include "../../../../common/defines/npcs.h"
+#include "../../../../common/defines/commands.h"
 #include "../../game_exception.h"
 
 Merchant::Merchant(ItemFactory& item_factory, position_t new_pos,
-        const int orient, const int max_items) :
+        const int max_items) :
         itemFactory(item_factory), maxItems(max_items) {
     type = MERCHANT;
     pos = new_pos;
-    orientation = orient;
+    orientation = DOWN;
 
     std::vector<int> all_items =
             {ESPADA, HACHA, MARTILLO, ARCO_SIMPLE, ARCO_COMPUESTO,

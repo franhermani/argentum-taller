@@ -92,26 +92,26 @@ void GameManager::removeUsername(const std::string& username) {
 }
 
 void GameManager::spawnNPCs() {
-    json js = params.getConfigParams()["npcs"];
+    int merchant_max_items = params.getConfigParams()["npcs"]
+            ["merchant"]["max_items"];
 
-    int num_priests = js["priest"]["quantity"],
-        num_merchants = js["merchant"]["quantity"],
-        num_bankers = js["banker"]["quantity"];
+    int num_priests = world.getNumberOfPriests(),
+        num_merchants = world.getNumberOfMerchants(),
+        num_bankers = world.getNumberOfBankers();
 
     position_t new_pos{};
     int i;
     for (i = 0; i < num_priests; i ++) {
-        new_pos = world.loadNPCPosition();
-        world.addNPC(new Priest(itemFactory, new_pos, DOWN));
+        new_pos = world.loadPriestPosition();
+        world.addNPC(new Priest(itemFactory, new_pos));
     }
     for (i = 0; i < num_merchants; i ++) {
-        new_pos = world.loadNPCPosition();
-        world.addNPC(new Merchant(itemFactory, new_pos, DOWN,
-                js["merchant"]["max_items"]));
+        new_pos = world.loadMerchantPosition();
+        world.addNPC(new Merchant(itemFactory, new_pos, merchant_max_items));
     }
     for (i = 0; i < num_bankers; i ++) {
-        new_pos = world.loadNPCPosition();
-        world.addNPC(new Banker(bank, new_pos, DOWN));
+        new_pos = world.loadBankerPosition();
+        world.addNPC(new Banker(bank, new_pos));
     }
 }
 

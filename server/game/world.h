@@ -21,10 +21,13 @@ class World {
     GameParams& params;
     ItemFactory& itemFactory;
     std::map<int, ProtectedQueue<std::string>>& messagesQueuePerPlayer;
-    std::vector<position_t> unsafePositions;
-    std::vector<position_t> safePositions;
-    std::vector<position_t> impenetrablePositions;
-    std::vector<position_t> cemeteryPositions;
+    std::vector<position_t> unsafePositions,
+                            safePositions,
+                            impenetrablePositions,
+                            cemeteryPositions,
+                            priestsPositions,
+                            merchantsPositions,
+                            bankersPositions;
     std::vector<Player*> players;
     std::vector<Creature*> creatures;
     std::vector<NPC*> npcs;
@@ -33,6 +36,15 @@ class World {
     std::vector<Attack*> attacks;
     int worldWidth, worldHeight;
     int playerWidth, playerHeight;
+
+    // Llena el vector de posiciones de sacerdotes
+    void loadPriestsPositions();
+
+    // Llena el vector de posiciones de comerciantes
+    void loadMerchantsPositions();
+
+    // Llena el vector de posiciones de banqueros
+    void loadBankersPositions();
 
     // Llena el vector de posiciones de zonas inseguras
     void loadUnsafePositions();
@@ -214,8 +226,23 @@ public:
     // Devuelve una posicion random para una criatura dentro del cementerio
     position_t loadCreaturePositionInCemetery();
 
-    // Devuelve una posicion random para un NPC dentro de una zona segura
-    position_t loadNPCPosition();
+    // Devuelve la cantidad de sacerdotes en el mapa
+    const int getNumberOfPriests() const;
+
+    // Devuelve la cantidad de comerciantes en el mapa
+    const int getNumberOfMerchants() const;
+
+    // Devuelve la cantidad de banqueros en el mapa
+    const int getNumberOfBankers() const;
+
+    // Devuelve una posicion para un sacerdote
+    position_t loadPriestPosition();
+
+    // Devuelve una posicion para un comerciante
+    position_t loadMerchantPosition();
+
+    // Devuelve una posicion para un banquero
+    position_t loadBankerPosition();
 };
 
 #endif // GAME_WORLD_H
