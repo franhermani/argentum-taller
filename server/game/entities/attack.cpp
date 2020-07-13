@@ -34,7 +34,12 @@ void Attack::update(const int ms) {
 
     if (msMoveCounter >= moveVelocity) {
         msMoveCounter = 0;
-        updatePosition();
+
+        if (range == 1) {
+            collision();
+        } else {
+            updatePosition();
+        }
     }
 }
 

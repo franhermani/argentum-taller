@@ -1,4 +1,3 @@
-#include <random>
 #include <vector>
 #include <queue>
 #include "creature.h"
