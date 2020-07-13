@@ -57,6 +57,10 @@ void GameInputHandler::play() {
                             command = handleWithdraw();
                         } else if (key == SDLK_b) {
                             command = handleBuy();
+                        } else if (key == SDLK_s) {
+                            command = handleSell();
+                        } else if (key == SDLK_d) {
+                            command = handleDeposit();
                         } else {
                             continue;
                         }
@@ -79,10 +83,6 @@ void GameInputHandler::play() {
                             command = handleEquip();
                         } else if (key == SDLK_u) {
                             command = handleUnequip();
-                        }  else if (key == SDLK_s) {
-                            command = handleSell();
-                        } else if (key == SDLK_d) {
-                            command = handleDeposit();
                         } else {
                             continue;
                         }
