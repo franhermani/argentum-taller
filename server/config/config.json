@@ -242,7 +242,7 @@
           "max_damage": 5,
           "mana_consumption": 0,
           "range": 1,
-          "move_velocity": 500,
+          "move_velocity": 400,
           "is_magic": false,
           "is_life_restorer": false,
           "price": 50
@@ -253,7 +253,7 @@
           "max_damage": 5,
           "mana_consumption": 0,
           "range": 1,
-          "move_velocity": 1000,
+          "move_velocity": 800,
           "is_magic": false,
           "is_life_restorer": false,
           "price": 60
@@ -264,7 +264,7 @@
           "max_damage": 9,
           "mana_consumption": 0,
           "range": 1,
-          "move_velocity": 700,
+          "move_velocity": 500,
           "is_magic": false,
           "is_life_restorer": false,
           "price": 70
@@ -275,7 +275,7 @@
           "max_damage": 4,
           "mana_consumption": 5,
           "range": 10,
-          "move_velocity": 500,
+          "move_velocity": 300,
           "is_magic": true,
           "is_life_restorer": false,
           "price": 100
@@ -286,7 +286,7 @@
           "max_damage": 0,
           "mana_consumption": 100,
           "range": 10,
-          "move_velocity": 500,
+          "move_velocity": 300,
           "is_magic": true,
           "is_life_restorer": true,
           "price": 110
@@ -297,7 +297,7 @@
           "max_damage": 8,
           "mana_consumption": 15,
           "range": 10,
-          "move_velocity": 500,
+          "move_velocity": 300,
           "is_magic": true,
           "is_life_restorer": false,
           "price": 120
@@ -308,7 +308,7 @@
           "max_damage": 20,
           "mana_consumption": 30,
           "range": 10,
-          "move_velocity": 500,
+          "move_velocity": 300,
           "is_magic": true,
           "is_life_restorer": false,
           "price": 150
@@ -319,7 +319,7 @@
           "max_damage": 4,
           "mana_consumption": 0,
           "range": 8,
-          "move_velocity": 700,
+          "move_velocity": 300,
           "is_magic": false,
           "is_life_restorer": false,
           "price": 50
@@ -330,7 +330,7 @@
           "max_damage": 16,
           "mana_consumption": 0,
           "range": 9,
-          "move_velocity": 600,
+          "move_velocity": 300,
           "is_magic": false,
           "is_life_restorer": false,
           "price": 75

@@ -50,22 +50,6 @@ distanceInMsToPriest(0) {
     maxExcessGold = equations.eqMaxExcessGold(*this);
     actualGold = equations.eqInitialGold(*this);
     pos = world.loadPlayerPosition();
-
-    bool debug = true;
-    if (debug) {
-        std::cout << "Player " << id << " creado!\n" <<
-        "- Pos X: " << pos.x << "\n" <<
-        "- Pos Y: " << pos.y << "\n" <<
-        "- Raza: " << raceType << "\n" <<
-        "- Clase: " << classType << "\n" <<
-        "- Vida maxima: " << maxLife << "\n" <<
-        "- Vida inicial: " << actualLife << "\n" <<
-        "- Mana maxima: " << maxMana << "\n" <<
-        "- Mana inicial: " << actualMana << "\n" <<
-        "- Oro seguro maximo: " << maxSafeGold << "\n" <<
-        "- Oro en exceso maximo: " << maxExcessGold << "\n" <<
-        "- Oro actual: " << actualGold << "\n";
-    }
 }
 
 Player::~Player() {
@@ -411,7 +395,26 @@ void Player::attack() {
         weapon_range = weapon ? weapon->range : NO_WEAPON_RANGE,
         weapon_velocity = weapon ? weapon->moveVelocity : NO_WEAPON_VELOCITY;
 
-    world.addAttack(new Attack(this, weapon_attack_type, pos,
+    position_t attack_pos = pos;
+
+    switch (orientation) {
+        case LEFT:
+            attack_pos.x -= 1;
+            break;
+        case RIGHT:
+            attack_pos.x += 1;
+            break;
+        case DOWN:
+            attack_pos.y += 1;
+            break;
+        case UP:
+            attack_pos.y -= 1;
+            break;
+        default:
+            break;
+    }
+
+    world.addAttack(new Attack(this, weapon_attack_type, attack_pos,
             orientation, weapon_range, weapon_velocity));
 }
 

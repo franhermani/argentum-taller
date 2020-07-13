@@ -44,6 +44,9 @@ class Creature : public LivingBeing{
     // Cambia la orientacion de la criatura apuntando al player
     void orientTo(position_t player_pos);
 
+    // Realiza un ataque en la orientacion de la criatura
+    void attack();
+
     friend class World;
     friend class Equations;
     friend class ServerProtocol;
