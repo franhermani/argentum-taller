@@ -38,7 +38,12 @@ void Banker::depositItem(Player &player, int type) {
     if (! item)
         return;
 
-    bank.depositItem(player.id, item);
+    try {
+        bank.depositItem(player.id, item);
+    } catch (GameException& e) {
+        player.addItemToInventory(item);
+        throw e;
+    }
 }
 
 void Banker::withdrawItem(Player &player, int type) {
@@ -47,7 +52,7 @@ void Banker::withdrawItem(Player &player, int type) {
         player.addItemToInventory(item);
     } catch (GameException& e) {
         depositItem(player, type);
-        throw GameException(player.id, e.what());
+        throw e;
     }
 }
 

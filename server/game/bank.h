@@ -10,10 +10,11 @@ class Bank {
     std::mutex m;
     std::map<int, std::vector<Item*>> itemsPerPlayer;
     std::map<int, int> goldPerPlayer;
+    size_t maxItemsPerPlayer;
 
 public:
     // Constructor
-    Bank();
+    explicit Bank(size_t max_items);
 
     // Constructor y asignacion por copia deshabilitados
     Bank(const Bank& other) = delete;

@@ -10,6 +10,9 @@
       "width": 9,
       "height": 9
     },
+    "bank": {
+      "max_items": 10
+    },
     "player": {
       "life": {
         "initial_percentage": 0.5
@@ -30,7 +33,7 @@
         }
       },
       "inventory": {
-        "max_objects": 10
+        "max_items": 10
       },
       "experience": {
         "limit_eq": {

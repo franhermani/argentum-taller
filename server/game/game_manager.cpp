@@ -18,6 +18,7 @@ itemFactory(params.getConfigParams()["items"]),
 equations(params.getConfigParams()),
 world(params, itemFactory, messagesQueuePerPlayer),
 worldMonitor(world),
+bank(params.getConfigParams()["bank"]["max_items"]),
 msPerSend(params.getConfigParams()["ms_per_send"]) {
     keepRunning = true;
     isRunning = true;

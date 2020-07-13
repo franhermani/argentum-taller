@@ -511,7 +511,7 @@ const int World::distanceInMsToClosestPriest(position_t new_pos,
 }
 
 const int World::getInventoryLength() const {
-    return params.getConfigParams()["player"]["inventory"]["max_objects"];
+    return params.getConfigParams()["player"]["inventory"]["max_items"];
 }
 
 const int World::getMaxLevelNewbie() const {

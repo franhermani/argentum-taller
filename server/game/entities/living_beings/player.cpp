@@ -634,7 +634,7 @@ void Player::takeGoldFromWorld(position_t new_pos) {
         addGold(gold->quantity);
     } catch (GameException& e) {
         world.addGold(gold);
-        throw GameException(id, e.what());
+        throw e;
     }
     delete gold;
 }
@@ -669,7 +669,7 @@ Item* Player::sellItem(const int type) {
         addGold(item->price);
     } catch (GameException& e) {
         inventory.addItem(item);
-        throw GameException(id, e.what());
+        throw e;
     }
     return item;
 }
