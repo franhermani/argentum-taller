@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="grounds" tilewidth="128" tileheight="128" tilecount="87" columns="0">
+<tileset name="grounds" tilewidth="128" tileheight="128" tilecount="115" columns="0">
  <grid orientation="orthogonal" width="1" height="1"/>
  <tile id="0">
   <image width="128" height="128" source="grounds/8128.png"/>
@@ -261,5 +261,89 @@
  </tile>
  <tile id="100">
   <image width="128" height="128" source="grounds/24082.png"/>
+ </tile>
+ <tile id="101">
+  <image width="128" height="100" source="grounds/3650.png"/>
+ </tile>
+ <tile id="102">
+  <image width="64" height="64" source="grounds/8037.png"/>
+ </tile>
+ <tile id="103">
+  <image width="64" height="64" source="grounds/8038.png"/>
+ </tile>
+ <tile id="104">
+  <image width="64" height="64" source="grounds/8039.png"/>
+ </tile>
+ <tile id="105">
+  <image width="64" height="64" source="grounds/8041.png"/>
+ </tile>
+ <tile id="106">
+  <image width="64" height="64" source="grounds/8042.png"/>
+ </tile>
+ <tile id="107">
+  <image width="64" height="64" source="grounds/8043.png"/>
+ </tile>
+ <tile id="108">
+  <image width="64" height="64" source="grounds/8045.png"/>
+ </tile>
+ <tile id="109">
+  <image width="64" height="64" source="grounds/8046.png"/>
+ </tile>
+ <tile id="110">
+  <image width="64" height="64" source="grounds/8047.png"/>
+ </tile>
+ <tile id="111">
+  <image width="64" height="64" source="grounds/8049.png"/>
+ </tile>
+ <tile id="112">
+  <image width="64" height="64" source="grounds/8050.png"/>
+ </tile>
+ <tile id="113">
+  <image width="64" height="64" source="grounds/8051.png"/>
+ </tile>
+ <tile id="114">
+  <image width="128" height="128" source="grounds/8145.png"/>
+ </tile>
+ <tile id="115">
+  <image width="128" height="128" source="grounds/8146.png"/>
+ </tile>
+ <tile id="116">
+  <image width="128" height="128" source="grounds/8147.png"/>
+ </tile>
+ <tile id="117">
+  <image width="128" height="128" source="grounds/8148.png"/>
+ </tile>
+ <tile id="118">
+  <image width="128" height="128" source="grounds/8150.png"/>
+ </tile>
+ <tile id="119">
+  <image width="128" height="128" source="grounds/8151.png"/>
+ </tile>
+ <tile id="120">
+  <image width="128" height="128" source="grounds/8152.png"/>
+ </tile>
+ <tile id="121">
+  <image width="128" height="128" source="grounds/8153.png"/>
+ </tile>
+ <tile id="122">
+  <image width="128" height="128" source="grounds/8154.png"/>
+ </tile>
+ <tile id="123">
+  <image width="128" height="128" source="grounds/8157.png"/>
+ </tile>
+ <tile id="124">
+  <image width="128" height="128" source="grounds/8160.png"/>
+ </tile>
+ <tile id="125">
+  <image width="128" height="128" source="grounds/8161.png"/>
+ </tile>
+ <tile id="126">
+  <image width="128" height="128" source="grounds/8162.png"/>
+ </tile>
+ <tile id="128">
+  <image width="128" height="128" source="grounds/8155.png"/>
+ </tile>
+ <tile id="130">
+  <image width="128" height="128" source="grounds/12079.png"/>
  </tile>
 </tileset>

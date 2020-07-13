@@ -158,6 +158,7 @@ void Creature::dropItemOrGold() {
 
 void Creature::moveAndAttackPlayers() {
     position_t player_pos = world.getClosestPlayerPos(pos);
+
     bool in_attack_range = world.distanceInBlocks(
             pos, player_pos) <= attackRange;
 

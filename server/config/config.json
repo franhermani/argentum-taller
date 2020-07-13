@@ -65,15 +65,8 @@
       }
     },
     "npcs": {
-      "priest": {
-        "quantity": 3
-      },
       "merchant": {
-        "quantity": 3,
         "max_items": 8
-      },
-      "banker": {
-        "quantity": 3
       }
     },
     "creatures": {

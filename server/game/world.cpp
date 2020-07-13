@@ -16,10 +16,13 @@ messagesQueuePerPlayer(messagesQueuePerPlayer) {
     js = params.getConfigParams()["blocks_around_player"];
     playerWidth = js["width"], playerHeight = js["height"];
 
+    loadPriestsPositions();
+    loadMerchantsPositions();
+    loadBankersPositions();
     loadUnsafePositions();
     loadSafePositions();
-    loadImpenetrablePositions();
     loadCemeteryPositions();
+    loadImpenetrablePositions();
 }
 
 World::~World() {
@@ -39,8 +42,56 @@ World::~World() {
         delete attack;
 }
 
-void World::loadUnsafePositions() {
+void World::loadPriestsPositions() {
     std::vector<int> terrains = params.getWorldParams()["layers"][0]["data"];
+
+    size_t i, row = 0;
+    for (i = 0; i < terrains.size(); i ++) {
+        if (i != 0 && i % worldWidth == 0)
+            row ++;
+
+        if (terrains[i] == 0)
+            continue;
+
+        position_t pos(i % worldWidth, row);
+        priestsPositions.push_back(pos);
+    }
+}
+
+void World::loadMerchantsPositions() {
+    std::vector<int> terrains = params.getWorldParams()["layers"][1]["data"];
+
+    size_t i, row = 0;
+    for (i = 0; i < terrains.size(); i ++) {
+        if (i != 0 && i % worldWidth == 0)
+            row ++;
+
+        if (terrains[i] == 0)
+            continue;
+
+        position_t pos(i % worldWidth, row);
+        merchantsPositions.push_back(pos);
+    }
+}
+
+void World::loadBankersPositions() {
+    std::vector<int> terrains = params.getWorldParams()["layers"][2]["data"];
+
+    size_t i, row = 0;
+    for (i = 0; i < terrains.size(); i ++) {
+        if (i != 0 && i % worldWidth == 0)
+            row ++;
+
+        if (terrains[i] == 0)
+            continue;
+
+        position_t pos(i % worldWidth, row);
+        bankersPositions.push_back(pos);
+    }
+}
+
+void World::loadUnsafePositions() {
+    std::vector<int> terrains = params.getWorldParams()["layers"][3]["data"];
 
     size_t i, row = 0;
     for (i = 0; i < terrains.size(); i ++) {
@@ -56,7 +107,7 @@ void World::loadUnsafePositions() {
 }
 
 void World::loadSafePositions() {
-    std::vector<int> terrains = params.getWorldParams()["layers"][1]["data"];
+    std::vector<int> terrains = params.getWorldParams()["layers"][4]["data"];
 
     size_t i, row = 0;
     for (i = 0; i < terrains.size(); i ++) {
@@ -72,7 +123,7 @@ void World::loadSafePositions() {
 }
 
 void World::loadCemeteryPositions() {
-    std::vector<int> terrains = params.getWorldParams()["layers"][2]["data"];
+    std::vector<int> terrains = params.getWorldParams()["layers"][5]["data"];
 
     size_t i, row = 0;
     for (i = 0; i < terrains.size(); i ++) {
@@ -88,7 +139,7 @@ void World::loadCemeteryPositions() {
 }
 
 void World::loadImpenetrablePositions() {
-    std::vector<int> terrains = params.getWorldParams()["layers"][3]["data"];
+    std::vector<int> terrains = params.getWorldParams()["layers"][6]["data"];
 
     size_t i, row = 0;
     for (i = 0; i < terrains.size(); i ++) {
@@ -408,7 +459,10 @@ NPC* World::getNPCByPos(position_t new_pos) const {
 }
 
 position_t World::getClosestPlayerPos(position_t new_pos) {
-    position_t closest_pos(0,0);
+    position_t closest_pos{};
+    closest_pos.x = math.randomInt(0, worldWidth - 1);
+    closest_pos.y = math.randomInt(0, worldHeight - 1);
+
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& player : players) {
@@ -507,12 +561,32 @@ position_t World::loadCreaturePositionInCemetery() {
     return new_pos;
 }
 
-// TODO: minimo 1 de cada NPC por safe zone
-position_t World::loadNPCPosition() {
-    position_t new_pos = math.randomPosition(safePositions);
+const int World::getNumberOfPriests() const {
+    return priestsPositions.size();
+}
 
-    while (entityInCollision(new_pos))
-        new_pos = math.randomPosition(safePositions);
+const int World::getNumberOfMerchants() const {
+    return merchantsPositions.size();
+}
 
+const int World::getNumberOfBankers() const {
+    return bankersPositions.size();
+}
+
+position_t World::loadPriestPosition() {
+    position_t new_pos = priestsPositions.back();
+    priestsPositions.pop_back();
+    return new_pos;
+}
+
+position_t World::loadMerchantPosition() {
+    position_t new_pos = merchantsPositions.back();
+    merchantsPositions.pop_back();
+    return new_pos;
+}
+
+position_t World::loadBankerPosition() {
+    position_t new_pos = bankersPositions.back();
+    bankersPositions.pop_back();
     return new_pos;
 }

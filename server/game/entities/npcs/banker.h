@@ -11,7 +11,7 @@ class Banker : public NPC {
 
 public:
     // Constructor
-    Banker(Bank& bank, position_t new_pos, const int orient);
+    Banker(Bank& bank, position_t new_pos);
 
     // Constructor y asignacion por copia deshabilitados
     Banker(const Banker& other) = delete;
