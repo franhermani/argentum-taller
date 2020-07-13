@@ -11,7 +11,6 @@
 
 GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window){}
 GameSurfacesManager::~GameSurfacesManager(){
-
     //TODO CHEQUEO DE MATAR TODO
 
     for (auto const& surface : infoSurfacesMap) {
@@ -109,7 +108,8 @@ void GameSurfacesManager::createNecessaryFrameItems(
     }
 }
 
-void GameSurfacesManager::createNecessaryAttacks(std::vector<attack_t>& attacks) {
+void GameSurfacesManager::createNecessaryAttacks(
+        std::vector<attack_t>& attacks) {
     for (auto& attack:attacks) {
         int type = attack.type;
         int orientation = attack.orientation;
@@ -233,7 +233,6 @@ void GameSurfacesManager::loadNpcPaths() {
 }
 
 void GameSurfacesManager::loadAttackPaths() {
-
     std::map<int, std::string> multiple_arrow_orientations = {
             {UP, "../client/resources/images/triple_arrow_up_t.png"},
             {DOWN, "../client/resources/images/triple_arrow_down_t.png"},

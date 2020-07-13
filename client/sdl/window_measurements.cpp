@@ -26,7 +26,6 @@ void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
 }
 
 void WindowMeasurements::initializeStaticAreas() {
-
     //TODO ver si frame sigue teniendo sentido que exista
     worldStaticRect.x = frame.x_pixel_begin;
     worldStaticRect.y = frame.y_pixel_begin;
@@ -65,12 +64,12 @@ void WindowMeasurements::initializeStaticAreas() {
     listGoldStaticRect.h = (list_gold_area.y_pixel_end -
                             list_gold_area.y_pixel_begin);
     listGoldQuantityStaticRect.x = listGoldStaticRect.x;
-    listGoldQuantityStaticRect.y = listGoldStaticRect.y + (int) (listGoldStaticRect.h *1.1);
+    listGoldQuantityStaticRect.y = listGoldStaticRect.y +
+            (int) (listGoldStaticRect.h *1.1);
     listGoldQuantityStaticRect.w = (list_gold_area.x_pixel_end -
                             list_gold_area.x_pixel_begin);
     listGoldQuantityStaticRect.h = (list_gold_area.y_pixel_end -
                             list_gold_area.y_pixel_begin);
-
 }
 
 

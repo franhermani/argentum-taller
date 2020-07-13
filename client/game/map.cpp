@@ -46,7 +46,6 @@ void Map::initialize(int received_id,
     username_id = received_id;
     npcs = std::move(received_npcs);
     mapDimensions = std::move(map_dimensions);
-
 }
 
 
@@ -222,9 +221,11 @@ std::vector<attack_t> Map::getRenderableAttacks() {
             continue;
         } else {
             attack_t converted_attack = attack;
-            converted_attack.pos.x = attack.pos.x - getPlayerXStart(main_player);
+            converted_attack.pos.x = attack.pos.x -
+                    getPlayerXStart(main_player);
             if (converted_attack.pos.x < 0) converted_attack.pos.x = 0;
-            converted_attack.pos.y = attack.pos.y - getPlayerYStart(main_player);
+            converted_attack.pos.y = attack.pos.y -
+                    getPlayerYStart(main_player);
             if (converted_attack.pos.y < 0) converted_attack.pos.y = 0;
             visible_attacks.push_back(converted_attack);
         }

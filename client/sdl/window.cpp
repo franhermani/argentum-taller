@@ -123,10 +123,12 @@ void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
 }
 
-SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface, position_t position,
+SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface,
+        position_t position,
         int dimensions_width, int dimensions_height) {
     float tile_size_pix_x = surface->getRenderableSurface()->w/dimensions_width;
-    float tile_size_pix_y = surface->getRenderableSurface()->h/dimensions_height;
+    float tile_size_pix_y = surface->getRenderableSurface()->h/
+            dimensions_height;
     int vision_width = measurements.numberOfTilesInWidth;
     int vision_height = measurements.numberOfTilesInHeight;
     SDL_Rect src_rect;

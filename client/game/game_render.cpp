@@ -101,7 +101,7 @@ void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
     for (auto it = std::begin(attacks);
          it != std::end(attacks); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.attackSurfacesMap[it->type][it->orientation]);
+                surfacesManager.attackSurfacesMap[it->type][it->orientation]);
     }
 }
 
@@ -163,16 +163,17 @@ void GameRender::renderList(list_t list) {
     window.renderList(surfaces);
     if (list.show_price) {
         std::vector<Surface*> price_surfaces;
-        for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
-            price_surfaces.push_back(surfacesManager.getTextSurface(std::to_string(it->price)));
+        for (auto it = std::begin(list.items);
+        it != std::end(list.items); ++it) {
+            price_surfaces.push_back(surfacesManager.getTextSurface(
+                    std::to_string(it->price)));
         }
         window.renderListPrices(price_surfaces);
-    }
-    else {
-        Surface* quantity = surfacesManager.getTextSurface(std::to_string(list.gold_quantity));
+    } else {
+        Surface* quantity = surfacesManager.getTextSurface(
+                std::to_string(list.gold_quantity));
         window.renderListGold(surfacesManager.goldSurface, quantity);
     }
-
 }
 
 
