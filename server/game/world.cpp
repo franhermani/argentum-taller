@@ -463,15 +463,19 @@ position_t World::getClosestPlayerPos(position_t new_pos) {
     closest_pos.x = math.randomInt(0, worldWidth - 1);
     closest_pos.y = math.randomInt(0, worldHeight - 1);
 
-    int min_distance = 2 * worldHeight, actual_distance;
+    int min_distance = 2 * worldHeight,
+        max_distance = params.getConfigParams()["creatures"]["search_range"],
+        actual_distance = 0;
 
     for (auto& player : players) {
-        // TODO: buscar players dentro de un rango
         if (player->isDead() || player->isReviving ||
             inSafePosition(player->pos))
             continue;
 
         actual_distance = distanceInBlocks(new_pos, player->pos);
+
+        if (actual_distance > max_distance)
+            continue;
 
         if (actual_distance < min_distance) {
             min_distance = actual_distance;
