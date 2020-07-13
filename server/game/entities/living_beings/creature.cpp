@@ -28,7 +28,6 @@ msRespawnCounter(0) {
     maxLife = equations.eqMaxLife(*this);
     actualLife = maxLife;
     pos = world.loadCreaturePosition();
-    lastPos = pos;
 }
 
 Creature::~Creature() = default;
@@ -112,47 +111,6 @@ void Creature::moveTo(position_t player_pos) {
         new_pos = getMovementPosition(direction);
     }
     if (move_available) {
-        lastPos = pos;
-        pos = new_pos;
-        orientation = direction;
-    }
-}
-
-void Creature::moveRandomly() {
-    position_t new_pos = pos;
-    int direction = LEFT, num_tries = 0, max_tries = 10;
-    bool move_available = false;
-
-    while (! move_available) {
-        direction = math.randomInt(LEFT, UP);
-
-        switch (direction) {
-            case LEFT:
-                new_pos.x -= 1;
-                break;
-            case RIGHT:
-                new_pos.x += 1;
-                break;
-            case DOWN:
-                new_pos.y += 1;
-                break;
-            case UP:
-                new_pos.y -= 1;
-                break;
-            default:
-                break;
-        }
-        if ((lastPos != new_pos) &&
-            (world.inMapBoundaries(new_pos)) &&
-            (! world.inSafePosition(new_pos)) &&
-            (! world.entityInCollision(new_pos))) {
-            move_available = true;
-        }
-        if (++num_tries == max_tries)
-            break;
-    }
-    if (move_available) {
-        lastPos = pos;
         pos = new_pos;
         orientation = direction;
     }
@@ -200,12 +158,6 @@ void Creature::dropItemOrGold() {
 
 void Creature::moveAndAttackPlayers() {
     position_t player_pos = world.getClosestPlayerPos(pos);
-
-    // No player found
-    if (player_pos.x == 0 && player_pos.y == 0) {
-//        moveRandomly();
-        return;
-    }
 
     bool in_attack_range = world.distanceInBlocks(
             pos, player_pos) <= attackRange;

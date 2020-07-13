@@ -18,7 +18,6 @@ class Creature : public LivingBeing{
     int attackRange;
     int moveVelocity, attackVelocity, respawnVelocity;
     int msMoveCounter, msRespawnCounter;
-    position_t lastPos;
 
     // Setea 'isAlive' en false
     void die() override;
@@ -41,9 +40,6 @@ class Creature : public LivingBeing{
 
     // Mueve a la criatura en direccion al player
     void moveTo(position_t player_pos);
-
-    // Mueve a la criatura aleatoriamente
-    void moveRandomly();
 
     // Cambia la orientacion de la criatura apuntando al player
     void orientTo(position_t player_pos);

@@ -459,7 +459,10 @@ NPC* World::getNPCByPos(position_t new_pos) const {
 }
 
 position_t World::getClosestPlayerPos(position_t new_pos) {
-    position_t closest_pos(0,0);
+    position_t closest_pos{};
+    closest_pos.x = math.randomInt(0, worldWidth - 1);
+    closest_pos.y = math.randomInt(0, worldHeight - 1);
+
     int min_distance = 2 * worldHeight, actual_distance;
 
     for (auto& player : players) {
