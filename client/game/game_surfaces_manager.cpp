@@ -19,6 +19,9 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto const& surface : itemSurfacesMap) {
         delete surface.second;
     }
+    for (auto const& surface : ghostSurfacesMap) {
+        delete surface.second;
+    }
     for (auto const& orientations : creatureSurfacesMap) {
         for (auto const& surface : orientations.second) delete surface.second;
     }
@@ -31,6 +34,7 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto & orientations : attackSurfacesMap) {
         for (auto const& surface : orientations.second) delete surface.second;
     }
+
     delete goldSurface;
     delete gameFrameSurface;
     delete worldSurface;
@@ -449,7 +453,7 @@ void GameSurfacesManager::loadAttackPaths() {
     std::map<int, Surface*> magic_arrow_surfaces;
     std::map<int, Surface*> explosion_spell_surfaces;
     std::map<int, Surface*> heal_spell_surfaces;
-    playerSurfacesMap = {{MULTIPLE_ARROW, multiple_arrow_surfaces},
+    attackSurfacesMap = {{MULTIPLE_ARROW, multiple_arrow_surfaces},
                          {SINGLE_ARROW,   single_arrow_surfaces},
                          {MELEE, single_arrow_surfaces},
                          {MAGIC_ARROW_SPELL, magic_arrow_surfaces},
@@ -500,6 +504,14 @@ void GameSurfacesManager::loadPlayerPaths() {
                          {ELF, elf_surfaces},
                          {DWARF, dwarf_surfaces},
                          {GNOME, gnome_surfaces}};
+    ghostSurfacesMap = {{UP, new Surface("../client/resources/images/ghost_up_t.png", window, 1)},
+            {DOWN, new Surface("../client/resources/images/ghost_down_t.png", window, 1)},
+    {LEFT, new Surface("../client/resources/images/ghost_left_t.png", window, 1)},
+    {RIGHT, new Surface("../client/resources/images/ghost_right_t.png", window, 1)}
+
+    };
+
+
 }
 
 void GameSurfacesManager::loadItemPaths() {

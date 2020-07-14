@@ -19,6 +19,7 @@
 #include "../../common/defines/creatures.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/items.h"
+#include "../../common/defines/states.h"
 #include "exception.h"
 #include "../sdl/exception.h"
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
@@ -52,9 +53,14 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
+        Surface* player_surface;
+        if (it->state == STATE_NORMAL)
+        player_surface = surfacesManager.
+                playerSurfacesMap[it->race_type][it->orientation];
+        else
+            player_surface = surfacesManager.ghostSurfacesMap[it->orientation];
         window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.
-                playerSurfacesMap[it->race_type][it->orientation]);
+                               player_surface);
     }
 }
 
@@ -143,9 +149,12 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
 }
 
 void GameRender::renderEquipped(std::vector<player_t>& players) {
+    // todo el create necesary no deberia ser para cada uno?
+    //sino podemos crear algo par aun fantasma. osea al pedo
     surfacesManager.createNecessaryEquipped(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
+        if (it->state == STATE_GHOST) continue;
         if (it->weapon != NO_ITEM_EQUIPPED)
         window.renderMapObject(it->pos.x, it->pos.y,
                               surfacesManager.equippedWeaponSurfacesMap[it->weapon][it->orientation]);
