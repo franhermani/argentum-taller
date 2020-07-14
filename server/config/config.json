@@ -65,6 +65,11 @@
       "fair_play": {
         "max_level_newbie": 12,
         "max_level_diff": 10
+      },
+      "velocity": {
+        "move": 500,
+        "recovery": 1000,
+        "melee_attack": 300
       }
     },
     "npcs": {

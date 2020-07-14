@@ -9,12 +9,6 @@
 #include "../../game_exception.h"
 #include "../../../../common/defines/attacks.h"
 
-// TODO: ver si vale la pena mover esto a un param de la clase en el json
-#define MOVE_VELOCITY       500
-#define RECOVERY_VELOCITY   1000
-#define NO_WEAPON_VELOCITY  600
-#define NO_WEAPON_RANGE     1
-
 Player::Player(World& world, Equations& equations, json params,
         const int new_id, const int race_type, const int class_type) :
 world(world),
@@ -30,8 +24,8 @@ armor(nullptr),
 helmet(nullptr),
 shield(nullptr),
 inventory(params["inventory"]["max_items"]),
-moveVelocity(MOVE_VELOCITY),
-recoveryVelocity(RECOVERY_VELOCITY),
+moveVelocity(params["velocity"]["move"]),
+recoveryVelocity(params["velocity"]["recovery"]),
 msMoveCounter(0),
 msRecoveryCounter(0),
 distanceInMsToPriest(0) {
@@ -395,8 +389,9 @@ void Player::attack() {
     }
 
     int weapon_attack_type = weapon ? weapon->attackType : MELEE,
-        weapon_range = weapon ? weapon->range : NO_WEAPON_RANGE,
-        weapon_velocity = weapon ? weapon->moveVelocity : NO_WEAPON_VELOCITY;
+        weapon_range = weapon ? weapon->range : 1,
+        weapon_velocity = weapon ? weapon->moveVelocity :
+                (int) params["velocity"]["melee_attack"];
 
     position_t attack_pos = pos;
 
