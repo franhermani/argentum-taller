@@ -63,8 +63,8 @@
         }
       },
       "fair_play": {
-        "min_level_newbie": 12,
-        "min_level_diff": 10
+        "max_level_newbie": 12,
+        "max_level_diff": 10
       }
     },
     "npcs": {

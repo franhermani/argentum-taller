@@ -514,18 +514,6 @@ const int World::distanceInMsToClosestPriest(position_t new_pos,
     return distance * velocity;
 }
 
-const int World::getInventoryLength() const {
-    return params.getConfigParams()["player"]["inventory"]["max_items"];
-}
-
-const int World::getMaxLevelNewbie() const {
-    return params.getConfigParams()["player"]["fair_play"]["min_level_newbie"];
-}
-
-const int World::getMaxLevelDiff() const {
-    return params.getConfigParams()["player"]["fair_play"]["min_level_diff"];
-}
-
 // --------------------------------- //
 // Metodos accedidos por GameManager //
 // --------------------------------- //

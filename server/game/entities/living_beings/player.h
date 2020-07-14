@@ -11,14 +11,15 @@
 #include "../items/potion.h"
 #include "../items/inventory.h"
 #include "creature.h"
+#include "../../../utilities/json_parser.h"
 
 class World;
 class Equations;
-class ServerProtocol;
 
 class Player : public LivingBeing {
     World& world;
     Equations& equations;
+    json params;
     int raceType;
     int classType;
     long maxExperience;
@@ -38,6 +39,9 @@ class Player : public LivingBeing {
     int moveVelocity, recoveryVelocity;
     int msMoveCounter, msRecoveryCounter;
     int distanceInMsToPriest;
+
+    friend class Equations;
+    friend class ServerProtocol;
 
     // Suma puntos de vida al player
     void addLife(int life);
@@ -98,12 +102,9 @@ class Player : public LivingBeing {
     // Suma los puntos de vida y mana correspondientes segun la pocion
     void equipPotion(Potion* new_potion);
 
-    friend class Equations;
-    friend class ServerProtocol;
-
 public:
     // Constructor
-    Player(World& world, Equations& equations, const int new_id,
+    Player(World& world, Equations& equations, json params, const int new_id,
             const int race_type, const int class_type);
 
     // Constructor y asignacion por copia deshabilitados

@@ -15,10 +15,11 @@
 #define NO_WEAPON_VELOCITY  600
 #define NO_WEAPON_RANGE     1
 
-Player::Player(World& world, Equations& equations, const int new_id,
-        const int race_type, const int class_type) :
+Player::Player(World& world, Equations& equations, json params,
+        const int new_id, const int race_type, const int class_type) :
 world(world),
 equations(equations),
+params(params),
 raceType(race_type),
 classType(class_type),
 maxExperience(LONG_MAX),
@@ -28,7 +29,7 @@ weapon(nullptr),
 armor(nullptr),
 helmet(nullptr),
 shield(nullptr),
-inventory(world.getInventoryLength()),
+inventory(params["inventory"]["max_items"]),
 moveVelocity(MOVE_VELOCITY),
 recoveryVelocity(RECOVERY_VELOCITY),
 msMoveCounter(0),
@@ -36,7 +37,7 @@ msRecoveryCounter(0),
 distanceInMsToPriest(0) {
     id = new_id;
     level = 1;
-    isNewbie = (level <= world.getMaxLevelNewbie());
+    isNewbie = (level <= params["fair_play"]["max_level_newbie"]);
     orientation = DOWN;
     maxLife = equations.eqMaxLife(*this);
     actualLife = equations.eqInitialLife(*this);
@@ -93,7 +94,7 @@ void Player::addExperience(int exp) {
         level ++;
         exp_limit = equations.eqExperienceLimit(level);
     }
-    if (level > world.getMaxLevelNewbie())
+    if (level > params["fair_play"]["max_level_newbie"])
         isNewbie = false;
 }
 
@@ -435,7 +436,7 @@ void Player::attack(Player& other) {
         throw GameException(id, "No puedes atacar a un jugador newbie");
 
     int level_diff = std::max(level - other.level, other.level - level);
-    int max_level_diff = world.getMaxLevelDiff();
+    int max_level_diff = params["fair_play"]["max_level_diff"];
 
     if (level_diff > max_level_diff)
         throw GameException(id, "No puedes atacar a un jugador con una "
