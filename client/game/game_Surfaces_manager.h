@@ -16,7 +16,7 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
-    std::map<int, Surface *> ghostSurfacesMap;
+    std::map<int, std::map<int, Surface *>> stateSurfacesMap;
     std::map<int, std::map<int, Surface *>> attackSurfacesMap;
     std::map<int, std::map<int, Surface *>> equippedWeaponSurfacesMap;
     std::map<int, Surface *> itemSurfacesMap;

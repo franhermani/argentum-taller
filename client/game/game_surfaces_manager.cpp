@@ -7,6 +7,8 @@
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/items.h"
 #include "../../common/defines/attacks.h"
+#include "../../common/defines/states.h"
+
 
 
 GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window){}
@@ -19,10 +21,10 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto const& surface : itemSurfacesMap) {
         delete surface.second;
     }
-    for (auto const& surface : ghostSurfacesMap) {
-        delete surface.second;
-    }
     for (auto const& orientations : creatureSurfacesMap) {
+        for (auto const& surface : orientations.second) delete surface.second;
+    }
+    for (auto const& orientations : stateSurfacesMap) {
         for (auto const& surface : orientations.second) delete surface.second;
     }
     for (auto & orientations : playerSurfacesMap) {
@@ -504,11 +506,23 @@ void GameSurfacesManager::loadPlayerPaths() {
                          {ELF, elf_surfaces},
                          {DWARF, dwarf_surfaces},
                          {GNOME, gnome_surfaces}};
-    ghostSurfacesMap = {{UP, new Surface("../client/resources/images/ghost_up_t.png", window, 1)},
-            {DOWN, new Surface("../client/resources/images/ghost_down_t.png", window, 1)},
-    {LEFT, new Surface("../client/resources/images/ghost_left_t.png", window, 1)},
-    {RIGHT, new Surface("../client/resources/images/ghost_right_t.png", window, 1)}
+    std::map<int, Surface*> ghostSurfacesMap = {{UP,    new Surface("../client/resources/images/ghost_up_t.png", window, 1)},
+                        {DOWN,  new Surface("../client/resources/images/ghost_down_t.png", window, 1)},
+                        {LEFT,  new Surface("../client/resources/images/ghost_left_t.png", window, 1)},
+                        {RIGHT, new Surface("../client/resources/images/ghost_right_t.png", window, 1)}
 
+    };
+    // todo fixear esto
+    std::map<int, Surface*> reviveSurfacesMap = {{UP,    new Surface("../client/resources/images/reviving_t.png", window, 1)},
+                                                {DOWN,  new Surface("../client/resources/images/reviving_t.png", window, 1)},
+                                                {LEFT,  new Surface("../client/resources/images/reviving_t.png", window, 1)},
+                                                {RIGHT, new Surface("../client/resources/images/reviving_t.png", window, 1)}
+
+    };
+    stateSurfacesMap = {
+            {STATE_GHOST, ghostSurfacesMap},
+            {STATE_REVIVING, reviveSurfacesMap},
+            {STATE_MEDITATING, reviveSurfacesMap}
     };
 
 
