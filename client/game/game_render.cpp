@@ -55,7 +55,7 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
          it != std::end(players); ++it) {
         Surface* player_surface;
         int state = it->state;
-        if (state == STATE_NORMAL  || state == STATE_MEDITATING)
+        if (state == STATE_NORMAL)
         player_surface = surfacesManager.
                 playerSurfacesMap[it->race_type][it->orientation];
         else

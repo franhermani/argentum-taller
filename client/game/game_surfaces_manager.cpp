@@ -519,10 +519,18 @@ void GameSurfacesManager::loadPlayerPaths() {
                                                 {RIGHT, new Surface("../client/resources/images/reviving_t.png", window, 1)}
 
     };
+    //TODO FIXEAR MISMA RUTA
+
+    std::map<int, Surface*> meditateSurfacesMap = {{UP,    new Surface("../client/resources/images/meditating_t.png", window, 1)},
+                                                 {DOWN,  new Surface("../client/resources/images/meditating_t.png", window, 1)},
+                                                 {LEFT,  new Surface("../client/resources/images/meditating_t.png", window, 1)},
+                                                 {RIGHT, new Surface("../client/resources/images/meditating_t.png", window, 1)}
+
+    };
     stateSurfacesMap = {
             {STATE_GHOST, ghostSurfacesMap},
             {STATE_REVIVING, reviveSurfacesMap},
-            {STATE_MEDITATING, reviveSurfacesMap}
+            {STATE_MEDITATING, meditateSurfacesMap}
     };
 
 
