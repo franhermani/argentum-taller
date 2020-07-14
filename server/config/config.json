@@ -67,7 +67,7 @@
         "max_level_diff": 10
       },
       "velocity": {
-        "move": 500,
+        "move": 100,
         "recovery": 1000,
         "melee_attack": 300
       }
