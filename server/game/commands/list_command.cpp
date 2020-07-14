@@ -10,6 +10,10 @@ player(player), NPCPosX(npc_pos_x), NPCPosY(npc_pos_y) {}
 ListCommand::~ListCommand() = default;
 
 void ListCommand::execute(World& world) {
+    if (player.isDead())
+        throw GameException(player.id, "Eres un fantasma. No puedes "
+                                       "interactuar con NPCs");
+
     if (player.isWaitingToRevive())
         throw GameException(player.id, "No puedes ejecutar ningun comando "
                                        "hasta que termines de revivir. Quedan "

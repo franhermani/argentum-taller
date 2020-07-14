@@ -3,6 +3,7 @@
 
 #include <string>
 #include "living_being.h"
+#include "../../../../common/defines/states.h"
 #include "../items/weapon.h"
 #include "../items/armor.h"
 #include "../items/helmet.h"
@@ -23,8 +24,6 @@ class Player : public LivingBeing {
     int classType;
     long maxExperience;
     long actualExperience;
-    bool isMeditating;
-    bool isReviving;
     bool isNewbie;
     bool ableToUseMagic;
     int maxMana;
@@ -54,8 +53,11 @@ class Player : public LivingBeing {
     // Si llega al limite, sube de nivel
     void addExperience(int exp);
 
-    // Setea 'isAlive' en false y dropea oro e items del inventario
+    // Cambia el estado a fantasma y dropea oro e items del inventario
     virtual void die() override;
+
+    // Revive al player
+    void revive();
 
     // Dropea el oro en exceso al mundo
     void dropExcessGold();
@@ -66,8 +68,11 @@ class Player : public LivingBeing {
     // Dropea los items del inventario al mundo
     void dropInventoryItems();
 
-    // Setea 'isMeditating' en false
+    // Saca el estado de meditando
     void stopMeditating();
+
+    // Devuelve true si esta meditando, false en caso contrario
+    const bool isMeditating() const;
 
     // Recupera vida y mana por el paso del tiempo
     void recoverLifeAndMana();
@@ -132,7 +137,7 @@ public:
     // Revive al player de forma inmediata
     void shortTermRevive();
 
-    // Setea 'isReviving' en true
+    // Saca el estado de reviviendo
     void longTermRevive();
 
     // El player entra en estado de meditacion

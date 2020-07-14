@@ -468,7 +468,7 @@ position_t World::getClosestPlayerPos(position_t new_pos) {
         actual_distance = 0;
 
     for (auto& player : players) {
-        if (player->isDead() || player->isReviving ||
+        if (player->isDead() || player->isWaitingToRevive() ||
             inSafePosition(player->pos))
             continue;
 

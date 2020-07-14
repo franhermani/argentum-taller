@@ -2,6 +2,7 @@
 #define LIVING_BEING_H
 
 #include "../../../../common/defines/position.h"
+#include "../../../../common/defines/states.h"
 
 class Player;
 class Creature;
@@ -11,10 +12,10 @@ protected:
     int id{};
     position_t pos{};
     int level{};
-    bool isAlive{};
     int orientation{};
     int maxLife{};
     int actualLife{};
+    stateType state{};
 
     friend class World;
     friend class Equations;

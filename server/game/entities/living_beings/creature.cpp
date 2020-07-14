@@ -22,10 +22,10 @@ msMoveCounter(0),
 msRespawnCounter(0) {
     id = new_id;
     level = new_level;
-    isAlive = true;
     orientation = DOWN;
     maxLife = equations.eqMaxLife(*this);
     actualLife = maxLife;
+    state = STATE_NORMAL;
     pos = world.loadCreaturePosition();
 }
 
@@ -36,13 +36,13 @@ Creature::~Creature() = default;
 // --------------- //
 
 void Creature::die() {
-    isAlive = false;
+    state = STATE_DYING;
 }
 
 void Creature::respawn() {
     dropItemOrGold();
     pos = world.loadCreaturePositionInCemetery();
-    isAlive = true;
+    state = STATE_NORMAL;
 }
 
 void Creature::dropItemOrGold() {
@@ -225,6 +225,9 @@ void Creature::attack(Creature &creature) {
 }
 
 const int Creature::receiveAttack(const int damage) {
+    if (isDead())
+        return 0;
+
     int damage_received = equations.eqDamageReceived(*this, damage);
     subtractLife(damage_received);
     return damage_received;

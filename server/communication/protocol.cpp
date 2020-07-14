@@ -34,10 +34,6 @@ Command* ServerProtocol::receiveCommand(Player& player) {
         arguments.resize(length);
         socket.receiveBytes(arguments.data(), arguments.size());
     }
-
-    if (debug)
-        std::cout << "Recibido el comando tipo " << type << "\n";
-
     return commandFactory(player, type, arguments);
 }
 
@@ -123,13 +119,6 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
         pos -= SIZE_8;
     }
     socket.sendBytes(byte_msg.data(), byte_msg.size());
-
-    if (debug) {
-        std::cout << "NPCs enviados:\n";
-        for (char& c : byte_msg)
-            printf("%02X ", (unsigned) (unsigned char) c);
-        std::cout << "\n";
-    }
 }
 
 void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
@@ -159,10 +148,10 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
             SIZE_8 + inventory_length * SIZE_8 +
 
             // player_t
-            SIZE_16 + num_players * (6 * SIZE_16 + 10 * SIZE_8) +
+            SIZE_16 + num_players * (6 * SIZE_16 + 8 * SIZE_8) +
 
             // creature_t
-            SIZE_16 + num_creatures * (5 * SIZE_16 + 2 * SIZE_8) +
+            SIZE_16 + num_creatures * (5 * SIZE_16 + 3 * SIZE_8) +
 
             // item_t
             SIZE_16 + num_items * (3 * SIZE_16) +
@@ -202,10 +191,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         w.players[i].actual_life = htons(players[i]->actualLife);
         w.players[i].max_life = htons(players[i]->maxLife);
         w.players[i].level = htons(players[i]->level);
-        w.players[i].is_alive = players[i]->isAlive ? 1 : 0;
-        w.players[i].is_meditating = players[i]->isMeditating ? 1 : 0;
-        w.players[i].is_reviving = players[i]->isReviving ? 1 : 0;
         w.players[i].orientation = players[i]->orientation;
+        w.players[i].state = players[i]->state;
         w.players[i].race_type = players[i]->raceType;
         w.players[i].class_type = players[i]->classType;
         w.players[i].weapon = players[i]->weapon ?
@@ -230,6 +217,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         w.creatures[i].level = htons(creatures[i]->level);
         w.creatures[i].type = creatures[i]->type;
         w.creatures[i].orientation = creatures[i]->orientation;
+        w.creatures[i].state = creatures[i]->state;
     }
 
     // Lista de Items
@@ -314,13 +302,9 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.players[i].level, SIZE_16);
         pos += SIZE_16;
-        byte_msg[pos] = w.players[i].is_alive;
-        pos += SIZE_8;
-        byte_msg[pos] = w.players[i].is_meditating;
-        pos += SIZE_8;
-        byte_msg[pos] = w.players[i].is_reviving;
-        pos += SIZE_8;
         byte_msg[pos] = w.players[i].orientation;
+        pos += SIZE_8;
+        byte_msg[pos] = w.players[i].state;
         pos += SIZE_8;
         byte_msg[pos] = w.players[i].race_type;
         pos += SIZE_8;
@@ -353,6 +337,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         byte_msg[pos] = w.creatures[i].type;
         pos += SIZE_8;
         byte_msg[pos] = w.creatures[i].orientation;
+        pos += SIZE_8;
+        byte_msg[pos] = w.creatures[i].state;
         pos += SIZE_8;
     }
 
@@ -397,13 +383,6 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     }
 
     socket.sendBytes(byte_msg.data(), byte_msg.size());
-
-    if (debug) {
-        std::cout << "Mundo enviado al player " << player.id << ":\n";
-        for (char& c : byte_msg)
-            printf("%02X ", (unsigned) (unsigned char) c);
-        std::cout << "\n";
-    }
 }
 
 void ServerProtocol::sendItemsList(list_t& list) {
@@ -429,15 +408,7 @@ void ServerProtocol::sendItemsList(list_t& list) {
         memcpy(&byte_msg[pos], &list.items[i].price, SIZE_16);
         pos += SIZE_16;
     }
-
     socket.sendBytes(byte_msg.data(), byte_msg.size());
-
-    if (debug) {
-        std::cout << "Lista de items enviada:\n";
-        for (char& c : byte_msg)
-            printf("%02X ", (unsigned) (unsigned char) c);
-        std::cout << "\n";
-    }
 }
 
 void ServerProtocol::sendGameMessage(const std::string& message) {

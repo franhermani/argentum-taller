@@ -60,6 +60,7 @@ typedef struct {
     uint16_t level;             // Nivel
     uint8_t type;               // Enum type del tipo de criatura
     uint8_t orientation;        // Enum type de la orientacion
+    uint8_t state;              // Enum type del estado actual
 } creature_t;
 
 typedef struct {
@@ -68,10 +69,8 @@ typedef struct {
     uint16_t actual_life;       // Vida actual
     uint16_t max_life;          // Vida maxima
     uint16_t level;             // Nivel
-    uint8_t is_alive;           // 1 si esta vivo, 0 si no (fantasma)
-    uint8_t is_meditating;      // 1 si esta meditando, 0 si no
-    uint8_t is_reviving;        // 1 si esta reviviendo, 0 si no
     uint8_t orientation;        // Enum type de la orientacion
+    uint8_t state;              // Enum type del estado actual
     uint8_t race_type;          // Enum type de la raza
     uint8_t class_type;         // Enum type de la clase
     uint8_t weapon;             // Enum type del arma
