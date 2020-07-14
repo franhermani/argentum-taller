@@ -692,3 +692,11 @@ const long Player::levelMaxExperience() const {
     long actual_level_max_exp = equations.eqExperienceLimit(level);
     return actual_level_max_exp - prev_level_max_exp;
 }
+
+const int Player::getId() const {
+    return id;
+}
+
+position_t Player::getPos() const {
+    return pos;
+}

@@ -14,7 +14,6 @@
 
 class World;
 class Equations;
-class ClientHandler;
 class ServerProtocol;
 
 class Player : public LivingBeing {
@@ -80,9 +79,6 @@ class Player : public LivingBeing {
     // Mueve al player al lado de la posicion (x,y)
     void moveNextTo(position_t new_pos);
 
-    // Devuelve los segundos faltantes para revivir (aprox)
-    const int secondsToRevive();
-
     // Asigna 'new_weapon' a 'weapon'
     // Lanza una excepcion si:
     // - el arma es magica y player no puede usar la magia
@@ -102,13 +98,7 @@ class Player : public LivingBeing {
     // Suma los puntos de vida y mana correspondientes segun la pocion
     void equipPotion(Potion* new_potion);
 
-    friend class World;
     friend class Equations;
-    friend class Banker;
-    friend class Priest;
-    friend class Merchant;
-    friend class ListCommand;
-    friend class ClientHandler;
     friend class ServerProtocol;
 
 public:
@@ -202,6 +192,15 @@ public:
 
     // Devuelve la experiencia maxima en el nivel actual
     const long levelMaxExperience() const;
+
+    // Devuelve los segundos faltantes para revivir (aprox)
+    const int secondsToRevive();
+
+    // Devuelve el id del player
+    const int getId() const;
+
+    // Devuelve la posicion del player
+    position_t getPos() const;
 };
 
 #endif // GAME_PLAYER_H

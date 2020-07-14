@@ -14,22 +14,22 @@ Banker::Banker(Bank& bank, position_t new_pos) : bank(bank) {
 Banker::~Banker() = default;
 
 void Banker::revive(Player &player) {
-    throw GameException(player.id, "Un banquero no tiene "
+    throw GameException(player.getId(), "Un banquero no tiene "
                                    "la habilidad de revivir al jugador");
 }
 
 void Banker::heal(Player &player) {
-    throw GameException(player.id, "Un banquero no tiene "
+    throw GameException(player.getId(), "Un banquero no tiene "
                                    "la habilidad de curar al jugador");
 }
 
 void Banker::buyItem(Player &player, int type) {
-    throw GameException(player.id, "Un banquero no puede "
+    throw GameException(player.getId(), "Un banquero no puede "
                                    "comprar items");
 }
 
 void Banker::sellItem(Player &player, const int type) {
-    throw GameException(player.id, "Un banquero no puede "
+    throw GameException(player.getId(), "Un banquero no puede "
                                    "vender items");
 }
 
@@ -39,7 +39,7 @@ void Banker::depositItem(Player &player, int type) {
         return;
 
     try {
-        bank.depositItem(player.id, item);
+        bank.depositItem(player.getId(), item);
     } catch (GameException& e) {
         player.addItemToInventory(item);
         throw e;
@@ -47,7 +47,7 @@ void Banker::depositItem(Player &player, int type) {
 }
 
 void Banker::withdrawItem(Player &player, int type) {
-    Item* item = bank.withdrawItem(player.id, type);
+    Item* item = bank.withdrawItem(player.getId(), type);
     try {
         player.addItemToInventory(item);
     } catch (GameException& e) {
@@ -58,22 +58,22 @@ void Banker::withdrawItem(Player &player, int type) {
 
 void Banker::depositGold(Player &player) {
     int excess_gold = player.removeExcessGold();
-    bank.depositGold(player.id, excess_gold);
+    bank.depositGold(player.getId(), excess_gold);
 }
 
 void Banker::withdrawGold(Player &player) {
     int safe_gold_space = player.getSafeGoldSpace();
-    int gold_in_bank = bank.getGoldQuantity(player.id);
+    int gold_in_bank = bank.getGoldQuantity(player.getId());
     int gold_to_extract = (gold_in_bank > safe_gold_space) ?
                            safe_gold_space : gold_in_bank;
 
-    bank.withdrawGold(player.id, gold_to_extract);
+    bank.withdrawGold(player.getId(), gold_to_extract);
     player.addGold(gold_to_extract);
 }
 
 list_t Banker::listItems(Player& player) const {
-    std::vector<Item*> items = bank.getItems(player.id);
-    int gold_quantity = bank.getGoldQuantity(player.id);
+    std::vector<Item*> items = bank.getItems(player.getId());
+    int gold_quantity = bank.getGoldQuantity(player.getId());
 
     int num_items = items.size();
 

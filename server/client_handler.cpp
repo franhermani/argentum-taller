@@ -22,7 +22,7 @@ ClientHandler::ClientHandler(Socket socket_received,
 ClientHandler::~ClientHandler() {
     delete clientSender;
     delete clientReceiver;
-    gameManager.removePlayerFromWorld(player->id);
+    gameManager.removePlayerFromWorld(player->getId());
     gameManager.removeUsername(username);
     delete player;
 }
