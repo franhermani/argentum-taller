@@ -19,6 +19,8 @@ classType(class_type),
 maxExperience(LONG_MAX),
 actualExperience(0),
 ableToUseMagic(classType != WARRIOR),
+isWaitingToMove(false),
+nextDirection(DOWN),
 weapon(nullptr),
 armor(nullptr),
 helmet(nullptr),
@@ -273,6 +275,13 @@ void Player::update(int ms) {
             revive();
         }
     } else {
+        if (isWaitingToMove) {
+            msMoveCounter += ms;
+            if (msMoveCounter >= moveVelocity) {
+                msMoveCounter = 0;
+                moveTo();
+            }
+        }
         msRecoveryCounter += ms;
         if (msRecoveryCounter >= recoveryVelocity) {
             msRecoveryCounter = 0;
@@ -288,10 +297,14 @@ void Player::moveTo(int direction) {
                                 "segundos", secondsToRevive());
 
     stopMeditating();
+    isWaitingToMove = true;
+    nextDirection = direction;
+}
 
+void Player::moveTo() {
     position_t new_pos = pos;
 
-    switch (direction) {
+    switch (nextDirection) {
         case LEFT:
             new_pos.x -= 1;
             break;
@@ -308,10 +321,11 @@ void Player::moveTo(int direction) {
             break;
     }
     if ((world.inMapBoundaries(new_pos)) &&
-       (! world.entityInCollision(new_pos))) {
+        (! world.entityInCollision(new_pos))) {
         pos = new_pos;
     }
-    orientation = direction;
+    orientation = nextDirection;
+    isWaitingToMove = false;
 }
 
 void Player::heal() {
@@ -343,6 +357,7 @@ void Player::longTermRevive() {
 
     distanceInMsToPriest = world.distanceInMsToClosestPriest(pos,
             moveVelocity);
+    msMoveCounter = 0;
     state = STATE_REVIVING;
 }
 

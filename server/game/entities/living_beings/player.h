@@ -26,6 +26,8 @@ class Player : public LivingBeing {
     long actualExperience;
     bool isNewbie;
     bool ableToUseMagic;
+    bool isWaitingToMove;
+    int nextDirection;
     int maxMana;
     int actualMana;
     int maxSafeGold;
@@ -79,6 +81,9 @@ class Player : public LivingBeing {
 
     // Recupera vida y mana por el paso del tiempo
     void recoverLifeAndMana();
+
+    // Mueve al player segun la ultima direccion recibida
+    void moveTo();
 
     // Mueve al player al lado de la posicion (x,y)
     void moveNextTo(position_t new_pos);
