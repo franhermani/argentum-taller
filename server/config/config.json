@@ -63,8 +63,13 @@
         }
       },
       "fair_play": {
-        "min_level_newbie": 12,
-        "min_level_diff": 10
+        "max_level_newbie": 12,
+        "max_level_diff": 10
+      },
+      "velocity": {
+        "move": 80,
+        "recovery": 1000,
+        "melee_attack": 300
       }
     },
     "npcs": {
@@ -98,46 +103,46 @@
         }
       },
       "goblin": {
-        "quantity": 25,
+        "quantity": 20,
         "max_life": 50,
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 5,
         "max_attack": 14,
-        "move_velocity": 1000,
+        "move_velocity": 800,
         "attack_velocity": 400,
         "respawn_velocity": 2000
       },
       "skeleton": {
-        "quantity": 25,
+        "quantity": 20,
         "max_life": 50,
         "min_defense": 7,
         "max_defense": 12,
         "min_attack": 8,
         "max_attack": 13,
-        "move_velocity": 1200,
+        "move_velocity": 1000,
         "attack_velocity": 500,
         "respawn_velocity": 2000
       },
       "zombie": {
-        "quantity": 25,
+        "quantity": 20,
         "max_life": 40,
         "min_defense": 3,
         "max_defense": 8,
         "min_attack": 8,
         "max_attack": 15,
-        "move_velocity": 1500,
+        "move_velocity": 1200,
         "attack_velocity": 800,
         "respawn_velocity": 2000
       },
       "spider": {
-        "quantity": 25,
+        "quantity": 20,
         "max_life": 80,
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 10,
         "max_attack": 20,
-        "move_velocity": 800,
+        "move_velocity": 600,
         "attack_velocity": 200,
         "respawn_velocity": 2000
       }

@@ -301,10 +301,10 @@ std::vector<Attack*> World::getAttacksAround(Player& player) {
 }
 
 const bool World::inPlayerBoundaries(Player &player, position_t new_pos) {
-    int player_xi = player.pos.x - playerWidth/2,
-        player_xf = player.pos.x + playerWidth/2,
-        player_yi = player.pos.y - playerHeight/2,
-        player_yf = player.pos.y + playerHeight/2;
+    int player_xi = player.getPos().x - playerWidth/2,
+        player_xf = player.getPos().x + playerWidth/2,
+        player_yi = player.getPos().y - playerHeight/2,
+        player_yf = player.getPos().y + playerHeight/2;
 
     bool x_in_boundaries = (new_pos.x >= player_xi) && (new_pos.x < player_xf),
          y_in_boundaries = (new_pos.y >= player_yi) && (new_pos.y < player_yf);
@@ -468,7 +468,7 @@ position_t World::getClosestPlayerPos(position_t new_pos) {
         actual_distance = 0;
 
     for (auto& player : players) {
-        if (player->isDead() || player->isReviving ||
+        if (player->isDead() || player->isWaitingToRevive() ||
             inSafePosition(player->pos))
             continue;
 
@@ -512,18 +512,6 @@ const int World::distanceInMsToClosestPriest(position_t new_pos,
     position_t priest_pos = getClosestPriestPos(new_pos);
     int distance = distanceInBlocks(new_pos, priest_pos);
     return distance * velocity;
-}
-
-const int World::getInventoryLength() const {
-    return params.getConfigParams()["player"]["inventory"]["max_items"];
-}
-
-const int World::getMaxLevelNewbie() const {
-    return params.getConfigParams()["player"]["fair_play"]["min_level_newbie"];
-}
-
-const int World::getMaxLevelDiff() const {
-    return params.getConfigParams()["player"]["fair_play"]["min_level_diff"];
 }
 
 // --------------------------------- //

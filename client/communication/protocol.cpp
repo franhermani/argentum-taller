@@ -14,13 +14,6 @@ ClientProtocol::ClientProtocol(Socket& socket) : socket(socket) {}
 void ClientProtocol::sendCommand(CommandDTO& command) {
     std::vector<char> byte_msg = command.serialize();
     socket.sendBytes(byte_msg.data(), byte_msg.size());
-
-    if (debug) {
-        std::cout << "Comando enviado: ";
-        for (char& i : byte_msg)
-            printf("%02X ", (unsigned) (unsigned char) i);
-        std::cout << "\n";
-    }
 }
 
 void ClientProtocol::sendPlayerInfo(const std::string& username,
@@ -160,14 +153,6 @@ npcs_t ClientProtocol::receiveNPCs() {
         bytes_advanced += SIZE_8;
 
         npcs[i] = npc;
-
-        if (debug) {
-            std::cout << "NPC RECIBIDO:\n" <<
-            "Tipo: " << (int) npc.type << "\n" <<
-            "Pos X: " << npc.pos.x << "\n" <<
-            "Pos Y: " << npc.pos.y << "\n" <<
-            "Orientacion: " << (int) npc.orientation << "\n";
-        }
     }
     n.npcs = npcs;
 
@@ -181,13 +166,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
     std::vector<char> length_buffer(SIZE_16, 0);
     socket.receiveBytes(length_buffer.data(), SIZE_16);
 
-    if (debug) {
-        std::cout << "Longitud de mensaje: \n";
-        for (char& c : length_buffer)
-            printf("%02X ", (unsigned) (unsigned char) c);
-        std::cout << "\n";
-    }
-
     uint16_t length;
     memcpy(&length, length_buffer.data(), SIZE_16);
     w.length = ntohs(length);
@@ -197,13 +175,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
     // Mensaje
     std::vector<char> world_buffer(w.length,0);
     socket.receiveBytes(world_buffer.data(), w.length);
-
-    if (debug) {
-        std::cout << "Mensaje: \n";
-        for (char& c : world_buffer)
-            printf("%02X ", (unsigned) (unsigned char) c);
-        std::cout << "\n";
-    }
 
     // ---------------- //
     // Player principal //
@@ -245,19 +216,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
     w.player_info.level_max_experience = ntohl(level_max_exp);
     bytes_advanced += SIZE_32;
 
-    if (debug) {
-        std::cout << "\nPLAYER PRINCIPAL\n" <<
-        "Mana actual: " << w.player_info.actual_mana << "\n" <<
-        "Mana maxima: " << w.player_info.max_mana << "\n" <<
-        "Oro actual: " << w.player_info.actual_gold << "\n" <<
-        "Oro maximo: " << w.player_info.max_gold << "\n" <<
-        "Experiencia actual del nivel: " <<
-        w.player_info.level_actual_experience << "\n" <<
-        "Experiencia maxima del nivel: " <<
-        w.player_info.level_max_experience << "\n" <<
-        "Inventario:\n";
-    }
-
     // Inventario
     uint8_t inventory_length;
     memcpy(&inventory_length, world_buffer.data() + bytes_advanced, SIZE_8);
@@ -271,11 +229,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
         memcpy(&item_type, world_buffer.data() + bytes_advanced, SIZE_8);
         w.player_info.inventory.items[i] = item_type;
         bytes_advanced += SIZE_8;
-
-        if (debug) {
-            std::cout << "Item " << (i+1) << ": " <<
-            (int) w.player_info.inventory.items[i] << "\n";
-        }
     }
 
     // ------- //
@@ -331,28 +284,16 @@ world_t ClientProtocol::receiveWorldUpdate() {
         player.level = ntohs(level);
         bytes_advanced += SIZE_16;
 
-        // 1 si esta vivo, 0 si no (fantasma)
-        uint8_t is_alive;
-        memcpy(&is_alive, world_buffer.data() + bytes_advanced, SIZE_8);
-        player.is_alive = is_alive;
-        bytes_advanced += SIZE_8;
-
-        // 1 si esta meditando, 0 si no
-        uint8_t is_meditating;
-        memcpy(&is_meditating, world_buffer.data() + bytes_advanced, SIZE_8);
-        player.is_meditating = is_meditating;
-        bytes_advanced += SIZE_8;
-
-        // 1 si esta reviviendo, 0 si no
-        uint8_t is_reviving;
-        memcpy(&is_reviving, world_buffer.data() + bytes_advanced, SIZE_8);
-        player.is_reviving = is_reviving;
-        bytes_advanced += SIZE_8;
-
         // Enum type de la orientacion
         uint8_t orientation;
         memcpy(&orientation, world_buffer.data() + bytes_advanced, SIZE_8);
         player.orientation = orientation;
+        bytes_advanced += SIZE_8;
+
+        // Enum type del estado
+        uint8_t state;
+        memcpy(&state, world_buffer.data() + bytes_advanced, SIZE_8);
+        player.state = state;
         bytes_advanced += SIZE_8;
 
         // Enum type de la raza
@@ -401,9 +342,8 @@ world_t ClientProtocol::receiveWorldUpdate() {
             "Vida actual: " << player.actual_life << "\n" <<
             "Vida maxima: " << player.max_life << "\n" <<
             "Nivel: " << player.level << "\n" <<
-            "Is alive: " << (int) player.is_alive << "\n" <<
-            "Is meditating: " << (int) player.is_meditating << "\n" <<
             "Orientacion: " << (int) player.orientation << "\n" <<
+            "Estado: " << (int) player.state << "\n" <<
             "Raza: " << (int) player.race_type << "\n" <<
             "Clase: " << (int) player.class_type << "\n" <<
             "Arma: " << (int) player.weapon << "\n" <<
@@ -461,7 +401,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
         creature.level = ntohs(level);
         bytes_advanced += SIZE_16;
 
-        // Enum type de la raza
+        // Enum type del tipo
         uint8_t type;
         memcpy(&type, world_buffer.data() + bytes_advanced, SIZE_8);
         creature.type = type;
@@ -473,17 +413,26 @@ world_t ClientProtocol::receiveWorldUpdate() {
         creature.orientation = orientation;
         bytes_advanced += SIZE_8;
 
+        // Enum type del estado
+        uint8_t state;
+        memcpy(&state, world_buffer.data() + bytes_advanced, SIZE_8);
+        creature.state = state;
+        bytes_advanced += SIZE_8;
+
         creatures[i] = creature;
 
+        /*
         if (debug) {
             std::cout << "\nCRIATURA RECIBIDA\n" <<
             "Pos X: " << (int) creature.pos.x << "\n" <<
             "Pos Y: " << (int) creature.pos.y << "\n" <<
             "Vida actual: " << (int) creature.actual_life << "\n" <<
             "Vida maxima: " << (int) creature.max_life << "\n" <<
+            "Tipo: " << (int) creature.type << "\n" <<
             "Orientacion: " << (int) creature.orientation << "\n" <<
-            "Tipo: " << (int) creature.type << "\n";
+            "Estado: " << (int) creature.state << "\n";
         }
+         */
     }
     w.creatures = creatures;
 
@@ -523,13 +472,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
         bytes_advanced += SIZE_8;
 
         items[i] = item;
-
-        if (debug) {
-            std::cout << "\nITEM RECIBIDO\n" <<
-            "Pos X: " << (int) item.pos.x << "\n" <<
-            "Pos Y: " << (int) item.pos.y << "\n" <<
-            "Tipo: " << (int) item.type << "\n";
-        }
     }
     w.items = items;
 
@@ -569,13 +511,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
         bytes_advanced += SIZE_16;
 
         golds[i] = gold;
-
-        if (debug) {
-            std::cout << "\nORO RECIBIDO\n" <<
-            "Pos X: " << (int) gold.pos.x << "\n" <<
-            "Pos Y: " << (int) gold.pos.y << "\n" <<
-            "Cantidad: " << (int) gold.quantity << "\n";
-        }
     }
     w.golds = golds;
 
@@ -628,6 +563,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
 
         attacks[i] = attack;
 
+        /*
         if (debug) {
             std::cout << "\nATAQUE RECIBIDO\n" <<
             "Pos X: " << (int) attack.pos.x << "\n" <<
@@ -636,6 +572,7 @@ world_t ClientProtocol::receiveWorldUpdate() {
             "Tipo: " << (int) attack.type << "\n" <<
             "Colisionando: " << (int) attack.is_colliding << "\n";
         }
+         */
     }
     w.attacks = attacks;
 

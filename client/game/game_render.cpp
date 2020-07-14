@@ -19,6 +19,7 @@
 #include "../../common/defines/creatures.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/items.h"
+#include "../../common/defines/states.h"
 #include "exception.h"
 #include "../sdl/exception.h"
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
@@ -52,9 +53,15 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
+        Surface* player_surface;
+        int state = it->state;
+        if (state == STATE_NORMAL)
+        player_surface = surfacesManager.
+                playerSurfacesMap[it->race_type][it->orientation];
+        else
+            player_surface = surfacesManager.stateSurfacesMap[state][it->orientation];
         window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.
-                playerSurfacesMap[it->race_type][it->orientation]);
+                               player_surface);
     }
 }
 
@@ -70,9 +77,18 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     surfacesManager.createNecessaryCreatures(creatures);
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.
-                creatureSurfacesMap[it->type][it->orientation]);
+        Surface* creature_surface;
+        int state = it->state;
+            if (state == STATE_NORMAL)
+            window.renderMapObject(it->pos.x, it->pos.y,
+                    surfacesManager.
+                    creatureSurfacesMap[it->type][it->orientation]);
+            else {
+                creature_surface = surfacesManager.stateSurfacesMap[state][it->orientation];
+                window.renderMapObject(it->pos.x, it->pos.y,
+                                       creature_surface);
+            }
+
     }
 }
 
@@ -88,7 +104,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
 }
 
 
-void GameRender::renderEquipped(player_t& player) {
+void GameRender::renderEquippedList(player_t& player) {
     std::vector<uint8_t> equipped_items {player.weapon, player.armor,
                                      player.shield, player.helmet};
     surfacesManager.createNecessaryFrameItems(equipped_items);
@@ -134,10 +150,31 @@ void GameRender::renderGameFrame() {
 
 void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     surfacesManager.createNecessaryFrameItems(inventory);
+    //TODO QUE PASA ACA?? SE ITERA AL PEDO? FIXEAR
     for (auto it = std::begin(inventory);
          it != std::end(inventory); ++it) {
         window.renderInventory(inventory,
                          surfacesManager.itemSurfacesMap);
+    }
+}
+
+void GameRender::renderEquipped(std::vector<player_t>& players) {
+    // todo el create necesary no deberia ser para cada uno?
+    //sino podemos crear algo par aun fantasma. osea al pedo
+    surfacesManager.createNecessaryEquipped(players);
+    for (auto it = std::begin(players);
+         it != std::end(players); ++it) {
+        if (it->state == STATE_GHOST) continue;
+        if (it->weapon != NO_ITEM_EQUIPPED)
+        window.renderMapObject(it->pos.x, it->pos.y,
+                              surfacesManager.equippedWeaponSurfacesMap[it->weapon][it->orientation]);
+        if (it->armor != NO_ITEM_EQUIPPED)
+        window.renderMapObject(it->pos.x, it->pos.y,
+                               surfacesManager.equippedWeaponSurfacesMap[it->armor][it->orientation]);
+        if (it->shield != NO_ITEM_EQUIPPED)
+        window.renderMapObject(it->pos.x, it->pos.y,
+                               surfacesManager.equippedWeaponSurfacesMap[it->shield][it->orientation]);
+
     }
 }
 
@@ -200,7 +237,8 @@ void GameRender::run() {
         renderCreatures(current_world.creatures);
         renderInventory(current_world.player_info.inventory.items);
         renderInventoryGolds(current_world.player_info.actual_gold);
-        renderEquipped(current_world.main_player);
+        renderEquipped(current_world.players);
+        renderEquippedList(current_world.main_player);
         renderAttacks(current_world.attacks);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages,

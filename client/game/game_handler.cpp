@@ -20,7 +20,7 @@ GameHandler::GameHandler(const char *host, const char *port,
     checkUsername();
     printStartMessage();
     try {
-        std::cout << "\nIniciando renderizado";
+        std::cout << "\nIniciando renderizado\n";
         gameRender = new GameRender(DEFAULT_SCREEN_WIDTH,
                 DEFAULT_SCREEN_HEIGHT, mapMonitor);
     } catch (SDLException& e) {

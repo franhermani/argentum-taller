@@ -198,15 +198,6 @@ public:
     const int distanceInMsToClosestPriest(position_t new_pos,
             const int velocity);
 
-    // Devuelve el largo maximo del inventario
-    const int getInventoryLength() const;
-
-    // Devuelve el nivel maximo de un newbie
-    const int getMaxLevelNewbie() const;
-
-    // Devuelve la diferencia de niveles maxima para atacar
-    const int getMaxLevelDiff() const;
-
     // --------------------------------- //
     // Metodos accedidos por GameManager //
     // --------------------------------- //

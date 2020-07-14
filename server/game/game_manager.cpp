@@ -7,7 +7,6 @@
 #include "entities/npcs/priest.h"
 #include "entities/npcs/merchant.h"
 #include "entities/npcs/banker.h"
-#include "../../common/defines/commands.h"
 #include "../../common/defines/creatures.h"
 
 GameManager::GameManager(File& config_file) :

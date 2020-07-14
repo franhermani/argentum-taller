@@ -37,8 +37,6 @@ void WindowMeasurements::initializeStaticAreas() {
     gameFrameStaticRect.w = screenWidth;
     gameFrameStaticRect.h = screenHeight;
 
-    std::cout << "ahora inicializo static area de oro\n";
-
     game_area_t& inventory_gold_area = inventoryGold;
     inventoryGoldStaticRect.x = inventory_gold_area.x_pixel_begin;
     inventoryGoldStaticRect.y = inventory_gold_area.y_pixel_begin;

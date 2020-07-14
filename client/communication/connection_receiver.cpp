@@ -29,6 +29,7 @@ void ConnectionReceiver::run() {
             if (game_message.empty()) {
                 // Do nothing
             }
+            else std::cout << "\n" << game_message;
             list_t list = protocol.receiveItemsList();
             mapMonitor.updateWorld(std::move(world), std::move(list));
         }
