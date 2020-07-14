@@ -77,9 +77,18 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     surfacesManager.createNecessaryCreatures(creatures);
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.
-                creatureSurfacesMap[it->type][it->orientation]);
+        Surface* creature_surface;
+        int state = it->state;
+            if (state == STATE_NORMAL)
+            window.renderMapObject(it->pos.x, it->pos.y,
+                    surfacesManager.
+                    creatureSurfacesMap[it->type][it->orientation]);
+            else {
+                creature_surface = surfacesManager.stateSurfacesMap[state][it->orientation];
+                window.renderMapObject(it->pos.x, it->pos.y,
+                                       creature_surface);
+            }
+
     }
 }
 

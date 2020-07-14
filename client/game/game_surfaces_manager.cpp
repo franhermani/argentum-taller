@@ -527,10 +527,18 @@ void GameSurfacesManager::loadPlayerPaths() {
                                                  {RIGHT, new Surface("../client/resources/images/meditating_t.png", window, 1)}
 
     };
+    std::map<int, Surface*> dyingSurfacesMap = {{UP,    new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
+                                                   {DOWN,  new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
+                                                   {LEFT,  new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
+                                                   {RIGHT, new Surface("../client/resources/images/dying_creature_t.png", window, 1)}
+
+    };
+
     stateSurfacesMap = {
             {STATE_GHOST, ghostSurfacesMap},
             {STATE_REVIVING, reviveSurfacesMap},
-            {STATE_MEDITATING, meditateSurfacesMap}
+            {STATE_MEDITATING, meditateSurfacesMap},
+            {STATE_DYING, dyingSurfacesMap}
     };
 
 
