@@ -53,8 +53,9 @@ public:
     void renderPlayerInfo(std::map<int,float>& percentages, int level);
     void renderItems(std::vector<item_t>& items);
     void renderAttacks(std::vector<attack_t>& attacks);
+    void renderEquipped(std::vector<player_t>& players);
     void renderGolds(std::vector<gold_t> &golds);
-    void renderEquipped(player_t& player);
+    void renderEquippedList(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
     void renderInventoryGolds(uint16_t quantity);
     void renderGameFrame();

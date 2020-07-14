@@ -88,7 +88,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
 }
 
 
-void GameRender::renderEquipped(player_t& player) {
+void GameRender::renderEquippedList(player_t& player) {
     std::vector<uint8_t> equipped_items {player.weapon, player.armor,
                                      player.shield, player.helmet};
     surfacesManager.createNecessaryFrameItems(equipped_items);
@@ -134,10 +134,28 @@ void GameRender::renderGameFrame() {
 
 void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     surfacesManager.createNecessaryFrameItems(inventory);
+    //TODO QUE PASA ACA?? SE ITERA AL PEDO? FIXEAR
     for (auto it = std::begin(inventory);
          it != std::end(inventory); ++it) {
         window.renderInventory(inventory,
                          surfacesManager.itemSurfacesMap);
+    }
+}
+
+void GameRender::renderEquipped(std::vector<player_t>& players) {
+    surfacesManager.createNecessaryEquipped(players);
+    for (auto it = std::begin(players);
+         it != std::end(players); ++it) {
+        if (it->weapon != NO_ITEM_EQUIPPED)
+        window.renderMapObject(it->pos.x, it->pos.y,
+                              surfacesManager.equippedWeaponSurfacesMap[it->weapon][it->orientation]);
+        if (it->armor != NO_ITEM_EQUIPPED)
+        window.renderMapObject(it->pos.x, it->pos.y,
+                               surfacesManager.equippedWeaponSurfacesMap[it->armor][it->orientation]);
+        if (it->shield != NO_ITEM_EQUIPPED)
+        window.renderMapObject(it->pos.x, it->pos.y,
+                               surfacesManager.equippedWeaponSurfacesMap[it->shield][it->orientation]);
+
     }
 }
 
@@ -200,7 +218,8 @@ void GameRender::run() {
         renderCreatures(current_world.creatures);
         renderInventory(current_world.player_info.inventory.items);
         renderInventoryGolds(current_world.player_info.actual_gold);
-        renderEquipped(current_world.main_player);
+        renderEquipped(current_world.players);
+        renderEquippedList(current_world.main_player);
         renderAttacks(current_world.attacks);
         renderGolds(current_world.golds);
         renderPlayerInfo(current_world.percentages,
