@@ -234,7 +234,7 @@ void GameRender::playMusic() {
     }
 
     music = Mix_LoadMUS(path);
-    Mix_PlayMusic(music, 1);
+    Mix_PlayMusic(music, -1);
 }
 
 void GameRender::run() {
