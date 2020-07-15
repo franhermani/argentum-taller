@@ -45,4 +45,5 @@ void ClientsBlockingVector::joinClients() {
         clients[i]->join();
         delete clients[i];
     }
+    clients.clear();
 }
