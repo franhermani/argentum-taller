@@ -1,4 +1,5 @@
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_video.h>
 #include "game_render.h"
 #include <iostream>
 #include <exception>
@@ -211,6 +212,10 @@ void GameRender::renderList(list_t list) {
                 std::to_string(list.gold_quantity));
         window.renderListGold(surfacesManager.goldSurface, quantity);
     }
+}
+
+void GameRender::toggleFullscreen() {
+    window.toggleFullscreen();
 }
 
 

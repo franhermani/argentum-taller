@@ -23,6 +23,7 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (TTF_Init() < 0) {
         throw SDLException("\nNo se pudo inicializar ttf", SDL_GetError());
     }
+    fullscreen = false;
 }
 
 SDLWindow::~SDLWindow() {
@@ -425,6 +426,17 @@ int SDLWindow::getRenderedListIndexByPosition(int xClicked,
         current_index ++;
     }
     return -1;
+}
+
+void SDLWindow::toggleFullscreen() {
+    if (fullscreen) {
+        SDL_SetWindowFullscreen(window, 0);
+        fullscreen = false;
+    }
+    else {
+        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        fullscreen = true;
+    }
 }
 
 int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {

@@ -49,9 +49,12 @@ void GameInputHandler::play() {
                     } else if (key == SDLK_DOWN) {
                         mapMonitor.uninteract();
                         command = new MoveCommandDTO(DOWN);
-                    } else if (key == SDLK_ESCAPE) {
-                        running = false;
+                    } else if (key == SDLK_F12) {
+                        gameRender->toggleFullscreen();
                         continue;
+                    } else if (key == SDLK_ESCAPE) {
+                            running = false;
+                            continue;
                     } else if (mapMonitor.isInteracting()) {
                         if (key == SDLK_w) {
                             command = handleWithdraw();

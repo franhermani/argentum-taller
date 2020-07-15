@@ -61,6 +61,7 @@ public:
     void renderGameFrame();
     void renderList(list_t list);
     void renderWorld(position_t position);
+    void toggleFullscreen();
 
 
     //Inicializador de SDL
