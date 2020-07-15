@@ -189,8 +189,8 @@ void Creature::attack() {
             break;
     }
 
-    world.addAttack(new Attack(this, MELEE, attack_pos,
-            orientation, attackRange, attackVelocity));
+    world.addAttack(new Attack(this, MELEE, CREATURE_PUNCH,
+            attack_pos, orientation, attackRange, attackVelocity));
 }
 
 // -------------- //

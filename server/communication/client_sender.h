@@ -12,14 +12,15 @@ class ClientSender : public Thread {
     WorldMonitor* worldMonitor;
     ProtectedQueue<std::string>* messagesQueue;
     ProtectedQueue<list_t>* listsQueue;
-    int msPerSend;
+    int msPerSend, minMsSleep;
     Player* player{};
 
 public:
     // Constructor
     ClientSender(Socket& socket, WorldMonitor* worldMonitor,
             ProtectedQueue<std::string>* messages_queue,
-            ProtectedQueue<list_t>* lists_queue, int ms_per_send);
+            ProtectedQueue<list_t>* lists_queue, int ms_per_send,
+            int min_ms_sleep);
 
     // Constructor utilizado cuando el username ya existe
     explicit ClientSender(Socket& socket);

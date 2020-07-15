@@ -12,7 +12,8 @@ noexcept : playerId(player_id) {
     int s = vsnprintf(message, BUF_LEN, fmt, args);
     va_end(args);
     strncpy(message + s, strerror(errno_aux), BUF_LEN - s);
-    message[BUF_LEN - 1] = '\0';
+    message[s] = '\n';
+    message[s + 1] = '\0';
 }
 
 const int GameException::getPlayerId() const noexcept {

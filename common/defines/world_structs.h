@@ -40,6 +40,7 @@ typedef struct {
     position_t pos;             // Posicion (x,y) en la matriz
     uint8_t orientation;        // Enum type de la orietntacion
     uint8_t type;               // Enum type del tipo de ataque
+    uint8_t sound;              // Enum type del sonido de ataque
     uint8_t is_colliding;       // 1 si esta colisionando, 0 si no
 } attack_t;
 

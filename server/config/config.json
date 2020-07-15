@@ -4,8 +4,9 @@
   },
   "game_params": {
     "world_path": "../tiled/world.json",
-    "ms_per_update": 60,
-    "ms_per_send": 120,
+    "ms_per_update": 120,
+    "ms_per_send": 60,
+    "min_ms_sleep": 20,
     "blocks_around_player": {
       "width": 9,
       "height": 9
@@ -53,6 +54,10 @@
         "no_weapon_eq": {
           "c1": 5,
           "c2": 10
+        },
+        "critic_eq": {
+          "multiplier": 2,
+          "p": 0.15
         }
       },
       "defense": {
@@ -108,7 +113,7 @@
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 5,
-        "max_attack": 14,
+        "max_attack": 10,
         "move_velocity": 800,
         "attack_velocity": 400,
         "respawn_velocity": 2000
@@ -119,7 +124,7 @@
         "min_defense": 7,
         "max_defense": 12,
         "min_attack": 8,
-        "max_attack": 13,
+        "max_attack": 12,
         "move_velocity": 1000,
         "attack_velocity": 500,
         "respawn_velocity": 2000
@@ -130,7 +135,7 @@
         "min_defense": 3,
         "max_defense": 8,
         "min_attack": 8,
-        "max_attack": 15,
+        "max_attack": 13,
         "move_velocity": 1200,
         "attack_velocity": 800,
         "respawn_velocity": 2000
@@ -141,9 +146,9 @@
         "min_defense": 5,
         "max_defense": 10,
         "min_attack": 10,
-        "max_attack": 20,
+        "max_attack": 25,
         "move_velocity": 600,
-        "attack_velocity": 200,
+        "attack_velocity": 300,
         "respawn_velocity": 2000
       }
     },

@@ -17,8 +17,7 @@ itemFactory(params.getConfigParams()["items"]),
 equations(params.getConfigParams()),
 world(params, itemFactory, messagesQueuePerPlayer),
 worldMonitor(world),
-bank(params.getConfigParams()["bank"]["max_items"]),
-msPerSend(params.getConfigParams()["ms_per_send"]) {
+bank(params.getConfigParams()["bank"]["max_items"]) {
     keepRunning = true;
     isRunning = true;
 
@@ -31,6 +30,7 @@ void GameManager::run() {
     using ms = std::chrono::milliseconds;
 
     int ms_per_update = params.getConfigParams()["ms_per_update"];
+    int min_sleep_update = params.getConfigParams()["min_ms_sleep"];
 
     while (keepRunning) {
         auto start = clock::now();
@@ -54,7 +54,11 @@ void GameManager::run() {
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = ms_per_update - elapsed;
-        if (time_to_sleep > 0) std::this_thread::sleep_for(ms(time_to_sleep));
+
+        if (time_to_sleep < min_sleep_update)
+            time_to_sleep = min_sleep_update;
+
+        std::this_thread::sleep_for(ms(time_to_sleep));
     }
     isRunning = false;
 }

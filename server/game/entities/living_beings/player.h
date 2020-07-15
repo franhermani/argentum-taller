@@ -73,9 +73,6 @@ class Player : public LivingBeing {
     // Dropea los items del inventario al mundo
     void dropInventoryItems();
 
-    // Saca el estado de meditando
-    void stopMeditating();
-
     // Devuelve true si esta meditando, false en caso contrario
     const bool isMeditating() const;
 
@@ -89,16 +86,12 @@ class Player : public LivingBeing {
     void moveNextTo(position_t new_pos);
 
     // Asigna 'new_weapon' a 'weapon'
-    // Lanza una excepcion si:
-    // - el arma es magica y player no puede usar la magia
     void equipWeapon(Weapon* new_weapon);
 
     // Asigna 'new_armor' a 'armor'
     void equipArmor(Armor* new_armor);
 
     // Asigna 'new_helmet' a 'helmet'
-    // Lanza una excepcion si:
-    // - el arma es magica y player no puede usar la magia
     void equipHelmet(Helmet* new_helmet);
 
     // Asigna el 'new_shield' a 'shield'
@@ -137,9 +130,10 @@ public:
     void longTermRevive();
 
     // El player entra en estado de meditacion
-    // Lanza una excepcion si:
-    // - el player no puede usar la magia
     void meditate();
+
+    // Saca el estado de meditando
+    void stopMeditating();
 
     // Realiza un ataque en la orientacion del player
     void attack();
