@@ -25,6 +25,10 @@ void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
     initializeStaticAreas();
 }
 
+void WindowMeasurements::updateResolution(int width, int height) {
+    initialize(numberOfTilesInWidth, numberOfTilesInHeight, width, height);
+}
+
 void WindowMeasurements::initializeStaticAreas() {
     //TODO ver si frame sigue teniendo sentido que exista
     worldStaticRect.x = frame.x_pixel_begin;
