@@ -4,8 +4,9 @@
   },
   "game_params": {
     "world_path": "../tiled/world.json",
-    "ms_per_update": 60,
-    "ms_per_send": 120,
+    "ms_per_update": 120,
+    "ms_per_send": 60,
+    "min_ms_sleep": 20,
     "blocks_around_player": {
       "width": 9,
       "height": 9

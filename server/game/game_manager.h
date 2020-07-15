@@ -31,7 +31,6 @@ class GameManager : public Thread {
     std::map<int, ProtectedQueue<list_t>> listsQueuePerPlayer;
     IdManager idManager;
     Bank bank;
-    int msPerSend;
 
     friend class ClientHandler;
 

@@ -35,10 +35,15 @@ void ClientHandler::checkUsername() {
 
     try {
         int id = gameManager.addIdByUsername(username);
+
         clientSender = new ClientSender(socket, &gameManager.worldMonitor,
                 &gameManager.messagesQueuePerPlayer[id],
-                &gameManager.listsQueuePerPlayer[id], gameManager.msPerSend);
+                &gameManager.listsQueuePerPlayer[id],
+                gameManager.params.getConfigParams()["ms_per_send"],
+                gameManager.params.getConfigParams()["min_ms_sleep"]);
+
         clientSender->sendUsernameConfirmation(USERNAME_OK);
+
         player = new Player(gameManager.world, gameManager.equations,
                 gameManager.params.getConfigParams()["player"], id,
                 race_type, class_type);
