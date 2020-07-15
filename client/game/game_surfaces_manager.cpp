@@ -298,8 +298,8 @@ void GameSurfacesManager::loadEquippedPaths() {
     std::map<int, std::string> armadura_placas_orientations = {
             {UP, "../client/resources/images/armadura_placas_up_p_t.png"},
             {DOWN, "../client/resources/images/armadura_placas_down_p_t.png"},
-            {LEFT, "../client/resources/images/armadura_placas_right_p_t.png"},
-            {RIGHT, "../client/resources/images/armadura_placas_left_p_t.png"}
+            {LEFT, "../client/resources/images/armadura_placas_left_p_t.png"},
+            {RIGHT, "../client/resources/images/armadura_placas_right_p_t.png"}
     };
     std::map<int, std::string> escudo_hierro_orientations = {
             {UP, "../client/resources/images/escudo_hierro_up_p_t.png"},

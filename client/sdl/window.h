@@ -20,8 +20,9 @@ class SDL_Surface;
 class SDL_Renderer;
 
 class SDLWindow {
-    const int screenHeight;
-    const int screenWidth;
+    int screenHeight;
+    int screenWidth;
+    int fullscreen;
     SDL_Window *window;
     SDL_Renderer *renderer;
     WindowMeasurements measurements;
@@ -58,6 +59,8 @@ public:
 
     // Renderiza la pantalla
     void render();
+
+    void toggleFullscreen();
 
     // Devuelve el renderer
     SDL_Renderer *getRenderer() const;
