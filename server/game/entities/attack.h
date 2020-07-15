@@ -8,6 +8,7 @@ class LivingBeing;
 class Attack {
     LivingBeing* owner;
     int type;
+    int sound;
     position_t pos;
     int direction;
     int range, blocksToRange;
@@ -22,8 +23,8 @@ class Attack {
 
 public:
     // Constructor
-    Attack(LivingBeing* owner, const int type, position_t new_pos,
-            const int direction, const int range,
+    Attack(LivingBeing* owner, const int type, const int sound,
+            position_t new_pos, const int direction, const int range,
             const int move_velocity);
 
     // Constructor y asignacion por copia deshabilitados

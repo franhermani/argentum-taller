@@ -524,6 +524,12 @@ world_t ClientProtocol::receiveWorldUpdate() {
         attack.type = type;
         bytes_advanced += SIZE_8;
 
+        // Enum type del sonido
+        uint8_t sound;
+        memcpy(&sound, world_buffer.data() + bytes_advanced, SIZE_8);
+        attack.sound = sound;
+        bytes_advanced += SIZE_8;
+
         // 1 si esta colisionando, 0 si no
         uint8_t is_colliding;
         memcpy(&is_colliding, world_buffer.data() + bytes_advanced, SIZE_8);

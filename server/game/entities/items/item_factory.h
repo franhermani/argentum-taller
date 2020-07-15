@@ -13,6 +13,7 @@ class ItemFactory {
     json itemParams;
     std::map<int, std::string> itemsMap;
     std::map<std::string, int> attackTypesMap;
+    std::map<int, int> attackSoundsMap;
     std::set<int> weapons;
     std::set<int> armors;
     std::set<int> helmets;

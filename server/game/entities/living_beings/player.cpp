@@ -392,8 +392,8 @@ void Player::attack() {
     bool is_life_restorer = weapon ? weapon->isLifeRestorer : false;
 
     if (mana_consumption > actualMana) {
-        throw GameException(id, "No tienes suficiente mana para utilizar "
-                                "esta arma (requiere %d)", mana_consumption);
+        throw GameException(id, "No tienes suficiente mana para "
+                                "utilizar esta arma");
     } else {
         subtractMana(mana_consumption);
     }
@@ -404,6 +404,7 @@ void Player::attack() {
     }
 
     int weapon_attack_type = weapon ? weapon->attackType : MELEE,
+        weapon_attack_sound = weapon ? weapon->attackSound : PLAYER_PUNCH,
         weapon_range = weapon ? weapon->range : 1,
         weapon_velocity = weapon ? weapon->moveVelocity :
                 (int) params["velocity"]["melee_attack"];
@@ -427,8 +428,8 @@ void Player::attack() {
             break;
     }
 
-    world.addAttack(new Attack(this, weapon_attack_type, attack_pos,
-            orientation, weapon_range, weapon_velocity));
+    world.addAttack(new Attack(this, weapon_attack_type, weapon_attack_sound,
+            attack_pos, orientation, weapon_range, weapon_velocity));
 }
 
 void Player::attack(Player& other) {
@@ -478,6 +479,8 @@ void Player::attack(Creature &creature) {
 const int Player::receiveAttack(const int damage) {
     if (isDead() || isWaitingToRevive())
         return 0;
+
+    stopMeditating();
 
     int damage_received = equations.eqDamageReceived(*this, damage);
     subtractLife(damage_received);

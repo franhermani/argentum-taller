@@ -160,7 +160,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
             SIZE_16 + num_golds * (3 * SIZE_16) +
 
             // attack_t
-            SIZE_16 + num_attacks * (2 * SIZE_16 + 3 * SIZE_8);
+            SIZE_16 + num_attacks * (2 * SIZE_16 + 4 * SIZE_8);
 
     // ------------------------ //
     // Carga del struct world_t //
@@ -249,6 +249,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         w.attacks[i].pos.y = htons(attacks[i]->pos.y);
         w.attacks[i].orientation = attacks[i]->direction;
         w.attacks[i].type = attacks[i]->type;
+        w.attacks[i].sound = attacks[i]->sound;
         w.attacks[i].is_colliding = attacks[i]->isColliding;
     }
 
@@ -377,6 +378,8 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         memcpy(&byte_msg[pos], &w.attacks[i].orientation, SIZE_8);
         pos += SIZE_8;
         memcpy(&byte_msg[pos], &w.attacks[i].type, SIZE_8);
+        pos += SIZE_8;
+        memcpy(&byte_msg[pos], &w.attacks[i].sound, SIZE_8);
         pos += SIZE_8;
         memcpy(&byte_msg[pos], &w.attacks[i].is_colliding, SIZE_8);
         pos += SIZE_8;

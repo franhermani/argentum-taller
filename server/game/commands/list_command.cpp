@@ -20,6 +20,8 @@ void ListCommand::execute(World& world) {
                 "revivir. Quedan aprox. %d segundos",
                 player.secondsToRevive());
 
+    player.stopMeditating();
+
     NPC* npc = world.getNPCByPos(position_t(NPCPosX, NPCPosY));
     throw ListException(player.getId(), npc->listItems(player));
 }
