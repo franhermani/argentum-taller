@@ -165,15 +165,15 @@ void GameRender::renderEquipped(std::vector<player_t>& players) {
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         if (it->state == STATE_GHOST) continue;
-        if (it->weapon != NO_ITEM_EQUIPPED)
-        window.renderMapObject(it->pos.x, it->pos.y,
-                              surfacesManager.equippedWeaponSurfacesMap[it->weapon][it->orientation]);
         if (it->armor != NO_ITEM_EQUIPPED)
         window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.equippedWeaponSurfacesMap[it->armor][it->orientation]);
         if (it->shield != NO_ITEM_EQUIPPED)
         window.renderMapObject(it->pos.x, it->pos.y,
                                surfacesManager.equippedWeaponSurfacesMap[it->shield][it->orientation]);
+        if (it->weapon != NO_ITEM_EQUIPPED)
+            window.renderMapObject(it->pos.x, it->pos.y,
+                                   surfacesManager.equippedWeaponSurfacesMap[it->weapon][it->orientation]);
 
     }
 }
