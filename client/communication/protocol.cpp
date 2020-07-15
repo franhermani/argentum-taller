@@ -333,24 +333,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
         bytes_advanced += SIZE_8;
 
         players[i] = player;
-
-        if (debug) {
-            std::cout << "\nPLAYER RECIBIDO\n" <<
-            "Id: " << player.id << "\n" <<
-            "Pos X: " << player.pos.x << "\n" <<
-            "Pos Y: " << player.pos.y << "\n" <<
-            "Vida actual: " << player.actual_life << "\n" <<
-            "Vida maxima: " << player.max_life << "\n" <<
-            "Nivel: " << player.level << "\n" <<
-            "Orientacion: " << (int) player.orientation << "\n" <<
-            "Estado: " << (int) player.state << "\n" <<
-            "Raza: " << (int) player.race_type << "\n" <<
-            "Clase: " << (int) player.class_type << "\n" <<
-            "Arma: " << (int) player.weapon << "\n" <<
-            "Armadura: " << (int) player.armor << "\n" <<
-            "Casco: " << (int) player.helmet << "\n" <<
-            "Escudo: " << (int) shield << "\n";
-        }
     }
     w.players = players;
 
@@ -420,19 +402,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
         bytes_advanced += SIZE_8;
 
         creatures[i] = creature;
-
-        /*
-        if (debug) {
-            std::cout << "\nCRIATURA RECIBIDA\n" <<
-            "Pos X: " << (int) creature.pos.x << "\n" <<
-            "Pos Y: " << (int) creature.pos.y << "\n" <<
-            "Vida actual: " << (int) creature.actual_life << "\n" <<
-            "Vida maxima: " << (int) creature.max_life << "\n" <<
-            "Tipo: " << (int) creature.type << "\n" <<
-            "Orientacion: " << (int) creature.orientation << "\n" <<
-            "Estado: " << (int) creature.state << "\n";
-        }
-         */
     }
     w.creatures = creatures;
 
@@ -562,17 +531,6 @@ world_t ClientProtocol::receiveWorldUpdate() {
         bytes_advanced += SIZE_8;
 
         attacks[i] = attack;
-
-        /*
-        if (debug) {
-            std::cout << "\nATAQUE RECIBIDO\n" <<
-            "Pos X: " << (int) attack.pos.x << "\n" <<
-            "Pos Y: " << (int) attack.pos.y << "\n" <<
-            "Orientacion: " << (int) attack.orientation << "\n" <<
-            "Tipo: " << (int) attack.type << "\n" <<
-            "Colisionando: " << (int) attack.is_colliding << "\n";
-        }
-         */
     }
     w.attacks = attacks;
 
