@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include "../sdl/window.h"
 #include "../../common/thread.h"
 #include "../../common/defines/terrains.h"
@@ -24,10 +25,12 @@ class GameRender : public Thread {
     std::vector<int> mapDimensions;
     SDLWindow window;
     GameSurfacesManager surfacesManager;
+    Mix_Music* music;
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
 
+    void playMusic();
 
 public:
     //Constructor

@@ -24,4 +24,4 @@ add_executable(client client/main.cpp ${CLIENT_FILES})
 add_executable(server server/main.cpp ${SERVER_FILES})
 
 # LINK LIBRARIES
-target_link_libraries(client sdl-lib SDL2 SDL2_image SDL2_ttf)
+target_link_libraries(client sdl-lib SDL2 SDL2_image SDL2_ttf SDL2_mixer)

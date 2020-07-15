@@ -38,6 +38,7 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
 }
 
 GameRender::~GameRender() {
+    Mix_FreeMusic(music);
     SDL_Quit();
 }
 
@@ -218,6 +219,23 @@ void GameRender::toggleFullscreen() {
     window.toggleFullscreen();
 }
 
+void GameRender::playMusic() {
+    //TODO sacar path a otro lado
+    static const char* path = "../client/resources/audio/got.mp3";
+    int result = 0;
+    int flags = MIX_INIT_FLAC;
+
+    Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
+
+    if (flags != (result = Mix_Init(flags))) {
+        printf("Could not initialize mixer (result: %d).\n", result);
+        printf("Mix_Init: %s\n", Mix_GetError());
+        exit(1);
+    }
+
+    music = Mix_LoadMUS(path);
+    Mix_PlayMusic(music, 1);
+}
 
 void GameRender::run() {
     using clock = std::chrono::system_clock;
@@ -227,7 +245,7 @@ void GameRender::run() {
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     mapDimensions = mapMonitor.getDimensions();
     window.setTilesSize(blocksWidth,blocksHeight);
-
+    playMusic();
 
     while (keepRunning) {
         auto start = clock::now();
