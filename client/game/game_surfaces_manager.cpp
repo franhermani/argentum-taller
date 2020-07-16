@@ -420,10 +420,10 @@ void GameSurfacesManager::loadAttackPaths() {
             {RIGHT, "../client/resources/images/single_arrow_right_t.png"}
     };
     std::map<int, std::string> melee_orientations = {
-            {UP, "../client/resources/images/melee_attack_t_small.png"},
-            {DOWN, "../client/resources/images/melee_attack_t_small.png"},
-            {LEFT, "../client/resources/images/melee_attack_t_small.png"},
-            {RIGHT, "../client/resources/images/melee_attack_t_small.png"}
+            {UP, "../client/resources/images/melee_attack_t_big.png"},
+            {DOWN, "../client/resources/images/melee_attack_t_big.png"},
+            {LEFT, "../client/resources/images/melee_attack_t_big.png"},
+            {RIGHT, "../client/resources/images/melee_attack_t_big.png"}
     };
     std::map<int, std::string> missile_orientations = {
             {UP, "../client/resources/images/missile_up_t.png"},
