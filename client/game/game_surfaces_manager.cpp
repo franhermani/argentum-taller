@@ -419,6 +419,12 @@ void GameSurfacesManager::loadAttackPaths() {
             {LEFT, "../client/resources/images/single_arrow_left_t.png"},
             {RIGHT, "../client/resources/images/single_arrow_right_t.png"}
     };
+    std::map<int, std::string> melee_orientations = {
+            {UP, "../client/resources/images/melee_attack_t.png"},
+            {DOWN, "../client/resources/images/melee_attack_t.png"},
+            {LEFT, "../client/resources/images/melee_attack_t.png"},
+            {RIGHT, "../client/resources/images/melee_attack_t.png"}
+    };
     std::map<int, std::string> missile_orientations = {
             {UP, "../client/resources/images/missile_up_t.png"},
             {DOWN, "../client/resources/images/missile_down_t.png"},
@@ -443,7 +449,7 @@ void GameSurfacesManager::loadAttackPaths() {
     attackSurfacesPaths = {
             {MULTIPLE_ARROW, multiple_arrow_orientations},
             {SINGLE_ARROW, single_arrow_orientations},
-            {MELEE, single_arrow_orientations},
+            {MELEE, melee_orientations},
             {MAGIC_ARROW_SPELL, magic_arrow_orientations},
             {HEAL_SPELL, heal_spell_orientations},
             {MISSILE_SPELL, missile_orientations},
@@ -455,9 +461,10 @@ void GameSurfacesManager::loadAttackPaths() {
     std::map<int, Surface*> magic_arrow_surfaces;
     std::map<int, Surface*> explosion_spell_surfaces;
     std::map<int, Surface*> heal_spell_surfaces;
+    std::map<int, Surface*> melee_surfaces;
     attackSurfacesMap = {{MULTIPLE_ARROW, multiple_arrow_surfaces},
                          {SINGLE_ARROW,   single_arrow_surfaces},
-                         {MELEE, single_arrow_surfaces},
+                         {MELEE, melee_surfaces},
                          {MAGIC_ARROW_SPELL, magic_arrow_surfaces},
                          {HEAL_SPELL, heal_spell_surfaces},
                          {MISSILE_SPELL, missile_surfaces},
