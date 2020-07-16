@@ -22,7 +22,7 @@ sudo apt-get install tiled
 
 Clonar el repositorio actual:
 ```
-git clone https://github.com/franhermani/taller-tp4)
+git clone https://github.com/franhermani/taller-tp4
 ```
 
 En la carpeta donde se clonó el repositorio ejecutar:
