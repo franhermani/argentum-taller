@@ -85,8 +85,8 @@
     "creatures": {
       "level": {
         "min": 1,
-        "max": 110,
-        "interval": 10
+        "max": 40,
+        "interval": 5
       },
       "search_range": 50,
       "death_prob_eq": {
@@ -108,18 +108,18 @@
         }
       },
       "goblin": {
-        "quantity": 20,
+        "quantity": 15,
         "max_life": 50,
         "min_defense": 5,
         "max_defense": 10,
-        "min_attack": 5,
-        "max_attack": 10,
+        "min_attack": 3,
+        "max_attack": 7,
         "move_velocity": 800,
         "attack_velocity": 400,
         "respawn_velocity": 2000
       },
       "skeleton": {
-        "quantity": 20,
+        "quantity": 15,
         "max_life": 50,
         "min_defense": 7,
         "max_defense": 12,
@@ -130,23 +130,23 @@
         "respawn_velocity": 2000
       },
       "zombie": {
-        "quantity": 20,
+        "quantity": 15,
         "max_life": 40,
         "min_defense": 3,
         "max_defense": 8,
-        "min_attack": 8,
-        "max_attack": 13,
+        "min_attack": 5,
+        "max_attack": 10,
         "move_velocity": 1200,
         "attack_velocity": 800,
         "respawn_velocity": 2000
       },
       "spider": {
-        "quantity": 20,
+        "quantity": 15,
         "max_life": 80,
         "min_defense": 5,
         "max_defense": 10,
-        "min_attack": 10,
-        "max_attack": 25,
+        "min_attack": 5,
+        "max_attack": 15,
         "move_velocity": 600,
         "attack_velocity": 300,
         "respawn_velocity": 2000
