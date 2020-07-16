@@ -608,6 +608,8 @@ const std::string ClientProtocol::receiveGameMessage() {
     msg_buffer.resize(message_length);
     socket.receiveBytes(msg_buffer.data(), message_length);
 
-    std::string message(msg_buffer.data());
+    std::string message(msg_buffer.begin(),
+            msg_buffer.begin() + message_length);
+    
     return message;
 }
