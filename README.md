@@ -18,8 +18,21 @@ sudo apt-get install tiled
 
 # Comandos útiles - Consola
 
+### Instalación
+
+Clonar el repositorio actual:
+```
+git clone https://github.com/franhermani/taller-tp4)
+```
+
+En la carpeta donde se clonó el repositorio ejecutar:
+```
+bash install.sh
+```
+
 ### Compilar el proyecto (directorio build)
 
+En la carpeta donde se clonó el repositorio ejecutar:
 ```
 bash make.sh
 ```
@@ -30,26 +43,28 @@ clean.sh y make.sh nuevamente)*
 
 ### Limpiar el proyecto (directorio build)
 
+En la carpeta donde se clonó el repositorio ejecutar:
 ```
 bash clean.sh
 ```
 
 ### Ejecutar el servidor
 
+En la carpeta build ejecutar:
 ```
-cd build
 ./server ../server/config/config.json
 ```
 
 ### Ejecutar el cliente
 
+En la carpeta build ejecutar:
 ```
-cd build
 ./client localhost 8080
 ```
 
 ### Verificar normas de codificación
 
+En la carpeta donde se clonó el repositorio ejecutar:
 ```
 bash execute.sh
 ```
