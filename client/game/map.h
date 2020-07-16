@@ -9,14 +9,12 @@
 
 class Map {
     world_t world;
-    matrix_t matrix;
     npcs_t npcs;
     list_t list;
     //el 108
     std::vector<int> mapDimensions;
     std::atomic<bool> interactingWithNpc;
     int username_id;
-    std::vector<std::vector<Terrain>> terrainMatrix;
     //el 9
     int playerVisionWidth;
     int playerVisionHeight;
@@ -85,17 +83,10 @@ public:
     std::vector<int> getItemStandingAt();
     std::vector<int> getGoldStandingAt();
 
-    // devuelve la matriz de pisos
-    std::vector<std::vector<Terrain>> getTerrains();
-
     // getters de campo de vision del jugador
     int getPlayerVisionWidth();
     int getPlayerVisionHeight();
     std::vector<int> getDimensions();
-
-    //imprime por consola la matriz recibida de terrains para debugeo
-    void printDebugTerrainMatrix(std::vector<
-            std::vector<Terrain>>& received_matrix);
 
     //devuelve infomacion del estado actual del mundo
     client_world_t getCurrentWorld();

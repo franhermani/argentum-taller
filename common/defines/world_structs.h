@@ -3,18 +3,7 @@
 
 #include <cstdint>
 #include <vector>
-#include "terrains.h"
 #include "position.h"
-
-// ---------------- //
-// Barras de estado //
-// ---------------- //
-
-typedef struct {
-    uint16_t life;                  // Porcentaje de vida
-    uint16_t mana;                  // Porcentaje de mana
-    uint16_t experience;            // Porcentaje de experiencia
-} player_percentages_t;
 
 // ---------------------- //
 // Listado de items y oro //
@@ -125,16 +114,5 @@ typedef struct {
     uint16_t num_npcs;          // Cantidad de npcs en 'npcs'
     std::vector<npc_t> npcs;    // Lista de structs 'npc_t'
 } npcs_t;
-
-// ------------------ //
-// Matriz de terrenos //
-// ------------------ //
-
-typedef struct {
-    uint16_t length;                // Longitud total del mensaje
-    uint16_t width;                 // Ancho de la matriz
-    uint16_t height;                // Alto de la matriz
-    std::vector<Terrain> terrains;  // Lista de structs 'terrain_t'
-} matrix_t;
 
 #endif // WORLD_STRUCTS_H
