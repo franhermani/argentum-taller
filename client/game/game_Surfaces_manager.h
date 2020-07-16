@@ -6,7 +6,6 @@
 #include <string>
 #include "../../common/defines/commands.h"
 #include "../../common/thread.h"
-#include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "../sdl/surface.h"
@@ -30,7 +29,6 @@ class GameSurfacesManager {
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
     std::map<int, std::map<int, std::string>> attackSurfacesPaths;
     std::map<int, std::string> itemSurfacesPaths;
-    std::vector<std::vector<Terrain>> floor;
     SDLWindow& window;
 
     Surface* getTextSurface(std::string text);

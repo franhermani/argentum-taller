@@ -12,24 +12,20 @@ ConnectionReceiver::ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor) :
 }
 
 void ConnectionReceiver::run() {
+    std::string message;
+
     try {
         int username_id = protocol.receiveUsernameId();
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
-        // TODO: pasarle esto al mapMonitor
         std::vector<int> map_dimensions = protocol.receiveMapDimensions();
         npcs_t npcs = protocol.receiveNPCs();
 
         mapMonitor.initialize(username_id, blocks_around, npcs, map_dimensions);
 
-        std::string game_message;
-
         while (keepRunning) {
             world_t world = protocol.receiveWorldUpdate();
-            game_message = protocol.receiveGameMessage();
-            if (game_message.empty()) {
-                // Do nothing
-            }
-            else std::cout << "\n" << game_message;
+            message = protocol.receiveGameMessage();
+            printGameMessage(message);
             list_t list = protocol.receiveItemsList();
             mapMonitor.updateWorld(std::move(world), std::move(list));
         }
@@ -49,4 +45,11 @@ bool ConnectionReceiver::isDead() {
 
 const int ConnectionReceiver::receiveUsernameConfirmation() {
     return protocol.receiveUsernameConfirmation();
+}
+
+void ConnectionReceiver::printGameMessage(std::string& message) {
+    if (message.empty())
+        return;
+
+    std::cout << "\n" << message << "\n";
 }

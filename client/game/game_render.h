@@ -8,7 +8,6 @@
 #include <SDL2/SDL_mixer.h>
 #include "../sdl/window.h"
 #include "../../common/thread.h"
-#include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"

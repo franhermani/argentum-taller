@@ -10,6 +10,13 @@
 class ClientProtocol {
     Socket& socket;
 
+    void loadPlayerInfo(std::vector<char>& buffer, int& pos, world_t& w);
+    void loadPlayers(std::vector<char>& buffer, int& pos, world_t& w);
+    void loadCreatures(std::vector<char>& buffer, int& pos, world_t& w);
+    void loadItems(std::vector<char>& buffer, int& pos, world_t& w);
+    void loadGolds(std::vector<char>& buffer, int& pos, world_t& w);
+    void loadAttacks(std::vector<char>& buffer, int& pos, world_t& w);
+
 public:
     // Constructor
     explicit ClientProtocol(Socket& socket);

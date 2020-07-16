@@ -29,6 +29,9 @@ public:
 
     // Recibe el codigo de confirmacion del server por el username enviado
     const int receiveUsernameConfirmation();
+
+    // Imprime una excepcion del juego por pantalla
+    void printGameMessage(std::string& message);
 };
 
 #endif // CONNECTION_RECEIVER_H
