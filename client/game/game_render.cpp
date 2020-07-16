@@ -43,6 +43,7 @@ GameRender::~GameRender() {
     Mix_FreeChunk(swordSound);
     Mix_FreeChunk(explosionSound);
     Mix_FreeMusic(music);
+    Mix_Quit();
     SDL_Quit();
 }
 
@@ -160,7 +161,7 @@ void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
             }
         }
         else if (it->sound == EXPLOSION) {
-            if (Mix_PlayChannel(0, explosionSound, 1) == -1){
+            if (Mix_PlayChannel(0, explosionSound, 0) == -1){
                 std::cout << "Error: Could not play wav file  on channel "
                           << 0 << std::endl;
             }
