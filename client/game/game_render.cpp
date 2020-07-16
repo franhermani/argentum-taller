@@ -23,6 +23,8 @@
 #include "../../common/defines/states.h"
 #include "exception.h"
 #include "../sdl/exception.h"
+#include "../../common/defines/attacks.h"
+
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
@@ -38,6 +40,8 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
 }
 
 GameRender::~GameRender() {
+    Mix_FreeChunk(swordSound);
+    Mix_FreeChunk(explosionSound);
     Mix_FreeMusic(music);
     SDL_Quit();
 }
@@ -48,7 +52,37 @@ int GameRender::init() {
         throw SDLException(
                 "\nError al inicializar video de sdl", SDL_GetError());
     }
+    initMusic();
     return true;
+}
+
+void GameRender::initMusic() {
+    int flags = MIX_INIT_FLAC;
+    int result = 0;
+
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+
+    if (flags != (result = Mix_Init(flags))) {
+        printf("Could not initialize mixer (result: %d).\n", result);
+        printf("Mix_Init: %s\n", Mix_GetError());
+        exit(1);
+    }
+    static const char* path_sword = "../client/resources/audio/sword.wav";
+    static const char* path_explosion = "../client/resources/audio/explosion.wav";
+    swordSound = Mix_LoadWAV(path_sword);
+    if (swordSound == NULL) {
+        std::cout << "Error: Could not load .wav file: " << path_sword << std::endl;
+    }
+    explosionSound = Mix_LoadWAV(path_explosion);
+    if (explosionSound == NULL) {
+        std::cout << "Error: Could not load .wav file: " << path_explosion << std::endl;
+    }
+    static const char* path_music = "../client/resources/audio/got.mp3";
+    music = Mix_LoadMUS(path_music);
+    if (music == NULL) {
+        std::cout << "Error: Could not load .mp3 file: " << path_music << std::endl;
+    }
+    Mix_PlayMusic(music, -1);
 }
 
 void GameRender::renderPlayers(std::vector<player_t>& players) {
@@ -115,9 +149,22 @@ void GameRender::renderEquippedList(player_t& player) {
 
 
 void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
+
     surfacesManager.createNecessaryAttacks(attacks);
     for (auto it = std::begin(attacks);
          it != std::end(attacks); ++it) {
+        if (it->sound == SWORD_STRIKE) {
+            if (Mix_PlayChannel(0, swordSound, 0) == -1){
+                std::cout << "Error: Could not play wav file  on channel "
+                          << 0 << std::endl;
+            }
+        }
+        else if (it->sound == EXPLOSION) {
+            if (Mix_PlayChannel(0, explosionSound, 1) == -1){
+                std::cout << "Error: Could not play wav file  on channel "
+                          << 0 << std::endl;
+            }
+        }
         window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager.attackSurfacesMap[it->type][it->orientation]);
     }
@@ -219,24 +266,6 @@ void GameRender::toggleFullscreen() {
     window.toggleFullscreen();
 }
 
-void GameRender::playMusic() {
-    //TODO sacar path a otro lado
-    static const char* path = "../client/resources/audio/got.mp3";
-    int result = 0;
-    int flags = MIX_INIT_FLAC;
-
-    Mix_OpenAudio(22050, AUDIO_S16SYS, 2, 640);
-
-    if (flags != (result = Mix_Init(flags))) {
-        printf("Could not initialize mixer (result: %d).\n", result);
-        printf("Mix_Init: %s\n", Mix_GetError());
-        exit(1);
-    }
-
-    music = Mix_LoadMUS(path);
-    Mix_PlayMusic(music, -1);
-}
-
 void GameRender::run() {
     using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
@@ -245,7 +274,7 @@ void GameRender::run() {
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     mapDimensions = mapMonitor.getDimensions();
     window.setTilesSize(blocksWidth,blocksHeight);
-    playMusic();
+
 
     while (keepRunning) {
         auto start = clock::now();

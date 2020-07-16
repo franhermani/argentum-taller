@@ -26,11 +26,13 @@ class GameRender : public Thread {
     SDLWindow window;
     GameSurfacesManager surfacesManager;
     Mix_Music* music;
+    Mix_Chunk* swordSound;
+    Mix_Chunk* explosionSound;
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
 
-    void playMusic();
+    void initMusic();
 
 public:
     //Constructor
