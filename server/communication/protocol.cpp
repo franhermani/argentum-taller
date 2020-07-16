@@ -123,7 +123,6 @@ void ServerProtocol::sendNPCs(WorldMonitor &world_monitor) {
 
 void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
         Player& player) {
-    world_t w;
     std::vector<Player*> players = world_monitor.getPlayersAround(player);
     std::vector<Creature*> creatures = world_monitor.
             getCreaturesAround(player);
@@ -166,6 +165,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
     // Carga del struct world_t //
     // ------------------------ //
 
+    world_t w;
     w.length = htons(message_length);
     loadPlayerInfo(w, player);
     loadPlayers(w, players);
