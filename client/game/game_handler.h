@@ -24,6 +24,7 @@ class GameHandler {
     ConnectionReceiver* connectionReceiver;
     MapMonitor mapMonitor;
     GameRender* gameRender;
+    JsonParser jsonParser;
 
     //File worldFile;
 
