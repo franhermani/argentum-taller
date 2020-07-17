@@ -51,22 +51,22 @@ void Merchant::sellItem(Player &player, int type) {
 }
 
 void Merchant::depositItem(Player &player, const int type) {
-    throw GameException(player.getId(), "Un comerciante no tiene"
+    throw GameException(player.getId(), "Un comerciante no tiene "
                                    "acceso al banco");
 }
 
 void Merchant::withdrawItem(Player &player, const int type) {
-    throw GameException(player.getId(), "Un comerciante no tiene"
+    throw GameException(player.getId(), "Un comerciante no tiene "
                                    "acceso al banco");
 }
 
 void Merchant::depositGold(Player &player) {
-    throw GameException(player.getId(), "Un comerciante no tiene"
+    throw GameException(player.getId(), "Un comerciante no tiene "
                                    "acceso al banco");
 }
 
 void Merchant::withdrawGold(Player &player) {
-    throw GameException(player.getId(), "Un comerciante no tiene"
+    throw GameException(player.getId(), "Un comerciante no tiene "
                                    "acceso al banco");
 }
 

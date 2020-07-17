@@ -198,17 +198,14 @@ const int Player::secondsToRevive() {
 }
 
 void Player::equipWeapon(Weapon* new_weapon) {
-    if (new_weapon->isMagic && ! ableToUseMagic) {
-        inventory.addItem(new_weapon);
-        throw GameException(id, "Eres un guerrero. No puedes utilizar "
-                                "armas magicas");
-    }
     if (weapon) {
+        Weapon* prev_weapon = weapon;
         try {
-            inventory.addItem(weapon);
+            unequipItem(UNEQUIP_WEAPON);
         } catch (GameException& e) {
-            weapon->updatePosition(pos);
-            world.addItem(weapon);
+            weapon = prev_weapon;
+            inventory.addItem(new_weapon);
+            throw e;
         }
     }
     weapon = new_weapon;
@@ -216,28 +213,27 @@ void Player::equipWeapon(Weapon* new_weapon) {
 
 void Player::equipArmor(Armor* new_armor) {
     if (armor) {
+        Armor* prev_armor = armor;
         try {
-            inventory.addItem(armor);
+            unequipItem(UNEQUIP_ARMOR);
         } catch (GameException& e) {
-            armor->updatePosition(pos);
-            world.addItem(armor);
+            armor = prev_armor;
+            inventory.addItem(new_armor);
+            throw e;
         }
     }
     armor = new_armor;
 }
 
 void Player::equipHelmet(Helmet* new_helmet) {
-    if (new_helmet->isMagic && ! ableToUseMagic) {
-        inventory.addItem(new_helmet);
-        throw GameException(id, "Eres un guerrero. No puedes utilizar "
-                                "cascos magicos");
-    }
     if (helmet) {
+        Helmet* prev_helmet = helmet;
         try {
-            inventory.addItem(helmet);
+            unequipItem(UNEQUIP_HELMET);
         } catch (GameException& e) {
-            helmet->updatePosition(pos);
-            world.addItem(helmet);
+            helmet = prev_helmet;
+            inventory.addItem(new_helmet);
+            throw e;
         }
     }
     helmet = new_helmet;
@@ -245,11 +241,13 @@ void Player::equipHelmet(Helmet* new_helmet) {
 
 void Player::equipShield(Shield* new_shield) {
     if (shield) {
+        Shield* prev_shield = shield;
         try {
-            inventory.addItem(shield);
+            unequipItem(UNEQUIP_SHIELD);
         } catch (GameException& e) {
-            shield->updatePosition(pos);
-            world.addItem(shield);
+            shield = prev_shield;
+            inventory.addItem(new_shield);
+            throw e;
         }
     }
     shield = new_shield;
@@ -502,6 +500,12 @@ void Player::equipItemFromInventory(const int type) {
     Item* item = inventory.removeItem(type);
     if (! item)
         return;
+
+    if (item->isMagic && ! ableToUseMagic) {
+        inventory.addItem(item);
+        throw GameException(id, "Eres un guerrero. No puedes equiparte "
+                                "items magicos");
+    }
 
     if (dynamic_cast<Weapon*>(item)) {
         equipWeapon(dynamic_cast<Weapon*>(item));
