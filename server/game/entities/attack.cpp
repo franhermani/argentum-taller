@@ -1,11 +1,11 @@
 #include "attack.h"
 #include "../../../common/defines/commands.h"
 
-Attack::Attack(LivingBeing *owner, const int type, position_t new_pos,
-        const int direction, const int range, const int move_velocity) :
-        owner(owner), type(type), pos(new_pos), direction(direction),
-        range(range), blocksToRange(range), isColliding(false),
-        moveVelocity(move_velocity), msMoveCounter(0) {}
+Attack::Attack(LivingBeing *owner, const int type, const int sound,
+        position_t new_pos, const int direction, const int range,
+        const int move_velocity) : owner(owner), type(type), sound(sound),
+        pos(new_pos), direction(direction), range(range), blocksToRange(range),
+        isColliding(false), moveVelocity(move_velocity), msMoveCounter(0) {}
 
 void Attack::updatePosition() {
     position_t new_pos = pos;
@@ -34,7 +34,12 @@ void Attack::update(const int ms) {
 
     if (msMoveCounter >= moveVelocity) {
         msMoveCounter = 0;
-        updatePosition();
+
+        if (range == 1) {
+            collision();
+        } else {
+            updatePosition();
+        }
     }
 }
 

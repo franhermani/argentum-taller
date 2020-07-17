@@ -172,12 +172,21 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
 
     double agility = math.average(race_params["agility"],
                                   class_params["agility"]);
+
+    // Ataque critico
+    json critic_params = configParams["player"]["attack"]["critic_eq"];
+    double multiplier = critic_params["multiplier"],
+           p_critic = critic_params["p"];
+
+    bool critic_attack = (math.randomDouble(0, 1) <= p_critic);
+
+    // Esquivar ataque
     json dodge_params = configParams["player"]["defense"]["dodge_eq"];
     double c1 = dodge_params["c1"], c2 = dodge_params["c2"],
            c3 = dodge_params["c3"];
 
     bool avoid_attack = pow(math.randomDouble(c1, c2), agility) < c3;
-    if (avoid_attack)
+    if (avoid_attack && ! critic_attack)
         return 0;
 
     double armor_defense = player.armor ?
@@ -191,6 +200,10 @@ const int Equations::eqDamageReceived(Player &player, const int damage) {
 
     int defense = armor_defense + helmet_defense + shield_defense;
     int damage_received = std::max(damage - defense, 0);
+
+    if (critic_attack)
+        damage_received *= multiplier;
+
     return damage_received;
 }
 

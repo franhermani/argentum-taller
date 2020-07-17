@@ -49,14 +49,21 @@ void GameInputHandler::play() {
                     } else if (key == SDLK_DOWN) {
                         mapMonitor.uninteract();
                         command = new MoveCommandDTO(DOWN);
-                    } else if (key == SDLK_ESCAPE) {
-                        running = false;
+                    } else if (key == SDLK_F12) {
+                        gameRender->toggleFullscreen();
                         continue;
+                    } else if (key == SDLK_ESCAPE) {
+                            running = false;
+                            continue;
                     } else if (mapMonitor.isInteracting()) {
                         if (key == SDLK_w) {
                             command = handleWithdraw();
                         } else if (key == SDLK_b) {
                             command = handleBuy();
+                        } else if (key == SDLK_s) {
+                            command = handleSell();
+                        } else if (key == SDLK_d) {
+                            command = handleDeposit();
                         } else {
                             continue;
                         }
@@ -79,10 +86,6 @@ void GameInputHandler::play() {
                             command = handleEquip();
                         } else if (key == SDLK_u) {
                             command = handleUnequip();
-                        }  else if (key == SDLK_s) {
-                            command = handleSell();
-                        } else if (key == SDLK_d) {
-                            command = handleDeposit();
                         } else {
                             continue;
                         }

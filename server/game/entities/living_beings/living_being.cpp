@@ -13,5 +13,5 @@ void LivingBeing::subtractLife(int life) {
 }
 
 const bool LivingBeing::isDead() const {
-    return (! isAlive);
+    return (state == STATE_GHOST || state == STATE_DYING);
 }

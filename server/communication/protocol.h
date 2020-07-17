@@ -12,6 +12,20 @@ class ServerProtocol {
     Socket& socket;
     CommandFactory commandFactory;
 
+    void loadPlayerInfo(world_t& w, Player& player);
+    void loadPlayers(world_t& w, std::vector<Player*>& players);
+    void loadCreatures(world_t& w, std::vector<Creature*>& creatures);
+    void loadItems(world_t& w, std::vector<Item*>& items);
+    void loadGolds(world_t& w, std::vector<Gold*>& golds);
+    void loadAttacks(world_t& w, std::vector<Attack*>& attacks);
+
+    void writePlayerInfo(std::vector<char>& byte_msg, int& pos, world_t& w);
+    void writePlayers(std::vector<char>& byte_msg, int& pos, world_t& w);
+    void writeCreatures(std::vector<char>& byte_msg, int& pos, world_t& w);
+    void writeItems(std::vector<char>& byte_msg, int& pos, world_t& w);
+    void writeGolds(std::vector<char>& byte_msg, int& pos, world_t& w);
+    void writeAttacks(std::vector<char>& byte_msg, int& pos, world_t& w);
+
 public:
     // Constructor
     explicit ServerProtocol(Socket& socket);

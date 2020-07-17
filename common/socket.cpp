@@ -57,7 +57,7 @@ void Socket::_resolve_addr(const char *host, const char *port,
     int sd_tmp, status;
 
     if ((status = getaddrinfo(host, port, &hints, &ai_list)) != 0)
-        throw SocketError("Error in getaddrinfo: %s\n", gai_strerror(status));
+        throw SocketError("Error en getaddrinfo: %s\n", gai_strerror(status));
 
     for (ptr = ai_list; ptr != NULL; ptr = ptr->ai_next) {
         sd_tmp = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
@@ -71,7 +71,7 @@ void Socket::_resolve_addr(const char *host, const char *port,
         }
     }
     freeaddrinfo(ai_list);
-    if (sd == -1) throw SocketError("No connections available\n");
+    if (sd == -1) throw SocketError("No hay conexiones disponibles\n");
 }
 
 const int Socket::_bind(struct sockaddr *addr, const socklen_t len) {
@@ -99,7 +99,7 @@ const int Socket::_connect(struct sockaddr *addr, const socklen_t len) {
 void Socket::listenToClients() {
     if (listen(sd, MAX_LISTEN_QUEUE_LEN) == -1) {
         closeSocketDescriptor();
-        throw SocketError("Error listening to clients\n");
+        throw SocketError("Error al escuchar clientes\n");
     }
 }
 
@@ -126,7 +126,7 @@ const int Socket::sendBytes(const char *buffer, const size_t length) {
         }
     }
     if (socket_closed || socket_error)
-        throw SocketError("Error sending bytes\n");
+        throw SocketError("Error enviando bytes\n");
 
     return tot_bytes;
 }
@@ -147,7 +147,7 @@ const int Socket::receiveBytes(char *buffer, const size_t length) {
         }
     }
     if ((socket_closed && tot_bytes == 0) || socket_error)
-        throw SocketError("Error receiving bytes\n");
+        throw SocketError("Error recibiendo bytes\n");
 
     return tot_bytes;
 }

@@ -1,7 +1,7 @@
 #include "bank.h"
 #include "game_exception.h"
 
-Bank::Bank() {}
+Bank::Bank(size_t max_items) : maxItemsPerPlayer(max_items) {}
 
 Bank::~Bank() {
     for (auto& kv : itemsPerPlayer) {
@@ -13,6 +13,9 @@ Bank::~Bank() {
 
 void Bank::depositItem(const int player_id, Item *item) {
     std::unique_lock<std::mutex> lk(m);
+    if (itemsPerPlayer[player_id].size() == maxItemsPerPlayer)
+        throw GameException(player_id, "No tienes mas espacio en el banco");
+
     itemsPerPlayer[player_id].push_back(item);
 }
 

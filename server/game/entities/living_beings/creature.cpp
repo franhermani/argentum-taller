@@ -1,4 +1,3 @@
-#include <random>
 #include <vector>
 #include <queue>
 #include "creature.h"
@@ -23,10 +22,10 @@ msMoveCounter(0),
 msRespawnCounter(0) {
     id = new_id;
     level = new_level;
-    isAlive = true;
     orientation = DOWN;
     maxLife = equations.eqMaxLife(*this);
     actualLife = maxLife;
+    state = STATE_NORMAL;
     pos = world.loadCreaturePosition();
 }
 
@@ -35,6 +34,73 @@ Creature::~Creature() = default;
 // --------------- //
 // Private methods //
 // --------------- //
+
+void Creature::die() {
+    state = STATE_DYING;
+}
+
+void Creature::respawn() {
+    dropItemOrGold();
+    pos = world.loadCreaturePositionInCemetery();
+    state = STATE_NORMAL;
+}
+
+void Creature::dropItemOrGold() {
+    if (world.itemInCollision(pos))
+        return;
+
+    std::vector<int> death_drop = equations.eqCreatureDeathDrop(*this);
+    int enum_drop = death_drop[0], param_drop = death_drop[1];
+
+    switch (enum_drop) {
+        case DROP_NOTHING:
+            break;
+        case DROP_GOLD:
+            world.addGold(new Gold(param_drop, pos));
+            break;
+        case DROP_ITEM:
+            world.addItem(param_drop, pos);
+            break;
+        default:
+            break;
+    }
+}
+
+void Creature::moveAndAttackPlayers() {
+    position_t player_pos = world.getClosestPlayerPos(pos);
+
+    bool in_attack_range = world.distanceInBlocks(
+            pos, player_pos) <= attackRange;
+
+    if (in_attack_range) {
+        orientTo(player_pos);
+        attack();
+    } else {
+        moveTo(player_pos);
+    }
+}
+
+position_t Creature::getMovementPosition(const int direction) {
+    position_t new_pos = pos;
+
+    switch (direction) {
+        case LEFT:
+            new_pos.x -= 1;
+            break;
+        case RIGHT:
+            new_pos.x += 1;
+            break;
+        case DOWN:
+            new_pos.y += 1;
+            break;
+        case UP:
+            new_pos.y -= 1;
+            break;
+        default:
+            break;
+    }
+    return new_pos;
+}
 
 std::queue<int> Creature::getMovementPriorities(position_t player_pos) {
     std::queue<int> priorities;
@@ -66,28 +132,6 @@ std::queue<int> Creature::getMovementPriorities(position_t player_pos) {
         }
     }
     return priorities;
-}
-
-position_t Creature::getMovementPosition(const int direction) {
-    position_t new_pos = pos;
-
-    switch (direction) {
-        case LEFT:
-            new_pos.x -= 1;
-            break;
-        case RIGHT:
-            new_pos.x += 1;
-            break;
-        case DOWN:
-            new_pos.y += 1;
-            break;
-        case UP:
-            new_pos.y -= 1;
-            break;
-        default:
-            break;
-    }
-    return new_pos;
 }
 
 void Creature::moveTo(position_t player_pos) {
@@ -125,50 +169,28 @@ void Creature::orientTo(position_t player_pos) {
     }
 }
 
-void Creature::die() {
-    isAlive = false;
-}
+void Creature::attack() {
+    position_t attack_pos = pos;
 
-void Creature::respawn() {
-    dropItemOrGold();
-    pos = world.loadCreaturePositionInCemetery();
-    isAlive = true;
-}
-
-void Creature::dropItemOrGold() {
-    if (world.itemInCollision(pos))
-        return;
-
-    std::vector<int> death_drop = equations.eqCreatureDeathDrop(*this);
-    int enum_drop = death_drop[0], param_drop = death_drop[1];
-
-    switch (enum_drop) {
-        case DROP_NOTHING:
+    switch (orientation) {
+        case LEFT:
+            attack_pos.x -= 1;
             break;
-        case DROP_GOLD:
-            world.addGold(new Gold(param_drop, pos));
+        case RIGHT:
+            attack_pos.x += 1;
             break;
-        case DROP_ITEM:
-            world.addItem(param_drop, pos);
+        case DOWN:
+            attack_pos.y += 1;
+            break;
+        case UP:
+            attack_pos.y -= 1;
             break;
         default:
             break;
     }
-}
 
-void Creature::moveAndAttackPlayers() {
-    position_t player_pos = world.getClosestPlayerPos(pos);
-
-    bool in_attack_range = world.distanceInBlocks(
-            pos, player_pos) <= attackRange;
-
-    if (in_attack_range) {
-        orientTo(player_pos);
-        world.addAttack(new Attack(this, MELEE, pos,
-                orientation, attackRange, attackVelocity));
-    } else {
-        moveTo(player_pos);
-    }
+    world.addAttack(new Attack(this, MELEE, CREATURE_PUNCH,
+            attack_pos, orientation, attackRange, attackVelocity));
 }
 
 // -------------- //
@@ -203,6 +225,9 @@ void Creature::attack(Creature &creature) {
 }
 
 const int Creature::receiveAttack(const int damage) {
+    if (isDead())
+        return 0;
+
     int damage_received = equations.eqDamageReceived(*this, damage);
     subtractLife(damage_received);
     return damage_received;

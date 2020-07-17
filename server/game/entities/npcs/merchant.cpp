@@ -25,12 +25,12 @@ Merchant::Merchant(ItemFactory& item_factory, position_t new_pos,
 Merchant::~Merchant() = default;
 
 void Merchant::revive(Player &player) {
-    throw GameException(player.id, "Un comerciante no tiene "
+    throw GameException(player.getId(), "Un comerciante no tiene "
                                    "la habilidad de revivir al jugador");
 }
 
 void Merchant::heal(Player &player) {
-    throw GameException(player.id, "Un comerciante no tiene "
+    throw GameException(player.getId(), "Un comerciante no tiene "
                                    "la habilidad de curar al jugador");
 }
 
@@ -43,7 +43,7 @@ void Merchant::sellItem(Player &player, int type) {
     if (std::find(items.begin(), items.end(), type) == items.end())
         return;
 
-    Item* item = itemFactory(type, player.pos);
+    Item* item = itemFactory(type, player.getPos());
     if (! item)
         return;
 
@@ -51,22 +51,22 @@ void Merchant::sellItem(Player &player, int type) {
 }
 
 void Merchant::depositItem(Player &player, const int type) {
-    throw GameException(player.id, "Un comerciante no tiene"
+    throw GameException(player.getId(), "Un comerciante no tiene"
                                    "acceso al banco");
 }
 
 void Merchant::withdrawItem(Player &player, const int type) {
-    throw GameException(player.id, "Un comerciante no tiene"
+    throw GameException(player.getId(), "Un comerciante no tiene"
                                    "acceso al banco");
 }
 
 void Merchant::depositGold(Player &player) {
-    throw GameException(player.id, "Un comerciante no tiene"
+    throw GameException(player.getId(), "Un comerciante no tiene"
                                    "acceso al banco");
 }
 
 void Merchant::withdrawGold(Player &player) {
-    throw GameException(player.id, "Un comerciante no tiene"
+    throw GameException(player.getId(), "Un comerciante no tiene"
                                    "acceso al banco");
 }
 

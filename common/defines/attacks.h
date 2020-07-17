@@ -19,4 +19,14 @@ enum attackType {
     MULTIPLE_ARROW
 };
 
+enum soundType {
+    SOUNDLESS,
+    PLAYER_PUNCH,
+    CREATURE_PUNCH,
+    SWORD_STRIKE,
+    HAMMER_STRIKE,
+    MAGIC_STRIKE,
+    EXPLOSION
+};
+
 #endif // ATTACKS_H

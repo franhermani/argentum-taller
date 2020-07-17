@@ -5,8 +5,8 @@
 #include <vector>
 #include <map>
 #include "../../common/thread.h"
-#include "../utilities/json_parser.h"
-#include "../utilities/math_calculator.h"
+#include "../../common/utilities/json_parser.h"
+#include "../../common/utilities/math_calculator.h"
 #include "params.h"
 #include "equations.h"
 #include "world.h"
@@ -31,7 +31,6 @@ class GameManager : public Thread {
     std::map<int, ProtectedQueue<list_t>> listsQueuePerPlayer;
     IdManager idManager;
     Bank bank;
-    int msPerSend;
 
     friend class ClientHandler;
 

@@ -3,6 +3,7 @@
 
 #include <string>
 #include "living_being.h"
+#include "../../../../common/defines/states.h"
 #include "../items/weapon.h"
 #include "../items/armor.h"
 #include "../items/helmet.h"
@@ -10,23 +11,23 @@
 #include "../items/potion.h"
 #include "../items/inventory.h"
 #include "creature.h"
+#include "../../../../common/utilities/json_parser.h"
 
 class World;
 class Equations;
-class ClientHandler;
-class ServerProtocol;
 
 class Player : public LivingBeing {
     World& world;
     Equations& equations;
+    json params;
     int raceType;
     int classType;
     long maxExperience;
     long actualExperience;
-    bool isMeditating;
-    bool isReviving;
     bool isNewbie;
     bool ableToUseMagic;
+    bool isWaitingToMove;
+    int nextDirection;
     int maxMana;
     int actualMana;
     int maxSafeGold;
@@ -41,6 +42,9 @@ class Player : public LivingBeing {
     int msMoveCounter, msRecoveryCounter;
     int distanceInMsToPriest;
 
+    friend class Equations;
+    friend class ServerProtocol;
+
     // Suma puntos de vida al player
     void addLife(int life);
 
@@ -54,8 +58,11 @@ class Player : public LivingBeing {
     // Si llega al limite, sube de nivel
     void addExperience(int exp);
 
-    // Setea 'isAlive' en false y dropea oro e items del inventario
+    // Cambia el estado a fantasma y dropea oro e items del inventario
     virtual void die() override;
+
+    // Revive al player
+    void revive();
 
     // Dropea el oro en exceso al mundo
     void dropExcessGold();
@@ -66,29 +73,25 @@ class Player : public LivingBeing {
     // Dropea los items del inventario al mundo
     void dropInventoryItems();
 
-    // Setea 'isMeditating' en false
-    void stopMeditating();
+    // Devuelve true si esta meditando, false en caso contrario
+    const bool isMeditating() const;
 
     // Recupera vida y mana por el paso del tiempo
     void recoverLifeAndMana();
 
+    // Mueve al player segun la ultima direccion recibida
+    void moveTo();
+
     // Mueve al player al lado de la posicion (x,y)
     void moveNextTo(position_t new_pos);
 
-    // Devuelve los segundos faltantes para revivir (aprox)
-    const int secondsToRevive();
-
     // Asigna 'new_weapon' a 'weapon'
-    // Lanza una excepcion si:
-    // - el arma es magica y player no puede usar la magia
     void equipWeapon(Weapon* new_weapon);
 
     // Asigna 'new_armor' a 'armor'
     void equipArmor(Armor* new_armor);
 
     // Asigna 'new_helmet' a 'helmet'
-    // Lanza una excepcion si:
-    // - el arma es magica y player no puede usar la magia
     void equipHelmet(Helmet* new_helmet);
 
     // Asigna el 'new_shield' a 'shield'
@@ -97,18 +100,9 @@ class Player : public LivingBeing {
     // Suma los puntos de vida y mana correspondientes segun la pocion
     void equipPotion(Potion* new_potion);
 
-    friend class World;
-    friend class Equations;
-    friend class Banker;
-    friend class Priest;
-    friend class Merchant;
-    friend class ListCommand;
-    friend class ClientHandler;
-    friend class ServerProtocol;
-
 public:
     // Constructor
-    Player(World& world, Equations& equations, const int new_id,
+    Player(World& world, Equations& equations, json params, const int new_id,
             const int race_type, const int class_type);
 
     // Constructor y asignacion por copia deshabilitados
@@ -132,13 +126,14 @@ public:
     // Revive al player de forma inmediata
     void shortTermRevive();
 
-    // Setea 'isReviving' en true
+    // Saca el estado de reviviendo
     void longTermRevive();
 
     // El player entra en estado de meditacion
-    // Lanza una excepcion si:
-    // - el player no puede usar la magia
     void meditate();
+
+    // Saca el estado de meditando
+    void stopMeditating();
 
     // Realiza un ataque en la orientacion del player
     void attack();
@@ -197,6 +192,15 @@ public:
 
     // Devuelve la experiencia maxima en el nivel actual
     const long levelMaxExperience() const;
+
+    // Devuelve los segundos faltantes para revivir (aprox)
+    const int secondsToRevive();
+
+    // Devuelve el id del player
+    const int getId() const;
+
+    // Devuelve la posicion del player
+    position_t getPos() const;
 };
 
 #endif // GAME_PLAYER_H

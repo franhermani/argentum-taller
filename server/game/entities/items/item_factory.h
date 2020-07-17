@@ -5,7 +5,7 @@
 #include <map>
 #include <set>
 #include "item.h"
-#include "../../../utilities/json.hpp"
+#include "../../../../common//utilities/json.hpp"
 
 using json = nlohmann::json;
 
@@ -13,6 +13,7 @@ class ItemFactory {
     json itemParams;
     std::map<int, std::string> itemsMap;
     std::map<std::string, int> attackTypesMap;
+    std::map<int, int> attackSoundsMap;
     std::set<int> weapons;
     std::set<int> armors;
     std::set<int> helmets;

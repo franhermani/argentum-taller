@@ -5,11 +5,10 @@
 #include <set>
 #include <map>
 #include <string>
-#include "../utilities/math_calculator.h"
+#include "../../common/utilities/math_calculator.h"
 #include "params.h"
 #include "entities/items/item_factory.h"
 #include "../../common/protected_queue.h"
-#include "../../common/defines/terrains.h"
 #include "entities/living_beings/player.h"
 #include "entities/living_beings/creature.h"
 #include "entities/npcs/npc.h"
@@ -197,15 +196,6 @@ public:
     // a la del sacerdote mas cercano segun la velocidad dada
     const int distanceInMsToClosestPriest(position_t new_pos,
             const int velocity);
-
-    // Devuelve el largo maximo del inventario
-    const int getInventoryLength() const;
-
-    // Devuelve el nivel maximo de un newbie
-    const int getMaxLevelNewbie() const;
-
-    // Devuelve la diferencia de niveles maxima para atacar
-    const int getMaxLevelDiff() const;
 
     // --------------------------------- //
     // Metodos accedidos por GameManager //

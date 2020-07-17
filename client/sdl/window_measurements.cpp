@@ -25,8 +25,11 @@ void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
     initializeStaticAreas();
 }
 
-void WindowMeasurements::initializeStaticAreas() {
+void WindowMeasurements::updateResolution(int width, int height) {
+    initialize(numberOfTilesInWidth, numberOfTilesInHeight, width, height);
+}
 
+void WindowMeasurements::initializeStaticAreas() {
     //TODO ver si frame sigue teniendo sentido que exista
     worldStaticRect.x = frame.x_pixel_begin;
     worldStaticRect.y = frame.y_pixel_begin;
@@ -37,8 +40,6 @@ void WindowMeasurements::initializeStaticAreas() {
     gameFrameStaticRect.y = 0;
     gameFrameStaticRect.w = screenWidth;
     gameFrameStaticRect.h = screenHeight;
-
-    std::cout << "ahora inicializo static area de oro\n";
 
     game_area_t& inventory_gold_area = inventoryGold;
     inventoryGoldStaticRect.x = inventory_gold_area.x_pixel_begin;
@@ -65,12 +66,12 @@ void WindowMeasurements::initializeStaticAreas() {
     listGoldStaticRect.h = (list_gold_area.y_pixel_end -
                             list_gold_area.y_pixel_begin);
     listGoldQuantityStaticRect.x = listGoldStaticRect.x;
-    listGoldQuantityStaticRect.y = listGoldStaticRect.y + (int) (listGoldStaticRect.h *1.1);
+    listGoldQuantityStaticRect.y = listGoldStaticRect.y +
+            (int) (listGoldStaticRect.h *1.1);
     listGoldQuantityStaticRect.w = (list_gold_area.x_pixel_end -
                             list_gold_area.x_pixel_begin);
     listGoldQuantityStaticRect.h = (list_gold_area.y_pixel_end -
                             list_gold_area.y_pixel_begin);
-
 }
 
 

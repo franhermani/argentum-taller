@@ -5,10 +5,10 @@
 
 ClientSender::ClientSender(Socket& socket, WorldMonitor* world_monitor,
         ProtectedQueue<std::string>* messages_queue,
-        ProtectedQueue<list_t>* lists_queue, int ms_per_send) :
-        protocol(socket), worldMonitor(world_monitor),
+        ProtectedQueue<list_t>* lists_queue, int ms_per_send,
+        int min_ms_sleep) : protocol(socket), worldMonitor(world_monitor),
         messagesQueue(messages_queue), listsQueue(lists_queue),
-        msPerSend(ms_per_send) {
+        msPerSend(ms_per_send), minMsSleep(min_ms_sleep) {
     keepRunning = true;
     isRunning = true;
 }
@@ -19,6 +19,7 @@ ClientSender::ClientSender(Socket& socket) : protocol(socket) {
 }
 
 void ClientSender::run() {
+    using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
 
     try {
@@ -46,7 +47,7 @@ void ClientSender::run() {
 
         // Envio actualizaciones del juego
         while (keepRunning) {
-            std::this_thread::sleep_for(ms(msPerSend));
+            auto start = clock::now();
 
             // Envio actualizaciones del mundo
             protocol.sendWorldUpdate(*worldMonitor, *player);
@@ -74,6 +75,15 @@ void ClientSender::run() {
             } else {
                 protocol.sendItemsList(empty_list);
             }
+
+            auto end = clock::now();
+            auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
+            auto time_to_sleep = msPerSend - elapsed;
+
+            if (time_to_sleep < minMsSleep)
+                time_to_sleep = minMsSleep;
+
+            std::this_thread::sleep_for(ms(time_to_sleep));
         }
     } catch (SocketError&) {
         // Do nothing

@@ -6,7 +6,6 @@
 #include <string>
 #include "../../common/defines/commands.h"
 #include "../../common/thread.h"
-#include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "../sdl/surface.h"
@@ -16,18 +15,20 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
+    std::map<int, std::map<int, Surface *>> stateSurfacesMap;
     std::map<int, std::map<int, Surface *>> attackSurfacesMap;
+    std::map<int, std::map<int, Surface *>> equippedWeaponSurfacesMap;
     std::map<int, Surface *> itemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
     Surface* goldSurface;
     Surface* gameFrameSurface;
     Surface* worldSurface;
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
+    std::map<int, std::map<int, std::string>> equippedWeaponSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
     std::map<int, std::map<int, std::string>> attackSurfacesPaths;
     std::map<int, std::string> itemSurfacesPaths;
-    std::vector<std::vector<Terrain>> floor;
     SDLWindow& window;
 
     Surface* getTextSurface(std::string text);
@@ -42,18 +43,19 @@ class GameSurfacesManager {
     void loadPlayerPaths();
     void loadItemPaths();
     void loadAttackPaths();
+    void loadEquippedPaths();
 
 
     void createFrameSurfaces();
 
     // inicializadores lazy de surfaces
-    void createNecessaryTerrains(std::vector<std::vector<Terrain>>& matrix);
     void createNecessaryPlayers(std::vector<player_t>& players);
     void createNecessaryNpcs(std::vector<npc_t>& npcs);
     void createNecessaryCreatures(std::vector<creature_t>& creatures);
     void createNecessaryItems(std::vector<item_t>& items);
     void createNecessaryListItems(std::vector<list_item_t> items);
     void createNecessaryFrameItems(std::vector<uint8_t>& items);
+    void createNecessaryEquipped(std::vector<player_t>& players);
     void createNecessaryAttacks(std::vector<attack_t>& attacks);
 
 

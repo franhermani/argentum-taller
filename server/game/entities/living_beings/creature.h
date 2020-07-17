@@ -4,7 +4,7 @@
 #include <vector>
 #include <queue>
 #include "living_being.h"
-#include "../../../utilities/math_calculator.h"
+#include "../../../../common/utilities/math_calculator.h"
 
 class World;
 class Player;
@@ -43,6 +43,9 @@ class Creature : public LivingBeing{
 
     // Cambia la orientacion de la criatura apuntando al player
     void orientTo(position_t player_pos);
+
+    // Realiza un ataque en la orientacion de la criatura
+    void attack();
 
     friend class World;
     friend class Equations;

@@ -26,7 +26,7 @@ void Priest::heal(Player &player) {
 }
 
 void Priest::buyItem(Player &player, int type) {
-    throw GameException(player.id, "Un sacerdote no puede "
+    throw GameException(player.getId(), "Un sacerdote no puede "
                                    "comprar items");
 }
 
@@ -34,7 +34,7 @@ void Priest::sellItem(Player &player, const int type) {
     if (std::find(items.begin(), items.end(), type) == items.end())
         return;
 
-    Item* item = itemFactory(type, player.pos);
+    Item* item = itemFactory(type, player.getPos());
     if (! item)
         return;
 
@@ -42,22 +42,22 @@ void Priest::sellItem(Player &player, const int type) {
 }
 
 void Priest::depositItem(Player &player, const int type) {
-    throw GameException(player.id, "Un sacerdote no tiene"
+    throw GameException(player.getId(), "Un sacerdote no tiene"
                                    "acceso al banco");
 }
 
 void Priest::withdrawItem(Player &player, const int type) {
-    throw GameException(player.id, "Un sacerdote no tiene"
+    throw GameException(player.getId(), "Un sacerdote no tiene"
                                    "acceso al banco");
 }
 
 void Priest::depositGold(Player &player) {
-    throw GameException(player.id, "Un sacerdote no tiene"
+    throw GameException(player.getId(), "Un sacerdote no tiene"
                                    "acceso al banco");
 }
 
 void Priest::withdrawGold(Player &player) {
-    throw GameException(player.id, "Un sacerdote no tiene"
+    throw GameException(player.getId(), "Un sacerdote no tiene"
                                    "acceso al banco");
 }
 

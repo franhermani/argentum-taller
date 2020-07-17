@@ -23,6 +23,7 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (TTF_Init() < 0) {
         throw SDLException("\nNo se pudo inicializar ttf", SDL_GetError());
     }
+    fullscreen = false;
 }
 
 SDLWindow::~SDLWindow() {
@@ -123,10 +124,12 @@ void SDLWindow::UpdateWindowSurface() {
     SDL_UpdateWindowSurface(window);
 }
 
-SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface, position_t position,
+SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface,
+        position_t position,
         int dimensions_width, int dimensions_height) {
     float tile_size_pix_x = surface->getRenderableSurface()->w/dimensions_width;
-    float tile_size_pix_y = surface->getRenderableSurface()->h/dimensions_height;
+    float tile_size_pix_y = surface->getRenderableSurface()->h/
+            dimensions_height;
     int vision_width = measurements.numberOfTilesInWidth;
     int vision_height = measurements.numberOfTilesInHeight;
     SDL_Rect src_rect;
@@ -423,6 +426,23 @@ int SDLWindow::getRenderedListIndexByPosition(int xClicked,
         current_index ++;
     }
     return -1;
+}
+
+void SDLWindow::toggleFullscreen() {
+    if (fullscreen) {
+        //to window mode
+        SDL_SetWindowFullscreen(window, 0);
+        fullscreen = false;
+        measurements.updateResolution(screenWidth, screenHeight);
+    }
+    else {
+        //to fullscreen
+        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        fullscreen = true;
+        SDL_DisplayMode dm;
+        SDL_GetDesktopDisplayMode(0, &dm);
+        measurements.updateResolution(dm.w, dm.h);
+    }
 }
 
 int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {

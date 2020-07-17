@@ -6,8 +6,6 @@
 #include "exception.h"
 #include "../sdl/exception.h"
 #include "../../common/defines/username_confirmation.h"
-#define DEFAULT_SCREEN_WIDTH 960
-#define DEFAULT_SCREEN_HEIGHT 720
 
 
 GameHandler::GameHandler(const char *host, const char *port,
@@ -19,10 +17,12 @@ GameHandler::GameHandler(const char *host, const char *port,
     connectionReceiver = new ConnectionReceiver(socket, mapMonitor);
     checkUsername();
     printStartMessage();
+    File file("../client/resources/client_config.json");
+    json resolution = jsonParser.getResolution(file);
     try {
-        std::cout << "\nIniciando renderizado";
-        gameRender = new GameRender(DEFAULT_SCREEN_WIDTH,
-                DEFAULT_SCREEN_HEIGHT, mapMonitor);
+        std::cout << "\nIniciando renderizado\n";
+        gameRender = new GameRender(resolution["width"],
+                resolution["height"], mapMonitor);
     } catch (SDLException& e) {
         delete connectionSender;
         delete connectionReceiver;

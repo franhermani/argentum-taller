@@ -5,9 +5,9 @@
 #include <vector>
 #include <map>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include "../sdl/window.h"
 #include "../../common/thread.h"
-#include "../../common/defines/terrains.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"
@@ -24,10 +24,14 @@ class GameRender : public Thread {
     std::vector<int> mapDimensions;
     SDLWindow window;
     GameSurfacesManager surfacesManager;
+    Mix_Music* music;
+    Mix_Chunk* swordSound;
+    Mix_Chunk* explosionSound;
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
 
+    void initMusic();
 
 public:
     //Constructor
@@ -53,13 +57,15 @@ public:
     void renderPlayerInfo(std::map<int,float>& percentages, int level);
     void renderItems(std::vector<item_t>& items);
     void renderAttacks(std::vector<attack_t>& attacks);
+    void renderEquipped(std::vector<player_t>& players);
     void renderGolds(std::vector<gold_t> &golds);
-    void renderEquipped(player_t& player);
+    void renderEquippedList(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
     void renderInventoryGolds(uint16_t quantity);
     void renderGameFrame();
     void renderList(list_t list);
     void renderWorld(position_t position);
+    void toggleFullscreen();
 
 
     //Inicializador de SDL

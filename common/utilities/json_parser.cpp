@@ -26,3 +26,8 @@ const json JsonParser::getWorldParams(File &file) {
     json j = fileToJson(file);
     return j;
 }
+
+const json JsonParser::getResolution(File &file) {
+    json j = fileToJson(file);
+    return j["resolution"];
+}

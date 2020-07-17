@@ -3,18 +3,7 @@
 
 #include <cstdint>
 #include <vector>
-#include "terrains.h"
 #include "position.h"
-
-// ---------------- //
-// Barras de estado //
-// ---------------- //
-
-typedef struct {
-    uint16_t life;                  // Porcentaje de vida
-    uint16_t mana;                  // Porcentaje de mana
-    uint16_t experience;            // Porcentaje de experiencia
-} player_percentages_t;
 
 // ---------------------- //
 // Listado de items y oro //
@@ -40,6 +29,7 @@ typedef struct {
     position_t pos;             // Posicion (x,y) en la matriz
     uint8_t orientation;        // Enum type de la orietntacion
     uint8_t type;               // Enum type del tipo de ataque
+    uint8_t sound;              // Enum type del sonido de ataque
     uint8_t is_colliding;       // 1 si esta colisionando, 0 si no
 } attack_t;
 
@@ -60,6 +50,7 @@ typedef struct {
     uint16_t level;             // Nivel
     uint8_t type;               // Enum type del tipo de criatura
     uint8_t orientation;        // Enum type de la orientacion
+    uint8_t state;              // Enum type del estado actual
 } creature_t;
 
 typedef struct {
@@ -68,10 +59,8 @@ typedef struct {
     uint16_t actual_life;       // Vida actual
     uint16_t max_life;          // Vida maxima
     uint16_t level;             // Nivel
-    uint8_t is_alive;           // 1 si esta vivo, 0 si no (fantasma)
-    uint8_t is_meditating;      // 1 si esta meditando, 0 si no
-    uint8_t is_reviving;        // 1 si esta reviviendo, 0 si no
     uint8_t orientation;        // Enum type de la orientacion
+    uint8_t state;              // Enum type del estado actual
     uint8_t race_type;          // Enum type de la raza
     uint8_t class_type;         // Enum type de la clase
     uint8_t weapon;             // Enum type del arma
@@ -125,16 +114,5 @@ typedef struct {
     uint16_t num_npcs;          // Cantidad de npcs en 'npcs'
     std::vector<npc_t> npcs;    // Lista de structs 'npc_t'
 } npcs_t;
-
-// ------------------ //
-// Matriz de terrenos //
-// ------------------ //
-
-typedef struct {
-    uint16_t length;                // Longitud total del mensaje
-    uint16_t width;                 // Ancho de la matriz
-    uint16_t height;                // Alto de la matriz
-    std::vector<Terrain> terrains;  // Lista de structs 'terrain_t'
-} matrix_t;
 
 #endif // WORLD_STRUCTS_H

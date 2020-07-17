@@ -39,6 +39,16 @@ itemParams(std::move(item_params)) {
                       {SINGLE_ARROW_STRING, SINGLE_ARROW},
                       {MULTIPLE_ARROW_STRING, MULTIPLE_ARROW}};
 
+    attackSoundsMap = {{ESPADA, SWORD_STRIKE},
+                       {HACHA, SWORD_STRIKE},
+                       {MARTILLO, HAMMER_STRIKE},
+                       {VARA_FRESNO, MAGIC_STRIKE},
+                       {FLAUTA_ELFICA, MAGIC_STRIKE},
+                       {BACULO_NUDOSO, MAGIC_STRIKE},
+                       {BACULO_ENGARZADO, EXPLOSION},
+                       {ARCO_SIMPLE, SOUNDLESS},
+                       {ARCO_COMPUESTO, SOUNDLESS}};
+
     weapons = {ESPADA, HACHA, MARTILLO, VARA_FRESNO, FLAUTA_ELFICA,
                BACULO_NUDOSO, BACULO_ENGARZADO, ARCO_SIMPLE, ARCO_COMPUESTO};
     armors = {ARMADURA_CUERO, ARMADURA_PLACAS, TUNICA_AZUL};
@@ -53,9 +63,9 @@ Item* ItemFactory::operator()(const int type, position_t new_pos) {
     if (weapons.count(type) > 0) {
         js = itemParams["weapons"][itemsMap[type]];
         return new Weapon(type, attackTypesMap[js["attack_type"]],
-                new_pos,js["min_damage"],js["max_damage"],
-                js["mana_consumption"],js["range"],
-                js["move_velocity"], js["is_magic"],
+                attackSoundsMap[type], new_pos,js["min_damage"],
+                js["max_damage"],js["mana_consumption"],
+                js["range"],js["move_velocity"], js["is_magic"],
                 js["is_life_restorer"], js["price"]);
     } else if (armors.count(type) > 0) {
         js = itemParams["armors"][itemsMap[type]];

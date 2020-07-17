@@ -22,7 +22,7 @@ ClientHandler::ClientHandler(Socket socket_received,
 ClientHandler::~ClientHandler() {
     delete clientSender;
     delete clientReceiver;
-    gameManager.removePlayerFromWorld(player->id);
+    gameManager.removePlayerFromWorld(player->getId());
     gameManager.removeUsername(username);
     delete player;
 }
@@ -35,12 +35,18 @@ void ClientHandler::checkUsername() {
 
     try {
         int id = gameManager.addIdByUsername(username);
+
         clientSender = new ClientSender(socket, &gameManager.worldMonitor,
                 &gameManager.messagesQueuePerPlayer[id],
-                &gameManager.listsQueuePerPlayer[id], gameManager.msPerSend);
+                &gameManager.listsQueuePerPlayer[id],
+                gameManager.params.getConfigParams()["ms_per_send"],
+                gameManager.params.getConfigParams()["min_ms_sleep"]);
+
         clientSender->sendUsernameConfirmation(USERNAME_OK);
+
         player = new Player(gameManager.world, gameManager.equations,
-                            id, race_type, class_type);
+                gameManager.params.getConfigParams()["player"], id,
+                race_type, class_type);
     } catch (DuplicatedUsernameException&) {
         clientSender = new ClientSender(socket);
         clientSender->sendUsernameConfirmation(USERNAME_DUPLICATED);
