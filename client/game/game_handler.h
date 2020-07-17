@@ -5,10 +5,12 @@
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "../../common/blocking_queue.h"
+#include "../../common/utilities/json_parser.h"
 #include "../communication/connection_sender.h"
 #include "../communication/connection_receiver.h"
 #include "game_render.h"
 #include "game_input_handler.h"
+#include "../../common/utilities/file.h"
 
 class GameHandler {
     Socket socket;
@@ -22,6 +24,9 @@ class GameHandler {
     ConnectionReceiver* connectionReceiver;
     MapMonitor mapMonitor;
     GameRender* gameRender;
+
+    //File worldFile;
+
 
     // Hace el chequeo del username en el mismo constructor
     // Si hay un error, lanza la excepcion para que luego el main

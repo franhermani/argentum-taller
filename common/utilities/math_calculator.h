@@ -2,7 +2,7 @@
 #define MATH_H
 
 #include <vector>
-#include "../../common/defines/position.h"
+#include "../defines/position.h"
 
 class Math {
 public:
