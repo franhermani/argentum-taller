@@ -5,7 +5,7 @@
 #include "npc.h"
 #include "../living_beings/player.h"
 #include "../items/item_factory.h"
-#include "../../../utilities/math_calculator.h"
+#include "../../../../common/utilities/math_calculator.h"
 
 class Merchant : public NPC {
     ItemFactory& itemFactory;

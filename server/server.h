@@ -2,8 +2,8 @@
 #define SERVER_H
 
 #include <string>
-#include "utilities/json_parser.h"
-#include "utilities/file.h"
+#include "../common/utilities/json_parser.h"
+#include "../common/utilities/file.h"
 #include "game/game_manager.h"
 #include "communication/clients_acceptor.h"
 

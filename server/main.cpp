@@ -1,7 +1,7 @@
 #include <iostream>
 #include <exception>
 #include "server.h"
-#include "utilities/file.h"
+#include "../common/utilities/file.h"
 
 #define OK          0
 #define ERROR       1

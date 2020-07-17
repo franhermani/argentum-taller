@@ -11,7 +11,7 @@
 #include "../items/potion.h"
 #include "../items/inventory.h"
 #include "creature.h"
-#include "../../../utilities/json_parser.h"
+#include "../../../../common/utilities/json_parser.h"
 
 class World;
 class Equations;

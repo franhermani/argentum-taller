@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include <map>
-#include "../utilities/json.hpp"
-#include "../utilities/math_calculator.h"
+#include "../../common/utilities/json.hpp"
+#include "../../common/utilities/math_calculator.h"
 #include "entities/living_beings/player.h"
 
 using json = nlohmann::json;

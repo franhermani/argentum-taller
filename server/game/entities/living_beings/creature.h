@@ -4,7 +4,7 @@
 #include <vector>
 #include <queue>
 #include "living_being.h"
-#include "../../../utilities/math_calculator.h"
+#include "../../../../common/utilities/math_calculator.h"
 
 class World;
 class Player;
