@@ -1,7 +1,6 @@
 #include <string>
 #include <vector>
 #include "protocol.h"
-#include "../../common/defines/debug.h"
 
 #define SIZE_8      sizeof(uint8_t)
 #define SIZE_16     sizeof(uint16_t)
