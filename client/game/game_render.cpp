@@ -97,9 +97,13 @@ void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
 void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        if (it->state == STATE_NORMAL)
+        if (it->state == STATE_NORMAL) {
             window.renderMapObject(it->pos.x, it->pos.y,
                     surfacesManager(*it));
+            window.renderMapObjectLifeBar(it->pos.x, it->pos.y,
+                    surfacesManager.infoSurfacesMap[LIFE],
+                    (it->actual_life/(float) it->max_life));
+        }
         else {
             window.renderMapObject(it->pos.x, it->pos.y,
                     surfacesManager(it->state, it->orientation));

@@ -73,6 +73,22 @@ void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
             getSurface(), &stretchRect);
 }
 
+void SDLWindow::renderMapObjectLifeBar(int x, int y, Surface* bar, float percentage) {
+    game_area_t& frame_area = measurements.frame;
+    SDL_Rect stretchRect;
+    float bar_width = measurements.xWidthTileSize*0.6 * percentage;
+    stretchRect.x = getXPixelPos(x) + (measurements.xWidthTileSize) * 0.2;
+    stretchRect.y = getYPixelPos(y);
+    stretchRect.w = bar_width;
+    stretchRect.h = (measurements.yHeightTileSize)*0.1;
+    if ((stretchRect.x+measurements.xWidthTileSize
+         >= frame_area.x_pixel_end) ||
+        (stretchRect.y+measurements.yHeightTileSize
+         >= frame_area.y_pixel_end)) return;
+    SDL_BlitScaled(bar->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+}
+
 int SDLWindow::getXPixelPos(int x_tile_position) {
     game_area_t& frame_area = measurements.frame;
     return frame_area.x_pixel_begin + x_tile_position *
@@ -177,7 +193,6 @@ void SDLWindow::renderLife(std::map<int, float>& player_info,
     stretchRect.h = life_area.y_pixel_end - life_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[LIFE]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
-
     stretchRect.x = stretchRect.x + stretchRect.w;
     stretchRect.y = life_area.y_pixel_begin;
     stretchRect.w = life_area.x_pixel_end -
@@ -190,7 +205,6 @@ void SDLWindow::renderLife(std::map<int, float>& player_info,
 void SDLWindow::renderMana(std::map<int, float>& player_info,
                            std::map<int, Surface *> info_surfaces_map) {
     SDL_Rect stretchRect;
-
     game_area_t& mana_area = measurements.mana;
     float mana_percentage = player_info[MANA];
     stretchRect.x = mana_area.x_pixel_begin;
@@ -200,7 +214,6 @@ void SDLWindow::renderMana(std::map<int, float>& player_info,
     stretchRect.h = mana_area.y_pixel_end - mana_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[MANA]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
-
     stretchRect.x = stretchRect.x + stretchRect.w;
     stretchRect.y = mana_area.y_pixel_begin;
     stretchRect.w = mana_area.x_pixel_end -

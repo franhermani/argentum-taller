@@ -1,6 +1,6 @@
 #ifndef SURFACE_H
 #define SURFACE_H
-
+#include <SDL2/SDL_ttf.h>
 #include <string>
 
 class SDLWindow;

@@ -81,6 +81,7 @@ public:
     int getYPixelPos(int y_tile_position);
 
     void renderMapObject(int x, int y, Surface *character_surface);
+    void renderMapObjectLifeBar(int x, int y, Surface* bar, float percentage);
 
     //renderizadores marco + lo que contiene
     void renderGameFrame(Surface *surface);
