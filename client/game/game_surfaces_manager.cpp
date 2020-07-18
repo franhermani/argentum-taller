@@ -24,7 +24,7 @@ GameSurfacesManager::~GameSurfacesManager(){
         delete surface.second;
     }
     for (auto const& surface : textSurfaces) {
-        delete surface;
+        delete surface.second;
     }
     for (auto const& surface : itemSurfacesMap) {
         delete surface.second;
@@ -53,10 +53,14 @@ GameSurfacesManager::~GameSurfacesManager(){
 
 
 Surface* GameSurfacesManager::operator()(std::string text) {
-    Surface* surface = new Surface(text, window, mainFont, mainColor);
-    //guardamos para luego liberar memoria
-    textSurfaces.push_back(surface);
-    return surface;
+    if (textSurfaces.find(text)
+        == textSurfaces.end()) {
+        Surface* surface = new Surface(text, window, mainFont, mainColor);
+        //guardamos para luego liberar memoria
+        textSurfaces.insert({text, surface});
+        return surface;
+    }
+    return textSurfaces[text];
 }
 
 

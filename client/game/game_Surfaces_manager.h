@@ -22,7 +22,7 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> equippedWeaponSurfacesMap;
     std::map<int, Surface *> itemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
-    std::vector<Surface*> textSurfaces;
+    std::map<std::string, Surface*> textSurfaces;
     Surface* goldSurface;
     Surface* gameFrameSurface;
     Surface* worldSurface;
