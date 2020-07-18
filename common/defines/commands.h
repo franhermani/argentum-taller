@@ -16,6 +16,7 @@ enum commandType {
     CMD_TAKE,
     CMD_THROW,
     CMD_MOVE,
+    CMD_STOP_MOVE,
     CMD_ATTACK,
     CMD_EQUIP,
     CMD_UNEQUIP

@@ -7,9 +7,13 @@
     "ms_per_update": 120,
     "ms_per_send": 60,
     "min_ms_sleep": 20,
+    "blocks_division": {
+      "size": 100,
+      "interval": 10
+    },
     "blocks_around_player": {
-      "width": 9,
-      "height": 9
+      "width": 11,
+      "height": 11
     },
     "bank": {
       "max_items": 10

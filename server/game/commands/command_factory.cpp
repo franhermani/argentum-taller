@@ -17,6 +17,7 @@
 #include "take_command.h"
 #include "throw_command.h"
 #include "move_command.h"
+#include "stop_move_command.h"
 #include "attack_command.h"
 #include "equip_command.h"
 #include "unequip_command.h"
@@ -117,8 +118,11 @@ Command* CommandFactory::operator()(Player& player, int type,
         int direction = arguments[0];
         return new MoveCommand(player, direction);
 
+    } else if (type == CMD_STOP_MOVE) {
+        return new StopMoveCommand(player);
+
     } else if (type == CMD_ATTACK) {
-        return new AttackCommand(player);
+            return new AttackCommand(player);
 
     } else if (type == CMD_EQUIP) {
         int item_type = arguments[0];

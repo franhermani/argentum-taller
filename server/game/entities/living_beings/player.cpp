@@ -9,17 +9,22 @@
 #include "../../game_exception.h"
 #include "../../../../common/defines/attacks.h"
 
+// TODO: leer esto del json
+#define BLOCK_SIZE      100
+#define BLOCK_INTERVAL  10
+
 Player::Player(World& world, Equations& equations, json params,
         const int new_id, const int race_type, const int class_type) :
 world(world),
 equations(equations),
 params(params),
+posConverter(BLOCK_SIZE),
 raceType(race_type),
 classType(class_type),
 maxExperience(LONG_MAX),
 actualExperience(0),
 ableToUseMagic(classType != WARRIOR),
-isWaitingToMove(false),
+isMoving(false),
 nextDirection(DOWN),
 weapon(nullptr),
 armor(nullptr),
@@ -44,6 +49,7 @@ distanceInMsToPriest(0) {
     actualGold = equations.eqInitialGold(*this);
     state = STATE_NORMAL;
     pos = world.loadPlayerPosition();
+    granularPos = posConverter.posToGranularPos(pos);
 }
 
 Player::~Player() {
@@ -188,6 +194,7 @@ void Player::moveNextTo(position_t new_pos) {
         if ((world.inMapBoundaries(pos_t)) &&
            (! world.entityInCollision(pos_t))) {
             pos = pos_t;
+            granularPos = posConverter.posToGranularPos(pos);
             break;
         }
     }
@@ -273,9 +280,9 @@ void Player::update(int ms) {
             revive();
         }
     } else {
-        if (isWaitingToMove) {
+        if (isMoving) {
             msMoveCounter += ms;
-            if (msMoveCounter >= moveVelocity) {
+            if (msMoveCounter >= moveVelocity/BLOCK_INTERVAL) {
                 msMoveCounter = 0;
                 moveTo();
             }
@@ -295,35 +302,42 @@ void Player::moveTo(int direction) {
                                 secondsToRevive());
 
     stopMeditating();
-    isWaitingToMove = true;
+    isMoving = true;
     nextDirection = direction;
 }
 
 void Player::moveTo() {
+    position_t new_granular_pos = granularPos;
     position_t new_pos = pos;
 
     switch (nextDirection) {
         case LEFT:
-            new_pos.x -= 1;
+            new_granular_pos.x -= BLOCK_INTERVAL;
             break;
         case RIGHT:
-            new_pos.x += 1;
+            new_granular_pos.x += BLOCK_INTERVAL;
             break;
         case DOWN:
-            new_pos.y += 1;
+            new_granular_pos.y += BLOCK_INTERVAL;
             break;
         case UP:
-            new_pos.y -= 1;
+            new_granular_pos.y -= BLOCK_INTERVAL;
             break;
         default:
             break;
     }
+    new_pos = posConverter.granularPosToPos(new_granular_pos);
+
     if ((world.inMapBoundaries(new_pos)) &&
         (! world.entityInCollision(new_pos))) {
         pos = new_pos;
+        granularPos = new_granular_pos;
     }
     orientation = nextDirection;
-    isWaitingToMove = false;
+}
+
+void Player::stopMoving() {
+    isMoving = false;
 }
 
 void Player::heal() {

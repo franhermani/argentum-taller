@@ -10,7 +10,7 @@ class Creature;
 class LivingBeing {
 protected:
     int id{};
-    position_t pos{};
+    position_t pos{}, granularPos{};
     int level{};
     int orientation{};
     int maxLife{};

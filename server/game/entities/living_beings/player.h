@@ -12,6 +12,7 @@
 #include "../items/inventory.h"
 #include "creature.h"
 #include "../../../../common/utilities/json_parser.h"
+#include "../../../../common/position_converter.h"
 
 class World;
 class Equations;
@@ -20,13 +21,14 @@ class Player : public LivingBeing {
     World& world;
     Equations& equations;
     json params;
+    PositionConverter posConverter;
     int raceType;
     int classType;
     long maxExperience;
     long actualExperience;
     bool isNewbie;
     bool ableToUseMagic;
-    bool isWaitingToMove;
+    bool isMoving;
     int nextDirection;
     int maxMana;
     int actualMana;
@@ -119,6 +121,9 @@ public:
 
     // Mueve el player segun la direccion dada
     void moveTo(int direction);
+
+    // Deja de mover al player
+    void stopMoving();
 
     // Recupera todos los puntos de vida y mana del player
     void heal();
