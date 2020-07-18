@@ -52,6 +52,46 @@ int GameRender::init() {
     return true;
 }
 
+void GameRender::run() {
+    using clock = std::chrono::system_clock;
+    using ms = std::chrono::milliseconds;
+    std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
+    blocksWidth = mapMonitor.getPlayerVisionWidth();
+    blocksHeight = mapMonitor.getPlayerVisionHeight();
+    mapDimensions = mapMonitor.getDimensions();
+    window.setTilesSize(blocksWidth,blocksHeight);
+
+    while (keepRunning) {
+        auto start = clock::now();
+        current_world = mapMonitor.getCurrentWorld();
+        renderGame();
+        auto end = clock::now();
+        auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
+        auto time_to_sleep = WAIT_TIME_FOR_WORLD_TO_UPDATE - elapsed;
+        std::this_thread::sleep_for(ms(time_to_sleep));
+    }
+}
+
+void GameRender::renderGame() {
+    renderGameFrame();
+    renderWorld(current_world.main_player.pos);
+    renderItems(current_world.items);
+    renderPlayers(current_world.players);
+    renderNpcs(current_world.npcs);
+    renderCreatures(current_world.creatures);
+    renderInventory(current_world.player_info.inventory.items);
+    renderInventoryGolds(current_world.player_info.actual_gold);
+    renderEquipped(current_world.players);
+    renderEquippedList(current_world.main_player);
+    renderAttacks(current_world.attacks);
+    renderGolds(current_world.golds);
+    renderPlayerInfo(current_world.percentages,
+                     current_world.main_player.level);
+    if (mapMonitor.isInteracting()) renderList(current_world.list);
+    window.UpdateWindowSurface();
+}
+
+
 void GameRender::renderPlayers(std::vector<player_t>& players) {
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
@@ -196,45 +236,6 @@ void GameRender::renderList(list_t list) {
 
 void GameRender::toggleFullscreen() {
     window.toggleFullscreen();
-}
-
-void GameRender::renderGame() {
-    renderGameFrame();
-    renderWorld(current_world.main_player.pos);
-    renderItems(current_world.items);
-    renderPlayers(current_world.players);
-    renderNpcs(current_world.npcs);
-    renderCreatures(current_world.creatures);
-    renderInventory(current_world.player_info.inventory.items);
-    renderInventoryGolds(current_world.player_info.actual_gold);
-    renderEquipped(current_world.players);
-    renderEquippedList(current_world.main_player);
-    renderAttacks(current_world.attacks);
-    renderGolds(current_world.golds);
-    renderPlayerInfo(current_world.percentages,
-                     current_world.main_player.level);
-    if (mapMonitor.isInteracting()) renderList(current_world.list);
-    window.UpdateWindowSurface();
-}
-
-void GameRender::run() {
-    using clock = std::chrono::system_clock;
-    using ms = std::chrono::milliseconds;
-    std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
-    blocksWidth = mapMonitor.getPlayerVisionWidth();
-    blocksHeight = mapMonitor.getPlayerVisionHeight();
-    mapDimensions = mapMonitor.getDimensions();
-    window.setTilesSize(blocksWidth,blocksHeight);
-
-    while (keepRunning) {
-        auto start = clock::now();
-        current_world = mapMonitor.getCurrentWorld();
-        renderGame();
-        auto end = clock::now();
-        auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
-        auto time_to_sleep = WAIT_TIME_FOR_WORLD_TO_UPDATE - elapsed;
-        std::this_thread::sleep_for(ms(time_to_sleep));
-    }
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {
