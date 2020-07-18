@@ -96,6 +96,7 @@ void GameInputHandler::play() {
                     || key == SDLK_UP || key == SDLK_DOWN) {
                         command = new StopMoveCommandDTO();
                     }
+                    else continue;
                 }
                 else if (event.type == SDL_QUIT) {
                     running = false;
