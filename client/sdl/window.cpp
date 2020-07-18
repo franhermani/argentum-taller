@@ -277,6 +277,7 @@ void SDLWindow::renderLevel(Surface* level_surface) {
                    getSurface(), &measurements.levelStaticRect);
 }
 
+//TODO SACAR ESTO
 void SDLWindow::renderText(Surface* surface) {
         SDL_Rect Message_rect; //create a rect
     Message_rect.x = 300;  //controls the rect's x coordinate

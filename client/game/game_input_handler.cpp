@@ -2,6 +2,7 @@
 #include "game_input_handler.h"
 #include "map_monitor.h"
 #include "../data_transfer_objects/move_command_dto.h"
+#include "../data_transfer_objects/stop_move_command_dto.h"
 #include "../data_transfer_objects/heal_command_dto.h"
 #include "../data_transfer_objects/take_command_dto.h"
 #include "../data_transfer_objects/list_command_dto.h"
@@ -33,10 +34,10 @@ void GameInputHandler::play() {
             SDL_Event event;
             SDL_WaitEvent(&event);
             CommandDTO *command;
-            if (event.type == SDL_KEYDOWN) {
-                auto &keyEvent = (SDL_KeyboardEvent &) event;
-                int key = keyEvent.keysym.sym;
-                try {
+            auto &keyEvent = (SDL_KeyboardEvent &) event;
+            int key = keyEvent.keysym.sym;
+            try {
+                if (event.type == SDL_KEYDOWN) {
                     if (key == SDLK_LEFT) {
                         mapMonitor.uninteract();
                         command = new MoveCommandDTO(LEFT);
@@ -53,8 +54,8 @@ void GameInputHandler::play() {
                         gameRender->toggleFullscreen();
                         continue;
                     } else if (key == SDLK_ESCAPE) {
-                            running = false;
-                            continue;
+                        running = false;
+                        continue;
                     } else if (mapMonitor.isInteracting()) {
                         if (key == SDLK_w) {
                             command = handleWithdraw();
@@ -90,18 +91,26 @@ void GameInputHandler::play() {
                             continue;
                         }
                     }
-                    commandQueue.push(command);
+                } else if (event.type == SDL_KEYUP) {
+                    if (key == SDLK_LEFT || key == SDLK_RIGHT
+                    || key == SDLK_UP || key == SDLK_DOWN) {
+                        command = new StopMoveCommandDTO();
+                    }
                 }
-                catch (ItemException& e) {
+                else if (event.type == SDL_QUIT) {
+                    running = false;
                     continue;
-                } catch (MapException& e) {
-                    continue;
-                } catch(CommandCreationException& e) {
+                } else {
                     continue;
                 }
-            } else if (event.type == SDL_QUIT) {
-                running = false;
-            } else {
+                commandQueue.push(command);
+
+            }
+            catch (ItemException& e) {
+                continue;
+            } catch (MapException& e) {
+                continue;
+            } catch(CommandCreationException& e) {
                 continue;
             }
         }
