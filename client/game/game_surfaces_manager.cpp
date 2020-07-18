@@ -47,7 +47,6 @@ Surface* GameSurfacesManager::getTextSurface(std::string text) {
 }
 
 
-
 void GameSurfacesManager::createNecessaryEquipped(
         std::vector<player_t>& players) {
     //TODO hacer una funcion qeu te diga si una claave esta en el diccionario para no repetir
@@ -122,23 +121,6 @@ void GameSurfacesManager::createNecessaryFrameItems(
     }
 }
 
-void GameSurfacesManager::createNecessaryAttacks(
-        std::vector<attack_t>& attacks) {
-    for (auto& attack:attacks) {
-        int type = attack.type;
-        int orientation = attack.orientation;
-        if (attackSurfacesMap[type].find(orientation)
-            == attackSurfacesMap[type].end()) {
-            if (attackSurfacesPaths[type].find(orientation)
-                == attackSurfacesPaths[type].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    attackSurfacesPaths[type][orientation], window, 1);
-            attackSurfacesMap[type].insert({orientation, surface});
-        }
-    }
-}
 
 //todo refactor codigo repetido
 void GameSurfacesManager::createNecessaryListItems(
@@ -383,6 +365,7 @@ Surface* GameSurfacesManager::operator()(creature_t& creature) {
         Surface* surface = new Surface(
                 creatureSurfacesPaths[type][orientation], window, 1);
         creatureSurfacesMap[type].insert({orientation, surface});
+        return surface;
     }
     else return creatureSurfacesMap[type][orientation];
 }

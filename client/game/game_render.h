@@ -32,6 +32,7 @@ class GameRender : public Thread {
     client_world_t current_world;
 
     void initMusic();
+    void renderGame();
 
 public:
     //Constructor
