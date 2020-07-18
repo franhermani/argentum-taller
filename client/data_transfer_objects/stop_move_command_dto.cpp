@@ -20,7 +20,7 @@ const std::vector<char> StopMoveCommandDTO::serialize() const {
     byte_msg.resize(total_size);
 
     // Tipo de comando
-    byte_msg[0] = CMD_MOVE;
+    byte_msg[0] = CMD_STOP_MOVE;
 
     // Longitud de los argumentos
     byte_msg[1] = arguments_size;
