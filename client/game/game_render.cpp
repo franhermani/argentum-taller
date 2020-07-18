@@ -95,7 +95,7 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
                                surfacesManager(*it));
         else
             window.renderMapObject(it->pos.x, it->pos.y,
-                                   surfacesManager(it->state, it->orientation));
+                    surfacesManager(it->state, it->orientation));
     }
 }
 
@@ -190,12 +190,8 @@ void GameRender::renderGameFrame() {
 
 void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     surfacesManager.createNecessaryFrameItems(inventory);
-    //TODO QUE PASA ACA?? SE ITERA AL PEDO? FIXEAR
-    for (auto it = std::begin(inventory);
-         it != std::end(inventory); ++it) {
-        window.renderInventory(inventory,
+    window.renderInventory(inventory,
                          surfacesManager.itemSurfacesMap);
-    }
 }
 
 void GameRender::renderEquipped(std::vector<player_t>& players) {
