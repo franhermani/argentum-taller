@@ -76,6 +76,7 @@ void GameRender::renderGame() {
     renderGameFrame();
     renderWorld(current_world.main_player.pos);
     renderItems(current_world.items);
+    renderGolds(current_world.golds);
     renderPlayers(current_world.players);
     renderNpcs(current_world.npcs);
     renderCreatures(current_world.creatures);
@@ -84,7 +85,6 @@ void GameRender::renderGame() {
     renderEquipped(current_world.players);
     renderEquippedList(current_world.main_player);
     renderAttacks(current_world.attacks);
-    renderGolds(current_world.golds);
     renderPlayerInfo(current_world.percentages,
                      current_world.main_player.level);
     if (mapMonitor.isInteracting()) renderList(current_world.list);
@@ -116,13 +116,12 @@ void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
 void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        int orientation = it -> orientation;
         if (it->state == STATE_NORMAL)
             window.renderMapObject(it->pos.x, it->pos.y,
                     surfacesManager(*it));
         else {
             window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager(it->state, orientation));
+                    surfacesManager(it->state, it->orientation));
         }
 
     }
