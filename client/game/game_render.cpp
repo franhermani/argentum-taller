@@ -90,15 +90,13 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
-        Surface* player_surface;
         int state = it->state;
         if (state == STATE_NORMAL)
-        player_surface = surfacesManager.
-                playerSurfacesMap[it->race_type][it->orientation];
-        else
-            player_surface = surfacesManager.stateSurfacesMap[state][it->orientation];
         window.renderMapObject(it->pos.x, it->pos.y,
-                               player_surface);
+                               surfacesManager(*it));
+        else
+            window.renderMapObject(it->pos.x, it->pos.y,
+                                   surfacesManager(it->state, it->orientation));
     }
 }
 

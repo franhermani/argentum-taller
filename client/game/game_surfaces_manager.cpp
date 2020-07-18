@@ -48,24 +48,6 @@ Surface* GameSurfacesManager::getTextSurface(std::string text) {
 
 
 
-void GameSurfacesManager::createNecessaryPlayers(
-        std::vector<player_t>& players) {
-    for (auto& player:players) {
-        int race = player.race_type;
-        int orientation = player.orientation;
-        if (playerSurfacesMap[race].find(orientation)
-            == playerSurfacesMap[race].end()) {
-            if (playerSurfacesPaths[race].find(orientation)
-                == playerSurfacesPaths[race].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    playerSurfacesPaths[race][orientation], window, 1);
-            playerSurfacesMap[race].insert({orientation, surface});
-        }
-    }
-}
-
 void GameSurfacesManager::createNecessaryCreatures(
         std::vector<creature_t>& creatures) {
     for (auto& creature:creatures) {
@@ -389,8 +371,43 @@ void GameSurfacesManager::loadNpcPaths() {
                       {BANKER, banker_surfaces}
     };
 }
-Surface* GameSurfacesManager::operator()(player_t player) {
-    return goldSurface;
+
+
+void GameSurfacesManager::createNecessaryPlayers(
+        std::vector<player_t>& players) {
+    for (auto& player:players) {
+        int race = player.race_type;
+        int orientation = player.orientation;
+        if (playerSurfacesMap[race].find(orientation)
+            == playerSurfacesMap[race].end()) {
+            if (playerSurfacesPaths[race].find(orientation)
+                == playerSurfacesPaths[race].end()) {
+                continue;
+            }
+            Surface* surface = new Surface(
+                    playerSurfacesPaths[race][orientation], window, 1);
+            playerSurfacesMap[race].insert({orientation, surface});
+        }
+    }
+}
+
+
+
+Surface* GameSurfacesManager::operator()(int state, int orientation) {
+    //todo si hacer el create if necessary
+    return stateSurfacesMap[state][orientation];
+}
+Surface* GameSurfacesManager::operator()(player_t& player) {
+    int race = player.race_type;
+    int orientation = player.orientation;
+    if (playerSurfacesMap[race].find(orientation)
+        == playerSurfacesMap[race].end()) {
+        Surface* surface = new Surface(
+                playerSurfacesPaths[race][orientation], window, 1);
+        playerSurfacesMap[race].insert({orientation, surface});
+        return surface;
+    }
+    else return playerSurfacesMap[race][orientation];
 }
 
 void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {

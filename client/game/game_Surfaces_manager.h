@@ -70,6 +70,7 @@ public:
     GameSurfacesManager& operator=(const GameSurfacesManager& other) = delete;
     Surface* operator()(player_t& player);
     Surface* operator()(item_t& item);
+    Surface* operator()(int state, int orientation);
 };
 
 
