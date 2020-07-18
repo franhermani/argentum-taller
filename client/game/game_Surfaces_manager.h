@@ -65,7 +65,7 @@ public:
     GameSurfacesManager(const GameSurfacesManager& other) = delete;
     GameSurfacesManager& operator=(const GameSurfacesManager& other) = delete;
     Surface* operator()(player_t& player);
-    Surface* operator()(item_t& item);
+    Surface* operator()(int item_type);
     Surface* operator()(int state, int orientation);
     Surface* operator()(attack_t& attack);
     Surface* operator()(creature_t& creature);

@@ -168,7 +168,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager(*it));
+                               surfacesManager(it->type));
     }
 }
 
@@ -286,7 +286,6 @@ void GameRender::run() {
     blocksHeight = mapMonitor.getPlayerVisionHeight();
     mapDimensions = mapMonitor.getDimensions();
     window.setTilesSize(blocksWidth,blocksHeight);
-
 
     while (keepRunning) {
         auto start = clock::now();

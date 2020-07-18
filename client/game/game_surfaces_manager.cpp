@@ -385,15 +385,14 @@ Surface* GameSurfacesManager::operator()(player_t& player) {
 }
 
 
-Surface* GameSurfacesManager::operator()(item_t& item) {
-    int type = item.type;
-    if (itemSurfacesMap.find(type)
+Surface* GameSurfacesManager::operator()(int item_type) {
+    if (itemSurfacesMap.find(item_type)
         == itemSurfacesMap.end()) {
         Surface* surface = new Surface(
-                itemSurfacesPaths[type], window, 1);
-        itemSurfacesMap.insert({type, surface});
+                itemSurfacesPaths[item_type], window, 1);
+        itemSurfacesMap.insert({item_type, surface});
         return surface;
-    } else return itemSurfacesMap[type];
+    } else return itemSurfacesMap[item_type];
 }
 
 
