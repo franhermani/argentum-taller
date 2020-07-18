@@ -18,6 +18,9 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto const& surface : infoSurfacesMap) {
         delete surface.second;
     }
+    for (auto const& surface : textSurfaces) {
+        delete surface;
+    }
     for (auto const& surface : itemSurfacesMap) {
         delete surface.second;
     }
@@ -42,8 +45,10 @@ GameSurfacesManager::~GameSurfacesManager(){
     delete worldSurface;
 }
 
-Surface* GameSurfacesManager::getTextSurface(std::string text) {
-    return new Surface(text, window);
+Surface* GameSurfacesManager::operator()(std::string text) {
+    Surface* surface = new Surface(text, window);
+    textSurfaces.push_back(surface);
+    return surface;
 }
 
 

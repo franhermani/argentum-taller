@@ -21,6 +21,7 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> equippedWeaponSurfacesMap;
     std::map<int, Surface *> itemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
+    std::vector<Surface*> textSurfaces;
     Surface* goldSurface;
     Surface* gameFrameSurface;
     Surface* worldSurface;
@@ -31,8 +32,6 @@ class GameSurfacesManager {
     std::map<int, std::map<int, std::string>> attackSurfacesPaths;
     std::map<int, std::string> itemSurfacesPaths;
     SDLWindow& window;
-
-    Surface* getTextSurface(std::string text);
 
     friend class GameRender;
 
@@ -70,6 +69,8 @@ public:
     Surface* operator()(attack_t& attack);
     Surface* operator()(creature_t& creature);
     Surface* operator()(npc_t& npc);
+    Surface* operator()(std::string str);
+
 };
 
 

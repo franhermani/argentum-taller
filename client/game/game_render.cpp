@@ -100,8 +100,8 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
 }
 
 void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
-    Surface* level_surface = surfacesManager.
-            getTextSurface(std::to_string(level));
+    Surface* level_surface = surfacesManager(
+            std::to_string(level));
     window.renderPlayerInfo(current_world.percentages,
             surfacesManager.infoSurfacesMap, level_surface);
 }
@@ -213,7 +213,7 @@ void GameRender::renderEquipped(std::vector<player_t>& players) {
 
 void GameRender::renderInventoryGolds(uint16_t quantity) {
     window.renderInventoryGolds(surfacesManager.goldSurface,
-            surfacesManager.getTextSurface(std::to_string(quantity)));
+            surfacesManager(std::to_string(quantity)));
 }
 
 //TODO A ESTA NUNCA LA LLAMAN BORRAR"!!"#1231231231231C-.-.-SA.CZXCZMXNCZM,X
@@ -227,19 +227,19 @@ void GameRender::renderList(list_t list) {
     surfacesManager.createNecessaryListItems(list.items);
     std::vector<Surface*> surfaces;
     for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
-         surfaces.push_back(surfacesManager.itemSurfacesMap[it->type]);
+         surfaces.push_back(surfacesManager(it->type));
     }
     window.renderList(surfaces);
     if (list.show_price) {
         std::vector<Surface*> price_surfaces;
         for (auto it = std::begin(list.items);
         it != std::end(list.items); ++it) {
-            price_surfaces.push_back(surfacesManager.getTextSurface(
+            price_surfaces.push_back(surfacesManager(
                     std::to_string(it->price)));
         }
         window.renderListPrices(price_surfaces);
     } else {
-        Surface* quantity = surfacesManager.getTextSurface(
+        Surface* quantity = surfacesManager(
                 std::to_string(list.gold_quantity));
         window.renderListGold(surfacesManager.goldSurface, quantity);
     }
