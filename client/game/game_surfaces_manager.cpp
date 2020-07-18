@@ -120,6 +120,23 @@ Surface* GameSurfacesManager::operator()(int item_type) {
     } else return itemSurfacesMap[item_type];
 }
 
+std::vector<Surface*> GameSurfacesManager::operator()(
+        std::vector<list_item_t> items) {
+    std::vector<Surface*> surfaces;
+    for (auto& item: items) {
+        int type = item.type;
+        Surface* surface;
+        if (itemSurfacesMap.find(type)
+            == itemSurfacesMap.end()) {
+            surface = new Surface(
+                    itemSurfacesPaths[type], window, 1);
+            itemSurfacesMap.insert({type, surface});
+        } else surface = itemSurfacesMap[type];
+        surfaces.push_back(surface);
+    }
+    return surfaces;
+}
+
 
 Surface* GameSurfacesManager::getEquipped(
         int weapon, int orientation) {
@@ -147,19 +164,6 @@ void GameSurfacesManager::createNecessaryFrameItems(
 }
 
 
-//todo refactor codigo repetido
-void GameSurfacesManager::createNecessaryListItems(
-        std::vector<list_item_t> items) {
-    for (auto& item: items) {
-        int type = item.type;
-        if (itemSurfacesMap.find(type)
-            == itemSurfacesMap.end()) {
-            Surface* surface = new Surface(
-                    itemSurfacesPaths[type], window, 1);
-            itemSurfacesMap.insert({type, surface});
-        }
-    }
-}
 
 
 void GameSurfacesManager::loadCreaturePaths() {
@@ -484,24 +488,24 @@ void GameSurfacesManager::loadPlayerPaths() {
 
     };
     // todo fixear esto
-    std::map<int, Surface*> reviveSurfacesMap = {{UP,    new Surface("../client/resources/images/reviving_t.png", window, 1)},
-                                                {DOWN,  new Surface("../client/resources/images/reviving_t.png", window, 1)},
-                                                {LEFT,  new Surface("../client/resources/images/reviving_t.png", window, 1)},
-                                                {RIGHT, new Surface("../client/resources/images/reviving_t.png", window, 1)}
+    std::map<int, Surface*> reviveSurfacesMap = {{UP,    new Surface("../client/resources/images/reviving_up_t.png", window, 1)},
+                                                {DOWN,  new Surface("../client/resources/images/reviving_down_t.png", window, 1)},
+                                                {LEFT,  new Surface("../client/resources/images/reviving_left_t.png", window, 1)},
+                                                {RIGHT, new Surface("../client/resources/images/reviving_right_t.png", window, 1)}
 
     };
     //TODO FIXEAR MISMA RUTA
 
-    std::map<int, Surface*> meditateSurfacesMap = {{UP,    new Surface("../client/resources/images/meditating_t.png", window, 1)},
-                                                 {DOWN,  new Surface("../client/resources/images/meditating_t.png", window, 1)},
-                                                 {LEFT,  new Surface("../client/resources/images/meditating_t.png", window, 1)},
-                                                 {RIGHT, new Surface("../client/resources/images/meditating_t.png", window, 1)}
+    std::map<int, Surface*> meditateSurfacesMap = {{UP,    new Surface("../client/resources/images/meditating_up_t.png", window, 1)},
+                                                 {DOWN,  new Surface("../client/resources/images/meditating_down_t.png", window, 1)},
+                                                 {LEFT,  new Surface("../client/resources/images/meditating_left_t.png", window, 1)},
+                                                 {RIGHT, new Surface("../client/resources/images/meditating_right_t.png", window, 1)}
 
     };
-    std::map<int, Surface*> dyingSurfacesMap = {{UP,    new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
-                                                   {DOWN,  new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
-                                                   {LEFT,  new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
-                                                   {RIGHT, new Surface("../client/resources/images/dying_creature_t.png", window, 1)}
+    std::map<int, Surface*> dyingSurfacesMap = {{UP,    new Surface("../client/resources/images/dying_creature_up_t.png", window, 1)},
+                                                   {DOWN,  new Surface("../client/resources/images/dying_creature_down_t.png", window, 1)},
+                                                   {LEFT,  new Surface("../client/resources/images/dying_creature_left_t.png", window, 1)},
+                                                   {RIGHT, new Surface("../client/resources/images/dying_creature_right_t.png", window, 1)}
 
     };
 

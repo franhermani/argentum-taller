@@ -213,11 +213,7 @@ void GameRender::renderInventoryGolds(uint16_t quantity) {
 
 
 void GameRender::renderList(list_t list) {
-    surfacesManager.createNecessaryListItems(list.items);
-    std::vector<Surface*> surfaces;
-    for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
-         surfaces.push_back(surfacesManager(it->type));
-    }
+    std::vector<Surface*> surfaces = surfacesManager(list.items);
     window.renderList(surfaces);
     if (list.show_price) {
         std::vector<Surface*> price_surfaces;
