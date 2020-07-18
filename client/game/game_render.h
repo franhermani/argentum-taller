@@ -71,8 +71,6 @@ public:
 
     //Inicializador de SDL
     int init();
-    //setea cantidad de bloques recibida por server
-    void setTilesSize(int width, int height);
 
     //Consultas por posicion de click a cosas renderizadas
     int getInventoryItemByPosition(int x, int y);

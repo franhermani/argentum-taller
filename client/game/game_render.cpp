@@ -216,12 +216,6 @@ void GameRender::renderInventoryGolds(uint16_t quantity) {
             surfacesManager(std::to_string(quantity)));
 }
 
-//TODO A ESTA NUNCA LA LLAMAN BORRAR"!!"#1231231231231C-.-.-SA.CZXCZMXNCZM,X
-void GameRender::setTilesSize(int width,int height) {
-    blocksWidth = width;
-    blocksHeight = height;
-    window.setTilesSize(width,height);
-}
 
 void GameRender::renderList(list_t list) {
     surfacesManager.createNecessaryListItems(list.items);
