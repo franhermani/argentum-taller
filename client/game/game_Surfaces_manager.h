@@ -7,6 +7,7 @@
 #include "../../common/defines/commands.h"
 #include "../../common/thread.h"
 #include "../../common/defines/npcs.h"
+#include "../../common/defines/states.h"
 #include "../../common/defines/world_structs.h"
 #include "../sdl/surface.h"
 #include "../sdl/window.h"
@@ -15,7 +16,7 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
-    std::map<int, std::map<int, Surface *>> stateSurfacesMap;
+    std::map<stateType, std::map<int, Surface *>> stateSurfacesMap;
     std::map<int, std::map<int, Surface *>> attackSurfacesMap;
     std::map<int, std::map<int, Surface *>> equippedWeaponSurfacesMap;
     std::map<int, Surface *> itemSurfacesMap;
@@ -65,7 +66,7 @@ public:
     GameSurfacesManager& operator=(const GameSurfacesManager& other) = delete;
     Surface* operator()(player_t& player);
     Surface* operator()(int item_type);
-    Surface* operator()(int state, int orientation);
+    Surface* operator()(stateType state, int orientation);
     Surface* operator()(attack_t& attack);
     Surface* operator()(creature_t& creature);
     Surface* operator()(npc_t& npc);

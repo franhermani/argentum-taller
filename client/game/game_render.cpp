@@ -110,20 +110,17 @@ void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
 void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        int state = it->state;
         int orientation = it -> orientation;
-        if (state == STATE_NORMAL)
+        if (it->state == STATE_NORMAL)
             window.renderMapObject(it->pos.x, it->pos.y,
                     surfacesManager(*it));
         else {
             window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager(state, orientation));
+                    surfacesManager(it->state, orientation));
         }
 
     }
 }
-
-
 
 void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
     for (auto it = std::begin(npcs);

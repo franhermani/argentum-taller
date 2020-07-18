@@ -291,7 +291,7 @@ void GameSurfacesManager::loadNpcPaths() {
 
 
 
-Surface* GameSurfacesManager::operator()(int state, int orientation) {
+Surface* GameSurfacesManager::operator()(stateType state, int orientation) {
     //todo si hacer el create if necessary
     return stateSurfacesMap[state][orientation];
 }

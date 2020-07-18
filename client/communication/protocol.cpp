@@ -320,7 +320,7 @@ void ClientProtocol::loadPlayers(std::vector<char>& buffer, int& pos,
         // Enum type del estado
         uint8_t state;
         memcpy(&state, buffer.data() + pos, SIZE_8);
-        player.state = state;
+        player.state = (stateType) state;
         pos += SIZE_8;
 
         // Enum type de la raza
@@ -425,7 +425,7 @@ void ClientProtocol::loadCreatures(std::vector<char>& buffer, int& pos,
         // Enum type del estado
         uint8_t state;
         memcpy(&state, buffer.data() + pos, SIZE_8);
-        creature.state = state;
+        creature.state = (stateType) state;
         pos += SIZE_8;
 
         creatures[i] = creature;
