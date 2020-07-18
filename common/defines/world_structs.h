@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include "states.h"
 #include "position.h"
 
 // ---------------------- //
@@ -52,7 +53,7 @@ typedef struct {
     uint16_t level;             // Nivel
     uint8_t type;               // Enum type del tipo de criatura
     uint8_t orientation;        // Enum type de la orientacion
-    uint8_t state;              // Enum type del estado actual
+    stateType state;              // Enum type del estado actual
 } creature_t;
 
 typedef struct {
@@ -63,7 +64,7 @@ typedef struct {
     uint16_t max_life;          // Vida maxima
     uint16_t level;             // Nivel
     uint8_t orientation;        // Enum type de la orientacion
-    uint8_t state;              // Enum type del estado actual
+    stateType state;              // Enum type del estado actual
     uint8_t race_type;          // Enum type de la raza
     uint8_t class_type;         // Enum type de la clase
     uint8_t weapon;             // Enum type del arma

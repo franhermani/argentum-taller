@@ -12,6 +12,7 @@
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"
 #include "game_Surfaces_manager.h"
+#include "game_sound_manager.h"
 
 
 class GameRender : public Thread {
@@ -24,14 +25,13 @@ class GameRender : public Thread {
     std::vector<int> mapDimensions;
     SDLWindow window;
     GameSurfacesManager surfacesManager;
-    Mix_Music* music;
-    Mix_Chunk* swordSound;
-    Mix_Chunk* explosionSound;
+    GameSoundManager soundManager;
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
 
     void initMusic();
+    void renderGame();
 
 public:
     //Constructor
@@ -70,8 +70,6 @@ public:
 
     //Inicializador de SDL
     int init();
-    //setea cantidad de bloques recibida por server
-    void setTilesSize(int width, int height);
 
     //Consultas por posicion de click a cosas renderizadas
     int getInventoryItemByPosition(int x, int y);

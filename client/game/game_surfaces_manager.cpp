@@ -18,6 +18,9 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto const& surface : infoSurfacesMap) {
         delete surface.second;
     }
+    for (auto const& surface : textSurfaces) {
+        delete surface;
+    }
     for (auto const& surface : itemSurfacesMap) {
         delete surface.second;
     }
@@ -42,107 +45,110 @@ GameSurfacesManager::~GameSurfacesManager(){
     delete worldSurface;
 }
 
-Surface* GameSurfacesManager::getTextSurface(std::string text) {
-    return new Surface(text, window);
+Surface* GameSurfacesManager::operator()(std::string text) {
+    Surface* surface = new Surface(text, window);
+    textSurfaces.push_back(surface);
+    return surface;
 }
 
 
 
-void GameSurfacesManager::createNecessaryPlayers(
-        std::vector<player_t>& players) {
-    for (auto& player:players) {
-        int race = player.race_type;
-        int orientation = player.orientation;
-        if (playerSurfacesMap[race].find(orientation)
-            == playerSurfacesMap[race].end()) {
-            if (playerSurfacesPaths[race].find(orientation)
-                == playerSurfacesPaths[race].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    playerSurfacesPaths[race][orientation], window, 1);
-            playerSurfacesMap[race].insert({orientation, surface});
-        }
+Surface* GameSurfacesManager::operator()(stateType state, int orientation) {
+    //todo si hacer el create if necessary
+    return stateSurfacesMap[state][orientation];
+}
+Surface* GameSurfacesManager::operator()(attack_t& attack) {
+    int type = attack.type;
+    int orientation = attack.orientation;
+    if (attackSurfacesMap[type].find(orientation)
+        == attackSurfacesMap[type].end()) {
+        Surface* surface = new Surface(
+                attackSurfacesPaths[type][orientation], window, 1);
+        attackSurfacesMap[type].insert({orientation, surface});
+        return surface;
     }
+    else return attackSurfacesMap[type][orientation];
+}
+Surface* GameSurfacesManager::operator()(npc_t& npc) {
+    int type = npc.type;
+    int orientation = npc.orientation;
+    if (npcSurfacesMap[type].find(orientation)
+        == npcSurfacesMap[type].end()) {
+        Surface* surface = new Surface(
+                npcSurfacesPaths[type][orientation], window, 1);
+        npcSurfacesMap[type].insert({orientation, surface});
+        return surface;
+    }
+    else return npcSurfacesMap[type][orientation];
 }
 
-void GameSurfacesManager::createNecessaryCreatures(
-        std::vector<creature_t>& creatures) {
-    for (auto& creature:creatures) {
-        int type = creature.type;
-        int orientation = creature.orientation;
-        if (creatureSurfacesMap[type].find(orientation)
-            == creatureSurfacesMap[type].end()) {
-            if (creatureSurfacesPaths[type].find(orientation)
-                == creatureSurfacesPaths[type].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    creatureSurfacesPaths[type][orientation], window, 1);
-            creatureSurfacesMap[type].insert({orientation, surface});
-        }
+Surface* GameSurfacesManager::operator()(creature_t& creature) {
+    int type = creature.type;
+    int orientation = creature.orientation;
+    if (creatureSurfacesMap[type].find(orientation)
+        == creatureSurfacesMap[type].end()) {
+        Surface* surface = new Surface(
+                creatureSurfacesPaths[type][orientation], window, 1);
+        creatureSurfacesMap[type].insert({orientation, surface});
+        return surface;
     }
+    else return creatureSurfacesMap[type][orientation];
 }
-void GameSurfacesManager::createNecessaryEquipped(
-        std::vector<player_t>& players) {
+
+
+Surface* GameSurfacesManager::operator()(player_t& player) {
+    int race = player.race_type;
+    int orientation = player.orientation;
+    if (playerSurfacesMap[race].find(orientation)
+        == playerSurfacesMap[race].end()) {
+        Surface* surface = new Surface(
+                playerSurfacesPaths[race][orientation], window, 1);
+        playerSurfacesMap[race].insert({orientation, surface});
+        return surface;
+    }
+    else return playerSurfacesMap[race][orientation];
+}
+
+
+Surface* GameSurfacesManager::operator()(int item_type) {
+    if (itemSurfacesMap.find(item_type)
+        == itemSurfacesMap.end()) {
+        Surface* surface = new Surface(
+                itemSurfacesPaths[item_type], window, 1);
+        itemSurfacesMap.insert({item_type, surface});
+        return surface;
+    } else return itemSurfacesMap[item_type];
+}
+
+std::vector<Surface*> GameSurfacesManager::operator()(
+        std::vector<list_item_t> items) {
+    std::vector<Surface*> surfaces;
+    for (auto& item: items) {
+        int type = item.type;
+        Surface* surface;
+        if (itemSurfacesMap.find(type)
+            == itemSurfacesMap.end()) {
+            surface = new Surface(
+                    itemSurfacesPaths[type], window, 1);
+            itemSurfacesMap.insert({type, surface});
+        } else surface = itemSurfacesMap[type];
+        surfaces.push_back(surface);
+    }
+    return surfaces;
+}
+
+
+Surface* GameSurfacesManager::getEquipped(
+        int weapon, int orientation) {
     //TODO hacer una funcion qeu te diga si una claave esta en el diccionario para no repetir
-
-    //REFACTOR ACA URGENTE EHHH que es eso de chequear no item equipped en esto
-    // Y AL MISmo tiempo chequearlo en gamerender
-    for (auto& player: players) {
-        int orientation = player.orientation;
-        int weapon = player.weapon;
-        if (weapon != NO_ITEM_EQUIPPED && (equippedWeaponSurfacesMap[weapon].find(orientation)
-            == equippedWeaponSurfacesMap[weapon].end())) {
-            if (equippedWeaponSurfacesPaths[weapon].find(orientation)
-                == equippedWeaponSurfacesPaths[weapon].end()) {
-                continue;
-            }
+    if (equippedWeaponSurfacesMap[weapon].find(orientation)
+            == equippedWeaponSurfacesMap[weapon].end()) {
             Surface* surface = new Surface(
                     equippedWeaponSurfacesPaths[weapon][orientation], window, 1);
             equippedWeaponSurfacesMap[weapon].insert({orientation, surface});
-        }
-        int armor = player.armor;
-        if (armor != NO_ITEM_EQUIPPED && (equippedWeaponSurfacesMap[armor].find(orientation)
-                                          == equippedWeaponSurfacesMap[armor].end())) {
-            if (equippedWeaponSurfacesPaths[armor].find(orientation)
-                == equippedWeaponSurfacesPaths[armor].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    equippedWeaponSurfacesPaths[armor][orientation], window, 1);
-            equippedWeaponSurfacesMap[armor].insert({orientation, surface});
-        }
-        int shield = player.shield;
-        if (shield != NO_ITEM_EQUIPPED && (equippedWeaponSurfacesMap[shield].find(orientation)
-            == equippedWeaponSurfacesMap[shield].end())) {
-            if (equippedWeaponSurfacesPaths[shield].find(orientation)
-                == equippedWeaponSurfacesPaths[shield].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    equippedWeaponSurfacesPaths[shield][orientation], window, 1);
-            equippedWeaponSurfacesMap[shield].insert({orientation, surface});
-        }
+            return surface;
     }
-}
-
-
-void GameSurfacesManager::createNecessaryNpcs(std::vector<npc_t>& npcs) {
-    for (auto& npc:npcs) {
-        int type = npc.type;
-        int orientation = npc.orientation;
-        if (npcSurfacesMap[type].find(orientation)
-            == npcSurfacesMap[type].end()) {
-            if (npcSurfacesPaths[type].find(orientation)
-                == npcSurfacesPaths[type].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    npcSurfacesPaths[type][orientation], window, 1);
-            npcSurfacesMap[type].insert({orientation, surface});
-        }
-    }
+    return equippedWeaponSurfacesMap[weapon][orientation];
 }
 
 void GameSurfacesManager::createNecessaryFrameItems(
@@ -157,47 +163,7 @@ void GameSurfacesManager::createNecessaryFrameItems(
     }
 }
 
-void GameSurfacesManager::createNecessaryAttacks(
-        std::vector<attack_t>& attacks) {
-    for (auto& attack:attacks) {
-        int type = attack.type;
-        int orientation = attack.orientation;
-        if (attackSurfacesMap[type].find(orientation)
-            == attackSurfacesMap[type].end()) {
-            if (attackSurfacesPaths[type].find(orientation)
-                == attackSurfacesPaths[type].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    attackSurfacesPaths[type][orientation], window, 1);
-            attackSurfacesMap[type].insert({orientation, surface});
-        }
-    }
-}
-void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
-    for (auto& item: items) {
-        int type = item.type;
-        if (itemSurfacesMap.find(type)
-            == itemSurfacesMap.end()) {
-            Surface* surface = new Surface(
-                    itemSurfacesPaths[type], window, 1);
-            itemSurfacesMap.insert({type, surface});
-        }
-    }
-}
-//todo refactor codigo repetido
-void GameSurfacesManager::createNecessaryListItems(
-        std::vector<list_item_t> items) {
-    for (auto& item: items) {
-        int type = item.type;
-        if (itemSurfacesMap.find(type)
-            == itemSurfacesMap.end()) {
-            Surface* surface = new Surface(
-                    itemSurfacesPaths[type], window, 1);
-            itemSurfacesMap.insert({type, surface});
-        }
-    }
-}
+
 
 
 void GameSurfacesManager::loadCreaturePaths() {
@@ -400,6 +366,8 @@ void GameSurfacesManager::loadNpcPaths() {
     };
 }
 
+
+
 void GameSurfacesManager::loadAttackPaths() {
     std::map<int, std::string> multiple_arrow_orientations = {
             {UP, "../client/resources/images/triple_arrow_up_t.png"},
@@ -520,24 +488,24 @@ void GameSurfacesManager::loadPlayerPaths() {
 
     };
     // todo fixear esto
-    std::map<int, Surface*> reviveSurfacesMap = {{UP,    new Surface("../client/resources/images/reviving_t.png", window, 1)},
-                                                {DOWN,  new Surface("../client/resources/images/reviving_t.png", window, 1)},
-                                                {LEFT,  new Surface("../client/resources/images/reviving_t.png", window, 1)},
-                                                {RIGHT, new Surface("../client/resources/images/reviving_t.png", window, 1)}
+    std::map<int, Surface*> reviveSurfacesMap = {{UP,    new Surface("../client/resources/images/reviving_up_t.png", window, 1)},
+                                                {DOWN,  new Surface("../client/resources/images/reviving_down_t.png", window, 1)},
+                                                {LEFT,  new Surface("../client/resources/images/reviving_left_t.png", window, 1)},
+                                                {RIGHT, new Surface("../client/resources/images/reviving_right_t.png", window, 1)}
 
     };
     //TODO FIXEAR MISMA RUTA
 
-    std::map<int, Surface*> meditateSurfacesMap = {{UP,    new Surface("../client/resources/images/meditating_t.png", window, 1)},
-                                                 {DOWN,  new Surface("../client/resources/images/meditating_t.png", window, 1)},
-                                                 {LEFT,  new Surface("../client/resources/images/meditating_t.png", window, 1)},
-                                                 {RIGHT, new Surface("../client/resources/images/meditating_t.png", window, 1)}
+    std::map<int, Surface*> meditateSurfacesMap = {{UP,    new Surface("../client/resources/images/meditating_up_t.png", window, 1)},
+                                                 {DOWN,  new Surface("../client/resources/images/meditating_down_t.png", window, 1)},
+                                                 {LEFT,  new Surface("../client/resources/images/meditating_left_t.png", window, 1)},
+                                                 {RIGHT, new Surface("../client/resources/images/meditating_right_t.png", window, 1)}
 
     };
-    std::map<int, Surface*> dyingSurfacesMap = {{UP,    new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
-                                                   {DOWN,  new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
-                                                   {LEFT,  new Surface("../client/resources/images/dying_creature_t.png", window, 1)},
-                                                   {RIGHT, new Surface("../client/resources/images/dying_creature_t.png", window, 1)}
+    std::map<int, Surface*> dyingSurfacesMap = {{UP,    new Surface("../client/resources/images/dying_creature_up_t.png", window, 1)},
+                                                   {DOWN,  new Surface("../client/resources/images/dying_creature_down_t.png", window, 1)},
+                                                   {LEFT,  new Surface("../client/resources/images/dying_creature_left_t.png", window, 1)},
+                                                   {RIGHT, new Surface("../client/resources/images/dying_creature_right_t.png", window, 1)}
 
     };
 
