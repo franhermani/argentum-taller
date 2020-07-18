@@ -40,10 +40,6 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
 }
 
 GameRender::~GameRender() {
-    Mix_FreeChunk(swordSound);
-    Mix_FreeChunk(explosionSound);
-    Mix_FreeMusic(music);
-    Mix_Quit();
     SDL_Quit();
 }
 
@@ -53,9 +49,10 @@ int GameRender::init() {
         throw SDLException(
                 "\nError al inicializar video de sdl", SDL_GetError());
     }
-    initMusic();
+    //initMusic();
     return true;
 }
+/*
 
 void GameRender::initMusic() {
     int flags = MIX_INIT_FLAC;
@@ -85,6 +82,7 @@ void GameRender::initMusic() {
     }
     Mix_PlayMusic(music, -1);
 }
+ */
 
 void GameRender::renderPlayers(std::vector<player_t>& players) {
     for (auto it = std::begin(players);
@@ -143,16 +141,10 @@ void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
     for (auto it = std::begin(attacks);
          it != std::end(attacks); ++it) {
         if (it->sound == SWORD_STRIKE) {
-            if (Mix_PlayChannel(0, swordSound, 0) == -1){
-                std::cout << "Error: Could not play wav file  on channel "
-                          << 0 << std::endl;
-            }
+            soundManager.playSound(SWORD_STRIKE);
         }
         else if (it->sound == EXPLOSION) {
-            if (Mix_PlayChannel(0, explosionSound, 0) == -1){
-                std::cout << "Error: Could not play wav file  on channel "
-                          << 0 << std::endl;
-            }
+            soundManager.playSound(EXPLOSION);
         }
         window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager(*it));
