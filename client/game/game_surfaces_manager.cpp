@@ -47,6 +47,7 @@ GameSurfacesManager::~GameSurfacesManager(){
 
 Surface* GameSurfacesManager::operator()(std::string text) {
     Surface* surface = new Surface(text, window);
+    //guardamos para luego liberar memoria
     textSurfaces.push_back(surface);
     return surface;
 }
@@ -140,7 +141,6 @@ std::vector<Surface*> GameSurfacesManager::operator()(
 
 Surface* GameSurfacesManager::getEquipped(
         int weapon, int orientation) {
-    //TODO hacer una funcion qeu te diga si una claave esta en el diccionario para no repetir
     if (equippedWeaponSurfacesMap[weapon].find(orientation)
             == equippedWeaponSurfacesMap[weapon].end()) {
             Surface* surface = new Surface(
@@ -154,8 +154,10 @@ Surface* GameSurfacesManager::getEquipped(
 void GameSurfacesManager::createNecessaryFrameItems(
         std::vector<uint8_t>& items) {
     for (auto& type: items) {
-        if ((type != NO_ITEM_EQUIPPED) && (itemSurfacesMap.find(type)
-            == itemSurfacesMap.end())) {
+        if (itemSurfacesPaths.find(type)
+           == itemSurfacesPaths.end()) continue;
+        if (itemSurfacesMap.find(type)
+            == itemSurfacesMap.end()) {
             Surface* surface = new Surface(
                     itemSurfacesPaths[type], window, 1);
             itemSurfacesMap.insert({type, surface});

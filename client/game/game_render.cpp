@@ -91,20 +91,6 @@ void GameRender::renderGame() {
     window.UpdateWindowSurface();
 }
 
-
-void GameRender::renderPlayers(std::vector<player_t>& players) {
-    for (auto it = std::begin(players);
-         it != std::end(players); ++it) {
-        int state = it->state;
-        if (state == STATE_NORMAL)
-        window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager(*it));
-        else
-            window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager(it->state, it->orientation));
-    }
-}
-
 void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
     Surface* level_surface = surfacesManager(
             std::to_string(level));
@@ -183,6 +169,19 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     surfacesManager.createNecessaryFrameItems(inventory);
     window.renderInventory(inventory,
                          surfacesManager.itemSurfacesMap);
+}
+
+void GameRender::renderPlayers(std::vector<player_t>& players) {
+    for (auto it = std::begin(players);
+         it != std::end(players); ++it) {
+        int state = it->state;
+        if (state == STATE_NORMAL)
+            window.renderMapObject(it->pos.x, it->pos.y,
+                                   surfacesManager(*it));
+        else
+            window.renderMapObject(it->pos.x, it->pos.y,
+                                   surfacesManager(it->state, it->orientation));
+    }
 }
 
 void GameRender::renderEquipped(std::vector<player_t>& players) {
