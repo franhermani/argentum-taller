@@ -37,6 +37,8 @@ int main(int argc, char *argv[]) {
         std::cerr << e.what() << "\n";
     } catch(SDLException& e) {
         std::cerr << e.what() << "\n";
+    } catch(SoundException& e) {
+        std::cerr << e.what() << "\n";
     }
     catch(...) {
         std::cerr << "Error desconocido\n";

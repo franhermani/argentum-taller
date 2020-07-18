@@ -17,7 +17,6 @@ Map::Map() {
 Map::~Map() {}
 
 void Map::updateWorld(world_t receivedWorld, list_t received_list) {
-    //actualizo players
     world.players = std::move(receivedWorld.players);
     world.num_players = std::move(receivedWorld.num_players);
     world.player_info = std::move(receivedWorld.player_info);
@@ -32,15 +31,12 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
     if ((not interactingWithNpc) || (interactingWithNpc &&
                 received_list.num_items != 0))
         list = std::move(received_list);
-
-    //el resto falta recibirlo
 }
 
 
 void Map::initialize(int received_id,
         std::vector<int>& blocks_around,
         npcs_t& received_npcs, std::vector<int>& map_dimensions) {
-    // TODO ESTO SE RECIBE DESDE SERVER
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
@@ -58,18 +54,20 @@ player_t Map::getMainPlayer() {
     throw MapException("main player not found");
 }
 
-//TODO RENOMBRAR estoas variables terrain porque
-// ya no hay terrain
+
 int Map::getPlayerXStart(player_t& player) {
     int x_start = player.pos.x - playerVisionWidth/2;
     if (x_start < 0) return 0;
     return x_start;
 }
+
+
 int Map::getPlayerYStart(player_t& player) {
     int y_start = player.pos.y - playerVisionHeight/2;
     if (y_start < 0) return 0;
     return y_start;
 }
+
 
 int Map::getPlayerXEnd(player_t& player) {
     int x_finish = player.pos.x  + (playerVisionWidth / 2) + 1;
@@ -83,17 +81,9 @@ int Map::getPlayerYEnd(player_t& player) {
     return y_finish;
 }
 
-
-
 std::vector<player_t> Map::getRenderablePlayers() {
     player_t main_player = getMainPlayer();
-
     std::vector<player_t> visible_players;
-
-
-    //traducimos posiciones a la vision del jugador y
-    // nos quedamos con los jugadores que esten
-    //dentro del rango de vision del principal
     for (auto& player: world.players) {
         if (not betweenPlayerBorders(player.pos.x, player.pos.y)) {
             continue;
@@ -138,12 +128,7 @@ int Map::getNewBordersYPosition(int pos_y, player_t& main_player) {
 
 std::vector<npc_t> Map::getRenderableNpcs() {
     player_t main_player = getMainPlayer();
-
     std::vector<npc_t> visible_npcs;
-
-    //traducimos posiciones a la vision del jugador y
-    // nos quedamos con los jugadores que esten
-    //dentro del rango de vision del principal
     for (auto& npc: npcs.npcs) {
         if (not betweenPlayerBorders(npc.pos.x, npc.pos.y)) {
             continue;
@@ -163,14 +148,7 @@ std::vector<npc_t> Map::getRenderableNpcs() {
 
 std::vector<creature_t> Map::getRenderableCreatures() {
     player_t main_player = getMainPlayer();
-
-
     std::vector<creature_t> visible_creatures;
-
-
-    //traducimos posiciones a la vision del jugador y
-    // nos quedamos con las criaturas que esten
-    //dentro del rango de vision del principal
     for (auto& creature: world.creatures) {
         if (not betweenPlayerBorders(creature.pos.x, creature.pos.y)) {
             continue;
@@ -191,9 +169,6 @@ std::vector<creature_t> Map::getRenderableCreatures() {
 std::vector<gold_t> Map::getRenderableGolds() {
     player_t main_player = getMainPlayer();
     std::vector<gold_t> visible_gold;
-    //traducimos posiciones a la vision del jugador y
-    // nos quedamos con los items que esten
-    //dentro del rango de vision del principal
     for (auto& gold: world.golds) {
         if (not betweenPlayerBorders(gold.pos.x, gold.pos.y)) {
             continue;
@@ -213,9 +188,6 @@ std::vector<gold_t> Map::getRenderableGolds() {
 std::vector<attack_t> Map::getRenderableAttacks() {
     player_t main_player = getMainPlayer();
     std::vector<attack_t> visible_attacks;
-    //traducimos posiciones a la vision del jugador y
-    // nos quedamos con los items que esten
-    //dentro del rango de vision del principal
     for (auto& attack: world.attacks) {
         if (not betweenPlayerBorders(attack.pos.x, attack.pos.y)) {
             continue;
@@ -238,9 +210,6 @@ std::vector<attack_t> Map::getRenderableAttacks() {
 std::vector<item_t> Map::getRenderableItems() {
     player_t main_player = getMainPlayer();
     std::vector<item_t> visible_items;
-    //traducimos posiciones a la vision del jugador y
-    // nos quedamos con los items que esten
-    //dentro del rango de vision del principal
     for (auto& item: world.items) {
         if (not betweenPlayerBorders(item.pos.x, item.pos.y)) {
             continue;
@@ -311,7 +280,6 @@ std::vector<int> Map::getItemStandingAt() {
 }
 
 
-//TODO  codigo repetido con get item standing at, hacer refactor
 std::vector<int> Map::getGoldStandingAt() {
     player_t player = getMainPlayer();
     std::vector<int> player_position = {player.pos.x, player.pos.y};

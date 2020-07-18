@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <SDL2/SDL_ttf.h>
 #include "../../common/defines/commands.h"
 #include "../../common/thread.h"
 #include "../../common/defines/npcs.h"
@@ -31,6 +32,8 @@ class GameSurfacesManager {
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
     std::map<int, std::map<int, std::string>> attackSurfacesPaths;
     std::map<int, std::string> itemSurfacesPaths;
+    TTF_Font* mainFont;
+    SDL_Color mainColor;
     SDLWindow& window;
 
     friend class GameRender;

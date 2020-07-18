@@ -13,7 +13,7 @@
 SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
                 screenHeight(screenHeight), screenWidth(screenWidth),
                 measurements(){
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
         throw SDLException("\nError al inicializar SDL", SDL_GetError());
 
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
@@ -34,6 +34,7 @@ SDLWindow::~SDLWindow() {
         SDL_DestroyWindow(window);
         window = nullptr;
     }
+    SDL_VideoQuit();
 }
 
 
@@ -175,7 +176,6 @@ void SDLWindow::renderLife(std::map<int, float>& player_info,
     stretchRect.w = (int) ((float)(life_area.x_pixel_end -
                                    life_area.x_pixel_begin))*life_percentage;
     stretchRect.h = life_area.y_pixel_end - life_area.y_pixel_begin;
-
     SDL_BlitScaled(info_surfaces_map[LIFE]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
 

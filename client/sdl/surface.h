@@ -14,7 +14,8 @@ public:
     Surface(const std::string filename, const SDLWindow& window,
             int isTransparent);
     // Constructor surface de texto
-    Surface(const std::string text, const SDLWindow &window);
+    Surface(const std::string text, const SDLWindow &window,
+            TTF_Font* font, SDL_Color& color);
 
     // Destructor
     ~Surface();

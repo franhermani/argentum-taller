@@ -30,7 +30,7 @@ class GameRender : public Thread {
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
 
-    void initMusic();
+
     void renderGame();
 
 public:

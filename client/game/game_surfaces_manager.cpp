@@ -8,13 +8,18 @@
 #include "../../common/defines/items.h"
 #include "../../common/defines/attacks.h"
 #include "../../common/defines/states.h"
+#include "../sdl/exception.h"
 
 
-
-GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window){}
+GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window) {
+    mainFont = TTF_OpenFont("../client/resources/fonts/goudy.ttf", 100);
+    if (mainFont == NULL) {
+        throw SDLException("\nError al cargar font de surfaces",
+                           SDL_GetError());
+    }
+    mainColor = {255, 255,255};
+}
 GameSurfacesManager::~GameSurfacesManager(){
-    //TODO CHEQUEO DE MATAR TODO
-
     for (auto const& surface : infoSurfacesMap) {
         delete surface.second;
     }
@@ -43,21 +48,23 @@ GameSurfacesManager::~GameSurfacesManager(){
     delete goldSurface;
     delete gameFrameSurface;
     delete worldSurface;
+    TTF_CloseFont(mainFont);
 }
 
+
 Surface* GameSurfacesManager::operator()(std::string text) {
-    Surface* surface = new Surface(text, window);
+    Surface* surface = new Surface(text, window, mainFont, mainColor);
     //guardamos para luego liberar memoria
     textSurfaces.push_back(surface);
     return surface;
 }
 
 
-
 Surface* GameSurfacesManager::operator()(stateType state, int orientation) {
-    //todo si hacer el create if necessary
     return stateSurfacesMap[state][orientation];
 }
+
+
 Surface* GameSurfacesManager::operator()(attack_t& attack) {
     int type = attack.type;
     int orientation = attack.orientation;
@@ -70,6 +77,8 @@ Surface* GameSurfacesManager::operator()(attack_t& attack) {
     }
     else return attackSurfacesMap[type][orientation];
 }
+
+
 Surface* GameSurfacesManager::operator()(npc_t& npc) {
     int type = npc.type;
     int orientation = npc.orientation;
@@ -120,6 +129,7 @@ Surface* GameSurfacesManager::operator()(int item_type) {
         return surface;
     } else return itemSurfacesMap[item_type];
 }
+
 
 std::vector<Surface*> GameSurfacesManager::operator()(
         std::vector<list_item_t> items) {
