@@ -70,6 +70,19 @@ int Map::getPlayerYStart(player_t& player) {
     if (y_start < 0) return 0;
     return y_start;
 }
+//TODO SACAR EL 100
+int Map::getPlayerGranularXStart(player_t& player) {
+    int x_start = player.granular_pos.x - playerVisionWidth*100/2;
+    if (x_start < 0) return 0;
+    return x_start;
+}
+
+//TODO SACAR EL 100
+int Map::getPlayerGranularYStart(player_t& player) {
+    int y_start = player.granular_pos.y - playerVisionHeight*100/2;
+    if (y_start < 0) return 0;
+    return y_start;
+}
 
 int Map::getPlayerXEnd(player_t& player) {
     int x_finish = player.pos.x  + (playerVisionWidth / 2) + 1;
@@ -99,6 +112,7 @@ std::vector<player_t> Map::getRenderablePlayers() {
             continue;
         } else {
             player_t converted_player = player;
+            //std::cout << "\n\nx comun "<<player.pos.x << " x granular "<<player.granular_pos.x;
             converted_player.pos.x = player.pos.x -
                     getPlayerXStart(main_player);
             if (converted_player.pos.x < 0) converted_player.pos.x = 0;
@@ -106,6 +120,17 @@ std::vector<player_t> Map::getRenderablePlayers() {
                     getPlayerYStart(main_player);
             if (converted_player.pos.y < 0) converted_player.pos.y = 0;
             visible_players.push_back(converted_player);
+            converted_player.granular_pos.x = player.granular_pos.x -
+                                     getPlayerGranularXStart(main_player);
+            if (converted_player.granular_pos.x < 0) converted_player.granular_pos.x = 0;
+            converted_player.granular_pos.y = player.granular_pos.y -
+                                     getPlayerGranularYStart(main_player);
+            if (converted_player.granular_pos.y < 0) converted_player.granular_pos.y = 0;
+            visible_players.push_back(converted_player);
+            //std::cout << "\n CONVERSION x comun "<<converted_player.pos.x << " x granular "<<converted_player.granular_pos.x << "\n\n\n";
+
+
+
         }
     }
     return visible_players;
@@ -121,6 +146,9 @@ int Map::betweenPlayerBorders(int pos_x, int pos_y) {
     return ((pos_x >= x_start) &&  (pos_x < x_finish)
     && (pos_y >= y_start) && (pos_y < y_finish));
 }
+
+
+
 
 //todo ver que hacemos con estas 2
 int Map::getNewBordersXPosition(int pos_x, player_t& main_player) {

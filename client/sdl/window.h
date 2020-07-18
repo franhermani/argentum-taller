@@ -80,8 +80,12 @@ public:
     int getXPixelPos(int x_tile_position);
     int getYPixelPos(int y_tile_position);
 
-    void renderMapObject(int x, int y, Surface *character_surface);
 
+    int getGranularXPixelPos(int x_tile_position);
+    int getGranularYPixelPos(int y_tile_position);
+
+    void renderMapObject(int x, int y, Surface *character_surface);
+    void renderGranularMapObject(int x, int y, Surface *character_surface);
     //renderizadores marco + lo que contiene
     void renderGameFrame(Surface *surface);
     void renderInventory(std::vector<uint8_t>& inventory,

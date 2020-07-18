@@ -19,21 +19,18 @@ class Map {
     int playerVisionWidth;
     int playerVisionHeight;
 
-    //Dada la posicion de un jugador, devuelve la posicion donde
-    // arrancaria en X su submatriz dentro de la matriz principal
     int getPlayerXStart(player_t& player);
 
-    //Dada la posicion de un jugador, devuelve la posicion donde
-    // arrancaria en Y su submatriz dentro de la matriz principal
     int getPlayerYStart(player_t& player);
 
-    //Dada la posicion de un jugador, devuelve la posicion donde
-    // terminaria en X su submatriz dentro de la matriz principal
     int getPlayerXEnd(player_t& player);
 
-    //Dada la posicion de un jugador, devuelve la posicion donde
-    // terminaria en Y su submatriz dentro de la matriz principal
     int getPlayerYEnd(player_t& player);
+
+
+    int getPlayerGranularXStart(player_t& player);
+
+    int getPlayerGranularYStart(player_t& player);
 
     int betweenPlayerBorders(int pos_x, int pos_y);
 

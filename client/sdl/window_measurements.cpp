@@ -19,6 +19,14 @@ void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
             numberOfTilesInWidth;
     yHeightTileSize = (frame.y_pixel_end - frame.y_pixel_begin) /
             numberOfTilesInHeight;
+    //TODO el 100 es el granular fijarse bien sacarlo afuera
+    xWidthGranularTileSize =  ((frame.x_pixel_end - frame.x_pixel_begin) /
+            (numberOfTilesInWidth*100.0));
+    yHeightGranularTileSize = ((frame.y_pixel_end - frame.y_pixel_begin) /
+            (numberOfTilesInHeight*100.0));
+    //std::cout << "\n\n aa "<< frame.y_pixel_end - frame.y_pixel_begin;
+    //std::cout << "\n\nx width tile size "<< xWidthTileSize << "\n";
+    //std::cout << "\n\n x with granular tile size " << xWidthGranularTileSize << "\n";
 
     initializeItemInfo(screenWidth, screenHeight);
     initializePlayerInfo(screenWidth, screenHeight);

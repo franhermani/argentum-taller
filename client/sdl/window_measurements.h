@@ -11,6 +11,8 @@ struct WindowMeasurements {
     int numberOfTilesInHeight;
     int xWidthTileSize;
     int yHeightTileSize;
+    float xWidthGranularTileSize;
+    float yHeightGranularTileSize;
     int screenHeight;
     int screenWidth;
     game_area_t frame;

@@ -73,6 +73,21 @@ void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
             getSurface(), &stretchRect);
 }
 
+void SDLWindow::renderGranularMapObject(int x, int y, Surface* character_surface) {
+    game_area_t& frame_area = measurements.frame;
+    SDL_Rect stretchRect;
+    stretchRect.x = getGranularXPixelPos(x);
+    stretchRect.y = getGranularYPixelPos(y);
+    stretchRect.w = measurements.xWidthTileSize;
+    stretchRect.h = measurements.yHeightTileSize;
+    if ((stretchRect.x+measurements.xWidthTileSize
+         >= frame_area.x_pixel_end) ||
+        (stretchRect.y+measurements.yHeightTileSize
+         >= frame_area.y_pixel_end)) return;
+    SDL_BlitScaled(character_surface->getRenderableSurface(), NULL,
+                   getSurface(), &stretchRect);
+}
+
 void SDLWindow::renderEquipped(player_t& player,
                               std::map<int, Surface*>& surfaces_map) {
     game_area_t& equipped_area = measurements.equipped;
@@ -117,6 +132,19 @@ int SDLWindow::getYPixelPos(int y_tile_position) {
     game_area_t& frame_area = measurements.frame;
     return frame_area.y_pixel_begin + y_tile_position *
         measurements.yHeightTileSize;
+}
+
+int SDLWindow::getGranularXPixelPos(int x_tile_position) {
+    game_area_t& frame_area = measurements.frame;
+    //std::cout << "\n\n\nRECIBO en window ESTe X granular"<< x_tile_position << "Y lo convierto a pixel a  " << frame_area.x_pixel_begin + x_tile_position *
+    // measurements.xWidthGranularTileSize << "\n";
+    return frame_area.x_pixel_begin + x_tile_position *
+                                      measurements.xWidthGranularTileSize;
+}
+int SDLWindow::getGranularYPixelPos(int y_tile_position) {
+    game_area_t& frame_area = measurements.frame;
+    return frame_area.y_pixel_begin + y_tile_position *
+                                      measurements.yHeightGranularTileSize;
 }
 
 

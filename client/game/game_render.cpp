@@ -96,11 +96,12 @@ void GameRender::renderPlayers(std::vector<player_t>& players) {
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         int state = it->state;
+        //std::cout << "esta es la pos x" << it->pos.x << "y esta es la gra " <<  it->granular_pos.x;
         if (state == STATE_NORMAL)
-        window.renderMapObject(it->pos.x, it->pos.y,
+        window.renderGranularMapObject(it->granular_pos.x, it->granular_pos.y,
                                surfacesManager(*it));
         else
-            window.renderMapObject(it->pos.x, it->pos.y,
+            window.renderGranularMapObject(it->granular_pos.x, it->granular_pos.y,
                     surfacesManager(it->state, it->orientation));
     }
 }
