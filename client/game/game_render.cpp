@@ -177,7 +177,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.itemSurfacesMap[it->type]);
+                               surfacesManager(*it));
     }
 }
 
@@ -214,6 +214,8 @@ void GameRender::renderEquipped(std::vector<player_t>& players) {
     surfacesManager.createNecessaryEquipped(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
+
+        //TRY CATCH A   CA
         if (it->state == STATE_GHOST) continue;
         if (it->armor != NO_ITEM_EQUIPPED)
         window.renderMapObject(it->pos.x, it->pos.y,
@@ -233,7 +235,7 @@ void GameRender::renderInventoryGolds(uint16_t quantity) {
             surfacesManager.getTextSurface(std::to_string(quantity)));
 }
 
-
+//TODO A ESTA NUNCA LA LLAMAN BORRAR"!!"#1231231231231C-.-.-SA.CZXCZMXNCZM,X
 void GameRender::setTilesSize(int width,int height) {
     blocksWidth = width;
     blocksHeight = height;

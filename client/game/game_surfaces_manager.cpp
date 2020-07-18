@@ -174,17 +174,7 @@ void GameSurfacesManager::createNecessaryAttacks(
         }
     }
 }
-void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
-    for (auto& item: items) {
-        int type = item.type;
-        if (itemSurfacesMap.find(type)
-            == itemSurfacesMap.end()) {
-            Surface* surface = new Surface(
-                    itemSurfacesPaths[type], window, 1);
-            itemSurfacesMap.insert({type, surface});
-        }
-    }
-}
+
 //todo refactor codigo repetido
 void GameSurfacesManager::createNecessaryListItems(
         std::vector<list_item_t> items) {
@@ -399,6 +389,33 @@ void GameSurfacesManager::loadNpcPaths() {
                       {BANKER, banker_surfaces}
     };
 }
+Surface* GameSurfacesManager::operator()(player_t player) {
+    return goldSurface;
+}
+
+void GameSurfacesManager::createNecessaryItems(std::vector<item_t>& items) {
+    for (auto& item: items) {
+        int type = item.type;
+        if (itemSurfacesMap.find(type)
+            == itemSurfacesMap.end()) {
+            Surface* surface = new Surface(
+                    itemSurfacesPaths[type], window, 1);
+            itemSurfacesMap.insert({type, surface});
+        }
+    }
+}
+
+Surface* GameSurfacesManager::operator()(item_t& item) {
+    int type = item.type;
+    if (itemSurfacesMap.find(type)
+        == itemSurfacesMap.end()) {
+        Surface* surface = new Surface(
+                itemSurfacesPaths[type], window, 1);
+        itemSurfacesMap.insert({type, surface});
+        return surface;
+    } else return itemSurfacesMap[type];
+}
+
 
 void GameSurfacesManager::loadAttackPaths() {
     std::map<int, std::string> multiple_arrow_orientations = {

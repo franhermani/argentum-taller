@@ -65,10 +65,11 @@ public:
 
     //Destructor
     ~GameSurfacesManager();
-
     // Constructor y asignacion por copia deshabilitados
     GameSurfacesManager(const GameSurfacesManager& other) = delete;
     GameSurfacesManager& operator=(const GameSurfacesManager& other) = delete;
+    Surface* operator()(player_t& player);
+    Surface* operator()(item_t& item);
 };
 
 
