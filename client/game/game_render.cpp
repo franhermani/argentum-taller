@@ -87,7 +87,6 @@ void GameRender::initMusic() {
 }
 
 void GameRender::renderPlayers(std::vector<player_t>& players) {
-    surfacesManager.createNecessaryPlayers(players);
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         int state = it->state;
@@ -104,25 +103,22 @@ void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
     Surface* level_surface = surfacesManager.
             getTextSurface(std::to_string(level));
     window.renderPlayerInfo(current_world.percentages,
-                            surfacesManager.infoSurfacesMap, level_surface);
+            surfacesManager.infoSurfacesMap, level_surface);
 }
 
 
 void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
-    surfacesManager.createNecessaryCreatures(creatures);
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        Surface* creature_surface;
         int state = it->state;
-            if (state == STATE_NORMAL)
+        int orientation = it -> orientation;
+        if (state == STATE_NORMAL)
             window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager.
-                    creatureSurfacesMap[it->type][it->orientation]);
-            else {
-                creature_surface = surfacesManager.stateSurfacesMap[state][it->orientation];
-                window.renderMapObject(it->pos.x, it->pos.y,
-                                       creature_surface);
-            }
+                    surfacesManager(*it));
+        else {
+            window.renderMapObject(it->pos.x, it->pos.y,
+                    surfacesManager(state, orientation));
+        }
 
     }
 }
@@ -148,8 +144,6 @@ void GameRender::renderEquippedList(player_t& player) {
 
 
 void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
-
-    surfacesManager.createNecessaryAttacks(attacks);
     for (auto it = std::begin(attacks);
          it != std::end(attacks); ++it) {
         if (it->sound == SWORD_STRIKE) {
@@ -165,13 +159,12 @@ void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
             }
         }
         window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.attackSurfacesMap[it->type][it->orientation]);
+                surfacesManager(*it));
     }
 }
 
 
 void GameRender::renderItems(std::vector<item_t> &items) {
-    surfacesManager.createNecessaryItems(items);
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
@@ -241,7 +234,6 @@ void GameRender::setTilesSize(int width,int height) {
 }
 
 void GameRender::renderList(list_t list) {
-    //if ((list.num_items == 0) && (list.gold_quantity == 0)) return;
     surfacesManager.createNecessaryListItems(list.items);
     std::vector<Surface*> surfaces;
     for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
