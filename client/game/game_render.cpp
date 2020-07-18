@@ -49,40 +49,8 @@ int GameRender::init() {
         throw SDLException(
                 "\nError al inicializar video de sdl", SDL_GetError());
     }
-    //initMusic();
     return true;
 }
-/*
-
-void GameRender::initMusic() {
-    int flags = MIX_INIT_FLAC;
-    int result = 0;
-
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-
-    if (flags != (result = Mix_Init(flags))) {
-        printf("Could not initialize mixer (result: %d).\n", result);
-        printf("Mix_Init: %s\n", Mix_GetError());
-        exit(1);
-    }
-    static const char* path_sword = "../client/resources/audio/sword.wav";
-    static const char* path_explosion = "../client/resources/audio/explosion.wav";
-    swordSound = Mix_LoadWAV(path_sword);
-    if (swordSound == NULL) {
-        std::cout << "Error: Could not load .wav file: " << path_sword << std::endl;
-    }
-    explosionSound = Mix_LoadWAV(path_explosion);
-    if (explosionSound == NULL) {
-        std::cout << "Error: Could not load .wav file: " << path_explosion << std::endl;
-    }
-    static const char* path_music = "../client/resources/audio/got.mp3";
-    music = Mix_LoadMUS(path_music);
-    if (music == NULL) {
-        std::cout << "Error: Could not load .mp3 file: " << path_music << std::endl;
-    }
-    Mix_PlayMusic(music, -1);
-}
- */
 
 void GameRender::renderPlayers(std::vector<player_t>& players) {
     for (auto it = std::begin(players);
@@ -140,12 +108,7 @@ void GameRender::renderEquippedList(player_t& player) {
 void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
     for (auto it = std::begin(attacks);
          it != std::end(attacks); ++it) {
-        if (it->sound == SWORD_STRIKE) {
-            soundManager.playSound(SWORD_STRIKE);
-        }
-        else if (it->sound == EXPLOSION) {
-            soundManager.playSound(EXPLOSION);
-        }
+        soundManager.playSound((soundType) it->sound);
         window.renderMapObject(it->pos.x, it->pos.y,
                 surfacesManager(*it));
     }

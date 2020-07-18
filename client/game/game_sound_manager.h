@@ -9,6 +9,7 @@
 #include <map>
 #include <iostream>
 #include <string>
+#include "exception.h"
 
 
 class GameSoundManager {
@@ -19,7 +20,7 @@ class GameSoundManager {
 public:
     GameSoundManager();
     ~GameSoundManager();
-    void playSound(soundType sound);
+    void playSound(soundType type);
 };
 
 
