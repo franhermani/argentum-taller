@@ -47,48 +47,17 @@ Surface* GameSurfacesManager::getTextSurface(std::string text) {
 }
 
 
-void GameSurfacesManager::createNecessaryEquipped(
-        std::vector<player_t>& players) {
+Surface* GameSurfacesManager::getEquipped(
+        int weapon, int orientation) {
     //TODO hacer una funcion qeu te diga si una claave esta en el diccionario para no repetir
-
-    //REFACTOR ACA URGENTE EHHH que es eso de chequear no item equipped en esto
-    // Y AL MISmo tiempo chequearlo en gamerender
-    for (auto& player: players) {
-        int orientation = player.orientation;
-        int weapon = player.weapon;
-        if (weapon != NO_ITEM_EQUIPPED && (equippedWeaponSurfacesMap[weapon].find(orientation)
-            == equippedWeaponSurfacesMap[weapon].end())) {
-            if (equippedWeaponSurfacesPaths[weapon].find(orientation)
-                == equippedWeaponSurfacesPaths[weapon].end()) {
-                continue;
-            }
+    if (equippedWeaponSurfacesMap[weapon].find(orientation)
+            == equippedWeaponSurfacesMap[weapon].end()) {
             Surface* surface = new Surface(
                     equippedWeaponSurfacesPaths[weapon][orientation], window, 1);
             equippedWeaponSurfacesMap[weapon].insert({orientation, surface});
-        }
-        int armor = player.armor;
-        if (armor != NO_ITEM_EQUIPPED && (equippedWeaponSurfacesMap[armor].find(orientation)
-                                          == equippedWeaponSurfacesMap[armor].end())) {
-            if (equippedWeaponSurfacesPaths[armor].find(orientation)
-                == equippedWeaponSurfacesPaths[armor].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    equippedWeaponSurfacesPaths[armor][orientation], window, 1);
-            equippedWeaponSurfacesMap[armor].insert({orientation, surface});
-        }
-        int shield = player.shield;
-        if (shield != NO_ITEM_EQUIPPED && (equippedWeaponSurfacesMap[shield].find(orientation)
-            == equippedWeaponSurfacesMap[shield].end())) {
-            if (equippedWeaponSurfacesPaths[shield].find(orientation)
-                == equippedWeaponSurfacesPaths[shield].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    equippedWeaponSurfacesPaths[shield][orientation], window, 1);
-            equippedWeaponSurfacesMap[shield].insert({orientation, surface});
-        }
+            return surface;
     }
+    return equippedWeaponSurfacesMap[weapon][orientation];
 }
 
 void GameSurfacesManager::createNecessaryFrameItems(

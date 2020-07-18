@@ -51,7 +51,7 @@ class GameSurfacesManager {
     // inicializadores lazy de surfaces
     void createNecessaryListItems(std::vector<list_item_t> items);
     void createNecessaryFrameItems(std::vector<uint8_t>& items);
-    void createNecessaryEquipped(std::vector<player_t>& players);
+    Surface* getEquipped(int weapon, int orientation);
 
 
 public:

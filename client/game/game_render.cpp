@@ -195,23 +195,21 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
 }
 
 void GameRender::renderEquipped(std::vector<player_t>& players) {
-    // todo el create necesary no deberia ser para cada uno?
     //sino podemos crear algo par aun fantasma. osea al pedo
-    surfacesManager.createNecessaryEquipped(players);
+    //TODO PASAR GETTER A OPERATOR
+    //ADEMAS NO SOLO GETTEA SINO QUE CREA SI NO EXISTE
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
-
-        //TRY CATCH A   CA
         if (it->state == STATE_GHOST) continue;
         if (it->armor != NO_ITEM_EQUIPPED)
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.equippedWeaponSurfacesMap[it->armor][it->orientation]);
+                               surfacesManager.getEquipped(it->armor, it->orientation));
         if (it->shield != NO_ITEM_EQUIPPED)
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.equippedWeaponSurfacesMap[it->shield][it->orientation]);
+                               surfacesManager.getEquipped(it->shield, it->orientation));
         if (it->weapon != NO_ITEM_EQUIPPED)
             window.renderMapObject(it->pos.x, it->pos.y,
-                                   surfacesManager.equippedWeaponSurfacesMap[it->weapon][it->orientation]);
+                                   surfacesManager.getEquipped(it->weapon, it->orientation));
 
     }
 }
