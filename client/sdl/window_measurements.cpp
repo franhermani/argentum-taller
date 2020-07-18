@@ -14,12 +14,10 @@ void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
     screenHeight = receivedScreenHeight;
     frame = {screenWidth / 50, (screenWidth / 4) * 3,
              screenHeight / 5, (screenHeight / 100) * 99};
-
     xWidthTileSize = (frame.x_pixel_end - frame.x_pixel_begin) /
             numberOfTilesInWidth;
     yHeightTileSize = (frame.y_pixel_end - frame.y_pixel_begin) /
             numberOfTilesInHeight;
-
     initializeItemInfo(screenWidth, screenHeight);
     initializePlayerInfo(screenWidth, screenHeight);
     initializeStaticAreas();
@@ -30,7 +28,6 @@ void WindowMeasurements::updateResolution(int width, int height) {
 }
 
 void WindowMeasurements::initializeStaticAreas() {
-    //TODO ver si frame sigue teniendo sentido que exista
     worldStaticRect.x = frame.x_pixel_begin;
     worldStaticRect.y = frame.y_pixel_begin;
     worldStaticRect.w = frame.x_pixel_end - frame.x_pixel_begin;
@@ -104,18 +101,10 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
     inventory = {(screenWidth / 100) * 84, (screenWidth / 100) * 102,
                  screenHeight / 4, (screenHeight /100) * 64};
 
-    /*TODO ESTO AHORA VA A SER LA POSICION DE LAS EXCEPCIONES
-    exceptions = {(int) (screenWidth / 100.0) * 85,
-                      (int) (screenWidth / 100.0) * 89,
-                     (int) ((screenHeight / 100.0) * 95),
-                     (int) ((screenHeight /100.0) * 99)};
-*/
-
     inventoryGold = {(int) ((screenWidth / 100.0) * 93),
                 (int) ((screenWidth / 100.0) * 98.0),
                 (int) ((screenHeight / 100.0) * 74.2),
                 (int) ((screenHeight /100.0) * 78)};
-
 
     list = {(int) (screenWidth / 100.0) * 44,
             (int) (screenWidth / 100.0) * 74,

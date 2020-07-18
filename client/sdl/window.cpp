@@ -146,8 +146,7 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
             INVENTORY_MAX_TILES_HEIGHT;
     x = inventory_area.x_pixel_begin;
     y = inventory_area.y_pixel_begin;
-    int surfaces_size = inventory.size();
-    int current_index = 0;
+    int surfaces_size = inventory.size(), current_index = 0;
     while (current_index < surfaces_size) {
         SDL_Rect stretchRect;
         stretchRect.x = x;

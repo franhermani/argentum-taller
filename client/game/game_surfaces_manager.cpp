@@ -499,15 +499,12 @@ void GameSurfacesManager::loadPlayerPaths() {
                         {RIGHT, new Surface("../client/resources/images/ghost_right_t.png", window, 1)}
 
     };
-    // todo fixear esto
     std::map<int, Surface*> reviveSurfacesMap = {{UP,    new Surface("../client/resources/images/reviving_up_t.png", window, 1)},
                                                 {DOWN,  new Surface("../client/resources/images/reviving_down_t.png", window, 1)},
                                                 {LEFT,  new Surface("../client/resources/images/reviving_left_t.png", window, 1)},
                                                 {RIGHT, new Surface("../client/resources/images/reviving_right_t.png", window, 1)}
 
     };
-    //TODO FIXEAR MISMA RUTA
-
     std::map<int, Surface*> meditateSurfacesMap = {{UP,    new Surface("../client/resources/images/meditating_up_t.png", window, 1)},
                                                  {DOWN,  new Surface("../client/resources/images/meditating_down_t.png", window, 1)},
                                                  {LEFT,  new Surface("../client/resources/images/meditating_left_t.png", window, 1)},
@@ -520,7 +517,6 @@ void GameSurfacesManager::loadPlayerPaths() {
                                                    {RIGHT, new Surface("../client/resources/images/dying_creature_right_t.png", window, 1)}
 
     };
-
     stateSurfacesMap = {
             {STATE_GHOST, ghostSurfacesMap},
             {STATE_REVIVING, reviveSurfacesMap},
