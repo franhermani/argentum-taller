@@ -52,6 +52,75 @@ Surface* GameSurfacesManager::operator()(std::string text) {
 }
 
 
+
+Surface* GameSurfacesManager::operator()(stateType state, int orientation) {
+    //todo si hacer el create if necessary
+    return stateSurfacesMap[state][orientation];
+}
+Surface* GameSurfacesManager::operator()(attack_t& attack) {
+    int type = attack.type;
+    int orientation = attack.orientation;
+    if (attackSurfacesMap[type].find(orientation)
+        == attackSurfacesMap[type].end()) {
+        Surface* surface = new Surface(
+                attackSurfacesPaths[type][orientation], window, 1);
+        attackSurfacesMap[type].insert({orientation, surface});
+        return surface;
+    }
+    else return attackSurfacesMap[type][orientation];
+}
+Surface* GameSurfacesManager::operator()(npc_t& npc) {
+    int type = npc.type;
+    int orientation = npc.orientation;
+    if (npcSurfacesMap[type].find(orientation)
+        == npcSurfacesMap[type].end()) {
+        Surface* surface = new Surface(
+                npcSurfacesPaths[type][orientation], window, 1);
+        npcSurfacesMap[type].insert({orientation, surface});
+        return surface;
+    }
+    else return npcSurfacesMap[type][orientation];
+}
+
+Surface* GameSurfacesManager::operator()(creature_t& creature) {
+    int type = creature.type;
+    int orientation = creature.orientation;
+    if (creatureSurfacesMap[type].find(orientation)
+        == creatureSurfacesMap[type].end()) {
+        Surface* surface = new Surface(
+                creatureSurfacesPaths[type][orientation], window, 1);
+        creatureSurfacesMap[type].insert({orientation, surface});
+        return surface;
+    }
+    else return creatureSurfacesMap[type][orientation];
+}
+
+
+Surface* GameSurfacesManager::operator()(player_t& player) {
+    int race = player.race_type;
+    int orientation = player.orientation;
+    if (playerSurfacesMap[race].find(orientation)
+        == playerSurfacesMap[race].end()) {
+        Surface* surface = new Surface(
+                playerSurfacesPaths[race][orientation], window, 1);
+        playerSurfacesMap[race].insert({orientation, surface});
+        return surface;
+    }
+    else return playerSurfacesMap[race][orientation];
+}
+
+
+Surface* GameSurfacesManager::operator()(int item_type) {
+    if (itemSurfacesMap.find(item_type)
+        == itemSurfacesMap.end()) {
+        Surface* surface = new Surface(
+                itemSurfacesPaths[item_type], window, 1);
+        itemSurfacesMap.insert({item_type, surface});
+        return surface;
+    } else return itemSurfacesMap[item_type];
+}
+
+
 Surface* GameSurfacesManager::getEquipped(
         int weapon, int orientation) {
     //TODO hacer una funcion qeu te diga si una claave esta en el diccionario para no repetir
@@ -293,75 +362,6 @@ void GameSurfacesManager::loadNpcPaths() {
     };
 }
 
-
-
-
-Surface* GameSurfacesManager::operator()(stateType state, int orientation) {
-    //todo si hacer el create if necessary
-    return stateSurfacesMap[state][orientation];
-}
-Surface* GameSurfacesManager::operator()(attack_t& attack) {
-    int type = attack.type;
-    int orientation = attack.orientation;
-    if (attackSurfacesMap[type].find(orientation)
-        == attackSurfacesMap[type].end()) {
-        Surface* surface = new Surface(
-                attackSurfacesPaths[type][orientation], window, 1);
-        attackSurfacesMap[type].insert({orientation, surface});
-        return surface;
-    }
-    else return attackSurfacesMap[type][orientation];
-}
-Surface* GameSurfacesManager::operator()(npc_t& npc) {
-    int type = npc.type;
-    int orientation = npc.orientation;
-    if (npcSurfacesMap[type].find(orientation)
-        == npcSurfacesMap[type].end()) {
-        Surface* surface = new Surface(
-                npcSurfacesPaths[type][orientation], window, 1);
-        npcSurfacesMap[type].insert({orientation, surface});
-        return surface;
-    }
-    else return npcSurfacesMap[type][orientation];
-}
-
-Surface* GameSurfacesManager::operator()(creature_t& creature) {
-    int type = creature.type;
-    int orientation = creature.orientation;
-    if (creatureSurfacesMap[type].find(orientation)
-        == creatureSurfacesMap[type].end()) {
-        Surface* surface = new Surface(
-                creatureSurfacesPaths[type][orientation], window, 1);
-        creatureSurfacesMap[type].insert({orientation, surface});
-        return surface;
-    }
-    else return creatureSurfacesMap[type][orientation];
-}
-
-
-Surface* GameSurfacesManager::operator()(player_t& player) {
-    int race = player.race_type;
-    int orientation = player.orientation;
-    if (playerSurfacesMap[race].find(orientation)
-        == playerSurfacesMap[race].end()) {
-        Surface* surface = new Surface(
-                playerSurfacesPaths[race][orientation], window, 1);
-        playerSurfacesMap[race].insert({orientation, surface});
-        return surface;
-    }
-    else return playerSurfacesMap[race][orientation];
-}
-
-
-Surface* GameSurfacesManager::operator()(int item_type) {
-    if (itemSurfacesMap.find(item_type)
-        == itemSurfacesMap.end()) {
-        Surface* surface = new Surface(
-                itemSurfacesPaths[item_type], window, 1);
-        itemSurfacesMap.insert({item_type, surface});
-        return surface;
-    } else return itemSurfacesMap[item_type];
-}
 
 
 void GameSurfacesManager::loadAttackPaths() {
