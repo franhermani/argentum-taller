@@ -7,6 +7,7 @@
 #include "../../common/defines/commands.h"
 #include "../../common/thread.h"
 #include "../../common/defines/npcs.h"
+#include "../../common/defines/states.h"
 #include "../../common/defines/world_structs.h"
 #include "../sdl/surface.h"
 #include "../sdl/window.h"
@@ -15,11 +16,12 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
-    std::map<int, std::map<int, Surface *>> stateSurfacesMap;
+    std::map<stateType, std::map<int, Surface *>> stateSurfacesMap;
     std::map<int, std::map<int, Surface *>> attackSurfacesMap;
     std::map<int, std::map<int, Surface *>> equippedWeaponSurfacesMap;
     std::map<int, Surface *> itemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
+    std::vector<Surface*> textSurfaces;
     Surface* goldSurface;
     Surface* gameFrameSurface;
     Surface* worldSurface;
@@ -30,8 +32,6 @@ class GameSurfacesManager {
     std::map<int, std::map<int, std::string>> attackSurfacesPaths;
     std::map<int, std::string> itemSurfacesPaths;
     SDLWindow& window;
-
-    Surface* getTextSurface(std::string text);
 
     friend class GameRender;
 
@@ -49,14 +49,8 @@ class GameSurfacesManager {
     void createFrameSurfaces();
 
     // inicializadores lazy de surfaces
-    void createNecessaryPlayers(std::vector<player_t>& players);
-    void createNecessaryNpcs(std::vector<npc_t>& npcs);
-    void createNecessaryCreatures(std::vector<creature_t>& creatures);
-    void createNecessaryItems(std::vector<item_t>& items);
-    void createNecessaryListItems(std::vector<list_item_t> items);
     void createNecessaryFrameItems(std::vector<uint8_t>& items);
-    void createNecessaryEquipped(std::vector<player_t>& players);
-    void createNecessaryAttacks(std::vector<attack_t>& attacks);
+    Surface* getEquipped(int weapon, int orientation);
 
 
 public:
@@ -65,10 +59,18 @@ public:
 
     //Destructor
     ~GameSurfacesManager();
-
     // Constructor y asignacion por copia deshabilitados
     GameSurfacesManager(const GameSurfacesManager& other) = delete;
     GameSurfacesManager& operator=(const GameSurfacesManager& other) = delete;
+    Surface* operator()(player_t& player);
+    Surface* operator()(int item_type);
+    Surface* operator()(stateType state, int orientation);
+    Surface* operator()(attack_t& attack);
+    Surface* operator()(creature_t& creature);
+    Surface* operator()(npc_t& npc);
+    Surface* operator()(std::string str);
+    std::vector<Surface*> operator()(std::vector<list_item_t> items);
+
 };
 
 

@@ -19,7 +19,6 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
-    //todo aca chequeo de excepciones
     if (TTF_Init() < 0) {
         throw SDLException("\nNo se pudo inicializar ttf", SDL_GetError());
     }
@@ -71,41 +70,6 @@ void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
         >= frame_area.y_pixel_end)) return;
     SDL_BlitScaled(character_surface->getRenderableSurface(), NULL,
             getSurface(), &stretchRect);
-}
-
-void SDLWindow::renderEquipped(player_t& player,
-                              std::map<int, Surface*>& surfaces_map) {
-    game_area_t& equipped_area = measurements.equipped;
-    int equipped_width = (equipped_area.x_pixel_end -
-            equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
-    SDL_Rect stretchRect;
-    stretchRect.x = equipped_area.x_pixel_begin;
-    stretchRect.y = equipped_area.y_pixel_begin;
-    stretchRect.w = equipped_width;
-    stretchRect.h = equipped_area.y_pixel_end-equipped_area.y_pixel_begin;
-    //weapon
-    if (player.weapon != NO_ITEM_EQUIPPED)
-    SDL_BlitScaled(surfaces_map.at(player.weapon)->
-                           getRenderableSurface(), NULL,
-                   getSurface(), &stretchRect);
-    //armor
-    stretchRect.x = stretchRect.x + equipped_width;
-    if (player.armor != NO_ITEM_EQUIPPED)
-    SDL_BlitScaled(surfaces_map.at(player.armor)->
-                           getRenderableSurface(), NULL,
-                   getSurface(), &stretchRect);
-    //helmet
-    stretchRect.x = stretchRect.x + equipped_width;
-    if (player.helmet != NO_ITEM_EQUIPPED)
-    SDL_BlitScaled(surfaces_map.at(player.helmet)->
-                           getRenderableSurface(), NULL,
-                   getSurface(), &stretchRect);
-    //shield
-    stretchRect.x = stretchRect.x + equipped_width;
-    if (player.shield != NO_ITEM_EQUIPPED)
-    SDL_BlitScaled(surfaces_map.at(player.shield)->
-                           getRenderableSurface(), NULL,
-                   getSurface(), &stretchRect);
 }
 
 int SDLWindow::getXPixelPos(int x_tile_position) {
@@ -247,6 +211,42 @@ void SDLWindow::renderMana(std::map<int, float>& player_info,
                    getSurface(), &stretchRect);
 }
 
+
+void SDLWindow::renderEquipped(player_t& player,
+                               std::map<int, Surface*>& surfaces_map) {
+    game_area_t& equipped_area = measurements.equipped;
+    int equipped_width = (equipped_area.x_pixel_end -
+                          equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
+    SDL_Rect stretchRect;
+    stretchRect.x = equipped_area.x_pixel_begin;
+    stretchRect.y = equipped_area.y_pixel_begin;
+    stretchRect.w = equipped_width;
+    stretchRect.h = equipped_area.y_pixel_end-equipped_area.y_pixel_begin;
+    //weapon
+    if (surfaces_map.find(player.weapon) != surfaces_map.end())
+        SDL_BlitScaled(surfaces_map.at(player.weapon)->
+                               getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+    //armor
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (surfaces_map.find(player.armor) != surfaces_map.end())
+        SDL_BlitScaled(surfaces_map.at(player.armor)->
+                               getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+    //helmet
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (surfaces_map.find(player.helmet) != surfaces_map.end())
+        SDL_BlitScaled(surfaces_map.at(player.helmet)->
+                               getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+    //shield
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (surfaces_map.find(player.shield) != surfaces_map.end())
+        SDL_BlitScaled(surfaces_map.at(player.shield)->
+                               getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+}
+
 void SDLWindow::renderExperience(std::map<int, float>& player_info,
                            std::map<int, Surface *> info_surfaces_map) {
     SDL_Rect stretchRect;
@@ -277,17 +277,6 @@ void SDLWindow::renderLevel(Surface* level_surface) {
                    getSurface(), &measurements.levelStaticRect);
 }
 
-void SDLWindow::renderText(Surface* surface) {
-        SDL_Rect Message_rect; //create a rect
-    Message_rect.x = 300;  //controls the rect's x coordinate
-    Message_rect.y = 300; // controls the rect's y coordinte
-    Message_rect.w = 120; // controls the width of the rect
-    Message_rect.h = 120; // controls the height of the rect
-
-    SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &Message_rect);
-    //todo el free se hace aca?
-}
 
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
         std::map<int, Surface *> info_surfaces_map,

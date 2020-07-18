@@ -95,7 +95,6 @@ public:
     void renderListPrices(std::vector<Surface*>& surfaces);
     void renderListGold(Surface* surface, Surface* quantity);
     void renderInventoryGolds(Surface* surface, Surface* quantity);
-    void renderText(Surface* surface);
     void renderLevel(Surface* level_surface);
     void renderWorld(Surface* surface, position_t positon,
                      int dimensions_width, int dimensions_height);
