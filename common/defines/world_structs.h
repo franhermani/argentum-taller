@@ -27,6 +27,7 @@ typedef struct {
 
 typedef struct {
     position_t pos;             // Posicion (x,y) en la matriz
+    position_t granular_pos;    // Posicion granular (x,y)
     uint8_t orientation;        // Enum type de la orietntacion
     uint8_t type;               // Enum type del tipo de ataque
     uint8_t sound;              // Enum type del sonido de ataque
@@ -45,6 +46,7 @@ typedef struct {
 
 typedef struct {
     position_t pos;             // Posicion (x,y) en la matriz
+    position_t granular_pos;    // Posicion granular (x,y)
     uint16_t actual_life;       // Vida actual
     uint16_t max_life;          // Vida maxima
     uint16_t level;             // Nivel
@@ -56,6 +58,7 @@ typedef struct {
 typedef struct {
     uint16_t id;                // Id
     position_t pos;             // Posicion (x,y) en la matriz
+    position_t granular_pos;    // Posicion granular (x,y)
     uint16_t actual_life;       // Vida actual
     uint16_t max_life;          // Vida maxima
     uint16_t level;             // Nivel

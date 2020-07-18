@@ -328,6 +328,10 @@ void Player::moveTo() {
     }
     new_pos = posConverter.granularPosToPos(new_granular_pos);
 
+    // Si sigo en el mismo bloque actualizo siempre la posicion granular
+    if (new_pos == pos)
+        granularPos = new_granular_pos;
+
     if ((world.inMapBoundaries(new_pos)) &&
         (! world.entityInCollision(new_pos))) {
         pos = new_pos;
