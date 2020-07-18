@@ -146,10 +146,10 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
             SIZE_8 + inventory_length * SIZE_8 +
 
             // player_t
-            SIZE_16 + num_players * (6 * SIZE_16 + 8 * SIZE_8) +
+            SIZE_16 + num_players * (8 * SIZE_16 + 8 * SIZE_8) +
 
             // creature_t
-            SIZE_16 + num_creatures * (5 * SIZE_16 + 3 * SIZE_8) +
+            SIZE_16 + num_creatures * (7 * SIZE_16 + 3 * SIZE_8) +
 
             // item_t
             SIZE_16 + num_items * (3 * SIZE_16) +
@@ -158,7 +158,7 @@ void ServerProtocol::sendWorldUpdate(WorldMonitor& world_monitor,
             SIZE_16 + num_golds * (3 * SIZE_16) +
 
             // attack_t
-            SIZE_16 + num_attacks * (2 * SIZE_16 + 4 * SIZE_8);
+            SIZE_16 + num_attacks * (4 * SIZE_16 + 4 * SIZE_8);
 
     // ------------------------ //
     // Carga del struct world_t //
@@ -228,6 +228,8 @@ void ServerProtocol::loadPlayers(world_t& w,
         w.players[i].id = htons(players[i]->id);
         w.players[i].pos.x = htons(players[i]->pos.x);
         w.players[i].pos.y = htons(players[i]->pos.y);
+        w.players[i].granular_pos.x = htons(players[i]->granularPos.x);
+        w.players[i].granular_pos.y = htons(players[i]->granularPos.y);
         w.players[i].actual_life = htons(players[i]->actualLife);
         w.players[i].max_life = htons(players[i]->maxLife);
         w.players[i].level = htons(players[i]->level);
@@ -256,6 +258,8 @@ void ServerProtocol::loadCreatures(world_t& w,
     for (i = 0; i < num_creatures; i ++) {
         w.creatures[i].pos.x = htons(creatures[i]->pos.x);
         w.creatures[i].pos.y = htons(creatures[i]->pos.y);
+        w.creatures[i].granular_pos.x = htons(creatures[i]->granularPos.x);
+        w.creatures[i].granular_pos.y = htons(creatures[i]->granularPos.y);
         w.creatures[i].actual_life = htons(creatures[i]->actualLife);
         w.creatures[i].max_life = htons(creatures[i]->maxLife);
         w.creatures[i].level = htons(creatures[i]->level);
@@ -303,6 +307,8 @@ void ServerProtocol::loadAttacks(world_t& w,
     for (i = 0; i < num_attacks; i ++) {
         w.attacks[i].pos.x = htons(attacks[i]->pos.x);
         w.attacks[i].pos.y = htons(attacks[i]->pos.y);
+        w.attacks[i].granular_pos.x = htons(attacks[i]->granularPos.x);
+        w.attacks[i].granular_pos.y = htons(attacks[i]->granularPos.y);
         w.attacks[i].orientation = attacks[i]->direction;
         w.attacks[i].type = attacks[i]->type;
         w.attacks[i].sound = attacks[i]->sound;
@@ -351,6 +357,10 @@ void ServerProtocol::writePlayers(std::vector<char>& byte_msg, int& pos,
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.players[i].pos.y, SIZE_16);
         pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.players[i].granular_pos.x, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.players[i].granular_pos.y, SIZE_16);
+        pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.players[i].actual_life, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.players[i].max_life, SIZE_16);
@@ -387,6 +397,10 @@ void ServerProtocol::writeCreatures(std::vector<char>& byte_msg, int& pos,
         memcpy(&byte_msg[pos], &w.creatures[i].pos.x, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.creatures[i].pos.y, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.creatures[i].granular_pos.x, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.creatures[i].granular_pos.y, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.creatures[i].actual_life, SIZE_16);
         pos += SIZE_16;
@@ -448,6 +462,10 @@ void ServerProtocol::writeAttacks(std::vector<char>& byte_msg, int& pos,
         memcpy(&byte_msg[pos], &w.attacks[i].pos.x, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.attacks[i].pos.y, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.attacks[i].granular_pos.x, SIZE_16);
+        pos += SIZE_16;
+        memcpy(&byte_msg[pos], &w.attacks[i].granular_pos.y, SIZE_16);
         pos += SIZE_16;
         memcpy(&byte_msg[pos], &w.attacks[i].orientation, SIZE_8);
         pos += SIZE_8;

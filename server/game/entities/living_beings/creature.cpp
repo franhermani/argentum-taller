@@ -7,12 +7,17 @@
 #include "../../../defines/creatures_death_drop.h"
 #include "../../../../common/defines/attacks.h"
 
+// TODO: leer esto del json
+#define BLOCK_SIZE      100
+#define BLOCK_INTERVAL  10
+
 Creature::Creature(World &world, Equations& equations,
         const int new_id, const int type, const int new_level,
         const int move_velocity, const int attack_velocity,
         const int respawn_velocity) :
 world(world),
 equations(equations),
+posConverter(BLOCK_SIZE),
 type(type),
 attackRange(1),
 moveVelocity(move_velocity),
@@ -27,6 +32,7 @@ msRespawnCounter(0) {
     actualLife = maxLife;
     state = STATE_NORMAL;
     pos = world.loadCreaturePosition();
+    granularPos = posConverter.posToGranularPos(pos);
 }
 
 Creature::~Creature() = default;

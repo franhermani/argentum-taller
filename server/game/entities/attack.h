@@ -10,6 +10,7 @@ class Attack {
     int type;
     int sound;
     position_t pos;
+    position_t granularPos;
     int direction;
     int range, blocksToRange;
     bool isColliding;

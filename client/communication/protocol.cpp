@@ -293,6 +293,18 @@ void ClientProtocol::loadPlayers(std::vector<char>& buffer, int& pos,
         player.pos.y = ntohs(pos_y);
         pos += SIZE_16;
 
+        // Pos granular x
+        uint16_t granular_pos_x;
+        memcpy(&granular_pos_x, buffer.data() + pos, SIZE_16);
+        player.granular_pos.x = ntohs(granular_pos_x);
+        pos += SIZE_16;
+
+        // Pos granular y
+        uint16_t granular_pos_y;
+        memcpy(&granular_pos_y, buffer.data() + pos, SIZE_16);
+        player.granular_pos.y = ntohs(granular_pos_y);
+        pos += SIZE_16;
+
         // Vida actual
         uint16_t actual_life;
         memcpy(&actual_life, buffer.data() + pos, SIZE_16);
@@ -390,6 +402,18 @@ void ClientProtocol::loadCreatures(std::vector<char>& buffer, int& pos,
         uint16_t pos_y;
         memcpy(&pos_y, buffer.data() + pos, SIZE_16);
         creature.pos.y = ntohs(pos_y);
+        pos += SIZE_16;
+
+        // Pos granular x
+        uint16_t granular_pos_x;
+        memcpy(&granular_pos_x, buffer.data() + pos, SIZE_16);
+        creature.granular_pos.x = ntohs(granular_pos_x);
+        pos += SIZE_16;
+
+        // Pos granular y
+        uint16_t granular_pos_y;
+        memcpy(&granular_pos_y, buffer.data() + pos, SIZE_16);
+        creature.granular_pos.y = ntohs(granular_pos_y);
         pos += SIZE_16;
 
         // Vida actual
@@ -537,6 +561,18 @@ void ClientProtocol::loadAttacks(std::vector<char>& buffer, int& pos,
         uint16_t pos_y;
         memcpy(&pos_y, buffer.data() + pos, SIZE_16);
         attack.pos.y = ntohs(pos_y);
+        pos += SIZE_16;
+
+        // Pos granular x
+        uint16_t granular_pos_x;
+        memcpy(&granular_pos_x, buffer.data() + pos, SIZE_16);
+        attack.granular_pos.x = ntohs(granular_pos_x);
+        pos += SIZE_16;
+
+        // Pos granular y
+        uint16_t granular_pos_y;
+        memcpy(&granular_pos_y, buffer.data() + pos, SIZE_16);
+        attack.granular_pos.y = ntohs(granular_pos_y);
         pos += SIZE_16;
 
         // Enum type de la orientacion

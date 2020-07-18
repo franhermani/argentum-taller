@@ -5,6 +5,7 @@
 #include <queue>
 #include "living_being.h"
 #include "../../../../common/utilities/math_calculator.h"
+#include "../../../../common/position_converter.h"
 
 class World;
 class Player;
@@ -14,6 +15,7 @@ class Creature : public LivingBeing{
     World& world;
     Equations& equations;
     Math math;
+    PositionConverter posConverter;
     int type;
     int attackRange;
     int moveVelocity, attackVelocity, respawnVelocity;
