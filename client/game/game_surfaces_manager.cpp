@@ -91,24 +91,6 @@ void GameSurfacesManager::createNecessaryEquipped(
     }
 }
 
-
-void GameSurfacesManager::createNecessaryNpcs(std::vector<npc_t>& npcs) {
-    for (auto& npc:npcs) {
-        int type = npc.type;
-        int orientation = npc.orientation;
-        if (npcSurfacesMap[type].find(orientation)
-            == npcSurfacesMap[type].end()) {
-            if (npcSurfacesPaths[type].find(orientation)
-                == npcSurfacesPaths[type].end()) {
-                continue;
-            }
-            Surface* surface = new Surface(
-                    npcSurfacesPaths[type][orientation], window, 1);
-            npcSurfacesMap[type].insert({orientation, surface});
-        }
-    }
-}
-
 void GameSurfacesManager::createNecessaryFrameItems(
         std::vector<uint8_t>& items) {
     for (auto& type: items) {
@@ -355,6 +337,18 @@ Surface* GameSurfacesManager::operator()(attack_t& attack) {
         return surface;
     }
     else return attackSurfacesMap[type][orientation];
+}
+Surface* GameSurfacesManager::operator()(npc_t& npc) {
+    int type = npc.type;
+    int orientation = npc.orientation;
+    if (npcSurfacesMap[type].find(orientation)
+        == npcSurfacesMap[type].end()) {
+        Surface* surface = new Surface(
+                npcSurfacesPaths[type][orientation], window, 1);
+        npcSurfacesMap[type].insert({orientation, surface});
+        return surface;
+    }
+    else return npcSurfacesMap[type][orientation];
 }
 
 Surface* GameSurfacesManager::operator()(creature_t& creature) {

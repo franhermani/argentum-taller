@@ -49,7 +49,6 @@ class GameSurfacesManager {
     void createFrameSurfaces();
 
     // inicializadores lazy de surfaces
-    void createNecessaryNpcs(std::vector<npc_t>& npcs);
     void createNecessaryListItems(std::vector<list_item_t> items);
     void createNecessaryFrameItems(std::vector<uint8_t>& items);
     void createNecessaryEquipped(std::vector<player_t>& players);
@@ -69,6 +68,7 @@ public:
     Surface* operator()(int state, int orientation);
     Surface* operator()(attack_t& attack);
     Surface* operator()(creature_t& creature);
+    Surface* operator()(npc_t& npc);
 };
 
 

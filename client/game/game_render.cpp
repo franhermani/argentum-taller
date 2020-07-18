@@ -126,11 +126,10 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
 
 
 void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
-    surfacesManager.createNecessaryNpcs(npcs);
     for (auto it = std::begin(npcs);
          it != std::end(npcs); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.npcSurfacesMap[it->type][it->orientation]);
+                surfacesManager(*it));
     }
 }
 
