@@ -241,12 +241,26 @@ void GameInputHandler::waitForLeftClick(int& x, int& y) {
             SDL_GetMouseState(&x, &y);
             return;
         }
+        if (isMoveKey(event)) {
+            throw CommandCreationException("Comando cancelado por "
+                                           "tecla de movimiento");
+        }
+
     }
 }
 
 int GameInputHandler::isLeftClick(SDL_Event& event) {
     return ((event.type == SDL_MOUSEBUTTONDOWN) &&
             (event.button.button == SDL_BUTTON_LEFT));
+}
+
+int GameInputHandler::isMoveKey(SDL_Event& event) {
+    auto &keyEvent = (SDL_KeyboardEvent &) event;
+    int key = keyEvent.keysym.sym;
+    if ((event.type == SDL_KEYDOWN) & ((key == SDLK_DOWN)
+    || (key == SDLK_UP) || (key == SDLK_LEFT) || (key == SDLK_RIGHT)))
+        return true;
+    return false;
 }
 
 void GameInputHandler::run() {

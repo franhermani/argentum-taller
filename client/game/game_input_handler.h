@@ -14,7 +14,7 @@ class GameInputHandler {
     GameRender *gameRender;
 
     int isLeftClick(SDL_Event &event);
-
+    int isMoveKey(SDL_Event& event);
     void waitForLeftClick(int &x, int &y);
 
 
