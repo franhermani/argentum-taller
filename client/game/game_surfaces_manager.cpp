@@ -425,6 +425,12 @@ void GameSurfacesManager::loadAttackPaths() {
             {RIGHT, "../client/resources/images/single_arrow_right_t.png"}
     };
     std::map<int, std::string> melee_orientations = {
+            {UP, "../client/resources/images/melee_attack_t_small.png"},
+            {DOWN, "../client/resources/images/melee_attack_t_small.png"},
+            {LEFT, "../client/resources/images/melee_attack_t_small.png"},
+            {RIGHT, "../client/resources/images/melee_attack_t_small.png"}
+    };
+    std::map<int, std::string> no_weapon_melee_orientations = {
             {UP, "../client/resources/images/hit_effect_2_small_t.png"},
             {DOWN, "../client/resources/images/hit_effect_2_small_t.png"},
             {LEFT, "../client/resources/images/hit_effect_2_small_t.png"},
@@ -455,6 +461,7 @@ void GameSurfacesManager::loadAttackPaths() {
             {MULTIPLE_ARROW, multiple_arrow_orientations},
             {SINGLE_ARROW, single_arrow_orientations},
             {MELEE, melee_orientations},
+            {NO_WEAPON_MELEE, no_weapon_melee_orientations},
             {MAGIC_ARROW_SPELL, magic_arrow_orientations},
             {HEAL_SPELL, heal_spell_orientations},
             {MISSILE_SPELL, missile_orientations},
@@ -467,13 +474,15 @@ void GameSurfacesManager::loadAttackPaths() {
     std::map<int, Surface*> explosion_spell_surfaces;
     std::map<int, Surface*> heal_spell_surfaces;
     std::map<int, Surface*> melee_surfaces;
+    std::map<int, Surface*> no_weapon_melee_surfaces;
     attackSurfacesMap = {{MULTIPLE_ARROW, multiple_arrow_surfaces},
                          {SINGLE_ARROW,   single_arrow_surfaces},
                          {MELEE, melee_surfaces},
                          {MAGIC_ARROW_SPELL, magic_arrow_surfaces},
                          {HEAL_SPELL, heal_spell_surfaces},
                          {MISSILE_SPELL, missile_surfaces},
-                         {EXPLOSION_SPELL, explosion_spell_surfaces}
+                         {EXPLOSION_SPELL, explosion_spell_surfaces},
+                         {NO_WEAPON_MELEE, no_weapon_melee_surfaces}
     };
 }
 
