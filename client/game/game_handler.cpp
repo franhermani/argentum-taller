@@ -5,7 +5,7 @@
 #include "game_handler.h"
 #include "exception.h"
 #include "../sdl/exception.h"
-#include "../../common/defines/username_confirmation.h"
+#include "../../common/defines/username_codes.h"
 
 
 GameHandler::GameHandler(const char *host, const char *port,

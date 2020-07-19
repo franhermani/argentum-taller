@@ -20,7 +20,7 @@ public:
     // Destructor
     ~ListCommand() override;
 
-    // Lista los objetos del comerciante o banquero segun su 'npcId'
+    // Lista los objetos del comerciante o banquero
     void execute(World& world) override;
 };
 

@@ -19,7 +19,7 @@ public:
     // Destructor
     ~EquipCommand() override;
 
-    // Toma un objeto del inventario y lo equipa
+    // Toma un item del inventario y lo equipa
     void execute(World& world) override;
 };
 

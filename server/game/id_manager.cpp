@@ -1,7 +1,7 @@
 #include <string>
 #include <climits>
 #include "id_manager.h"
-#include "../../common/defines/username_confirmation.h"
+#include "../../common/defines/username_codes.h"
 
 IdManager::IdManager() : actual_player_id(1), actual_creature_id(1) {}
 

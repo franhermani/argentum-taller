@@ -123,6 +123,7 @@ Command* CommandFactory::operator()(Player& player, int type,
     } else if (type == CMD_EQUIP) {
         int item_type = arguments[0];
         return new EquipCommand(player, item_type);
+
     } else if (type == CMD_UNEQUIP) {
         int unequip_type = arguments[0];
         return new UnequipCommand(player, unequip_type);

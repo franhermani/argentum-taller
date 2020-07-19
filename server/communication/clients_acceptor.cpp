@@ -1,8 +1,7 @@
-#include <vector>
 #include <utility>
 #include "clients_acceptor.h"
 #include "../../common/socket_accept_error.h"
-#include "../../common/defines/username_confirmation.h"
+#include "../../common/defines/username_codes.h"
 
 ClientsAcceptor::ClientsAcceptor(const char *host, const char *port,
         GameManager& game_manager) : socket(host, port, true),

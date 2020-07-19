@@ -24,6 +24,7 @@ public:
     // Obtiene el mapa generado por Tiled en formato json
     const json getWorldParams(File& file);
 
+    // Obtiene la resolucion de la pantalla
     const json getResolution(File& file);
 
 };

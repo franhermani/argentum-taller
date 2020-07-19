@@ -22,7 +22,8 @@ class Creature : public LivingBeing{
     // Setea 'isAlive' en false
     void die() override;
 
-    // Reaparece en una nueva posicion aleatoria luego de morir
+    // Reaparece en una nueva posicion aleatoria dentro del cementerio
+    // luego de morir
     void respawn();
 
     // Dropea un item u oro de forma aleatorio

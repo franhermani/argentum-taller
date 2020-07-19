@@ -19,7 +19,7 @@ public:
     // Destructor
     ~ThrowCommand() override;
 
-    // Toma un objeto del inventario y lo tira al piso
+    // Toma un item del inventario y lo tira al piso
     void execute(World& world) override;
 };
 

@@ -1,7 +1,6 @@
 #ifndef CLIENTS_CLEANER_H
 #define CLIENTS_CLEANER_H
 
-#include <vector>
 #include "../../common/thread.h"
 #include "clients_blocking_vector.h"
 

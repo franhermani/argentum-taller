@@ -4,7 +4,7 @@
 #include "client_handler.h"
 #include "communication/clients_blocking_vector.h"
 #include "game/id_manager.h"
-#include "../common/defines/username_confirmation.h"
+#include "../common/defines/username_codes.h"
 
 #define COMMUNICATION_WAIT_TIME 1000
 
