@@ -9,14 +9,15 @@
 #include "../game/map_monitor.h"
 #include "../game/game_render.h"
 
-
+class GameInputHandler;
 
 class CommandDTOManager {
     MapMonitor &mapMonitor;
-    GameRender *gameRender;
+    GameRender* gameRender;
+    GameInputHandler& inputHandler;
 public:
     // Constructor
-    CommandDTOManager(MapMonitor &mapMonitor, GameRender* gameRender);
+    CommandDTOManager(MapMonitor &mapMonitor, GameRender* gameRender, GameInputHandler& inputHandler);
 
 
     // Destrutor
@@ -28,11 +29,6 @@ public:
 
     // Recibe un evento ingresado por input
     CommandDTO* operator()(int key);
-
-
-    int isLeftClick(SDL_Event &event);
-    int isMoveKey(SDL_Event& event);
-    void waitForLeftClick(int &x, int &y);
 
     CommandDTO* handleEquip();
     CommandDTO* handleUnequip();

@@ -15,12 +15,14 @@
 #include "../data_transfer_objects/attack_command_dto.h"
 #include "../data_transfer_objects/sell_item_command_dto.h"
 #include "../data_transfer_objects/buy_item_command_dto.h"
+#include "../game/game_input_handler.h"
 
 
 
 CommandDTOManager::CommandDTOManager(MapMonitor &mapMonitor,
-        GameRender* gameRender):mapMonitor(mapMonitor),
-        gameRender(gameRender) {}
+        GameRender* gameRender, GameInputHandler& inputHandler)
+        :mapMonitor(mapMonitor), gameRender(gameRender),
+        inputHandler(inputHandler){}
 
 CommandDTOManager::~CommandDTOManager() {}
 
@@ -83,7 +85,7 @@ CommandDTO* CommandDTOManager::handleMove(moveDirection direction){
 
 CommandDTO* CommandDTOManager::handleBuy() {
     int x,y;
-    waitForLeftClick(x, y);
+    inputHandler.waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
     if (gameRender->isClickingListItems(x, y)) {
         return new BuyItemCommandDTO(gameRender->
@@ -104,7 +106,7 @@ CommandDTO* CommandDTOManager::handleMeditate() {
 
 CommandDTO* CommandDTOManager::handleSell() {
     int x,y;
-    waitForLeftClick(x, y);
+    inputHandler.waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
     if (gameRender->isClickingInventoryItems(x, y))
         return new SellItemCommandDTO(
@@ -118,7 +120,7 @@ CommandDTO* CommandDTOManager::handleSell() {
 
 CommandDTO* CommandDTOManager::handleWithdraw() {
     int x,y;
-    waitForLeftClick(x, y);
+    inputHandler.waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
     if (gameRender->isClickingListItems(x, y))
         return new WithdrawItemCommandDTO(gameRender->
@@ -133,7 +135,7 @@ CommandDTO* CommandDTOManager::handleWithdraw() {
 
 CommandDTO* CommandDTOManager::handleDeposit() {
     int x,y;
-    waitForLeftClick(x, y);
+    inputHandler.waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
     if (gameRender->isClickingInventoryItems(x, y))
         return new DepositItemCommandDTO(gameRender->
@@ -159,7 +161,7 @@ CommandDTO* CommandDTOManager::handleRevive() {
 
 CommandDTO* CommandDTOManager::handleThrow() {
     int x,y;
-    waitForLeftClick(x, y);
+    inputHandler.waitForLeftClick(x, y);
     return new ThrowCommandDTO(
             gameRender->getInventoryItemByPosition(x, y));
 }
@@ -191,44 +193,17 @@ CommandDTO* CommandDTOManager::handleHeal() {
 
 CommandDTO* CommandDTOManager::handleEquip() {
     int x,y;
-    waitForLeftClick(x, y);
+    inputHandler.waitForLeftClick(x, y);
     return new EquipCommandDTO(
             gameRender->getInventoryItemByPosition(x, y));
 }
 
 CommandDTO* CommandDTOManager::handleUnequip() {
     int x,y;
-    waitForLeftClick(x, y);
+    inputHandler.waitForLeftClick(x, y);
     return new UnequipCommandDTO(
             gameRender->getEquippedTypeByPosition(x, y));
 }
 
-void CommandDTOManager::waitForLeftClick(int& x, int& y) {
-    SDL_Event event;
-    while (true) {
-        SDL_WaitEvent(&event);
-        if (isLeftClick(event)) {
-            SDL_GetMouseState(&x, &y);
-            return;
-        }
-        if (isMoveKey(event)) {
-            throw CommandCreationException("Comando cancelado por "
-                                           "tecla de movimiento");
-        }
 
-    }
-}
 
-int CommandDTOManager::isLeftClick(SDL_Event& event) {
-    return ((event.type == SDL_MOUSEBUTTONDOWN) &&
-            (event.button.button == SDL_BUTTON_LEFT));
-}
-
-int CommandDTOManager::isMoveKey(SDL_Event& event) {
-    auto &keyEvent = (SDL_KeyboardEvent &) event;
-    int key = keyEvent.keysym.sym;
-    if ((event.type == SDL_KEYDOWN) & ((key == SDLK_DOWN)
-                                       || (key == SDLK_UP) || (key == SDLK_LEFT) || (key == SDLK_RIGHT)))
-        return true;
-    return false;
-}
