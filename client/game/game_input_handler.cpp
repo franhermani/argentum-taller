@@ -38,17 +38,13 @@ void GameInputHandler::play() {
                 int key = keyEvent.keysym.sym;
                 try {
                     if (key == SDLK_LEFT) {
-                        mapMonitor.uninteract();
-                        command = new MoveCommandDTO(LEFT);
+                        command = handleMove(LEFT);
                     } else if (key == SDLK_RIGHT) {
-                        mapMonitor.uninteract();
-                        command = new MoveCommandDTO(RIGHT);
+                        command = handleMove(RIGHT);
                     } else if (key == SDLK_UP) {
-                        mapMonitor.uninteract();
-                        command = new MoveCommandDTO(UP);
+                        command = handleMove(UP);
                     } else if (key == SDLK_DOWN) {
-                        mapMonitor.uninteract();
-                        command = new MoveCommandDTO(DOWN);
+                        command = handleMove(DOWN);
                     } else if (key == SDLK_F12) {
                         gameRender->toggleFullscreen();
                         continue;
@@ -108,6 +104,11 @@ void GameInputHandler::play() {
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
+}
+
+CommandDTO* GameInputHandler::handleMove(moveDirection direction){
+    mapMonitor.uninteract();
+    return new MoveCommandDTO(direction);
 }
 
 CommandDTO* GameInputHandler::handleBuy() {

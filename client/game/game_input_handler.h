@@ -31,6 +31,7 @@ class GameInputHandler {
     CommandDTO* handleBuy();
     CommandDTO* handleAttack();
     CommandDTO* handleMeditate();
+    CommandDTO* handleMove(moveDirection direction);
 
 
 public:
