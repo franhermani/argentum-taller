@@ -107,8 +107,8 @@ int Map::betweenPlayerBorders(int pos_x, int pos_y) {
     y_start = getPlayerYStart(mainPlayer);
     x_finish = getPlayerXEnd(mainPlayer);
     y_finish = getPlayerYEnd(mainPlayer);
-    return ((pos_x >= x_start) &&  (pos_x < x_finish)
-    && (pos_y >= y_start) && (pos_y < y_finish));
+    return ((pos_x >= x_start) &&  (pos_x <= x_finish)
+    && (pos_y >= y_start) && (pos_y <= y_finish));
 }
 
 //todo ver que hacemos con estas 2
