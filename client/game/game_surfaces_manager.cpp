@@ -283,11 +283,29 @@ void GameSurfacesManager::loadEquippedPaths() {
             {LEFT, "../client/resources/images/armadura_placas_left_p_t.png"},
             {RIGHT, "../client/resources/images/armadura_placas_right_p_t.png"}
     };
+    std::map<int, std::string> armadura_cuero_orientations = {
+            {UP, "../client/resources/images/armadura_cuero_up_t.png"},
+            {DOWN, "../client/resources/images/armadura_cuero_down_t.png"},
+            {LEFT, "../client/resources/images/armadura_cuero_left_t.png"},
+            {RIGHT, "../client/resources/images/armadura_cuero_right_t.png"}
+    };
+    std::map<int, std::string> tunica_azul_orientations = {
+            {UP, "../client/resources/images/tunica_azul_up_t.png"},
+            {DOWN, "../client/resources/images/tunica_azul_down_t.png"},
+            {LEFT, "../client/resources/images/tunica_azul_left_t.png"},
+            {RIGHT, "../client/resources/images/tunica_azul_right_t.png"}
+    };
     std::map<int, std::string> escudo_hierro_orientations = {
             {UP, "../client/resources/images/escudo_hierro_up_p_t.png"},
             {DOWN, "../client/resources/images/escudo_hierro_down_p_t.png"},
             {LEFT, "../client/resources/images/escudo_hierro_right_p_t.png"},
             {RIGHT, "../client/resources/images/escudo_hierro_left_p_t.png"}
+    };
+    std::map<int, std::string> escudo_tortuga_orientations = {
+            {UP, "../client/resources/images/escudo_tortuga_up_t.png"},
+            {DOWN, "../client/resources/images/escudo_tortuga_down_p_t.png"},
+            {LEFT, "../client/resources/images/escudo_tortuga_right_p_t.png"},
+            {RIGHT, "../client/resources/images/escudo_tortuga_left_p_t.png"}
     };
 
 
@@ -305,10 +323,10 @@ void GameSurfacesManager::loadEquippedPaths() {
             {ARCO_COMPUESTO,
                     arco_compuesto_orientations},
             {ESCUDO_HIERRO, escudo_hierro_orientations},
-            {ESCUDO_TORTUGA, escudo_hierro_orientations},
-            {ARMADURA_CUERO, armadura_placas_orientations},
+            {ESCUDO_TORTUGA, escudo_tortuga_orientations},
+            {ARMADURA_CUERO, armadura_cuero_orientations},
             {ARMADURA_PLACAS, armadura_placas_orientations},
-            {TUNICA_AZUL, armadura_placas_orientations}
+            {TUNICA_AZUL, tunica_azul_orientations}
     };
 
 
@@ -323,7 +341,10 @@ void GameSurfacesManager::loadEquippedPaths() {
     std::map<int, Surface*> hacha_surfaces;
     std::map<int, Surface*> espada_surfaces;
     std::map<int, Surface*> armadura_placas_surfaces;
+    std::map<int, Surface*> armadura_cuero_surfaces;
+    std::map<int, Surface*> tunica_azul_surfaces;
     std::map<int, Surface*> escudo_hierro_surfaces;
+    std::map<int, Surface*> escudo_tortuga_surfaces;
     equippedWeaponSurfacesMap = {
             {ESPADA, espada_surfaces},
             {HACHA, hacha_surfaces},
@@ -337,10 +358,10 @@ void GameSurfacesManager::loadEquippedPaths() {
             {ARCO_COMPUESTO,
                     arco_compuesto_surfaces},
             {ARMADURA_PLACAS, armadura_placas_surfaces},
-            {ARMADURA_CUERO, armadura_placas_surfaces},
-            {ESCUDO_TORTUGA, escudo_hierro_surfaces},
+            {ARMADURA_CUERO, armadura_cuero_surfaces},
+            {ESCUDO_TORTUGA, escudo_tortuga_surfaces},
             {ESCUDO_HIERRO, escudo_hierro_surfaces},
-            {TUNICA_AZUL, armadura_placas_surfaces}
+            {TUNICA_AZUL, tunica_azul_surfaces}
     };
 
 }
