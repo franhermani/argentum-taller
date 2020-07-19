@@ -1,4 +1,4 @@
-#include "command_dto_factory.h"
+#include "command_dto_manager.h"
 #include "../data_transfer_objects/move_command_dto.h"
 #include "../data_transfer_objects/heal_command_dto.h"
 #include "../data_transfer_objects/take_command_dto.h"
@@ -18,13 +18,13 @@
 
 
 
-CommandDTOFactory::CommandDTOFactory(MapMonitor &mapMonitor,
+CommandDTOManager::CommandDTOManager(MapMonitor &mapMonitor,
         GameRender* gameRender):mapMonitor(mapMonitor),
         gameRender(gameRender) {}
 
-CommandDTOFactory::~CommandDTOFactory() {}
+CommandDTOManager::~CommandDTOManager() {}
 
-CommandDTO* CommandDTOFactory::operator()(int key) {
+CommandDTO* CommandDTOManager::operator()(int key) {
     if (key == SDLK_LEFT) {
         return handleMove(LEFT);
     } else if (key == SDLK_RIGHT) {
@@ -76,12 +76,12 @@ CommandDTO* CommandDTOFactory::operator()(int key) {
 }
 
 
-CommandDTO* CommandDTOFactory::handleMove(moveDirection direction){
+CommandDTO* CommandDTOManager::handleMove(moveDirection direction){
     mapMonitor.uninteract();
     return new MoveCommandDTO(direction);
 }
 
-CommandDTO* CommandDTOFactory::handleBuy() {
+CommandDTO* CommandDTOManager::handleBuy() {
     int x,y;
     waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
@@ -95,14 +95,14 @@ CommandDTO* CommandDTOFactory::handleBuy() {
     }
 }
 
-CommandDTO* CommandDTOFactory::handleAttack() {
+CommandDTO* CommandDTOManager::handleAttack() {
     return new AttackCommandDTO();
 }
-CommandDTO* CommandDTOFactory::handleMeditate() {
+CommandDTO* CommandDTOManager::handleMeditate() {
     return new MeditateCommandDTO();
 }
 
-CommandDTO* CommandDTOFactory::handleSell() {
+CommandDTO* CommandDTOManager::handleSell() {
     int x,y;
     waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
@@ -116,7 +116,7 @@ CommandDTO* CommandDTOFactory::handleSell() {
                 "condiciones para la creacion del comando Sell");
 }
 
-CommandDTO* CommandDTOFactory::handleWithdraw() {
+CommandDTO* CommandDTOManager::handleWithdraw() {
     int x,y;
     waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
@@ -131,7 +131,7 @@ CommandDTO* CommandDTOFactory::handleWithdraw() {
                 "la creacion del comando withdraw");
 }
 
-CommandDTO* CommandDTOFactory::handleDeposit() {
+CommandDTO* CommandDTOManager::handleDeposit() {
     int x,y;
     waitForLeftClick(x, y);
     std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
@@ -146,7 +146,7 @@ CommandDTO* CommandDTOFactory::handleDeposit() {
                 "creacion del comando deposit");
 }
 
-CommandDTO* CommandDTOFactory::handleRevive() {
+CommandDTO* CommandDTOManager::handleRevive() {
     try {
         std::vector<int> priest_position =
                 mapMonitor.getPriestLookingAt();
@@ -157,14 +157,14 @@ CommandDTO* CommandDTOFactory::handleRevive() {
     }
 }
 
-CommandDTO* CommandDTOFactory::handleThrow() {
+CommandDTO* CommandDTOManager::handleThrow() {
     int x,y;
     waitForLeftClick(x, y);
     return new ThrowCommandDTO(
             gameRender->getInventoryItemByPosition(x, y));
 }
 
-CommandDTO* CommandDTOFactory::handleTake() {
+CommandDTO* CommandDTOManager::handleTake() {
     try {
         std::vector<int> item_pos = mapMonitor.getItemStandingAt();
         return new TakeCommandDTO(TAKE_ITEM, item_pos[0], item_pos[1]);
@@ -176,34 +176,34 @@ CommandDTO* CommandDTOFactory::handleTake() {
     }
 }
 
-CommandDTO* CommandDTOFactory::handleList() {
+CommandDTO* CommandDTOManager::handleList() {
     std::vector<int> npc_position =
             mapMonitor.getNpcLookingAt();
     mapMonitor.interact();
     return new ListCommandDTO(npc_position[0], npc_position[1]);
 }
-CommandDTO* CommandDTOFactory::handleHeal() {
+CommandDTO* CommandDTOManager::handleHeal() {
     std::vector<int> priest_position =
             mapMonitor.getPriestLookingAt();
     return new HealCommandDTO(priest_position[0],
                               priest_position[1]);
 }
 
-CommandDTO* CommandDTOFactory::handleEquip() {
+CommandDTO* CommandDTOManager::handleEquip() {
     int x,y;
     waitForLeftClick(x, y);
     return new EquipCommandDTO(
             gameRender->getInventoryItemByPosition(x, y));
 }
 
-CommandDTO* CommandDTOFactory::handleUnequip() {
+CommandDTO* CommandDTOManager::handleUnequip() {
     int x,y;
     waitForLeftClick(x, y);
     return new UnequipCommandDTO(
             gameRender->getEquippedTypeByPosition(x, y));
 }
 
-void CommandDTOFactory::waitForLeftClick(int& x, int& y) {
+void CommandDTOManager::waitForLeftClick(int& x, int& y) {
     SDL_Event event;
     while (true) {
         SDL_WaitEvent(&event);
@@ -219,12 +219,12 @@ void CommandDTOFactory::waitForLeftClick(int& x, int& y) {
     }
 }
 
-int CommandDTOFactory::isLeftClick(SDL_Event& event) {
+int CommandDTOManager::isLeftClick(SDL_Event& event) {
     return ((event.type == SDL_MOUSEBUTTONDOWN) &&
             (event.button.button == SDL_BUTTON_LEFT));
 }
 
-int CommandDTOFactory::isMoveKey(SDL_Event& event) {
+int CommandDTOManager::isMoveKey(SDL_Event& event) {
     auto &keyEvent = (SDL_KeyboardEvent &) event;
     int key = keyEvent.keysym.sym;
     if ((event.type == SDL_KEYDOWN) & ((key == SDLK_DOWN)

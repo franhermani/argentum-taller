@@ -1,6 +1,6 @@
 
-#ifndef ARGENTUM_COMMAND_DTO_FACTORY_H
-#define ARGENTUM_COMMAND_DTO_FACTORY_H
+#ifndef ARGENTUM_COMMAND_DTO_MANAGER_H
+#define ARGENTUM_COMMAND_DTO_MANAGER_H
 
 #include <SDL2/SDL_events.h>
 #include "command_dto.h"
@@ -11,20 +11,20 @@
 
 
 
-class CommandDTOFactory {
+class CommandDTOManager {
     MapMonitor &mapMonitor;
     GameRender *gameRender;
 public:
     // Constructor
-    CommandDTOFactory(MapMonitor &mapMonitor, GameRender* gameRender);
+    CommandDTOManager(MapMonitor &mapMonitor, GameRender* gameRender);
 
 
     // Destrutor
-    ~CommandDTOFactory();
+    ~CommandDTOManager();
 
     // Constructor y asignacion por copia deshabilitados
-    CommandDTOFactory(const CommandDTOFactory& other) = delete;
-    CommandDTOFactory& operator=(const CommandDTOFactory& other) = delete;
+    CommandDTOManager(const CommandDTOManager& other) = delete;
+    CommandDTOManager& operator=(const CommandDTOManager& other) = delete;
 
     // Recibe un evento ingresado por input
     CommandDTO* operator()(int key);
@@ -51,4 +51,4 @@ public:
 };
 
 
-#endif //ARGENTUM_COMMAND_DTO_FACTORY_H
+#endif //ARGENTUM_COMMAND_DTO_MANAGER_H

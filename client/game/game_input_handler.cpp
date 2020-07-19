@@ -2,7 +2,7 @@
 #include "game_input_handler.h"
 #include "map_monitor.h"
 #include "exception.h"
-#include "../data_transfer_objects/command_dto_factory.h"
+#include "../data_transfer_objects/command_dto_manager.h"
 #include <vector>
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
@@ -18,12 +18,12 @@ void GameInputHandler::play() {
             SDL_Event event;
             SDL_WaitEvent(&event);
             CommandDTO* command;
-            CommandDTOFactory command_factory(mapMonitor, gameRender);
+            CommandDTOManager command_manager(mapMonitor, gameRender);
             if (event.type == SDL_KEYDOWN) {
                 auto &keyEvent = (SDL_KeyboardEvent &) event;
                 int key = keyEvent.keysym.sym;
                 try {
-                    command = command_factory(key);
+                    command = command_manager(key);
                     commandQueue.push(command);
                 }
                 catch (ItemException& e) {
