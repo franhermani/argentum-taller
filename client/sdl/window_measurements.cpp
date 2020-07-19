@@ -102,11 +102,6 @@ void WindowMeasurements::initializePlayerInfo(int screenWidth,
              (int) ((screenWidth / 100.0) * 93.8),
              (int) ((screenHeight / 100.0) * 84.8),
              (int) ((screenHeight /100.0) * 90)};
-/*
-    name =  {(int)  ((screenWidth/100.0) *  78.8),
-                  (int) ((screenWidth/100.0) * 87.5),
-                  (int) ((screenHeight/100.0) * 92.7),
-                  (int) ((screenHeight/100.0) * 97.2)};*/
 
     name =  {(int)  ((screenWidth/100.0) *  84.3),
              (int) ((screenWidth/100.0) * 93.0),
