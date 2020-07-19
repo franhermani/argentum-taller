@@ -217,7 +217,7 @@ void GameRender::renderList(list_t list) {
         for (auto it = std::begin(list.items);
         it != std::end(list.items); ++it) {
             price_surfaces.push_back(surfacesManager(
-                    std::to_string(it->price)));
+                    std::to_string(it->price) + " "));
         }
         window.renderListPrices(price_surfaces);
     } else {
