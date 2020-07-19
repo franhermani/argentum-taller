@@ -35,6 +35,16 @@ public:
     const char * what() const noexcept;
 };
 
+class StopGameException : public std::exception{
+    std::string message;
+public:
+    // Constructor
+    explicit StopGameException(const char *message);
+
+    // Devuelve el mensaje de error
+    const char * what() const noexcept;
+};
+
 class SoundException : public std::exception{
     std::string message;
 public:
@@ -44,5 +54,6 @@ public:
     // Devuelve el mensaje de error
     const char * what() const noexcept;
 };
+
 
 #endif //ARGENTUM_EXCEPTION_H

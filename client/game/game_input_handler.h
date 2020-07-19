@@ -13,25 +13,6 @@ class GameInputHandler {
     MapMonitor &mapMonitor;
     GameRender *gameRender;
 
-    int isLeftClick(SDL_Event &event);
-    int isMoveKey(SDL_Event& event);
-    void waitForLeftClick(int &x, int &y);
-
-
-    CommandDTO* handleEquip();
-    CommandDTO* handleUnequip();
-    CommandDTO* handleHeal();
-    CommandDTO* handleList();
-    CommandDTO* handleTake();
-    CommandDTO* handleThrow();
-    CommandDTO* handleRevive();
-    CommandDTO* handleDeposit();
-    CommandDTO* handleSell();
-    CommandDTO* handleWithdraw();
-    CommandDTO* handleBuy();
-    CommandDTO* handleAttack();
-    CommandDTO* handleMeditate();
-    CommandDTO* handleMove(moveDirection direction);
 
 
 public:
