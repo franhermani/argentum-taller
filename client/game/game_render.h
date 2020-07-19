@@ -19,6 +19,7 @@ class GameRender : public Thread {
     const int screenWidth;
     const int screenHeight;
     MapMonitor& mapMonitor;
+    std::string username;
     //todo renombrar estos dos para diferenciar el 9 del 108
     int blocksWidth;
     int blocksHeight;
@@ -36,7 +37,7 @@ class GameRender : public Thread {
 public:
     //Constructor
     GameRender(const int screenWidth, const int screenHeight,
-               MapMonitor &mapMonitor);
+               MapMonitor &mapMonitor, std::string username);
 
     //Destructor
     ~GameRender();
@@ -54,7 +55,8 @@ public:
     void renderPlayers(std::vector<player_t> &players);
     void renderNpcs(std::vector<npc_t>& npcs);
     void renderCreatures(std::vector<creature_t>& creatures);
-    void renderPlayerInfo(std::map<int,float>& percentages, int level);
+    void renderPlayerInfo(std::map<int,float>& percentages,
+            int level);
     void renderItems(std::vector<item_t>& items);
     void renderAttacks(std::vector<attack_t>& attacks);
     void renderEquipped(std::vector<player_t>& players);

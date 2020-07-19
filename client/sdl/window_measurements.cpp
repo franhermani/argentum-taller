@@ -54,6 +54,14 @@ void WindowMeasurements::initializeStaticAreas() {
     levelStaticRect.h = (level_area.y_pixel_end -
             level_area.y_pixel_begin);
 
+    game_area_t& name_area = name;
+    nameStaticRect.x = name_area.x_pixel_begin;
+    nameStaticRect.y = name_area.y_pixel_begin;
+    nameStaticRect.w = (name_area.x_pixel_end -
+            name_area.x_pixel_begin);
+    nameStaticRect.h = (name_area.y_pixel_end -
+            name_area.y_pixel_begin);
+
 
     game_area_t& list_gold_area = listGold;
     listGoldStaticRect.x = list_gold_area.x_pixel_begin;
@@ -94,6 +102,16 @@ void WindowMeasurements::initializePlayerInfo(int screenWidth,
              (int) ((screenWidth / 100.0) * 93.8),
              (int) ((screenHeight / 100.0) * 84.8),
              (int) ((screenHeight /100.0) * 90)};
+/*
+    name =  {(int)  ((screenWidth/100.0) *  78.8),
+                  (int) ((screenWidth/100.0) * 87.5),
+                  (int) ((screenHeight/100.0) * 92.7),
+                  (int) ((screenHeight/100.0) * 97.2)};*/
+
+    name =  {(int)  ((screenWidth/100.0) *  84.3),
+             (int) ((screenWidth/100.0) * 93.0),
+             (int) ((screenHeight/100.0) * 92.7),
+             (int) ((screenHeight/100.0) * 97.2)};
 }
 
 void WindowMeasurements::initializeItemInfo(int screenWidth,

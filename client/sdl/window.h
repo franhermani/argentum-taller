@@ -91,12 +91,13 @@ public:
             std::map<int, Surface*>& surfaces_map);
     void renderPlayerInfo(std::map<int, float>& player_info,
             std::map<int, Surface *> info_surfaces_map,
-            Surface* level_surface);
+            Surface* level_surface, Surface* name_surface);
     void renderList(std::vector<Surface*>& surfaces);
     void renderListPrices(std::vector<Surface*>& surfaces);
     void renderListGold(Surface* surface, Surface* quantity);
     void renderInventoryGolds(Surface* surface, Surface* quantity);
     void renderLevel(Surface* level_surface);
+    void renderName(Surface* name_surface);
     void renderWorld(Surface* surface, position_t positon,
                      int dimensions_width, int dimensions_height);
 

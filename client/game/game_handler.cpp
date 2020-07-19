@@ -22,7 +22,7 @@ GameHandler::GameHandler(const char *host, const char *port,
     try {
         std::cout << "\nIniciando renderizado\n";
         gameRender = new GameRender(resolution["width"],
-                resolution["height"], mapMonitor);
+                resolution["height"], mapMonitor, username);
     } catch (SDLException& e) {
         delete connectionSender;
         delete connectionReceiver;

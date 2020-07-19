@@ -351,8 +351,6 @@ void GameSurfacesManager::loadEquippedPaths() {
             {SOMBRERO_MAGICO, sombrero_magico_orientations}
     };
 
-
-
     std::map<int, Surface*> baculo_nudoso_surfaces;
     std::map<int, Surface*> arco_compuesto_surfaces;
     std::map<int, Surface*> arco_simple_surfaces;

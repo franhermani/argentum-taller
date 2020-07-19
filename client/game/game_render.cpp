@@ -29,9 +29,10 @@
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
-        MapMonitor& mapMonitor) :
+        MapMonitor& mapMonitor, std::string username) :
                        screenWidth(screenWidth), screenHeight(screenHeight),
                        mapMonitor(mapMonitor),
+                       username(username),
                        window(screenWidth, screenHeight),
                        surfacesManager(window) {
     init();
@@ -89,8 +90,9 @@ void GameRender::renderGame() {
 void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
     Surface* level_surface = surfacesManager(
             std::to_string(level));
+    Surface* name_surface = surfacesManager(username);
     window.renderPlayerInfo(current_world.percentages,
-            surfacesManager.infoSurfacesMap, level_surface);
+            surfacesManager.infoSurfacesMap, level_surface, name_surface);
 }
 
 
@@ -211,6 +213,7 @@ void GameRender::renderInventoryGolds(uint16_t quantity) {
     window.renderInventoryGolds(surfacesManager.goldSurface,
             surfacesManager(std::to_string(quantity)));
 }
+
 
 
 void GameRender::renderList(list_t list) {

@@ -24,8 +24,10 @@ struct WindowMeasurements {
     game_area_t mana;
     game_area_t experience;
     game_area_t level;
+    game_area_t name;
 
     SDL_Rect levelStaticRect;
+    SDL_Rect nameStaticRect;
     SDL_Rect worldStaticRect;
     SDL_Rect gameFrameStaticRect;
     SDL_Rect inventoryGoldStaticRect;

@@ -288,15 +288,20 @@ void SDLWindow::renderLevel(Surface* level_surface) {
     SDL_BlitScaled(level_surface->getRenderableSurface(), NULL,
                    getSurface(), &measurements.levelStaticRect);
 }
+void SDLWindow::renderName(Surface* level_surface) {
+    SDL_BlitScaled(level_surface->getRenderableSurface(), NULL,
+                   getSurface(), &measurements.nameStaticRect);
+}
 
 
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
         std::map<int, Surface *> info_surfaces_map,
-        Surface* level_surface) {
+        Surface* level_surface, Surface* name_surface) {
     renderLife(player_info, info_surfaces_map);
     renderMana(player_info, info_surfaces_map);
     renderExperience(player_info, info_surfaces_map);
     renderLevel(level_surface);
+    renderName(name_surface);
 }
 
 
