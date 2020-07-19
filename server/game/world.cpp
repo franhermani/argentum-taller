@@ -306,8 +306,10 @@ const bool World::inPlayerBoundaries(Player &player, position_t new_pos) {
         player_yi = player.getPos().y - playerHeight/2,
         player_yf = player.getPos().y + playerHeight/2;
 
-    bool x_in_boundaries = (new_pos.x >= player_xi) && (new_pos.x < player_xf),
-         y_in_boundaries = (new_pos.y >= player_yi) && (new_pos.y < player_yf);
+    bool x_in_boundaries = (new_pos.x >= player_xi) &&
+                           (new_pos.x <= player_xf),
+         y_in_boundaries = (new_pos.y >= player_yi) &&
+                           (new_pos.y <= player_yf);
 
     return x_in_boundaries && y_in_boundaries;
 }
