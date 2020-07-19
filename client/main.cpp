@@ -4,7 +4,7 @@
 #include <zconf.h>
 #include "client.h"
 #include "../common/socket_error.h"
-#include "../common/defines/username_confirmation.h"
+#include "../common/defines/username_codes.h"
 #include "sdl/exception.h"
 
 #define OK 0

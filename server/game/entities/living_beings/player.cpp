@@ -19,7 +19,7 @@ classType(class_type),
 maxExperience(LONG_MAX),
 actualExperience(0),
 ableToUseMagic(classType != WARRIOR),
-isWaitingToMove(false),
+isMoving(false),
 nextDirection(DOWN),
 weapon(nullptr),
 armor(nullptr),
@@ -273,7 +273,7 @@ void Player::update(int ms) {
             revive();
         }
     } else {
-        if (isWaitingToMove) {
+        if (isMoving) {
             msMoveCounter += ms;
             if (msMoveCounter >= moveVelocity) {
                 msMoveCounter = 0;
@@ -295,7 +295,7 @@ void Player::moveTo(int direction) {
                                 secondsToRevive());
 
     stopMeditating();
-    isWaitingToMove = true;
+    isMoving = true;
     nextDirection = direction;
 }
 
@@ -323,7 +323,7 @@ void Player::moveTo() {
         pos = new_pos;
     }
     orientation = nextDirection;
-    isWaitingToMove = false;
+    isMoving = false;
 }
 
 void Player::heal() {
@@ -337,7 +337,6 @@ void Player::heal() {
                                 secondsToRevive());
 
     stopMeditating();
-
     addLife(maxLife);
     addMana(maxMana);
 }
@@ -685,7 +684,6 @@ Item* Player::sellItem(const int type) {
         inventory.addItem(item);
         throw GameException(id, "No se pueden vender items magicos");
     }
-
     try {
         addGold(item->price);
     } catch (GameException& e) {

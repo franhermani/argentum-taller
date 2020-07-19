@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
         return ERROR;
     }
     std::string path = argv[1], command;
+
     try {
         File file(path);
         Server server(file);

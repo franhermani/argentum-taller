@@ -1,7 +1,6 @@
 #ifndef CLIENTS_ACCEPTOR_H
 #define CLIENTS_ACCEPTOR_H
 
-#include <vector>
 #include "../../common/thread.h"
 #include "../../common/socket.h"
 #include "clients_blocking_vector.h"
