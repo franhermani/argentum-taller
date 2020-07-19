@@ -199,6 +199,10 @@ void GameRender::renderEquipped(std::vector<player_t>& players) {
         if (it->weapon != NO_ITEM_EQUIPPED)
             window.renderMapObject(it->pos.x, it->pos.y,
                                    surfacesManager.getEquipped(it->weapon, it->orientation));
+        if (it->helmet != NO_ITEM_EQUIPPED)
+            window.renderMapObject(it->pos.x, it->pos.y,
+                                   surfacesManager.getEquipped(it->helmet, it->orientation));
+
 
     }
 }

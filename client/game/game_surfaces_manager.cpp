@@ -303,9 +303,28 @@ void GameSurfacesManager::loadEquippedPaths() {
     };
     std::map<int, std::string> escudo_tortuga_orientations = {
             {UP, "../client/resources/images/escudo_tortuga_up_t.png"},
-            {DOWN, "../client/resources/images/escudo_tortuga_down_p_t.png"},
-            {LEFT, "../client/resources/images/escudo_tortuga_right_p_t.png"},
-            {RIGHT, "../client/resources/images/escudo_tortuga_left_p_t.png"}
+            {DOWN, "../client/resources/images/escudo_tortuga_down_t.png"},
+            {LEFT, "../client/resources/images/escudo_tortuga_right_t.png"},
+            {RIGHT, "../client/resources/images/escudo_tortuga_left_t.png"}
+    };
+    std::map<int, std::string> capucha_orientations = {
+            {UP, "../client/resources/images/capucha_up_t.png"},
+            {DOWN, "../client/resources/images/capucha_down_t.png"},
+            {LEFT, "../client/resources/images/capucha_left_t.png"},
+            {RIGHT, "../client/resources/images/capucha_right_t.png"}
+    };
+    std::map<int, std::string> casco_hierro_orientations = {
+            {UP, "../client/resources/images/casco_hierro_up_t.png"},
+            {DOWN, "../client/resources/images/casco_hierro_down_t.png"},
+            {LEFT, "../client/resources/images/casco_hierro_right_t.png"},
+            {RIGHT, "../client/resources/images/casco_hierro_left_t.png"}
+    };
+
+    std::map<int, std::string> sombrero_magico_orientations = {
+            {UP, "../client/resources/images/sombrero_magico_up_t.png"},
+            {DOWN, "../client/resources/images/sombrero_magico_down_t.png"},
+            {LEFT, "../client/resources/images/sombrero_magico_right_t.png"},
+            {RIGHT, "../client/resources/images/sombrero_magico_left_t.png"}
     };
 
 
@@ -326,7 +345,10 @@ void GameSurfacesManager::loadEquippedPaths() {
             {ESCUDO_TORTUGA, escudo_tortuga_orientations},
             {ARMADURA_CUERO, armadura_cuero_orientations},
             {ARMADURA_PLACAS, armadura_placas_orientations},
-            {TUNICA_AZUL, tunica_azul_orientations}
+            {TUNICA_AZUL, tunica_azul_orientations},
+            {CASCO_HIERRO, casco_hierro_orientations},
+            {CAPUCHA, capucha_orientations},
+            {SOMBRERO_MAGICO, sombrero_magico_orientations}
     };
 
 
@@ -345,6 +367,9 @@ void GameSurfacesManager::loadEquippedPaths() {
     std::map<int, Surface*> tunica_azul_surfaces;
     std::map<int, Surface*> escudo_hierro_surfaces;
     std::map<int, Surface*> escudo_tortuga_surfaces;
+    std::map<int, Surface*> capucha_surfaces;
+    std::map<int, Surface*> casco_hierro_surfaces;
+    std::map<int, Surface*> sombrero_magico_surfaces;
     equippedWeaponSurfacesMap = {
             {ESPADA, espada_surfaces},
             {HACHA, hacha_surfaces},
@@ -361,7 +386,10 @@ void GameSurfacesManager::loadEquippedPaths() {
             {ARMADURA_CUERO, armadura_cuero_surfaces},
             {ESCUDO_TORTUGA, escudo_tortuga_surfaces},
             {ESCUDO_HIERRO, escudo_hierro_surfaces},
-            {TUNICA_AZUL, tunica_azul_surfaces}
+            {TUNICA_AZUL, tunica_azul_surfaces},
+            {CASCO_HIERRO, casco_hierro_surfaces},
+            {CAPUCHA, capucha_surfaces},
+            {SOMBRERO_MAGICO, sombrero_magico_surfaces}
     };
 
 }
