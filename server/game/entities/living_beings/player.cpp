@@ -401,7 +401,7 @@ void Player::attack() {
         return;
     }
 
-    int weapon_attack_type = weapon ? weapon->attackType : MELEE,
+    int weapon_attack_type = weapon ? weapon->attackType : NO_WEAPON_MELEE,
         weapon_attack_sound = weapon ? weapon->attackSound : PLAYER_PUNCH,
         weapon_range = weapon ? weapon->range : 1,
         weapon_velocity = weapon ? weapon->moveVelocity :
