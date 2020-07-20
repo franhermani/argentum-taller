@@ -3,6 +3,7 @@
 
 
 ImagePathContainer::ImagePathContainer() {
+    loadRestOfPaths();
     loadCreaturePaths();
     loadNpcPaths();
     loadPlayerPaths();
@@ -11,6 +12,16 @@ ImagePathContainer::ImagePathContainer() {
     loadEquippedPaths();
     loadAnimatedPaths();
     loadStatePaths();
+}
+
+void ImagePathContainer::loadRestOfPaths() {
+    gameFrameSurface = "../client/resources/images/etc/game_frame.jpeg";
+    worldSurface = "../tiled/world.png";
+    goldSurface = "../client/resources/images/items/gold_t.png";
+    life_bar = "../client/resources/images/etc/life_bar.png";
+    black_bar = "../client/resources/images/etc/black_bar.png";
+    mana_bar = "../client/resources/images/etc/mana_bar.png";
+    experience_bar = "../client/resources/images/etc/experience_bar.png";
 }
 
 void ImagePathContainer::loadCreaturePaths() {

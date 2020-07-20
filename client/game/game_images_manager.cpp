@@ -340,21 +340,15 @@ void GameImagesManager::loadSurfacePaths() {
 
 
 void GameImagesManager::initFrame() {
-    gameFrameSurface = new Surface(
-            "../client/resources/images/etc/game_frame.jpeg", window, 0);
-    worldSurface = new Surface(
-            "../tiled/world.png", window, 0);
+    gameFrameSurface = new Surface(pathContainer.gameFrameSurface, window, 0);
+    worldSurface = new Surface(pathContainer.worldSurface, window, 0);
     goldSurface = new Surface(
-            "../client/resources/images/items/gold_t.png", window, 1);
-    Surface* life_bar = new Surface(
-            "../client/resources/images/etc/life_bar.png",
+            pathContainer.goldSurface, window, 1);
+    Surface* life_bar = new Surface(pathContainer.life_bar,
             window, 0);
-    Surface* black_bar = new Surface(
-            "../client/resources/images/etc/black_bar.png", window, 0);
-    Surface* mana_bar = new Surface(
-            "../client/resources/images/etc/mana_bar.png", window, 0);
-    Surface* experience_bar = new Surface(
-            "../client/resources/images/etc/experience_bar.png", window, 0);
+    Surface* black_bar = new Surface(pathContainer.black_bar, window, 0);
+    Surface* mana_bar = new Surface(pathContainer.mana_bar, window, 0);
+    Surface* experience_bar = new Surface(pathContainer.experience_bar, window, 0);
 
     infoSurfacesMap = {
             {LIFE, life_bar},

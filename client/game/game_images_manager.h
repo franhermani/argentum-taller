@@ -15,6 +15,7 @@
 #include "image_path_container.h"
 
 class GameImagesManager {
+    ImagePathContainer pathContainer;
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
@@ -28,7 +29,6 @@ class GameImagesManager {
     Surface* goldSurface;
     Surface* gameFrameSurface;
     Surface* worldSurface;
-    ImagePathContainer pathContainer;
     TTF_Font* mainFont;
     SDL_Color mainColor;
     SDLWindow& window;
