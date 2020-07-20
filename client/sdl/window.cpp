@@ -37,6 +37,22 @@ SDLWindow::~SDLWindow() {
     SDL_VideoQuit();
 }
 
+void SDLWindow::toggleFullscreen() {
+    if (fullscreen) {
+        //to window mode
+        SDL_SetWindowFullscreen(window, 0);
+        fullscreen = false;
+        measurements.updateResolution(screenWidth, screenHeight);
+    } else {
+        //to fullscreen
+        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+        fullscreen = true;
+        SDL_DisplayMode dm;
+        SDL_GetDesktopDisplayMode(0, &dm);
+        measurements.updateResolution(dm.w, dm.h);
+    }
+}
+
 
 void SDLWindow::fill(const int r, const int g, const int b, const int alpha) {
     SDL_SetRenderDrawColor(renderer, r, g, b, alpha);
@@ -242,6 +258,12 @@ void SDLWindow::renderMana(std::map<int, float>& player_info,
                    getSurface(), &stretchRect);
 }
 
+void SDLWindow::renderEqIfExists(std::map<int, Surface*>& surfaces_map,
+        SDL_Rect& rect, int item) {
+    if (surfaces_map.find(item) == surfaces_map.end()) return;
+    SDL_BlitScaled(surfaces_map.at(item)->
+        getRenderable(), NULL, getSurface(), &rect);
+}
 
 void SDLWindow::renderEquipped(player_t& player,
                                std::map<int, Surface*>& surfaces_map) {
@@ -255,28 +277,13 @@ void SDLWindow::renderEquipped(player_t& player,
     stretchRect.w = equipped_width;
     stretchRect.h = equipped_area.y_pixel_end-equipped_area.y_pixel_begin;
     //weapon
-    if (surfaces_map.find(player.weapon) != surfaces_map.end())
-        SDL_BlitScaled(surfaces_map.at(player.weapon)->
-                               getRenderable(), NULL,
-                       getSurface(), &stretchRect);
-    //armor
+    renderEqIfExists(surfaces_map, stretchRect, player.weapon);
     stretchRect.x = stretchRect.x + equipped_width;
-    if (surfaces_map.find(player.armor) != surfaces_map.end())
-        SDL_BlitScaled(surfaces_map.at(player.armor)->
-                               getRenderable(), NULL,
-                       getSurface(), &stretchRect);
-    //helmet
+    renderEqIfExists(surfaces_map, stretchRect, player.armor);
     stretchRect.x = stretchRect.x + equipped_width;
-    if (surfaces_map.find(player.helmet) != surfaces_map.end())
-        SDL_BlitScaled(surfaces_map.at(player.helmet)->
-                               getRenderable(), NULL,
-                       getSurface(), &stretchRect);
-    //shield
+    renderEqIfExists(surfaces_map, stretchRect, player.helmet);
     stretchRect.x = stretchRect.x + equipped_width;
-    if (surfaces_map.find(player.shield) != surfaces_map.end())
-        SDL_BlitScaled(surfaces_map.at(player.shield)->
-                               getRenderable(), NULL,
-                       getSurface(), &stretchRect);
+    renderEqIfExists(surfaces_map, stretchRect, player.shield);
 }
 
 void SDLWindow::renderExperience(std::map<int, float>& player_info,
@@ -454,21 +461,7 @@ int SDLWindow::getRenderedListIndexByPosition(int xClicked,
     return -1;
 }
 
-void SDLWindow::toggleFullscreen() {
-    if (fullscreen) {
-        //to window mode
-        SDL_SetWindowFullscreen(window, 0);
-        fullscreen = false;
-        measurements.updateResolution(screenWidth, screenHeight);
-    } else {
-        //to fullscreen
-        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-        fullscreen = true;
-        SDL_DisplayMode dm;
-        SDL_GetDesktopDisplayMode(0, &dm);
-        measurements.updateResolution(dm.w, dm.h);
-    }
-}
+
 
 int SDLWindow::isInsideArea(SDL_Rect& stretchRect, int x, int y) {
     return (x >= stretchRect.x) && (x < (stretchRect.x + stretchRect.w))

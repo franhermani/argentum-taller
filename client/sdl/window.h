@@ -35,6 +35,8 @@ class SDLWindow {
     void renderMana(std::map<int, float>& player_info,
                           std::map<int, Surface *>& info_surfaces_map);
 
+    void renderEqIfExists(std::map<int, Surface*>& surfaces_map,
+                                     SDL_Rect& rect, int item);
 
 
 public:
