@@ -210,10 +210,8 @@ void GameImagesManager::createNecessaryFrameItems(
 }
 
 
-void GameImagesManager::loadAnimatedPaths() {
-}
 
-void GameImagesManager::loadCreaturePaths() {
+void GameImagesManager::initCreatures() {
 
     std::map<int, Surface*> skeleton_surfaces;
     std::map<int, Surface*> zombie_surfaces;
@@ -224,7 +222,7 @@ void GameImagesManager::loadCreaturePaths() {
     };
 }
 
-void GameImagesManager::loadEquippedPaths() {
+void GameImagesManager::initEquipped() {
 
     std::map<int, Surface*> baculo_nudoso_surfaces;
     std::map<int, Surface*> arco_compuesto_surfaces;
@@ -267,7 +265,7 @@ void GameImagesManager::loadEquippedPaths() {
 }
 
 
-void GameImagesManager::loadNpcPaths() {
+void GameImagesManager::initNpc() {
 
     std::map<int, Surface*> priest_surfaces;
     std::map<int, Surface*> merchant_surfaces;
@@ -280,7 +278,7 @@ void GameImagesManager::loadNpcPaths() {
 
 
 
-void GameImagesManager::loadAttackPaths() {
+void GameImagesManager::initAttack() {
     std::map<int, Surface*> multiple_arrow_surfaces;
     std::map<int, Surface*> single_arrow_surfaces;
     std::map<int, Surface*> missile_surfaces;
@@ -300,7 +298,7 @@ void GameImagesManager::loadAttackPaths() {
     };
 }
 
-void GameImagesManager::loadPlayerPaths() {
+void GameImagesManager::initPlayers() {
     //JUGADORES
 
     std::map<int, Surface*> human_surfaces;
@@ -373,10 +371,6 @@ void GameImagesManager::loadPlayerPaths() {
             {STATE_MEDITATING, meditateSurfacesMap},
             {STATE_DYING, dyingSurfacesMap}
     };
-}
-
-void GameImagesManager::loadItemPaths() {
-
 }
 
 void GameImagesManager::loadSurfacePaths() {

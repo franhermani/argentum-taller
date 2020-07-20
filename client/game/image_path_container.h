@@ -22,7 +22,10 @@ struct ImagePathContainer {
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
     std::map<int, std::map<int, std::string>> playerSurfacesPaths;
     std::map<int, std::map<int, std::string>> attackSurfacesPaths;
+    std::map<int, std::map<int, std::string>> stateSurfacesPaths;
     std::map<int, std::string> itemSurfacesPaths;
+
+
 
     void loadCreaturePaths();
     void loadNpcPaths();
@@ -31,6 +34,7 @@ struct ImagePathContainer {
     void loadAttackPaths();
     void loadEquippedPaths();
     void loadAnimatedPaths();
+    void loadStatePaths();
 };
 
 

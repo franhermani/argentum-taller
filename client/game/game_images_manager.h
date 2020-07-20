@@ -38,13 +38,11 @@ class GameImagesManager {
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();
-    void loadCreaturePaths();
-    void loadNpcPaths();
-    void loadPlayerPaths();
-    void loadItemPaths();
-    void loadAttackPaths();
-    void loadEquippedPaths();
-    void loadAnimatedPaths();
+    void initCreatures();
+    void initNpc();
+    void initPlayers();
+    void initAttack();
+    void initEquipped();
 
 
     void createFrameSurfaces();
