@@ -50,12 +50,12 @@ class Map {
     // devuelve los npcs/players/criatura/item
     // dentro del rango de vision del jguador principal
     // con posiciones actualizadas a la submatriz
-    std::vector<player_t> getRenderablePlayers();
-    std::vector<npc_t> getRenderableNpcs();
-    std::vector<creature_t> getRenderableCreatures();
-    std::vector<item_t> getRenderableItems();
-    std::vector<gold_t> getRenderableGolds();
-    std::vector<attack_t> getRenderableAttacks();
+    std::vector<player_t> findRenderablePlayers();
+    std::vector<npc_t> findRenderableNpcs();
+    std::vector<creature_t> findRenderableCreatures();
+    std::vector<item_t> findRenderableItems();
+    std::vector<gold_t> findRenderableGolds();
+    std::vector<attack_t> findRenderableAttacks();
 
 public:
     // constructor

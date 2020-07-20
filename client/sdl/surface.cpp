@@ -35,6 +35,10 @@ Surface::Surface(std::string text, const SDLWindow &window,
         TTF_Font* font, SDL_Color& color) {
     SDL_Surface *basic_surface = TTF_RenderText_Solid(font,
             text.c_str(), color);
+    if (!basic_surface) {
+        throw SDLException("\nError al crear text surface",
+                           SDL_GetError());
+    }
     SDL_Surface *optimized_surface = SDL_ConvertSurface(
             basic_surface, window.getSurfaceFormat(), 0);
     SDL_FreeSurface(basic_surface);
@@ -48,6 +52,6 @@ Surface::~Surface() {
     SDL_FreeSurface(surface);
 }
 
-SDL_Surface* Surface::getRenderableSurface() {
+SDL_Surface* Surface::getRenderable() {
     return surface;
 }

@@ -82,7 +82,7 @@ int Map::getPlayerYEnd(player_t& player) {
     return y_finish;
 }
 
-std::vector<player_t> Map::getRenderablePlayers() {
+std::vector<player_t> Map::findRenderablePlayers() {
     std::vector<player_t> visible_players;
     for (auto& player: world.players) {
         if (not betweenPlayerBorders(player.pos.x, player.pos.y)) {
@@ -125,7 +125,7 @@ int Map::getNewBordersYPosition(int pos_y, player_t& main_player) {
     return pos;
 }
 
-std::vector<npc_t> Map::getRenderableNpcs() {
+std::vector<npc_t> Map::findRenderableNpcs() {
     std::vector<npc_t> visible_npcs;
     for (auto& npc: npcs.npcs) {
         if (not betweenPlayerBorders(npc.pos.x, npc.pos.y)) {
@@ -144,7 +144,7 @@ std::vector<npc_t> Map::getRenderableNpcs() {
 
 
 
-std::vector<creature_t> Map::getRenderableCreatures() {
+std::vector<creature_t> Map::findRenderableCreatures() {
     std::vector<creature_t> visible_creatures;
     for (auto& creature: world.creatures) {
         if (not betweenPlayerBorders(creature.pos.x, creature.pos.y)) {
@@ -163,7 +163,7 @@ std::vector<creature_t> Map::getRenderableCreatures() {
     return visible_creatures;
 }
 
-std::vector<gold_t> Map::getRenderableGolds() {
+std::vector<gold_t> Map::findRenderableGolds() {
     std::vector<gold_t> visible_gold;
     for (auto& gold: world.golds) {
         if (not betweenPlayerBorders(gold.pos.x, gold.pos.y)) {
@@ -181,7 +181,7 @@ std::vector<gold_t> Map::getRenderableGolds() {
 }
 
 
-std::vector<attack_t> Map::getRenderableAttacks() {
+std::vector<attack_t> Map::findRenderableAttacks() {
     std::vector<attack_t> visible_attacks;
     for (auto& attack: world.attacks) {
         if (not betweenPlayerBorders(attack.pos.x, attack.pos.y)) {
@@ -202,7 +202,7 @@ std::vector<attack_t> Map::getRenderableAttacks() {
 
 
 
-std::vector<item_t> Map::getRenderableItems() {
+std::vector<item_t> Map::findRenderableItems() {
     std::vector<item_t> visible_items;
     for (auto& item: world.items) {
         if (not betweenPlayerBorders(item.pos.x, item.pos.y)) {
@@ -318,13 +318,13 @@ client_world_t Map::getCurrentWorld() {
     client_world_t current_world;
     current_world.player_info = world.player_info;
     current_world.main_player = mainPlayer;
-    current_world.players = getRenderablePlayers();
-    current_world.items = getRenderableItems();
-    current_world.golds = getRenderableGolds();
-    current_world.creatures = getRenderableCreatures();
-    current_world.npcs = getRenderableNpcs();
+    current_world.players = findRenderablePlayers();
+    current_world.items = findRenderableItems();
+    current_world.golds = findRenderableGolds();
+    current_world.creatures = findRenderableCreatures();
+    current_world.npcs = findRenderableNpcs();
     current_world.percentages = getPercentages();
-    current_world.attacks = getRenderableAttacks();
+    current_world.attacks = findRenderableAttacks();
     current_world.list = list;
 
     return std::move(current_world);

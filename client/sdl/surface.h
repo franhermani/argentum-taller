@@ -27,7 +27,7 @@ public:
 
 
     // Devuelve SDL_Surface para poder ser estampado
-    SDL_Surface* getRenderableSurface();
+    SDL_Surface* getRenderable();
 };
 
 #endif // SURFACE_H

@@ -46,7 +46,9 @@ struct WindowMeasurements {
 private:
     void initializePlayerInfo(int screenWidth, int screenHeight);
     void initializeItemInfo(int screenWidth, int screenHeight);
-    void initializeStaticAreas();
+    void initializeMainStaticAreas();
+    void initializeGoldStaticAreas();
+    void initializeInfoStaticAreas();
     };
 
 
