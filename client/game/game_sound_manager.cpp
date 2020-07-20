@@ -82,6 +82,7 @@ void GameSoundManager::toggleSound() {
         std::cout << "\nEfectos pausados";
         soundOn = false;
     } else {
+        std::cout << "\nEfectos activados";
         soundOn = true;
     }
 }
