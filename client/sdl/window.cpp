@@ -130,10 +130,7 @@ void SDLWindow::renderMapObjectLifeBar(int x, int y, Surface* bar,
     stretchRect.y = getYPixelPos(y);
     stretchRect.w = bar_width;
     stretchRect.h = (measurements.yHeightTileSize)*0.1;
-    if ((stretchRect.x+measurements.xWidthTileSize
-         >= frame_area.x_pixel_end) ||
-        (stretchRect.y+measurements.yHeightTileSize
-         >= frame_area.y_pixel_end)) return;
+    if (isOutsideFrameArea(stretchRect, frame_area)) return;
     SDL_BlitScaled(bar->getRenderable(), NULL,
                    getSurface(), &stretchRect);
 }
@@ -228,44 +225,32 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
 
 void SDLWindow::renderLife(std::map<int, float>& player_info,
                            std::map<int, Surface *>& info_surfaces_map) {
-    game_area_t& life_area = measurements.life;
+    renderInfoBar(LIFE, info_surfaces_map[LIFE], info_surfaces_map[BACKGROUND],
+            measurements.life, player_info[LIFE]);
+}
+
+void SDLWindow::renderInfoBar(int type, Surface * bar, Surface* background, game_area_t& area, float percentage) {
     SDL_Rect stretchRect;
-    float life_percentage = player_info[LIFE];
-    stretchRect.x = life_area.x_pixel_begin;
-    stretchRect.y = life_area.y_pixel_begin;
-    stretchRect.w = (int) ((float)(life_area.x_pixel_end -
-                                   life_area.x_pixel_begin))*life_percentage;
-    stretchRect.h = life_area.y_pixel_end - life_area.y_pixel_begin;
-    SDL_BlitScaled(info_surfaces_map[LIFE]->getRenderable(), NULL,
+    stretchRect.x = area.x_pixel_begin;
+    stretchRect.y = area.y_pixel_begin;
+    stretchRect.w = (int) ((float)(area.x_pixel_end -
+            area.x_pixel_begin))*percentage;
+    stretchRect.h = area.y_pixel_end - area.y_pixel_begin;
+    SDL_BlitScaled(bar->getRenderable(), NULL,
                    getSurface(), &stretchRect);
     stretchRect.x = stretchRect.x + stretchRect.w;
-    stretchRect.y = life_area.y_pixel_begin;
-    stretchRect.w = life_area.x_pixel_end -
-            life_area.x_pixel_begin - stretchRect.w;
-    stretchRect.h = life_area.y_pixel_end - life_area.y_pixel_begin;
-    SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderable(), NULL,
+    stretchRect.y = area.y_pixel_begin;
+    stretchRect.w = area.x_pixel_end -
+                    area.x_pixel_begin - stretchRect.w;
+    stretchRect.h = area.y_pixel_end - area.y_pixel_begin;
+    SDL_BlitScaled(background->getRenderable(), NULL,
                    getSurface(), &stretchRect);
+
 }
 
 void SDLWindow::renderMana(std::map<int, float>& player_info,
                            std::map<int, Surface *>& info_surfaces_map) {
-    SDL_Rect stretchRect;
-    game_area_t& mana_area = measurements.mana;
-    float mana_percentage = player_info[MANA];
-    stretchRect.x = mana_area.x_pixel_begin;
-    stretchRect.y = mana_area.y_pixel_begin;
-    stretchRect.w = (int) ((float)(mana_area.x_pixel_end -
-                                   mana_area.x_pixel_begin))*mana_percentage;
-    stretchRect.h = mana_area.y_pixel_end - mana_area.y_pixel_begin;
-    SDL_BlitScaled(info_surfaces_map[MANA]->getRenderable(), NULL,
-                   getSurface(), &stretchRect);
-    stretchRect.x = stretchRect.x + stretchRect.w;
-    stretchRect.y = mana_area.y_pixel_begin;
-    stretchRect.w = mana_area.x_pixel_end -
-            mana_area.x_pixel_begin - stretchRect.w;
-    stretchRect.h = mana_area.y_pixel_end - mana_area.y_pixel_begin;
-    SDL_BlitScaled(info_surfaces_map[BACKGROUND]->getRenderable(), NULL,
-                   getSurface(), &stretchRect);
+    renderInfoBar(MANA, info_surfaces_map[MANA], info_surfaces_map[BACKGROUND], measurements.mana, player_info[MANA]);
 }
 
 void SDLWindow::renderEqIfExists(std::map<int, Surface*>& surfaces_map,
@@ -281,11 +266,11 @@ void SDLWindow::renderEquipped(player_t& player,
     int equipped_width = (equipped_area.x_pixel_end -
                           equipped_area.x_pixel_begin) /
                                   EQUIPPED_MAX_TILES_WIDTH;
-    SDL_Rect stretchRect;
-    stretchRect.x = equipped_area.x_pixel_begin;
-    stretchRect.y = equipped_area.y_pixel_begin;
-    stretchRect.w = equipped_width;
-    stretchRect.h = equipped_area.y_pixel_end-equipped_area.y_pixel_begin;
+    SDL_Rect stretchRect = {
+            equipped_area.x_pixel_begin, equipped_area.y_pixel_begin,
+            equipped_width, equipped_area.y_pixel_end-equipped_area.
+            y_pixel_begin
+    };
     //weapon
     renderEqIfExists(surfaces_map, stretchRect, player.weapon);
     stretchRect.x = stretchRect.x + equipped_width;
@@ -342,10 +327,7 @@ void SDLWindow::renderList(std::vector<Surface*>& surfaces) {
     int current_index = 0;
     SDL_Rect stretchRect;
     while (current_index < surfaces_size) {
-        stretchRect.x = x;
-        stretchRect.y = y;
-        stretchRect.w = w;
-        stretchRect.h = h;
+        stretchRect = {x, y, w, h};
         SDL_BlitScaled(surfaces[current_index]->getRenderable(), NULL,
                        getSurface(), &stretchRect);
         x = x + w;
@@ -365,10 +347,7 @@ void SDLWindow::renderListPrices(std::vector<Surface*>& surfaces) {
     int current_index = 0;
     SDL_Rect stretchRect;
     while (current_index < surfaces_size) {
-        stretchRect.x = x;
-        stretchRect.y = y;
-        stretchRect.w = w;
-        stretchRect.h = h;
+        stretchRect = {x, y, w, h};
         SDL_BlitScaled(surfaces[current_index]->getRenderable(), NULL,
                        getSurface(), &stretchRect);
         x = x + w;
@@ -395,10 +374,7 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
     size_t current_index = 0;
     SDL_Rect stretchRect;
     while (current_index < inventory_length) {
-        stretchRect.x = x;
-        stretchRect.y = y;
-        stretchRect.w = w;
-        stretchRect.h = h;
+        stretchRect = {x, y, w, h};
         if (isInsideArea(stretchRect, xClicked, yClicked))
             return current_index;
         y = y + h;
@@ -445,10 +421,7 @@ int SDLWindow::getRenderedListIndexByPosition(int xClicked,
     size_t current_index = 0;
     SDL_Rect stretchRect;
     while (current_index < list_length) {
-        stretchRect.x = x;
-        stretchRect.y = y;
-        stretchRect.w = w;
-        stretchRect.h = h;
+        stretchRect = {x, y, w, h};
         if (isInsideArea(stretchRect, xClicked, yClicked))
             return current_index;
         x = x + w;
