@@ -42,6 +42,7 @@ void GameSoundManager::initSounds() {
     addNewSound(path_melee, CREATURE_PUNCH);
     addNewSound(path_sword, SWORD_STRIKE);
     addNewSound(path_explosion, EXPLOSION);
+    soundOn = true;
 }
 
 void GameSoundManager::addNewSound(std::string path, soundType type) {
@@ -65,7 +66,7 @@ GameSoundManager::~GameSoundManager() {
 
 
 void GameSoundManager::playSound(soundType sound) {
-    if (Mix_Playing(-1) != 0) return;
+    if (Mix_Playing(-1) != 0 || not soundOn) return;
     //en caso sonido aun no implementado no queremos que rompa
     if (chunkMap.find(sound) == chunkMap.end()) return;
     if (Mix_PlayChannel(-1, chunkMap.at(sound), 0) == -1) {
@@ -73,12 +74,26 @@ void GameSoundManager::playSound(soundType sound) {
     }
 }
 
+void GameSoundManager::toggleSound() {
+    if (soundOn) {
+        for (int i = 0; i < CHANNELS; i++) {
+            Mix_Pause(i);
+        }
+        std::cout << "\nEfectos pausados";
+        soundOn = false;
+    } else {
+        soundOn = true;
+    }
+}
+
 void GameSoundManager::toggleMusic() {
     if (musicOn) {
         Mix_PauseMusic();
+        std::cout << "\nMusica pausada";
         musicOn = false;
     } else {
         Mix_ResumeMusic();
+        std::cout << "\nMusica activada";
         musicOn = true;
     }
 }

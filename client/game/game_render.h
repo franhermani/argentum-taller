@@ -71,6 +71,7 @@ public:
     void renderWorld(position_t position);
     void toggleFullscreen();
     void toggleMusic();
+    void toggleSound();
 
 
     //Inicializador de SDL

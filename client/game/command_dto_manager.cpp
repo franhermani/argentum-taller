@@ -42,7 +42,10 @@ CommandDTO* CommandDTOManager::operator()(int key) {
     } else if (key == SDLK_F11) {
         gameRender->toggleMusic();
         throw CommandCreationException("Tecla ingresada no crea comando");
-    }else if (key == SDLK_ESCAPE) {
+    } else if (key == SDLK_F10) {
+        gameRender->toggleSound();
+        throw CommandCreationException("Tecla ingresada no crea comando");
+    } else if (key == SDLK_ESCAPE) {
         throw StopGameException("Han solicitado salir del juego");
     } else if (mapMonitor.isInteracting()) {
         if (key == SDLK_w) {

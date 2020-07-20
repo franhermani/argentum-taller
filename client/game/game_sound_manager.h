@@ -19,12 +19,14 @@ class GameSoundManager {
     void initSounds();
     void initMusic();
     int musicOn;
+    int soundOn;
 
 public:
     GameSoundManager();
     ~GameSoundManager();
     void playSound(soundType type);
     void toggleMusic();
+    void toggleSound();
 };
 
 

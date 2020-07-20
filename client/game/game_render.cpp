@@ -251,6 +251,10 @@ void GameRender::toggleMusic() {
     soundManager.toggleMusic();
 }
 
+void GameRender::toggleSound() {
+    soundManager.toggleSound();
+}
+
 int GameRender::getInventoryItemByPosition(int x, int y) {
     int inventory_length = current_world.player_info.inventory.length;
     int position = window.getRenderedItemIndexByPosition(x, y,
