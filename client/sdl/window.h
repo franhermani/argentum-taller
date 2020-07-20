@@ -26,25 +26,20 @@ class SDLWindow {
     SDL_Renderer *renderer;
     WindowMeasurements measurements;
 
-    void renderExperience(std::map<int, float>& player_info,
-                          std::map<int, Surface *>& info_surfaces_map);
-
-    void renderLife(std::map<int, float>& player_info,
-                          std::map<int, Surface *>& info_surfaces_map);
-
-    void renderMana(std::map<int, float>& player_info,
-                          std::map<int, Surface *>& info_surfaces_map);
-
     void renderEqIfExists(std::map<int, Surface*>& surfaces_map,
                                      SDL_Rect& rect, int item);
 
     SDL_Rect calculateMapObjectRect(int x, int y);
     int isOutsideFrameArea(SDL_Rect& stretch_rect, game_area_t& frame_area);
+    SDL_Rect calculateInventoryStartRect();
 
-    void renderInfoBar(int type, Surface * bar, Surface* background,
+    void renderInfoBar(Surface * bar, Surface* background,
             game_area_t& area, float percentage);
 
-        public:
+    void renderListArea(game_area_t& list_area,
+            std::vector<Surface*>& surfaces);
+
+public:
     // Constructor
     SDLWindow(const int screenWidth, const int screenHeight);
 
