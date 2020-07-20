@@ -11,6 +11,7 @@ class Map {
     world_t world;
     npcs_t npcs;
     list_t list;
+    player_t mainPlayer;
     //el 108
     std::vector<int> mapDimensions;
     std::atomic<bool> interactingWithNpc;

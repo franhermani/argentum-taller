@@ -4,7 +4,7 @@
 #include <zconf.h>
 #include "client.h"
 #include "../common/socket_error.h"
-#include "../common/defines/username_confirmation.h"
+#include "../common/defines/username_codes.h"
 #include "sdl/exception.h"
 
 #define OK 0
@@ -37,6 +37,8 @@ int main(int argc, char *argv[]) {
         std::cerr << e.what() << "\n";
     } catch(SDLException& e) {
         std::cerr << e.what() << "\n";
+    } catch(SoundException& e) {
+        std::cerr << e.what() << "\n";
     }
     catch(...) {
         std::cerr << "Error desconocido\n";
@@ -63,13 +65,10 @@ const uint8_t readRaceType() {
     std::cout << "Primero, elige una de las siguientes razas "
                  "para tu personaje:\n";
     std::cout <<
-              "1. Humanos: son una raza equilibrada\n" <<
-              "2. Elfos: son muy inteligentes y ágiles, "
-              "pero de una constitución física frágil\n" <<
-              "3. Enanos: son muy fuertes y resistentes, "
-              "pero la agilidad no es lo suyo\n" <<
-              "4. Gnomos: inteligentes y resistentes, "
-              "pero mucho menos ágiles que los elfos\n";
+              "1. Humano\n" <<
+              "2. Elfo\n" <<
+              "3. Enano\n" <<
+              "4. Gnomo\n";
 
     std::cout << "\nElige una raza ingresando el número correspondiente: ";
     std::cin >> race_type;
@@ -86,19 +85,12 @@ const uint8_t readClassType() {
 
     std::cout << "\n¡Muy bien! Ahora, elige una de las siguientes clases "
                  "para tu personaje:\n";
-    std::cout <<
-              "1. Magos: quienes hayan estudiado magia han cultivado "
-              "sus mentes y menos sus cuerpos\n" <<
-              "2. Clérigos: un poco menos inteligentes y hábiles que "
-              "los magos, los clérigos compensan sus falencias con un "
-              "mayor desempeño físico\n" <<
-              "3. Paladines: entrenados para el combate, son fuertes y "
-              "resistentes aunque capaces también de usar magia, con una "
-              "mucho menor inteligencia que un mago\n" <<
-              "4. Guerreros: han dedicado toda su vida al combate, son "
-              "típicamente más fuertes y resistentes que otros pero carecen "
-              "de la sabiduría para usar la magia\n";
 
+    std::cout <<
+              "1. Mago\n" <<
+              "2. Clérigo\n" <<
+              "3. Paladin\n" <<
+              "4. Guerrero\n";
     std::cout << "\nElige una clase ingresando el número correspondiente: ";
     std::cin >> class_type;
     while (valid_numbers.count(class_type) == 0) {

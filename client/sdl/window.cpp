@@ -13,13 +13,12 @@
 SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
                 screenHeight(screenHeight), screenWidth(screenWidth),
                 measurements(){
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
         throw SDLException("\nError al inicializar SDL", SDL_GetError());
 
     if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
             SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
-    //todo aca chequeo de excepciones
     if (TTF_Init() < 0) {
         throw SDLException("\nNo se pudo inicializar ttf", SDL_GetError());
     }
@@ -35,6 +34,7 @@ SDLWindow::~SDLWindow() {
         SDL_DestroyWindow(window);
         window = nullptr;
     }
+    SDL_VideoQuit();
 }
 
 
@@ -73,38 +73,38 @@ void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
             getSurface(), &stretchRect);
 }
 
-void SDLWindow::renderEquipped(player_t& player,
-                              std::map<int, Surface*>& surfaces_map) {
-    game_area_t& equipped_area = measurements.equipped;
-    int equipped_width = (equipped_area.x_pixel_end -
-            equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
+
+void SDLWindow::renderAnimatedMapObject(int x, int y,
+        Surface* character_surface, int iteration) {
+    game_area_t& frame_area = measurements.frame;
     SDL_Rect stretchRect;
-    stretchRect.x = equipped_area.x_pixel_begin;
-    stretchRect.y = equipped_area.y_pixel_begin;
-    stretchRect.w = equipped_width;
-    stretchRect.h = equipped_area.y_pixel_end-equipped_area.y_pixel_begin;
-    //weapon
-    if (player.weapon != NO_ITEM_EQUIPPED)
-    SDL_BlitScaled(surfaces_map.at(player.weapon)->
-                           getRenderableSurface(), NULL,
+    stretchRect.x = getXPixelPos(x);
+    stretchRect.y = getYPixelPos(y);
+    stretchRect.w = measurements.xWidthTileSize;
+    stretchRect.h = measurements.yHeightTileSize;
+    if ((stretchRect.x+measurements.xWidthTileSize
+         >= frame_area.x_pixel_end) ||
+        (stretchRect.y+measurements.yHeightTileSize
+         >= frame_area.y_pixel_end)) return;
+    SDL_Rect origin_rect = measurements.measureAnimatedRect(iteration);
+    SDL_BlitScaled(character_surface->getRenderableSurface(), &origin_rect,
                    getSurface(), &stretchRect);
-    //armor
-    stretchRect.x = stretchRect.x + equipped_width;
-    if (player.armor != NO_ITEM_EQUIPPED)
-    SDL_BlitScaled(surfaces_map.at(player.armor)->
-                           getRenderableSurface(), NULL,
-                   getSurface(), &stretchRect);
-    //helmet
-    stretchRect.x = stretchRect.x + equipped_width;
-    if (player.helmet != NO_ITEM_EQUIPPED)
-    SDL_BlitScaled(surfaces_map.at(player.helmet)->
-                           getRenderableSurface(), NULL,
-                   getSurface(), &stretchRect);
-    //shield
-    stretchRect.x = stretchRect.x + equipped_width;
-    if (player.shield != NO_ITEM_EQUIPPED)
-    SDL_BlitScaled(surfaces_map.at(player.shield)->
-                           getRenderableSurface(), NULL,
+}
+
+void SDLWindow::renderMapObjectLifeBar(int x, int y, Surface* bar,
+        float percentage) {
+    game_area_t& frame_area = measurements.frame;
+    SDL_Rect stretchRect;
+    float bar_width = measurements.xWidthTileSize*0.6 * percentage;
+    stretchRect.x = getXPixelPos(x) + (measurements.xWidthTileSize) * 0.2;
+    stretchRect.y = getYPixelPos(y);
+    stretchRect.w = bar_width;
+    stretchRect.h = (measurements.yHeightTileSize)*0.1;
+    if ((stretchRect.x+measurements.xWidthTileSize
+         >= frame_area.x_pixel_end) ||
+        (stretchRect.y+measurements.yHeightTileSize
+         >= frame_area.y_pixel_end)) return;
+    SDL_BlitScaled(bar->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
 }
 
@@ -181,8 +181,7 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
             INVENTORY_MAX_TILES_HEIGHT;
     x = inventory_area.x_pixel_begin;
     y = inventory_area.y_pixel_begin;
-    int surfaces_size = inventory.size();
-    int current_index = 0;
+    int surfaces_size = inventory.size(), current_index = 0;
     while (current_index < surfaces_size) {
         SDL_Rect stretchRect;
         stretchRect.x = x;
@@ -202,7 +201,7 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
 }
 
 void SDLWindow::renderLife(std::map<int, float>& player_info,
-                           std::map<int, Surface *> info_surfaces_map) {
+                           std::map<int, Surface *>& info_surfaces_map) {
     game_area_t& life_area = measurements.life;
     SDL_Rect stretchRect;
     float life_percentage = player_info[LIFE];
@@ -211,10 +210,8 @@ void SDLWindow::renderLife(std::map<int, float>& player_info,
     stretchRect.w = (int) ((float)(life_area.x_pixel_end -
                                    life_area.x_pixel_begin))*life_percentage;
     stretchRect.h = life_area.y_pixel_end - life_area.y_pixel_begin;
-
     SDL_BlitScaled(info_surfaces_map[LIFE]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
-
     stretchRect.x = stretchRect.x + stretchRect.w;
     stretchRect.y = life_area.y_pixel_begin;
     stretchRect.w = life_area.x_pixel_end -
@@ -225,9 +222,8 @@ void SDLWindow::renderLife(std::map<int, float>& player_info,
 }
 
 void SDLWindow::renderMana(std::map<int, float>& player_info,
-                           std::map<int, Surface *> info_surfaces_map) {
+                           std::map<int, Surface *>& info_surfaces_map) {
     SDL_Rect stretchRect;
-
     game_area_t& mana_area = measurements.mana;
     float mana_percentage = player_info[MANA];
     stretchRect.x = mana_area.x_pixel_begin;
@@ -237,7 +233,6 @@ void SDLWindow::renderMana(std::map<int, float>& player_info,
     stretchRect.h = mana_area.y_pixel_end - mana_area.y_pixel_begin;
     SDL_BlitScaled(info_surfaces_map[MANA]->getRenderableSurface(), NULL,
                    getSurface(), &stretchRect);
-
     stretchRect.x = stretchRect.x + stretchRect.w;
     stretchRect.y = mana_area.y_pixel_begin;
     stretchRect.w = mana_area.x_pixel_end -
@@ -247,8 +242,45 @@ void SDLWindow::renderMana(std::map<int, float>& player_info,
                    getSurface(), &stretchRect);
 }
 
+
+void SDLWindow::renderEquipped(player_t& player,
+                               std::map<int, Surface*>& surfaces_map) {
+    game_area_t& equipped_area = measurements.equipped;
+    int equipped_width = (equipped_area.x_pixel_end -
+                          equipped_area.x_pixel_begin) /
+                                  EQUIPPED_MAX_TILES_WIDTH;
+    SDL_Rect stretchRect;
+    stretchRect.x = equipped_area.x_pixel_begin;
+    stretchRect.y = equipped_area.y_pixel_begin;
+    stretchRect.w = equipped_width;
+    stretchRect.h = equipped_area.y_pixel_end-equipped_area.y_pixel_begin;
+    //weapon
+    if (surfaces_map.find(player.weapon) != surfaces_map.end())
+        SDL_BlitScaled(surfaces_map.at(player.weapon)->
+                               getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+    //armor
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (surfaces_map.find(player.armor) != surfaces_map.end())
+        SDL_BlitScaled(surfaces_map.at(player.armor)->
+                               getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+    //helmet
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (surfaces_map.find(player.helmet) != surfaces_map.end())
+        SDL_BlitScaled(surfaces_map.at(player.helmet)->
+                               getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+    //shield
+    stretchRect.x = stretchRect.x + equipped_width;
+    if (surfaces_map.find(player.shield) != surfaces_map.end())
+        SDL_BlitScaled(surfaces_map.at(player.shield)->
+                               getRenderableSurface(), NULL,
+                       getSurface(), &stretchRect);
+}
+
 void SDLWindow::renderExperience(std::map<int, float>& player_info,
-                           std::map<int, Surface *> info_surfaces_map) {
+                           std::map<int, Surface *>& info_surfaces_map) {
     SDL_Rect stretchRect;
     game_area_t& experience_area = measurements.experience;
 
@@ -276,26 +308,20 @@ void SDLWindow::renderLevel(Surface* level_surface) {
     SDL_BlitScaled(level_surface->getRenderableSurface(), NULL,
                    getSurface(), &measurements.levelStaticRect);
 }
-
-void SDLWindow::renderText(Surface* surface) {
-        SDL_Rect Message_rect; //create a rect
-    Message_rect.x = 300;  //controls the rect's x coordinate
-    Message_rect.y = 300; // controls the rect's y coordinte
-    Message_rect.w = 120; // controls the width of the rect
-    Message_rect.h = 120; // controls the height of the rect
-
-    SDL_BlitScaled(surface->getRenderableSurface(), NULL,
-                   getSurface(), &Message_rect);
-    //todo el free se hace aca?
+void SDLWindow::renderName(Surface* level_surface) {
+    SDL_BlitScaled(level_surface->getRenderableSurface(), NULL,
+                   getSurface(), &measurements.nameStaticRect);
 }
 
+
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
-        std::map<int, Surface *> info_surfaces_map,
-        Surface* level_surface) {
+        std::map<int, Surface *>& info_surfaces_map,
+        Surface* level_surface, Surface* name_surface) {
     renderLife(player_info, info_surfaces_map);
     renderMana(player_info, info_surfaces_map);
     renderExperience(player_info, info_surfaces_map);
     renderLevel(level_surface);
+    renderName(name_surface);
 }
 
 
@@ -434,8 +460,7 @@ void SDLWindow::toggleFullscreen() {
         SDL_SetWindowFullscreen(window, 0);
         fullscreen = false;
         measurements.updateResolution(screenWidth, screenHeight);
-    }
-    else {
+    } else {
         //to fullscreen
         SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
         fullscreen = true;

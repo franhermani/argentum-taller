@@ -24,14 +24,16 @@
 #include "exception.h"
 #include "../sdl/exception.h"
 #include "../../common/defines/attacks.h"
-
+#define NUMBER_OF_ITERATIONS_FOR_ANIMATION 5
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
+
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
-        MapMonitor& mapMonitor) :
+        MapMonitor& mapMonitor, std::string username) :
                        screenWidth(screenWidth), screenHeight(screenHeight),
                        mapMonitor(mapMonitor),
+                       username(username),
                        window(screenWidth, screenHeight),
                        surfacesManager(window) {
     init();
@@ -40,103 +42,87 @@ GameRender::GameRender(const int screenWidth, const int screenHeight,
 }
 
 GameRender::~GameRender() {
-    Mix_FreeChunk(swordSound);
-    Mix_FreeChunk(explosionSound);
-    Mix_FreeMusic(music);
-    Mix_Quit();
     SDL_Quit();
 }
 
 int GameRender::init() {
-    //Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        throw SDLException(
-                "\nError al inicializar video de sdl", SDL_GetError());
-    }
-    initMusic();
     return true;
 }
 
-void GameRender::initMusic() {
-    int flags = MIX_INIT_FLAC;
-    int result = 0;
+void GameRender::run() {
+    using clock = std::chrono::system_clock;
+    using ms = std::chrono::milliseconds;
+    std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
+    blocksWidth = mapMonitor.getPlayerVisionWidth();
+    blocksHeight = mapMonitor.getPlayerVisionHeight();
+    mapDimensions = mapMonitor.getDimensions();
+    window.setTilesSize(blocksWidth,blocksHeight);
 
-    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-
-    if (flags != (result = Mix_Init(flags))) {
-        printf("Could not initialize mixer (result: %d).\n", result);
-        printf("Mix_Init: %s\n", Mix_GetError());
-        exit(1);
+    while (keepRunning) {
+        auto start = clock::now();
+        current_world = mapMonitor.getCurrentWorld();
+        renderGame();
+        auto end = clock::now();
+        auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
+        auto time_to_sleep = WAIT_TIME_FOR_WORLD_TO_UPDATE - elapsed;
+        std::this_thread::sleep_for(ms(time_to_sleep));
     }
-    static const char* path_sword = "../client/resources/audio/sword.wav";
-    static const char* path_explosion = "../client/resources/audio/explosion.wav";
-    swordSound = Mix_LoadWAV(path_sword);
-    if (swordSound == NULL) {
-        std::cout << "Error: Could not load .wav file: " << path_sword << std::endl;
-    }
-    explosionSound = Mix_LoadWAV(path_explosion);
-    if (explosionSound == NULL) {
-        std::cout << "Error: Could not load .wav file: " << path_explosion << std::endl;
-    }
-    static const char* path_music = "../client/resources/audio/got.mp3";
-    music = Mix_LoadMUS(path_music);
-    if (music == NULL) {
-        std::cout << "Error: Could not load .mp3 file: " << path_music << std::endl;
-    }
-    Mix_PlayMusic(music, -1);
 }
 
-void GameRender::renderPlayers(std::vector<player_t>& players) {
-    surfacesManager.createNecessaryPlayers(players);
-    for (auto it = std::begin(players);
-         it != std::end(players); ++it) {
-        Surface* player_surface;
-        int state = it->state;
-        if (state == STATE_NORMAL)
-        player_surface = surfacesManager.
-                playerSurfacesMap[it->race_type][it->orientation];
-        else
-            player_surface = surfacesManager.stateSurfacesMap[state][it->orientation];
-        window.renderMapObject(it->pos.x, it->pos.y,
-                               player_surface);
+void GameRender::renderGame() {
+    for (int i=0; i<NUMBER_OF_ITERATIONS_FOR_ANIMATION; i++) {
+        renderGameFrame();
+        renderWorld(current_world.main_player.pos);
+        renderItems(current_world.items);
+        renderGolds(current_world.golds);
+        renderPlayers(current_world.players, i);
+        renderNpcs(current_world.npcs);
+        renderCreatures(current_world.creatures);
+        renderInventory(current_world.player_info.inventory.items);
+        renderInventoryGolds(current_world.player_info.actual_gold);
+        renderEquipped(current_world.players);
+        renderEquippedList(current_world.main_player);
+        renderAttacks(current_world.attacks);
+        renderPlayerInfo(current_world.percentages,
+                         current_world.main_player.level);
+        if (mapMonitor.isInteracting()) renderList(current_world.list);
+        window.UpdateWindowSurface();
+        using ms = std::chrono::milliseconds;
+        std::this_thread::sleep_for(ms(WAIT_TIME_FOR_WORLD_TO_UPDATE/
+                                    NUMBER_OF_ITERATIONS_FOR_ANIMATION));
     }
 }
 
 void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
-    Surface* level_surface = surfacesManager.
-            getTextSurface(std::to_string(level));
+    Surface* level_surface = surfacesManager(
+            std::to_string(level));
+    Surface* name_surface = surfacesManager(username);
     window.renderPlayerInfo(current_world.percentages,
-                            surfacesManager.infoSurfacesMap, level_surface);
+            surfacesManager.infoSurfacesMap, level_surface, name_surface);
 }
 
 
 void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
-    surfacesManager.createNecessaryCreatures(creatures);
     for (auto it = std::begin(creatures);
          it != std::end(creatures); ++it) {
-        Surface* creature_surface;
-        int state = it->state;
-            if (state == STATE_NORMAL)
+        if (it->state == STATE_NORMAL) {
             window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager.
-                    creatureSurfacesMap[it->type][it->orientation]);
-            else {
-                creature_surface = surfacesManager.stateSurfacesMap[state][it->orientation];
-                window.renderMapObject(it->pos.x, it->pos.y,
-                                       creature_surface);
-            }
-
+                    surfacesManager(*it));
+            window.renderMapObjectLifeBar(it->pos.x, it->pos.y,
+                    surfacesManager.infoSurfacesMap[LIFE],
+                    (it->actual_life/(float) it->max_life));
+        } else {
+            window.renderMapObject(it->pos.x, it->pos.y,
+                    surfacesManager(it->state, it->orientation));
+        }
     }
 }
 
-
-
 void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
-    surfacesManager.createNecessaryNpcs(npcs);
     for (auto it = std::begin(npcs);
          it != std::end(npcs); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.npcSurfacesMap[it->type][it->orientation]);
+                surfacesManager(*it));
     }
 }
 
@@ -150,34 +136,20 @@ void GameRender::renderEquippedList(player_t& player) {
 
 
 void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
-
-    surfacesManager.createNecessaryAttacks(attacks);
     for (auto it = std::begin(attacks);
          it != std::end(attacks); ++it) {
-        if (it->sound == SWORD_STRIKE) {
-            if (Mix_PlayChannel(0, swordSound, 0) == -1){
-                std::cout << "Error: Could not play wav file  on channel "
-                          << 0 << std::endl;
-            }
-        }
-        else if (it->sound == EXPLOSION) {
-            if (Mix_PlayChannel(0, explosionSound, 0) == -1){
-                std::cout << "Error: Could not play wav file  on channel "
-                          << 0 << std::endl;
-            }
-        }
+        soundManager.playSound((soundType) it->sound);
         window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.attackSurfacesMap[it->type][it->orientation]);
+                surfacesManager(*it));
     }
 }
 
 
 void GameRender::renderItems(std::vector<item_t> &items) {
-    surfacesManager.createNecessaryItems(items);
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.itemSurfacesMap[it->type]);
+                               surfacesManager(it->type));
     }
 }
 
@@ -200,64 +172,72 @@ void GameRender::renderGameFrame() {
 
 void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
     surfacesManager.createNecessaryFrameItems(inventory);
-    //TODO QUE PASA ACA?? SE ITERA AL PEDO? FIXEAR
-    for (auto it = std::begin(inventory);
-         it != std::end(inventory); ++it) {
-        window.renderInventory(inventory,
+    window.renderInventory(inventory,
                          surfacesManager.itemSurfacesMap);
+}
+
+void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
+    for (auto it = std::begin(players);
+         it != std::end(players); ++it) {
+        stateType state = it->state;
+        if (state == STATE_NORMAL) {
+            window.renderMapObject(it->pos.x, it->pos.y,
+                                   surfacesManager(*it));
+        } else {
+            try {
+                window.renderAnimatedMapObject(it->pos.x, it->pos.y,
+                        surfacesManager.animation(state), iteration);
+            } catch (SurfaceExistanceException& e) {
+                window.renderMapObject(it->pos.x, it->pos.y,
+                        surfacesManager(it->state, it->orientation));
+            }
+        }
+    }
+}
+
+void GameRender::renderSingleEquipped(player_t& player, int part) {
+    //TODO PASAR GETTER A OPERATOR
+
+    try {
+        window.renderMapObject(player.pos.x, player.pos.y,
+                               surfacesManager.getEquipped(part, player.orientation));
+    } catch (SurfaceExistanceException& e) {
+        return;
     }
 }
 
 void GameRender::renderEquipped(std::vector<player_t>& players) {
-    // todo el create necesary no deberia ser para cada uno?
-    //sino podemos crear algo par aun fantasma. osea al pedo
-    surfacesManager.createNecessaryEquipped(players);
+    //todo podemos crear algo par aun fantasma. osea al pedo
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         if (it->state == STATE_GHOST) continue;
-        if (it->armor != NO_ITEM_EQUIPPED)
-        window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.equippedWeaponSurfacesMap[it->armor][it->orientation]);
-        if (it->shield != NO_ITEM_EQUIPPED)
-        window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.equippedWeaponSurfacesMap[it->shield][it->orientation]);
-        if (it->weapon != NO_ITEM_EQUIPPED)
-            window.renderMapObject(it->pos.x, it->pos.y,
-                                   surfacesManager.equippedWeaponSurfacesMap[it->weapon][it->orientation]);
-
+        renderSingleEquipped(*it, it->armor);
+        renderSingleEquipped(*it, it->shield);
+        renderSingleEquipped(*it, it->weapon);
+        renderSingleEquipped(*it, it->helmet);
     }
 }
 
 void GameRender::renderInventoryGolds(uint16_t quantity) {
     window.renderInventoryGolds(surfacesManager.goldSurface,
-            surfacesManager.getTextSurface(std::to_string(quantity)));
+            surfacesManager(std::to_string(quantity)));
 }
 
 
-void GameRender::setTilesSize(int width,int height) {
-    blocksWidth = width;
-    blocksHeight = height;
-    window.setTilesSize(width,height);
-}
 
 void GameRender::renderList(list_t list) {
-    //if ((list.num_items == 0) && (list.gold_quantity == 0)) return;
-    surfacesManager.createNecessaryListItems(list.items);
-    std::vector<Surface*> surfaces;
-    for (auto it = std::begin(list.items); it != std::end(list.items); ++it) {
-         surfaces.push_back(surfacesManager.itemSurfacesMap[it->type]);
-    }
+    std::vector<Surface*> surfaces = surfacesManager(list.items);
     window.renderList(surfaces);
     if (list.show_price) {
         std::vector<Surface*> price_surfaces;
         for (auto it = std::begin(list.items);
         it != std::end(list.items); ++it) {
-            price_surfaces.push_back(surfacesManager.getTextSurface(
-                    std::to_string(it->price)));
+            price_surfaces.push_back(surfacesManager(
+                    std::to_string(it->price) + " "));
         }
         window.renderListPrices(price_surfaces);
     } else {
-        Surface* quantity = surfacesManager.getTextSurface(
+        Surface* quantity = surfacesManager(
                 std::to_string(list.gold_quantity));
         window.renderListGold(surfacesManager.goldSurface, quantity);
     }
@@ -267,42 +247,12 @@ void GameRender::toggleFullscreen() {
     window.toggleFullscreen();
 }
 
-void GameRender::run() {
-    using clock = std::chrono::system_clock;
-    using ms = std::chrono::milliseconds;
-    std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
-    blocksWidth = mapMonitor.getPlayerVisionWidth();
-    blocksHeight = mapMonitor.getPlayerVisionHeight();
-    mapDimensions = mapMonitor.getDimensions();
-    window.setTilesSize(blocksWidth,blocksHeight);
+void GameRender::toggleMusic() {
+    soundManager.toggleMusic();
+}
 
-
-    while (keepRunning) {
-        auto start = clock::now();
-
-
-        renderGameFrame();
-        current_world = mapMonitor.getCurrentWorld();
-        renderWorld(current_world.main_player.pos);
-        renderItems(current_world.items);
-        renderPlayers(current_world.players);
-        renderNpcs(current_world.npcs);
-        renderCreatures(current_world.creatures);
-        renderInventory(current_world.player_info.inventory.items);
-        renderInventoryGolds(current_world.player_info.actual_gold);
-        renderEquipped(current_world.players);
-        renderEquippedList(current_world.main_player);
-        renderAttacks(current_world.attacks);
-        renderGolds(current_world.golds);
-        renderPlayerInfo(current_world.percentages,
-                current_world.main_player.level);
-        if (mapMonitor.isInteracting()) renderList(current_world.list);
-        window.UpdateWindowSurface();
-        auto end = clock::now();
-        auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
-        auto time_to_sleep = WAIT_TIME_FOR_WORLD_TO_UPDATE - elapsed;
-        std::this_thread::sleep_for(ms(time_to_sleep));
-    }
+void GameRender::toggleSound() {
+    soundManager.toggleSound();
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {

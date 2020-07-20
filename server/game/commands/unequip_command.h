@@ -19,7 +19,7 @@ public:
     // Destructor
     ~UnequipCommand() override;
 
-    // Toma un objeto equipado y lo guarda en el inventario
+    // Toma un item equipado y lo guarda en el inventario
     void execute(World& world) override;
 };
 

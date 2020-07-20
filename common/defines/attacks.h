@@ -11,6 +11,7 @@
 
 enum attackType {
     MELEE,
+    NO_WEAPON_MELEE,
     MAGIC_ARROW_SPELL,
     HEAL_SPELL,
     MISSILE_SPELL,

@@ -8,7 +8,7 @@ MapMonitor::MapMonitor() {}
 
 MapMonitor::~MapMonitor() {}
 
-//inicializa matriz
+
 void MapMonitor::initialize(int username_id,
         std::vector<int>& blocks_around,
         npcs_t& npcs, std::vector<int>& map_dimensions) {
@@ -16,7 +16,6 @@ void MapMonitor::initialize(int username_id,
     map.initialize(username_id, blocks_around, npcs, map_dimensions);
 }
 
-//actualiza el vector de jugadores
 void MapMonitor::updateWorld(world_t receivedWorld, list_t list) {
     std::unique_lock<std::mutex> lk(m);
     map.updateWorld(std::move(receivedWorld), std::move(list));
@@ -25,6 +24,8 @@ void MapMonitor::updateWorld(world_t receivedWorld, list_t list) {
 int MapMonitor::getPlayerVisionWidth() {
     return map.getPlayerVisionWidth();
 }
+
+
 int MapMonitor::getPlayerVisionHeight() {
     return map.getPlayerVisionHeight();
 }

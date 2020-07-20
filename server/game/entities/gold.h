@@ -18,9 +18,6 @@ public:
     // Constructor y asignacion por copia deshabilitados
     Gold(const Gold& other) = delete;
     Gold& operator=(const Gold& other) = delete;
-
-    // Actualiza la posicion (posX, posY) del oro
-    void updatePosition(position_t new_pos);
 };
 
 #endif // GOLD_H

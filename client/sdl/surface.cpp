@@ -31,16 +31,10 @@ Surface::Surface(const std::string filename, const SDLWindow& window,
     }
 }
 
-Surface::Surface(std::string text, const SDLWindow &window) {
-    //todo sacar 25 y color afuera
-    TTF_Font *font = TTF_OpenFont("../client/resources/fonts/goudy.ttf", 100);
-    if (font == NULL) {
-        throw SDLException("\nError al cargar font de surfaces",
-                SDL_GetError());
-    }
-    SDL_Color White = {255, 255,255};
+Surface::Surface(std::string text, const SDLWindow &window,
+        TTF_Font* font, SDL_Color& color) {
     SDL_Surface *basic_surface = TTF_RenderText_Solid(font,
-            text.c_str(), White);
+            text.c_str(), color);
     SDL_Surface *optimized_surface = SDL_ConvertSurface(
             basic_surface, window.getSurfaceFormat(), 0);
     SDL_FreeSurface(basic_surface);
@@ -48,7 +42,6 @@ Surface::Surface(std::string text, const SDLWindow &window) {
         throw SDLException("\nError al optimizar la surface",
         SDL_GetError());
     surface = optimized_surface;
-    TTF_CloseFont(font);
 }
 
 Surface::~Surface() {

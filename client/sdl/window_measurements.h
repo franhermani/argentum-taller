@@ -24,13 +24,16 @@ struct WindowMeasurements {
     game_area_t mana;
     game_area_t experience;
     game_area_t level;
+    game_area_t name;
 
     SDL_Rect levelStaticRect;
+    SDL_Rect nameStaticRect;
     SDL_Rect worldStaticRect;
     SDL_Rect gameFrameStaticRect;
     SDL_Rect inventoryGoldStaticRect;
     SDL_Rect listGoldStaticRect;
     SDL_Rect listGoldQuantityStaticRect;
+    SDL_Rect animatedObjStaticRect;
     WindowMeasurements();
     ~WindowMeasurements();
 
@@ -38,7 +41,8 @@ struct WindowMeasurements {
     void initialize(int numberOfTilesInWidth, int numberOfTilesInHeight,
                     int screenWidth, int screenHeight);
     void updateResolution(int width, int height);
-    
+    SDL_Rect measureAnimatedRect(int iteration);
+
 private:
     void initializePlayerInfo(int screenWidth, int screenHeight);
     void initializeItemInfo(int screenWidth, int screenHeight);

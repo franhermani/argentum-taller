@@ -14,12 +14,10 @@ void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
     screenHeight = receivedScreenHeight;
     frame = {screenWidth / 50, (screenWidth / 4) * 3,
              screenHeight / 5, (screenHeight / 100) * 99};
-
     xWidthTileSize = (frame.x_pixel_end - frame.x_pixel_begin) /
             numberOfTilesInWidth;
     yHeightTileSize = (frame.y_pixel_end - frame.y_pixel_begin) /
             numberOfTilesInHeight;
-
     initializeItemInfo(screenWidth, screenHeight);
     initializePlayerInfo(screenWidth, screenHeight);
     initializeStaticAreas();
@@ -30,7 +28,6 @@ void WindowMeasurements::updateResolution(int width, int height) {
 }
 
 void WindowMeasurements::initializeStaticAreas() {
-    //TODO ver si frame sigue teniendo sentido que exista
     worldStaticRect.x = frame.x_pixel_begin;
     worldStaticRect.y = frame.y_pixel_begin;
     worldStaticRect.w = frame.x_pixel_end - frame.x_pixel_begin;
@@ -57,6 +54,14 @@ void WindowMeasurements::initializeStaticAreas() {
     levelStaticRect.h = (level_area.y_pixel_end -
             level_area.y_pixel_begin);
 
+    game_area_t& name_area = name;
+    nameStaticRect.x = name_area.x_pixel_begin;
+    nameStaticRect.y = name_area.y_pixel_begin;
+    nameStaticRect.w = (name_area.x_pixel_end -
+            name_area.x_pixel_begin);
+    nameStaticRect.h = (name_area.y_pixel_end -
+            name_area.y_pixel_begin);
+
 
     game_area_t& list_gold_area = listGold;
     listGoldStaticRect.x = list_gold_area.x_pixel_begin;
@@ -72,6 +77,12 @@ void WindowMeasurements::initializeStaticAreas() {
                             list_gold_area.x_pixel_begin);
     listGoldQuantityStaticRect.h = (list_gold_area.y_pixel_end -
                             list_gold_area.y_pixel_begin);
+
+
+    animatedObjStaticRect.x = 80;
+    animatedObjStaticRect.y = 175;
+    animatedObjStaticRect.w = 80;
+    animatedObjStaticRect.h = 175;
 }
 
 
@@ -97,6 +108,11 @@ void WindowMeasurements::initializePlayerInfo(int screenWidth,
              (int) ((screenWidth / 100.0) * 93.8),
              (int) ((screenHeight / 100.0) * 84.8),
              (int) ((screenHeight /100.0) * 90)};
+
+    name =  {(int)  ((screenWidth/100.0) *  84.3),
+             (int) ((screenWidth/100.0) * 93.0),
+             (int) ((screenHeight/100.0) * 92.7),
+             (int) ((screenHeight/100.0) * 97.2)};
 }
 
 void WindowMeasurements::initializeItemInfo(int screenWidth,
@@ -104,25 +120,17 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
     inventory = {(screenWidth / 100) * 84, (screenWidth / 100) * 102,
                  screenHeight / 4, (screenHeight /100) * 64};
 
-    /*TODO ESTO AHORA VA A SER LA POSICION DE LAS EXCEPCIONES
-    exceptions = {(int) (screenWidth / 100.0) * 85,
-                      (int) (screenWidth / 100.0) * 89,
-                     (int) ((screenHeight / 100.0) * 95),
-                     (int) ((screenHeight /100.0) * 99)};
-*/
-
     inventoryGold = {(int) ((screenWidth / 100.0) * 93),
                 (int) ((screenWidth / 100.0) * 98.0),
                 (int) ((screenHeight / 100.0) * 74.2),
                 (int) ((screenHeight /100.0) * 78)};
 
-
-    list = {(int) (screenWidth / 100.0) * 44,
+    list = {(int) (screenWidth / 100.0) * 46,
             (int) (screenWidth / 100.0) * 74,
             (int) (screenHeight / 100.0) * 5,
             (int) (screenHeight /100.0) * 15};
 
-    list_prices = {(int) (screenWidth / 100.0) * 44,
+    list_prices = {(int) (screenWidth / 100.0) * 46,
             (int) (screenWidth / 100.0) * 74,
             (int) (screenHeight / 100.0) * 10,
             (int) (screenHeight /100.0) * 15};
@@ -136,4 +144,11 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
                 (screenHeight / 100) * 4, (screenHeight /100) * 15};
 }
 
+
+SDL_Rect WindowMeasurements::measureAnimatedRect(int iteration) {
+    SDL_Rect origin_rect = animatedObjStaticRect;
+    origin_rect.x = origin_rect.x*iteration;
+    origin_rect.y = origin_rect.y*iteration;
+    return origin_rect;
+}
 WindowMeasurements::~WindowMeasurements() {}

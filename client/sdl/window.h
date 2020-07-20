@@ -27,13 +27,13 @@ class SDLWindow {
     WindowMeasurements measurements;
 
     void renderExperience(std::map<int, float>& player_info,
-                          std::map<int, Surface *> info_surfaces_map);
+                          std::map<int, Surface *>& info_surfaces_map);
 
     void renderLife(std::map<int, float>& player_info,
-                          std::map<int, Surface *> info_surfaces_map);
+                          std::map<int, Surface *>& info_surfaces_map);
 
     void renderMana(std::map<int, float>& player_info,
-                          std::map<int, Surface *> info_surfaces_map);
+                          std::map<int, Surface *>& info_surfaces_map);
 
 
 
@@ -81,6 +81,9 @@ public:
     int getYPixelPos(int y_tile_position);
 
     void renderMapObject(int x, int y, Surface *character_surface);
+    void renderAnimatedMapObject(int x, int y, Surface *character_surface,
+            int iteration);
+    void renderMapObjectLifeBar(int x, int y, Surface* bar, float percentage);
 
     //renderizadores marco + lo que contiene
     void renderGameFrame(Surface *surface);
@@ -89,14 +92,14 @@ public:
     void renderEquipped(player_t& player,
             std::map<int, Surface*>& surfaces_map);
     void renderPlayerInfo(std::map<int, float>& player_info,
-            std::map<int, Surface *> info_surfaces_map,
-            Surface* level_surface);
+            std::map<int, Surface *>& info_surfaces_map,
+            Surface* level_surface, Surface* name_surface);
     void renderList(std::vector<Surface*>& surfaces);
     void renderListPrices(std::vector<Surface*>& surfaces);
     void renderListGold(Surface* surface, Surface* quantity);
     void renderInventoryGolds(Surface* surface, Surface* quantity);
-    void renderText(Surface* surface);
     void renderLevel(Surface* level_surface);
+    void renderName(Surface* name_surface);
     void renderWorld(Surface* surface, position_t positon,
                      int dimensions_width, int dimensions_height);
 

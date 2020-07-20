@@ -3,6 +3,7 @@
 
 #include "../../common/thread.h"
 #include "protocol.h"
+#include <string>
 #include "../game/map_monitor.h"
 
 class ConnectionReceiver : public Thread {

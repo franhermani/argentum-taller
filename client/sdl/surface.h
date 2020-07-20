@@ -1,6 +1,6 @@
 #ifndef SURFACE_H
 #define SURFACE_H
-
+#include <SDL2/SDL_ttf.h>
 #include <string>
 
 class SDLWindow;
@@ -10,11 +10,12 @@ class Surface {
     SDL_Surface* surface;
 
 public:
-    // Constructor
+    // ConstructorSurface
     Surface(const std::string filename, const SDLWindow& window,
             int isTransparent);
     // Constructor surface de texto
-    Surface(const std::string text, const SDLWindow &window);
+    Surface(const std::string text, const SDLWindow &window,
+            TTF_Font* font, SDL_Color& color);
 
     // Destructor
     ~Surface();

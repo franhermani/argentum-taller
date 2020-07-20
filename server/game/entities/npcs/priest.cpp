@@ -42,22 +42,22 @@ void Priest::sellItem(Player &player, const int type) {
 }
 
 void Priest::depositItem(Player &player, const int type) {
-    throw GameException(player.getId(), "Un sacerdote no tiene"
+    throw GameException(player.getId(), "Un sacerdote no tiene "
                                    "acceso al banco");
 }
 
 void Priest::withdrawItem(Player &player, const int type) {
-    throw GameException(player.getId(), "Un sacerdote no tiene"
+    throw GameException(player.getId(), "Un sacerdote no tiene "
                                    "acceso al banco");
 }
 
 void Priest::depositGold(Player &player) {
-    throw GameException(player.getId(), "Un sacerdote no tiene"
+    throw GameException(player.getId(), "Un sacerdote no tiene "
                                    "acceso al banco");
 }
 
 void Priest::withdrawGold(Player &player) {
-    throw GameException(player.getId(), "Un sacerdote no tiene"
+    throw GameException(player.getId(), "Un sacerdote no tiene "
                                    "acceso al banco");
 }
 

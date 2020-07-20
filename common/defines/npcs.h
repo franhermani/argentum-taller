@@ -1,7 +1,7 @@
 #ifndef NPCS_H
 #define NPCS_H
 
-enum npcTypes {
+enum npcType {
     PRIEST,
     MERCHANT,
     BANKER

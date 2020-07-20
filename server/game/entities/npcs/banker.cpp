@@ -51,7 +51,7 @@ void Banker::withdrawItem(Player &player, int type) {
     try {
         player.addItemToInventory(item);
     } catch (GameException& e) {
-        depositItem(player, type);
+        bank.depositItem(player.getId(), item);
         throw e;
     }
 }

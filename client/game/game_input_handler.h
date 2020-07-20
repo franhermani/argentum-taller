@@ -13,24 +13,6 @@ class GameInputHandler {
     MapMonitor &mapMonitor;
     GameRender *gameRender;
 
-    int isLeftClick(SDL_Event &event);
-
-    void waitForLeftClick(int &x, int &y);
-
-
-    CommandDTO* handleEquip();
-    CommandDTO* handleUnequip();
-    CommandDTO* handleHeal();
-    CommandDTO* handleList();
-    CommandDTO* handleTake();
-    CommandDTO* handleThrow();
-    CommandDTO* handleRevive();
-    CommandDTO* handleDeposit();
-    CommandDTO* handleSell();
-    CommandDTO* handleWithdraw();
-    CommandDTO* handleBuy();
-    CommandDTO* handleAttack();
-    CommandDTO* handleMeditate();
 
 
 public:
@@ -58,6 +40,11 @@ public:
     // Devuelve true si el thread no esta corriendo o
     // false en caso contrario
     bool isDead();
+
+
+    int isLeftClick(SDL_Event &event);
+    int isMoveKey(SDL_Event& event);
+    void waitForLeftClick(int &x, int &y);
 };
 
 #endif // GAME_INPUT_HANDLER_H

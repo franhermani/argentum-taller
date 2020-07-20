@@ -4,7 +4,6 @@
 #include <mutex>
 #include <condition_variable>
 #include <vector>
-
 #include "../client_handler.h"
 
 class ClientsBlockingVector {

@@ -5,7 +5,7 @@
 #include "game_handler.h"
 #include "exception.h"
 #include "../sdl/exception.h"
-#include "../../common/defines/username_confirmation.h"
+#include "../../common/defines/username_codes.h"
 
 
 GameHandler::GameHandler(const char *host, const char *port,
@@ -17,12 +17,12 @@ GameHandler::GameHandler(const char *host, const char *port,
     connectionReceiver = new ConnectionReceiver(socket, mapMonitor);
     checkUsername();
     printStartMessage();
-    File file("../client/resources/client_config.json");
+    File file("../client/config/screen_resolution.json");
     json resolution = jsonParser.getResolution(file);
     try {
         std::cout << "\nIniciando renderizado\n";
         gameRender = new GameRender(resolution["width"],
-                resolution["height"], mapMonitor);
+                resolution["height"], mapMonitor, username);
     } catch (SDLException& e) {
         delete connectionSender;
         delete connectionReceiver;
