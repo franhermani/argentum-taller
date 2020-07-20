@@ -19,7 +19,6 @@ class Map {
     //el 9
     int playerVisionWidth;
     int playerVisionHeight;
-
     //Dada la posicion de un jugador, devuelve la posicion donde
     // arrancaria en X su submatriz dentro de la matriz principal
     int getPlayerXStart(player_t& player);
@@ -40,11 +39,11 @@ class Map {
 
 
     //busca en la lista actual de jugadores y devuelve el principal
-    player_t getMainPlayer();
+    player_t findMainPlayer();
 
 
-    int getNewBordersXPosition(int pos_x, player_t& main_player);
-    int getNewBordersYPosition(int pos_y, player_t& main_player);
+    uint16_t getNewBordersXPosition(uint16_t pos_x, player_t& main_player);
+    uint16_t getNewBordersYPosition(uint16_t pos_y, player_t& main_player);
 
 
     // devuelve los npcs/players/criatura/item
@@ -99,7 +98,9 @@ public:
     void interact();
     void uninteract();
     int isInteracting();
-    };
+    template<typename T>
+    std::vector<T> findVisible(std::vector<T> vec);
+};
 
 
 

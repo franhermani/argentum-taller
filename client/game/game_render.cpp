@@ -196,18 +196,15 @@ void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
 }
 
 void GameRender::renderSingleEquipped(player_t& player, int part) {
-    //TODO PASAR GETTER A OPERATOR
-
     try {
         window.renderMapObject(player.pos.x, player.pos.y,
-                               imagesManager.getEquipped(part, player.orientation));
+                imagesManager.getEquipped(part, player.orientation));
     } catch (SurfaceExistanceException& e) {
         return;
     }
 }
 
 void GameRender::renderEquipped(std::vector<player_t>& players) {
-    //todo podemos crear algo par aun fantasma. osea al pedo
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         if (it->state == STATE_GHOST) continue;
