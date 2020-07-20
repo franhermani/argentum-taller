@@ -11,7 +11,7 @@
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"
-#include "game_Surfaces_manager.h"
+#include "game_images_manager.h"
 #include "game_sound_manager.h"
 
 
@@ -25,12 +25,11 @@ class GameRender : public Thread {
     int blocksHeight;
     std::vector<int> mapDimensions;
     SDLWindow window;
-    GameSurfacesManager surfacesManager;
+    GameImagesManager imagesManager;
     GameSoundManager soundManager;
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
-    client_world_t previous_world;
 
 
     void renderGame();

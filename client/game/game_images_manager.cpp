@@ -1,5 +1,5 @@
 
-#include "game_Surfaces_manager.h"
+#include "game_images_manager.h"
 #include "iostream"
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/races.h"
@@ -11,7 +11,7 @@
 #include "../sdl/exception.h"
 
 
-GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window) {
+GameImagesManager::GameImagesManager(SDLWindow& window) : window(window) {
     mainFont = TTF_OpenFont("../client/resources/fonts/goudy.ttf", 100);
     if (mainFont == NULL) {
         throw SDLException("\nError al cargar font de surfaces",
@@ -19,7 +19,7 @@ GameSurfacesManager::GameSurfacesManager(SDLWindow& window) : window(window) {
     }
     mainColor = {255, 255,255};
 }
-GameSurfacesManager::~GameSurfacesManager(){
+GameImagesManager::~GameImagesManager(){
     for (auto const& surface : infoSurfacesMap) {
         delete surface.second;
     }
@@ -55,7 +55,7 @@ GameSurfacesManager::~GameSurfacesManager(){
 }
 
 
-Surface* GameSurfacesManager::operator()(std::string text) {
+Surface* GameImagesManager::operator()(std::string text) {
     if (textSurfaces.find(text)
         == textSurfaces.end()) {
         Surface* surface = new Surface(text, window, mainFont, mainColor);
@@ -67,12 +67,12 @@ Surface* GameSurfacesManager::operator()(std::string text) {
 }
 
 
-Surface* GameSurfacesManager::operator()(stateType state, int orientation) {
+Surface* GameImagesManager::operator()(stateType state, int orientation) {
     return stateSurfacesMap[state][orientation];
 }
 
 
-Surface* GameSurfacesManager::operator()(attack_t& attack) {
+Surface* GameImagesManager::operator()(attack_t& attack) {
     int type = attack.type;
     int orientation = attack.orientation;
     if (attackSurfacesMap[type].find(orientation)
@@ -87,7 +87,7 @@ Surface* GameSurfacesManager::operator()(attack_t& attack) {
 }
 
 
-Surface* GameSurfacesManager::operator()(npc_t& npc) {
+Surface* GameImagesManager::operator()(npc_t& npc) {
     int type = npc.type;
     int orientation = npc.orientation;
     if (npcSurfacesMap[type].find(orientation)
@@ -101,7 +101,7 @@ Surface* GameSurfacesManager::operator()(npc_t& npc) {
     }
 }
 
-Surface* GameSurfacesManager::operator()(creature_t& creature) {
+Surface* GameImagesManager::operator()(creature_t& creature) {
     int type = creature.type;
     int orientation = creature.orientation;
     if (creatureSurfacesMap[type].find(orientation)
@@ -116,7 +116,7 @@ Surface* GameSurfacesManager::operator()(creature_t& creature) {
 }
 
 
-Surface* GameSurfacesManager::operator()(player_t& player) {
+Surface* GameImagesManager::operator()(player_t& player) {
     int race = player.race_type;
     int orientation = player.orientation;
     if (playerSurfacesMap[race].find(orientation)
@@ -131,7 +131,7 @@ Surface* GameSurfacesManager::operator()(player_t& player) {
 }
 
 
-Surface* GameSurfacesManager::operator()(int item_type) {
+Surface* GameImagesManager::operator()(int item_type) {
     if (itemSurfacesMap.find(item_type)
         == itemSurfacesMap.end()) {
         Surface* surface = new Surface(
@@ -144,7 +144,7 @@ Surface* GameSurfacesManager::operator()(int item_type) {
 }
 
 
-std::vector<Surface*> GameSurfacesManager::operator()(
+std::vector<Surface*> GameImagesManager::operator()(
         std::vector<list_item_t> items) {
     std::vector<Surface*> surfaces;
     for (auto& item: items) {
@@ -163,7 +163,7 @@ std::vector<Surface*> GameSurfacesManager::operator()(
     return surfaces;
 }
 
-Surface* GameSurfacesManager::animation(stateType state) {
+Surface* GameImagesManager::animation(stateType state) {
     if (animatedStateMap.find(state)
         == animatedStateMap.end()) {
         if (animatedStatePaths.find(state)
@@ -179,7 +179,7 @@ Surface* GameSurfacesManager::animation(stateType state) {
     return animatedStateMap[state];
 }
 
-Surface* GameSurfacesManager::getEquipped(
+Surface* GameImagesManager::getEquipped(
         int weapon, int orientation) {
     if (equippedWeaponSurfacesPaths.find(weapon)
         == equippedWeaponSurfacesPaths.end())
@@ -195,7 +195,7 @@ Surface* GameSurfacesManager::getEquipped(
     return equippedWeaponSurfacesMap[weapon][orientation];
 }
 
-void GameSurfacesManager::createNecessaryFrameItems(
+void GameImagesManager::createNecessaryFrameItems(
         std::vector<uint8_t>& items) {
     for (auto& type: items) {
         if (itemSurfacesPaths.find(type)
@@ -210,7 +210,7 @@ void GameSurfacesManager::createNecessaryFrameItems(
 }
 
 
-void GameSurfacesManager::loadAnimatedPaths() {
+void GameImagesManager::loadAnimatedPaths() {
     animatedStatePaths = {
             {STATE_MEDITATING,
              "../client/resources/images/characters/meditating_anim_t.png"},
@@ -219,7 +219,7 @@ void GameSurfacesManager::loadAnimatedPaths() {
     };
 }
 
-void GameSurfacesManager::loadCreaturePaths() {
+void GameImagesManager::loadCreaturePaths() {
     //CRIATURAS
     std::map<int, std::string> skeleton_orientations = {
             {UP, "../client/resources/images/characters/skeleton_up_t.png"},
@@ -265,7 +265,7 @@ void GameSurfacesManager::loadCreaturePaths() {
     };
 }
 
-void GameSurfacesManager::loadEquippedPaths() {
+void GameImagesManager::loadEquippedPaths() {
     std::map<int, std::string> baculo_orientations = {
             {UP, "../client/resources/images/weapons/baculo_nudoso_up_p_t.png"},
             {DOWN,
@@ -465,7 +465,7 @@ void GameSurfacesManager::loadEquippedPaths() {
 }
 
 
-void GameSurfacesManager::loadNpcPaths() {
+void GameImagesManager::loadNpcPaths() {
     //npcs
     std::map<int, std::string> banker_orientations = {
             {UP, "../client/resources/images/characters/banker_up_t.png"},
@@ -504,7 +504,7 @@ void GameSurfacesManager::loadNpcPaths() {
 
 
 
-void GameSurfacesManager::loadAttackPaths() {
+void GameImagesManager::loadAttackPaths() {
     std::map<int, std::string> multiple_arrow_orientations = {
             {UP, "../client/resources/images/attacks/triple_arrow_up_t.png"},
             {DOWN,
@@ -596,7 +596,7 @@ void GameSurfacesManager::loadAttackPaths() {
     };
 }
 
-void GameSurfacesManager::loadPlayerPaths() {
+void GameImagesManager::loadPlayerPaths() {
     //JUGADORES
 
     std::map<int, std::string> human_orientations = {
@@ -701,7 +701,7 @@ void GameSurfacesManager::loadPlayerPaths() {
     };
 }
 
-void GameSurfacesManager::loadItemPaths() {
+void GameImagesManager::loadItemPaths() {
     itemSurfacesPaths = {
             {ESPADA, "../client/resources/images/weapons/espada_t.png"},
             {HACHA, "../client/resources/images/weapons/hacha_t.png"},
@@ -738,7 +738,7 @@ void GameSurfacesManager::loadItemPaths() {
     };
 }
 
-void GameSurfacesManager::loadSurfacePaths() {
+void GameImagesManager::loadSurfacePaths() {
     loadCreaturePaths();
     loadNpcPaths();
     loadPlayerPaths();
@@ -748,7 +748,7 @@ void GameSurfacesManager::loadSurfacePaths() {
     loadAnimatedPaths();
     createFrameSurfaces();
 }
-void GameSurfacesManager::createFrameSurfaces() {
+void GameImagesManager::createFrameSurfaces() {
     gameFrameSurface = new Surface(
             "../client/resources/images/etc/game_frame.jpeg", window, 0);
     worldSurface = new Surface(

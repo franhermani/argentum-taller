@@ -1,6 +1,6 @@
 
-#ifndef ARGENTUM_GAME_SURFACES_MANAGER_H
-#define ARGENTUM_GAME_SURFACES_MANAGER_H
+#ifndef ARGENTUM_GAME_IMAGES_MANAGER_H
+#define ARGENTUM_GAME_IMAGES_MANAGER_H
 #include <vector>
 #include <map>
 #include <string>
@@ -13,7 +13,7 @@
 #include "../sdl/surface.h"
 #include "../sdl/window.h"
 
-class GameSurfacesManager {
+class GameImagesManager {
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
@@ -61,13 +61,13 @@ class GameSurfacesManager {
 
 public:
     //Constructor
-    explicit GameSurfacesManager(SDLWindow& window);
+    explicit GameImagesManager(SDLWindow& window);
 
     //Destructor
-    ~GameSurfacesManager();
+    ~GameImagesManager();
     // Constructor y asignacion por copia deshabilitados
-    GameSurfacesManager(const GameSurfacesManager& other) = delete;
-    GameSurfacesManager& operator=(const GameSurfacesManager& other) = delete;
+    GameImagesManager(const GameImagesManager& other) = delete;
+    GameImagesManager& operator=(const GameImagesManager& other) = delete;
     Surface* operator()(player_t& player);
     Surface* operator()(int item_type);
     Surface* operator()(stateType state, int orientation);
@@ -81,4 +81,4 @@ public:
 };
 
 
-#endif //ARGENTUM_GAME_SURFACES_MANAGER_H
+#endif //ARGENTUM_GAME_IMAGES_MANAGER_H
