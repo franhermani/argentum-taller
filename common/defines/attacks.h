@@ -21,12 +21,14 @@ enum attackType {
 };
 
 enum soundType {
-    SOUNDLESS,
     PLAYER_PUNCH,
     CREATURE_PUNCH,
     SWORD_STRIKE,
+    AXE_STRIKE,
     HAMMER_STRIKE,
+    ARROW_STRIKE,
     MAGIC_STRIKE,
+    HEAL_STRIKE,
     EXPLOSION
 };
 

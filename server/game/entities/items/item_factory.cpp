@@ -40,14 +40,14 @@ itemParams(std::move(item_params)) {
                       {MULTIPLE_ARROW_STRING, MULTIPLE_ARROW}};
 
     attackSoundsMap = {{ESPADA, SWORD_STRIKE},
-                       {HACHA, SWORD_STRIKE},
+                       {HACHA, AXE_STRIKE},
                        {MARTILLO, HAMMER_STRIKE},
                        {VARA_FRESNO, MAGIC_STRIKE},
-                       {FLAUTA_ELFICA, MAGIC_STRIKE},
+                       {FLAUTA_ELFICA, HEAL_STRIKE},
                        {BACULO_NUDOSO, MAGIC_STRIKE},
                        {BACULO_ENGARZADO, EXPLOSION},
-                       {ARCO_SIMPLE, SOUNDLESS},
-                       {ARCO_COMPUESTO, SOUNDLESS}};
+                       {ARCO_SIMPLE, ARROW_STRIKE},
+                       {ARCO_COMPUESTO, ARROW_STRIKE}};
 
     weapons = {ESPADA, HACHA, MARTILLO, VARA_FRESNO, FLAUTA_ELFICA,
                BACULO_NUDOSO, BACULO_ENGARZADO, ARCO_SIMPLE, ARCO_COMPUESTO};
