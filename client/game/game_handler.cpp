@@ -16,11 +16,10 @@ GameHandler::GameHandler(const char *host, const char *port,
     connectionSender->sendPlayerInfo(username, race_type, class_type);
     connectionReceiver = new ConnectionReceiver(socket, mapMonitor);
     checkUsername();
-    printStartMessage();
     File file("../client/config/screen_resolution.json");
     json resolution = jsonParser.getResolution(file);
     try {
-        std::cout << "\nIniciando renderizado\n";
+        printStartMessage();
         gameRender = new GameRender(resolution["width"],
                 resolution["height"], mapMonitor, username);
     } catch (SDLException& e) {
@@ -56,7 +55,7 @@ void GameHandler::checkUsername() {
 
 void GameHandler::printStartMessage() {
     std::cout << "\n¡Jugador creado correctamente!\n" <<
-              "El juego comenzará en unos instantes...\n";
+    "\nEl juego comenzará en unos instantes...\n";
 }
 
 void GameHandler::run() {
