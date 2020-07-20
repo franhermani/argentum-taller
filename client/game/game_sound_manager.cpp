@@ -79,10 +79,8 @@ void GameSoundManager::toggleSound() {
         for (int i = 0; i < CHANNELS; i++) {
             Mix_Pause(i);
         }
-        std::cout << "\nEfectos pausados";
         soundOn = false;
     } else {
-        std::cout << "\nEfectos activados";
         soundOn = true;
     }
 }
@@ -90,11 +88,9 @@ void GameSoundManager::toggleSound() {
 void GameSoundManager::toggleMusic() {
     if (musicOn) {
         Mix_PauseMusic();
-        std::cout << "\nMusica pausada";
         musicOn = false;
     } else {
         Mix_ResumeMusic();
-        std::cout << "\nMusica activada";
         musicOn = true;
     }
 }
