@@ -33,7 +33,7 @@ GameSurfacesManager::~GameSurfacesManager(){
         delete surface.second;
     }
     for (auto const& orientations : creatureSurfacesMap) {
-        for (auto const& surface : orientations.second) delete surface.second;
+        for (auto const& surface : orientations.second)  delete surface.second;
     }
     for (auto const& orientations : stateSurfacesMap) {
         for (auto const& surface : orientations.second) delete surface.second;

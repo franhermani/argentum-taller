@@ -2,7 +2,7 @@
 
 #include "game_sound_manager.h"
 #define CHUNKSIZE 2048
-#define CHANNELS 2
+#define CHANNELS 4
 #define FREQUENCY 44100
 #define DEFAULT_CHANNEL 0
 
@@ -36,6 +36,9 @@ void GameSoundManager::initMusic() {
 void GameSoundManager::initSounds() {
     std::string path_sword = "../client/resources/audio/sword.wav";
     std::string path_explosion = "../client/resources/audio/explosion.wav";
+    std::string path_melee = "../client/resources/audio/melee.wav";
+    addNewSound(path_melee, PLAYER_PUNCH);
+    addNewSound(path_melee, CREATURE_PUNCH);
     addNewSound(path_sword, SWORD_STRIKE);
     addNewSound(path_explosion, EXPLOSION);
 }
@@ -61,9 +64,10 @@ GameSoundManager::~GameSoundManager() {
 
 
 void GameSoundManager::playSound(soundType sound) {
+    if (Mix_Playing(-1) != 0) return;
     //en caso sonido aun no implementado no queremos que rompa
     if (chunkMap.find(sound) == chunkMap.end()) return;
-    if (Mix_PlayChannel(DEFAULT_CHANNEL, chunkMap.at(sound), 0) == -1) {
+    if (Mix_PlayChannel(-1, chunkMap.at(sound), 0) == -1) {
         throw SoundException("\nError: Could not play wav file on channel");
     }
 }

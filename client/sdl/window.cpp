@@ -201,7 +201,7 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
 }
 
 void SDLWindow::renderLife(std::map<int, float>& player_info,
-                           std::map<int, Surface *> info_surfaces_map) {
+                           std::map<int, Surface *>& info_surfaces_map) {
     game_area_t& life_area = measurements.life;
     SDL_Rect stretchRect;
     float life_percentage = player_info[LIFE];
@@ -222,7 +222,7 @@ void SDLWindow::renderLife(std::map<int, float>& player_info,
 }
 
 void SDLWindow::renderMana(std::map<int, float>& player_info,
-                           std::map<int, Surface *> info_surfaces_map) {
+                           std::map<int, Surface *>& info_surfaces_map) {
     SDL_Rect stretchRect;
     game_area_t& mana_area = measurements.mana;
     float mana_percentage = player_info[MANA];
@@ -280,7 +280,7 @@ void SDLWindow::renderEquipped(player_t& player,
 }
 
 void SDLWindow::renderExperience(std::map<int, float>& player_info,
-                           std::map<int, Surface *> info_surfaces_map) {
+                           std::map<int, Surface *>& info_surfaces_map) {
     SDL_Rect stretchRect;
     game_area_t& experience_area = measurements.experience;
 
@@ -315,7 +315,7 @@ void SDLWindow::renderName(Surface* level_surface) {
 
 
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
-        std::map<int, Surface *> info_surfaces_map,
+        std::map<int, Surface *>& info_surfaces_map,
         Surface* level_surface, Surface* name_surface) {
     renderLife(player_info, info_surfaces_map);
     renderMana(player_info, info_surfaces_map);
