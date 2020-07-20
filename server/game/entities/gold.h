@@ -1,7 +1,7 @@
 #ifndef GOLD_H
 #define GOLD_H
 
-#include "../../../common/defines/position.h"
+#include "../../../common/utilities/position.hpp"
 
 class Gold {
     int quantity;

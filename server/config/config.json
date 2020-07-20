@@ -295,7 +295,7 @@
           "min_damage": 0,
           "max_damage": 0,
           "mana_consumption": 100,
-          "range": 10,
+          "range": 1,
           "move_velocity": 300,
           "is_magic": true,
           "is_life_restorer": true,
