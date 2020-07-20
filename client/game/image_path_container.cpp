@@ -56,35 +56,34 @@ void ImagePathContainer::loadAnimatedPaths() {
             {STATE_MEDITATING,
                     "../client/resources/images/characters/meditating_anim_t.png"},
             {STATE_REVIVING,
-                    "../client/resources/images/characters/reviving_anim_t.png"},
+                    "../client/resources/images/characters/reviving_anim_t.png"}
     };
 }
 
 void ImagePathContainer::loadStatePaths() {
-
-    ghostSurfacesPaths = {
-            {UP, "../client/resources/images/characters/ghost_up_t.png")},
-            {DOWN, "../client/resources/images/characters/ghost_down_t.png")},
-            {LEFT, "../client/resources/images/characters/ghost_left_t.png")},
-            {RIGHT, "../client/resources/images/characters/ghost_right_t.png")}
+    std::map<int, std::string> ghostSurfacesPaths = {
+            {UP, "../client/resources/images/characters/ghost_up_t.png"},
+            {DOWN, "../client/resources/images/characters/ghost_down_t.png"},
+            {LEFT, "../client/resources/images/characters/ghost_left_t.png"},
+            {RIGHT, "../client/resources/images/characters/ghost_right_t.png"}
     };
-    revivingSurfacesPaths = {
-            {UP, "../client/resources/images/characters/reviving_up_t.png")},
-            {DOWN, "../client/resources/images/characters/reviving_down_t.png")},
-            {LEFT, "../client/resources/images/characters/reviving_left_t.png")},
-            {RIGHT, "../client/resources/images/characters/reviving_right_t.png")}
+    std::map<int, std::string> revivingSurfacesPaths = {
+            {UP, "../client/resources/images/characters/reviving_up_t.png"},
+            {DOWN, "../client/resources/images/characters/reviving_down_t.png"},
+            {LEFT, "../client/resources/images/characters/reviving_left_t.png"},
+            {RIGHT, "../client/resources/images/characters/reviving_right_t.png"}
     };
-    meditateSurfacesPaths = {
-            {UP, "../client/resources/images/characters/meditating_up_t.png")},
-            {DOWN, "../client/resources/images/characters/meditating_down_t.png")},
-            {LEFT, "../client/resources/images/characters/meditating_left_t.png")},
-            {RIGHT, "../client/resources/images/characters/meditating_right_t.png")}
+    std::map<int, std::string> meditateSurfacesPaths = {
+            {UP, "../client/resources/images/characters/meditating_up_t.png"},
+            {DOWN, "../client/resources/images/characters/meditating_down_t.png"},
+            {LEFT, "../client/resources/images/characters/meditating_left_t.png"},
+            {RIGHT, "../client/resources/images/characters/meditating_right_t.png"}
     };
-    dyingSurfacesPaths = {
-            {UP, "../client/resources/images/characters/dying_creature_up_t.png")},
-            {DOWN, "../client/resources/images/characters/dying_creature_down_t.png")},
-            {LEFT, "../client/resources/images/characters/dying_creature_left_t.png")},
-            {RIGHT, "../client/resources/images/characters/dying_creature_right_t.png")}
+    std::map<int, std::string> dyingSurfacesPaths = {
+            {UP, "../client/resources/images/characters/dying_creature_up_t.png"},
+            {DOWN, "../client/resources/images/characters/dying_creature_down_t.png"},
+            {LEFT, "../client/resources/images/characters/dying_creature_left_t.png"},
+            {RIGHT, "../client/resources/images/characters/dying_creature_right_t.png"}
     };
 
     stateSurfacesPaths = {
@@ -92,8 +91,8 @@ void ImagePathContainer::loadStatePaths() {
             {STATE_REVIVING, revivingSurfacesPaths},
             {STATE_MEDITATING, meditateSurfacesPaths},
             {STATE_GHOST, ghostSurfacesPaths}
-    }
-};
+    };
+}
 
 void ImagePathContainer::loadEquippedPaths() {
     std::map<int, std::string> baculo_orientations = {

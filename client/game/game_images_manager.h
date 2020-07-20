@@ -43,9 +43,7 @@ class GameImagesManager {
     void initPlayers();
     void initAttack();
     void initEquipped();
-
-
-    void createFrameSurfaces();
+    void initFrame();
 
     // inicializadores lazy de surfaces
     void createNecessaryFrameItems(std::vector<uint8_t>& items);

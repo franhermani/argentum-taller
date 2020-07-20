@@ -374,18 +374,16 @@ void GameImagesManager::initPlayers() {
 }
 
 void GameImagesManager::loadSurfacePaths() {
-    loadCreaturePaths();
-    loadNpcPaths();
-    loadPlayerPaths();
-    loadItemPaths();
-    loadAttackPaths();
-    loadEquippedPaths();
-    loadAnimatedPaths();
-    createFrameSurfaces();
+    initCreatures();
+    initNpc();
+    initPlayers();
+    initAttack();
+    initEquipped();
+    initFrame();
 }
 
 
-void GameImagesManager::createFrameSurfaces() {
+void GameImagesManager::initFrame() {
     gameFrameSurface = new Surface(
             "../client/resources/images/etc/game_frame.jpeg", window, 0);
     worldSurface = new Surface(
