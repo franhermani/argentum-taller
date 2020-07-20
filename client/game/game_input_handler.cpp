@@ -2,7 +2,7 @@
 #include "game_input_handler.h"
 #include "map_monitor.h"
 #include "exception.h"
-#include "../data_transfer_objects/command_dto_manager.h"
+#include "command_dto_manager.h"
 #include <vector>
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,

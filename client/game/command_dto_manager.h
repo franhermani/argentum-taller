@@ -3,11 +3,11 @@
 #define ARGENTUM_COMMAND_DTO_MANAGER_H
 
 #include <SDL2/SDL_events.h>
-#include "command_dto.h"
+#include "../data_transfer_objects/command_dto.h"
 #include "../../common/defines/commands.h"
-#include "../game/exception.h"
-#include "../game/map_monitor.h"
-#include "../game/game_render.h"
+#include "exception.h"
+#include "map_monitor.h"
+#include "game_render.h"
 
 class GameInputHandler;
 
