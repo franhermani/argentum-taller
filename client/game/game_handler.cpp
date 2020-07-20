@@ -17,7 +17,7 @@ GameHandler::GameHandler(const char *host, const char *port,
     connectionReceiver = new ConnectionReceiver(socket, mapMonitor);
     checkUsername();
     printStartMessage();
-    File file("../client/resources/client_config.json");
+    File file("../client/config/screen_resolution.json");
     json resolution = jsonParser.getResolution(file);
     try {
         std::cout << "\nIniciando renderizado\n";
