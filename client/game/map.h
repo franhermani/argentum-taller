@@ -19,7 +19,6 @@ class Map {
     //el 9
     int playerVisionWidth;
     int playerVisionHeight;
-
     //Dada la posicion de un jugador, devuelve la posicion donde
     // arrancaria en X su submatriz dentro de la matriz principal
     int getPlayerXStart(player_t& player);
@@ -99,7 +98,9 @@ public:
     void interact();
     void uninteract();
     int isInteracting();
-    };
+    template<typename T>
+    std::vector<T> findVisible(std::vector<T> vec);
+};
 
 
 

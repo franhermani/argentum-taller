@@ -45,6 +45,21 @@ void Map::initialize(int received_id,
     mapDimensions = std::move(map_dimensions);
 }
 
+template<typename T>
+std::vector<T> Map::findVisible(std::vector<T> vec) {
+    std::vector<T> visible_elems;
+    for (auto& elem: vec) {
+        if (not betweenPlayerBorders(elem.pos.x, elem.pos.y)) {
+            continue;
+        } else {
+            T converted_elem = elem;
+            converted_elem.pos.x = getNewBordersXPosition(elem.pos.x, mainPlayer);
+            converted_elem.pos.y = getNewBordersYPosition(elem.pos.y, mainPlayer);
+            visible_elems.push_back(converted_elem);
+        }
+    }
+    return visible_elems;
+}
 
 player_t Map::findMainPlayer() {
     for (int i=0; i<world.num_players; i++) {
@@ -82,20 +97,7 @@ int Map::getPlayerYEnd(player_t& player) {
     return y_finish;
 }
 
-std::vector<player_t> Map::findRenderablePlayers() {
-    std::vector<player_t> visible_players;
-    for (auto& player: world.players) {
-        if (not betweenPlayerBorders(player.pos.x, player.pos.y)) {
-            continue;
-        } else {
-            player_t converted_player = player;
-            converted_player.pos.x = getNewBordersXPosition(player.pos.x, mainPlayer);
-            converted_player.pos.y = getNewBordersYPosition(player.pos.y, mainPlayer);
-            visible_players.push_back(converted_player);
-        }
-    }
-    return visible_players;
-}
+
 
 int Map::betweenPlayerBorders(int pos_x, int pos_y) {
     int x_start, y_start, x_finish, y_finish;
@@ -118,86 +120,6 @@ uint16_t Map::getNewBordersYPosition(uint16_t pos_y, player_t& main_player) {
     pos = pos_y - getPlayerYStart(main_player);
     if (pos < 0) pos = 0;
     return pos;
-}
-
-std::vector<npc_t> Map::findRenderableNpcs() {
-    std::vector<npc_t> visible_npcs;
-    for (auto& npc: npcs.npcs) {
-        if (not betweenPlayerBorders(npc.pos.x, npc.pos.y)) {
-            continue;
-        } else {
-            npc_t converted_npc = npc;
-            converted_npc.pos.x = getNewBordersXPosition(npc.pos.x, mainPlayer);
-            converted_npc.pos.y = getNewBordersYPosition(npc.pos.y, mainPlayer);
-            visible_npcs.push_back(converted_npc);
-        }
-    }
-    return visible_npcs;
-}
-
-
-
-std::vector<creature_t> Map::findRenderableCreatures() {
-    std::vector<creature_t> visible_creatures;
-    for (auto& creature: world.creatures) {
-        if (not betweenPlayerBorders(creature.pos.x, creature.pos.y)) {
-            continue;
-        } else {
-            creature_t converted_creature = creature;
-            converted_creature.pos.x = getNewBordersXPosition(creature.pos.x, mainPlayer);
-            converted_creature.pos.y = getNewBordersYPosition(creature.pos.y, mainPlayer);
-            visible_creatures.push_back(converted_creature);
-        }
-    }
-    return visible_creatures;
-}
-
-std::vector<gold_t> Map::findRenderableGolds() {
-    std::vector<gold_t> visible_gold;
-    for (auto& gold: world.golds) {
-        if (not betweenPlayerBorders(gold.pos.x, gold.pos.y)) {
-            continue;
-        } else {
-            gold_t converted_gold = gold;
-            converted_gold.pos.x = getNewBordersXPosition(gold.pos.x, mainPlayer);
-            converted_gold.pos.y = getNewBordersYPosition(gold.pos.y, mainPlayer);
-            visible_gold.push_back(converted_gold);
-        }
-    }
-    return visible_gold;
-}
-
-
-std::vector<attack_t> Map::findRenderableAttacks() {
-    std::vector<attack_t> visible_attacks;
-    for (auto& attack: world.attacks) {
-        if (not betweenPlayerBorders(attack.pos.x, attack.pos.y)) {
-            continue;
-        } else {
-            attack_t converted_attack = attack;
-            converted_attack.pos.x = getNewBordersXPosition(attack.pos.x, mainPlayer);
-            converted_attack.pos.y = getNewBordersYPosition(attack.pos.y, mainPlayer);
-            visible_attacks.push_back(converted_attack);
-        }
-    }
-    return visible_attacks;
-}
-
-
-
-std::vector<item_t> Map::findRenderableItems() {
-    std::vector<item_t> visible_items;
-    for (auto& item: world.items) {
-        if (not betweenPlayerBorders(item.pos.x, item.pos.y)) {
-            continue;
-        } else {
-            item_t converted_item = item;
-            converted_item.pos.x = getNewBordersXPosition(item.pos.x, mainPlayer);
-            converted_item.pos.y = getNewBordersYPosition(item.pos.y, mainPlayer);
-            visible_items.push_back(converted_item);
-        }
-    }
-    return visible_items;
 }
 
 
@@ -299,14 +221,13 @@ client_world_t Map::getCurrentWorld() {
     client_world_t current_world;
     current_world.player_info = world.player_info;
     current_world.main_player = mainPlayer;
-    current_world.players = findRenderablePlayers();
-    current_world.items = findRenderableItems();
-    current_world.golds = findRenderableGolds();
-    current_world.creatures = findRenderableCreatures();
-    current_world.npcs = findRenderableNpcs();
+    current_world.players = findVisible(world.players);
+    current_world.items = findVisible(world.items);
+    current_world.golds = findVisible(world.golds);
+    current_world.creatures = findVisible(world.creatures);
+    current_world.npcs = findVisible(npcs.npcs);
     current_world.percentages = getPercentages();
-    current_world.attacks = findRenderableAttacks();
+    current_world.attacks = findVisible(world.attacks);
     current_world.list = list;
-
     return std::move(current_world);
 }
