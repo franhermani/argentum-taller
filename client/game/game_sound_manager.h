@@ -18,10 +18,13 @@ class GameSoundManager {
     void addNewSound(std::string path, soundType type);
     void initSounds();
     void initMusic();
+    int musicOn;
+
 public:
     GameSoundManager();
     ~GameSoundManager();
     void playSound(soundType type);
+    void toggleMusic();
 };
 
 

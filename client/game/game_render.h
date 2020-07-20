@@ -61,6 +61,7 @@ public:
     void renderItems(std::vector<item_t>& items);
     void renderAttacks(std::vector<attack_t>& attacks);
     void renderEquipped(std::vector<player_t>& players);
+    void renderSingleEquipped(player_t& player, int part);
     void renderGolds(std::vector<gold_t> &golds);
     void renderEquippedList(player_t& player);
     void renderInventory(std::vector<uint8_t>& inventory);
@@ -69,6 +70,7 @@ public:
     void renderList(list_t list);
     void renderWorld(position_t position);
     void toggleFullscreen();
+    void toggleMusic();
 
 
     //Inicializador de SDL

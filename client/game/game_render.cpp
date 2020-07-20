@@ -195,25 +195,26 @@ void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
     }
 }
 
-void GameRender::renderEquipped(std::vector<player_t>& players) {
-    //sino podemos crear algo par aun fantasma. osea al pedo
+void GameRender::renderSingleEquipped(player_t& player, int part) {
     //TODO PASAR GETTER A OPERATOR
-    //ADEMAS NO SOLO GETTEA SINO QUE CREA SI NO EXISTE
+
+    try {
+        window.renderMapObject(player.pos.x, player.pos.y,
+                               surfacesManager.getEquipped(part, player.orientation));
+    } catch (SurfaceExistanceException& e) {
+        return;
+    }
+}
+
+void GameRender::renderEquipped(std::vector<player_t>& players) {
+    //todo podemos crear algo par aun fantasma. osea al pedo
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         if (it->state == STATE_GHOST) continue;
-        if (it->armor != NO_ITEM_EQUIPPED)
-        window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.getEquipped(it->armor, it->orientation));
-        if (it->shield != NO_ITEM_EQUIPPED)
-        window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager.getEquipped(it->shield, it->orientation));
-        if (it->weapon != NO_ITEM_EQUIPPED)
-            window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager.getEquipped(it->weapon, it->orientation));
-        if (it->helmet != NO_ITEM_EQUIPPED)
-            window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager.getEquipped(it->helmet, it->orientation));
+        renderSingleEquipped(*it, it->armor);
+        renderSingleEquipped(*it, it->shield);
+        renderSingleEquipped(*it, it->weapon);
+        renderSingleEquipped(*it, it->helmet);
     }
 }
 
@@ -244,6 +245,10 @@ void GameRender::renderList(list_t list) {
 
 void GameRender::toggleFullscreen() {
     window.toggleFullscreen();
+}
+
+void GameRender::toggleMusic() {
+    soundManager.toggleMusic();
 }
 
 int GameRender::getInventoryItemByPosition(int x, int y) {

@@ -181,6 +181,9 @@ Surface* GameSurfacesManager::animation(stateType state) {
 
 Surface* GameSurfacesManager::getEquipped(
         int weapon, int orientation) {
+    if (equippedWeaponSurfacesPaths.find(weapon)
+        == equippedWeaponSurfacesPaths.end())
+        throw SurfaceExistanceException("Surface no existente");
     if (equippedWeaponSurfacesMap[weapon].find(orientation)
             == equippedWeaponSurfacesMap[weapon].end()) {
             Surface* surface = new Surface(

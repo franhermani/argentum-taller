@@ -31,6 +31,7 @@ void GameSoundManager::initMusic() {
         throw SoundException(error_msg + path_music);
     }
     Mix_PlayMusic(music, -1);
+    musicOn = true;
 }
 
 void GameSoundManager::initSounds() {
@@ -69,5 +70,15 @@ void GameSoundManager::playSound(soundType sound) {
     if (chunkMap.find(sound) == chunkMap.end()) return;
     if (Mix_PlayChannel(-1, chunkMap.at(sound), 0) == -1) {
         throw SoundException("\nError: Could not play wav file on channel");
+    }
+}
+
+void GameSoundManager::toggleMusic() {
+    if (musicOn) {
+        Mix_PauseMusic();
+        musicOn = false;
+    } else {
+        Mix_ResumeMusic();
+        musicOn = true;
     }
 }
