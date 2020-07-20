@@ -9,11 +9,11 @@
 #include "../../common/defines/npcs.h"
 #include "../sdl/render_structs.h"
 
-// constructor
+
 Map::Map() {
     interactingWithNpc = false;
 }
-// destructor
+
 Map::~Map() {}
 
 void Map::updateWorld(world_t receivedWorld, list_t received_list) {
@@ -35,16 +35,6 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
 }
 
 
-void Map::initialize(int received_id,
-        std::vector<int>& blocks_around,
-        npcs_t& received_npcs, std::vector<int>& map_dimensions) {
-    playerVisionWidth = blocks_around[0];
-    playerVisionHeight = blocks_around[1];
-    username_id = received_id;
-    npcs = std::move(received_npcs);
-    mapDimensions = std::move(map_dimensions);
-}
-
 template<typename T>
 std::vector<T> Map::findVisible(std::vector<T> vec) {
     std::vector<T> visible_elems;
@@ -58,7 +48,17 @@ std::vector<T> Map::findVisible(std::vector<T> vec) {
             visible_elems.push_back(converted_elem);
         }
     }
-    return visible_elems;
+    return std::move(visible_elems);
+}
+
+void Map::initialize(int received_id,
+                     std::vector<int>& blocks_around,
+                     npcs_t& received_npcs, std::vector<int>& map_dimensions) {
+    playerVisionWidth = blocks_around[0];
+    playerVisionHeight = blocks_around[1];
+    username_id = received_id;
+    npcs = std::move(received_npcs);
+    mapDimensions = std::move(map_dimensions);
 }
 
 player_t Map::findMainPlayer() {

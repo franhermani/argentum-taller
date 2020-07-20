@@ -200,7 +200,7 @@ void GameRender::renderSingleEquipped(player_t& player, int part) {
 
     try {
         window.renderMapObject(player.pos.x, player.pos.y,
-                               imagesManager.getEquipped(part, player.orientation));
+                imagesManager.getEquipped(part, player.orientation));
     } catch (SurfaceExistanceException& e) {
         return;
     }
