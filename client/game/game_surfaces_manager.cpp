@@ -29,6 +29,9 @@ GameSurfacesManager::~GameSurfacesManager(){
     for (auto const& surface : itemSurfacesMap) {
         delete surface.second;
     }
+    for (auto const& surface : animatedStateMap) {
+        delete surface.second;
+    }
     for (auto const& orientations : creatureSurfacesMap) {
         for (auto const& surface : orientations.second) delete surface.second;
     }
@@ -152,6 +155,20 @@ std::vector<Surface*> GameSurfacesManager::operator()(
     return surfaces;
 }
 
+Surface* GameSurfacesManager::animation(stateType state) {
+    if (animatedStateMap.find(state)
+        == animatedStateMap.end()) {
+        if (animatedStatePaths.find(state)
+            == animatedStatePaths.end())
+            throw SurfaceExistanceException("Surface no existente");
+        else {
+            Surface* surface = new Surface(animatedStatePaths[state], window, 1);
+            animatedStateMap.insert({state, surface});
+            return surface;
+        }
+    }
+    return animatedStateMap[state];
+}
 
 Surface* GameSurfacesManager::getEquipped(
         int weapon, int orientation) {
@@ -180,7 +197,14 @@ void GameSurfacesManager::createNecessaryFrameItems(
 }
 
 
+void GameSurfacesManager::loadAnimatedPaths() {
+    animatedStatePaths = {
+            {STATE_MEDITATING, "../client/resources/images/characters/meditating_anim_t.png"},
+            {STATE_REVIVING, "../client/resources/images/characters/reviving_anim_t.png"},
+    };
 
+
+}
 
 void GameSurfacesManager::loadCreaturePaths() {
     //CRIATURAS
@@ -625,6 +649,7 @@ void GameSurfacesManager::loadSurfacePaths() {
     loadItemPaths();
     loadAttackPaths();
     loadEquippedPaths();
+    loadAnimatedPaths();
     createFrameSurfaces();
 }
 void GameSurfacesManager::createFrameSurfaces() {

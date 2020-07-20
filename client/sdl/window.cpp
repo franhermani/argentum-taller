@@ -73,6 +73,23 @@ void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
             getSurface(), &stretchRect);
 }
 
+
+void SDLWindow::renderAnimatedMapObject(int x, int y, Surface* character_surface, int iteration) {
+    game_area_t& frame_area = measurements.frame;
+    SDL_Rect stretchRect;
+    stretchRect.x = getXPixelPos(x);
+    stretchRect.y = getYPixelPos(y);
+    stretchRect.w = measurements.xWidthTileSize;
+    stretchRect.h = measurements.yHeightTileSize;
+    if ((stretchRect.x+measurements.xWidthTileSize
+         >= frame_area.x_pixel_end) ||
+        (stretchRect.y+measurements.yHeightTileSize
+         >= frame_area.y_pixel_end)) return;
+    SDL_Rect origin_rect = measurements.measureAnimatedRect(iteration);
+    SDL_BlitScaled(character_surface->getRenderableSurface(), &origin_rect,
+                   getSurface(), &stretchRect);
+}
+
 void SDLWindow::renderMapObjectLifeBar(int x, int y, Surface* bar, float percentage) {
     game_area_t& frame_area = measurements.frame;
     SDL_Rect stretchRect;

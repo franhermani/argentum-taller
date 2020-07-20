@@ -10,7 +10,7 @@ class Surface {
     SDL_Surface* surface;
 
 public:
-    // Constructor
+    // ConstructorSurface
     Surface(const std::string filename, const SDLWindow& window,
             int isTransparent);
     // Constructor surface de texto

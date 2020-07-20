@@ -33,6 +33,7 @@ struct WindowMeasurements {
     SDL_Rect inventoryGoldStaticRect;
     SDL_Rect listGoldStaticRect;
     SDL_Rect listGoldQuantityStaticRect;
+    SDL_Rect animatedObjStaticRect;
     WindowMeasurements();
     ~WindowMeasurements();
 
@@ -40,7 +41,8 @@ struct WindowMeasurements {
     void initialize(int numberOfTilesInWidth, int numberOfTilesInHeight,
                     int screenWidth, int screenHeight);
     void updateResolution(int width, int height);
-    
+    SDL_Rect measureAnimatedRect(int iteration);
+
 private:
     void initializePlayerInfo(int screenWidth, int screenHeight);
     void initializeItemInfo(int screenWidth, int screenHeight);

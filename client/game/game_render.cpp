@@ -24,8 +24,9 @@
 #include "exception.h"
 #include "../sdl/exception.h"
 #include "../../common/defines/attacks.h"
-
+#define NUMBER_OF_ITERATIONS_FOR_ANIMATION 5
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
+
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
@@ -69,22 +70,27 @@ void GameRender::run() {
 }
 
 void GameRender::renderGame() {
-    renderGameFrame();
-    renderWorld(current_world.main_player.pos);
-    renderItems(current_world.items);
-    renderGolds(current_world.golds);
-    renderPlayers(current_world.players);
-    renderNpcs(current_world.npcs);
-    renderCreatures(current_world.creatures);
-    renderInventory(current_world.player_info.inventory.items);
-    renderInventoryGolds(current_world.player_info.actual_gold);
-    renderEquipped(current_world.players);
-    renderEquippedList(current_world.main_player);
-    renderAttacks(current_world.attacks);
-    renderPlayerInfo(current_world.percentages,
-                     current_world.main_player.level);
-    if (mapMonitor.isInteracting()) renderList(current_world.list);
-    window.UpdateWindowSurface();
+    for (int i=0; i<NUMBER_OF_ITERATIONS_FOR_ANIMATION; i++) {
+        renderGameFrame();
+        renderWorld(current_world.main_player.pos);
+        renderItems(current_world.items);
+        renderGolds(current_world.golds);
+        renderPlayers(current_world.players, i);
+        renderNpcs(current_world.npcs);
+        renderCreatures(current_world.creatures);
+        renderInventory(current_world.player_info.inventory.items);
+        renderInventoryGolds(current_world.player_info.actual_gold);
+        renderEquipped(current_world.players);
+        renderEquippedList(current_world.main_player);
+        renderAttacks(current_world.attacks);
+        renderPlayerInfo(current_world.percentages,
+                         current_world.main_player.level);
+        if (mapMonitor.isInteracting()) renderList(current_world.list);
+        window.UpdateWindowSurface();
+        using ms = std::chrono::milliseconds;
+        std::this_thread::sleep_for(ms(WAIT_TIME_FOR_WORLD_TO_UPDATE/
+                                    NUMBER_OF_ITERATIONS_FOR_ANIMATION));
+    }
 }
 
 void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
@@ -172,16 +178,22 @@ void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
                          surfacesManager.itemSurfacesMap);
 }
 
-void GameRender::renderPlayers(std::vector<player_t>& players) {
+void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
-        int state = it->state;
+        stateType state = it->state;
         if (state == STATE_NORMAL)
             window.renderMapObject(it->pos.x, it->pos.y,
                                    surfacesManager(*it));
-        else
-            window.renderMapObject(it->pos.x, it->pos.y,
-                                   surfacesManager(it->state, it->orientation));
+        else {
+            try {
+                window.renderAnimatedMapObject(it->pos.x, it->pos.y,
+                        surfacesManager.animation(state), iteration);
+            } catch (SurfaceExistanceException& e) {
+                window.renderMapObject(it->pos.x, it->pos.y,
+                                       surfacesManager(it->state, it->orientation));
+            }
+        }
     }
 }
 

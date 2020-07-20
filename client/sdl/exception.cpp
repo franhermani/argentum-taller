@@ -9,3 +9,10 @@ std::exception(), message(message) {
 const char* SDLException::what() const noexcept {
     return message.c_str();
 }
+
+SurfaceExistanceException::SurfaceExistanceException(const char *message) :
+        std::exception(), message(message) {}
+
+const char* SurfaceExistanceException::what() const noexcept {
+    return message.c_str();
+}

@@ -30,6 +30,7 @@ class GameRender : public Thread {
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
+    client_world_t previous_world;
 
 
     void renderGame();
@@ -52,7 +53,7 @@ public:
     bool isDead() override;
 
     //Renderizadores
-    void renderPlayers(std::vector<player_t> &players);
+    void renderPlayers(std::vector<player_t> &players, int iteration);
     void renderNpcs(std::vector<npc_t>& npcs);
     void renderCreatures(std::vector<creature_t>& creatures);
     void renderPlayerInfo(std::map<int,float>& percentages,

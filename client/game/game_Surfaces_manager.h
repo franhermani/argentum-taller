@@ -22,10 +22,12 @@ class GameSurfacesManager {
     std::map<int, std::map<int, Surface *>> equippedWeaponSurfacesMap;
     std::map<int, Surface *> itemSurfacesMap;
     std::map<int, Surface *> infoSurfacesMap;
+    std::map<int, Surface*> animatedStateMap;
     std::map<std::string, Surface*> textSurfaces;
     Surface* goldSurface;
     Surface* gameFrameSurface;
     Surface* worldSurface;
+    std::map<int, std::string> animatedStatePaths;
     std::map<int, std::map<int, std::string>> npcSurfacesPaths;
     std::map<int, std::map<int, std::string>> equippedWeaponSurfacesPaths;
     std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
@@ -47,6 +49,7 @@ class GameSurfacesManager {
     void loadItemPaths();
     void loadAttackPaths();
     void loadEquippedPaths();
+    void loadAnimatedPaths();
 
 
     void createFrameSurfaces();
@@ -73,6 +76,8 @@ public:
     Surface* operator()(npc_t& npc);
     Surface* operator()(std::string str);
     std::vector<Surface*> operator()(std::vector<list_item_t> items);
+
+    Surface* animation(stateType state);
 
 };
 

@@ -77,6 +77,12 @@ void WindowMeasurements::initializeStaticAreas() {
                             list_gold_area.x_pixel_begin);
     listGoldQuantityStaticRect.h = (list_gold_area.y_pixel_end -
                             list_gold_area.y_pixel_begin);
+
+
+    animatedObjStaticRect.x = 80;
+    animatedObjStaticRect.y = 175;
+    animatedObjStaticRect.w = 80;
+    animatedObjStaticRect.h = 175;
 }
 
 
@@ -138,4 +144,11 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
                 (screenHeight / 100) * 4, (screenHeight /100) * 15};
 }
 
+
+SDL_Rect WindowMeasurements::measureAnimatedRect(int iteration) {
+    SDL_Rect origin_rect = animatedObjStaticRect;
+    origin_rect.x = origin_rect.x*iteration;
+    origin_rect.y = origin_rect.y*iteration;
+    return origin_rect;
+}
 WindowMeasurements::~WindowMeasurements() {}
