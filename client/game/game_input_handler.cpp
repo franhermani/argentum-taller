@@ -57,7 +57,7 @@ int GameInputHandler::isMoveKey(SDL_Event& event) {
     auto &keyEvent = (SDL_KeyboardEvent &) event;
     int key = keyEvent.keysym.sym;
     if ((event.type == SDL_KEYDOWN) & ((key == SDLK_DOWN)
-                                       || (key == SDLK_UP) || (key == SDLK_LEFT) || (key == SDLK_RIGHT)))
+        || (key == SDLK_UP) || (key == SDLK_LEFT) || (key == SDLK_RIGHT)))
         return true;
     return false;
 }
@@ -74,7 +74,6 @@ void GameInputHandler::waitForLeftClick(int& x, int& y) {
             throw CommandCreationException("Cancelado por "
                                            "tecla de movimiento");
         }
-
     }
 }
 

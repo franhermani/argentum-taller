@@ -15,9 +15,11 @@ class CommandDTOManager {
     MapMonitor &mapMonitor;
     GameRender* gameRender;
     GameInputHandler& inputHandler;
+
 public:
     // Constructor
-    CommandDTOManager(MapMonitor &mapMonitor, GameRender* gameRender, GameInputHandler& inputHandler);
+    CommandDTOManager(MapMonitor &mapMonitor, GameRender* gameRender,
+            GameInputHandler& inputHandler);
 
 
     // Destrutor

@@ -17,7 +17,6 @@ GameSoundManager::GameSoundManager() {
     }
     initSounds();
     initMusic();
-
 }
 
 void GameSoundManager::initMusic() {

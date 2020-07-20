@@ -81,8 +81,9 @@ Surface* GameSurfacesManager::operator()(attack_t& attack) {
                 attackSurfacesPaths[type][orientation], window, 1);
         attackSurfacesMap[type].insert({orientation, surface});
         return surface;
+    } else {
+        return attackSurfacesMap[type][orientation];
     }
-    else return attackSurfacesMap[type][orientation];
 }
 
 
@@ -95,8 +96,9 @@ Surface* GameSurfacesManager::operator()(npc_t& npc) {
                 npcSurfacesPaths[type][orientation], window, 1);
         npcSurfacesMap[type].insert({orientation, surface});
         return surface;
+    } else {
+        return npcSurfacesMap[type][orientation];
     }
-    else return npcSurfacesMap[type][orientation];
 }
 
 Surface* GameSurfacesManager::operator()(creature_t& creature) {
@@ -104,12 +106,13 @@ Surface* GameSurfacesManager::operator()(creature_t& creature) {
     int orientation = creature.orientation;
     if (creatureSurfacesMap[type].find(orientation)
         == creatureSurfacesMap[type].end()) {
-        Surface* surface = new Surface(
+        Surface *surface = new Surface(
                 creatureSurfacesPaths[type][orientation], window, 1);
         creatureSurfacesMap[type].insert({orientation, surface});
         return surface;
+    } else {
+        return creatureSurfacesMap[type][orientation];
     }
-    else return creatureSurfacesMap[type][orientation];
 }
 
 
@@ -122,8 +125,9 @@ Surface* GameSurfacesManager::operator()(player_t& player) {
                 playerSurfacesPaths[race][orientation], window, 1);
         playerSurfacesMap[race].insert({orientation, surface});
         return surface;
+    } else {
+        return playerSurfacesMap[race][orientation];
     }
-    else return playerSurfacesMap[race][orientation];
 }
 
 
@@ -134,7 +138,9 @@ Surface* GameSurfacesManager::operator()(int item_type) {
                 itemSurfacesPaths[item_type], window, 1);
         itemSurfacesMap.insert({item_type, surface});
         return surface;
-    } else return itemSurfacesMap[item_type];
+    } else {
+        return itemSurfacesMap[item_type];
+    }
 }
 
 
@@ -149,7 +155,9 @@ std::vector<Surface*> GameSurfacesManager::operator()(
             surface = new Surface(
                     itemSurfacesPaths[type], window, 1);
             itemSurfacesMap.insert({type, surface});
-        } else surface = itemSurfacesMap[type];
+        } else {
+            surface = itemSurfacesMap[type];
+        }
         surfaces.push_back(surface);
     }
     return surfaces;
@@ -159,10 +167,11 @@ Surface* GameSurfacesManager::animation(stateType state) {
     if (animatedStateMap.find(state)
         == animatedStateMap.end()) {
         if (animatedStatePaths.find(state)
-            == animatedStatePaths.end())
+            == animatedStatePaths.end()) {
             throw SurfaceExistanceException("Surface no existente");
-        else {
-            Surface* surface = new Surface(animatedStatePaths[state], window, 1);
+        } else {
+            Surface* surface = new Surface(
+                    animatedStatePaths[state], window, 1);
             animatedStateMap.insert({state, surface});
             return surface;
         }
@@ -175,7 +184,8 @@ Surface* GameSurfacesManager::getEquipped(
     if (equippedWeaponSurfacesMap[weapon].find(orientation)
             == equippedWeaponSurfacesMap[weapon].end()) {
             Surface* surface = new Surface(
-                    equippedWeaponSurfacesPaths[weapon][orientation], window, 1);
+                    equippedWeaponSurfacesPaths[weapon][orientation],
+                    window, 1);
             equippedWeaponSurfacesMap[weapon].insert({orientation, surface});
             return surface;
     }
@@ -199,11 +209,11 @@ void GameSurfacesManager::createNecessaryFrameItems(
 
 void GameSurfacesManager::loadAnimatedPaths() {
     animatedStatePaths = {
-            {STATE_MEDITATING, "../client/resources/images/characters/meditating_anim_t.png"},
-            {STATE_REVIVING, "../client/resources/images/characters/reviving_anim_t.png"},
+            {STATE_MEDITATING,
+             "../client/resources/images/characters/meditating_anim_t.png"},
+            {STATE_REVIVING,
+             "../client/resources/images/characters/reviving_anim_t.png"},
     };
-
-
 }
 
 void GameSurfacesManager::loadCreaturePaths() {
@@ -212,7 +222,8 @@ void GameSurfacesManager::loadCreaturePaths() {
             {UP, "../client/resources/images/characters/skeleton_up_t.png"},
             {DOWN, "../client/resources/images/characters/skeleton_down_t.png"},
             {LEFT, "../client/resources/images/characters/skeleton_left_t.png"},
-            {RIGHT, "../client/resources/images/characters/skeleton_right_t.png"}
+            {RIGHT,
+             "../client/resources/images/characters/skeleton_right_t.png"}
     };
     std::map<int, std::string> goblin_orientations = {
             {UP, "../client/resources/images/characters/goblin_up_t.png"},
@@ -254,27 +265,41 @@ void GameSurfacesManager::loadCreaturePaths() {
 void GameSurfacesManager::loadEquippedPaths() {
     std::map<int, std::string> baculo_orientations = {
             {UP, "../client/resources/images/weapons/baculo_nudoso_up_p_t.png"},
-            {DOWN, "../client/resources/images/weapons/baculo_nudoso_down_p_t.png"},
-            {LEFT, "../client/resources/images/weapons/baculo_nudoso_right_p_t.png"},
-            {RIGHT, "../client/resources/images/weapons/baculo_nudoso_left_p_t.png"}
+            {DOWN,
+             "../client/resources/images/weapons/baculo_nudoso_down_p_t.png"},
+            {LEFT,
+             "../client/resources/images/weapons/baculo_nudoso_right_p_t.png"},
+            {RIGHT,
+             "../client/resources/images/weapons/baculo_nudoso_left_p_t.png"}
     };
     std::map<int, std::string> arco_compuesto_orientations = {
-            {UP, "../client/resources/images/weapons/arco_compuesto_up_p_t.png"},
-            {DOWN, "../client/resources/images/weapons/arco_compuesto_down_p_t.png"},
-            {LEFT, "../client/resources/images/weapons/arco_compuesto_right_p_t.png"},
-            {RIGHT, "../client/resources/images/weapons/arco_compuesto_left_p_t.png"}
+            {UP,
+             "../client/resources/images/weapons/arco_compuesto_up_p_t.png"},
+            {DOWN,
+             "../client/resources/images/weapons/arco_compuesto_down_p_t.png"},
+            {LEFT,
+             "../client/resources/images/weapons/arco_compuesto_right_p_t.png"},
+            {RIGHT,
+             "../client/resources/images/weapons/arco_compuesto_left_p_t.png"}
     };
     std::map<int, std::string> arco_simple_orientations = {
             {UP, "../client/resources/images/weapons/arco_simple_up_p_t.png"},
-            {DOWN, "../client/resources/images/weapons/arco_simple_down_p_t.png"},
-            {LEFT, "../client/resources/images/weapons/arco_simple_left_p_t.png"},
-            {RIGHT, "../client/resources/images/weapons/arco_simple_right_p_t.png"}
+            {DOWN,
+             "../client/resources/images/weapons/arco_simple_down_p_t.png"},
+            {LEFT,
+             "../client/resources/images/weapons/arco_simple_left_p_t.png"},
+            {RIGHT,
+             "../client/resources/images/weapons/arco_simple_right_p_t.png"}
     };
     std::map<int, std::string> baculo_engarzado_orientations = {
-            {UP, "../client/resources/images/weapons/baculo_engarzado_up_p_t.png"},
-            {DOWN, "../client/resources/images/weapons/baculo_engarzado_down_p_t.png"},
-            {LEFT, "../client/resources/images/weapons/baculo_engarzado_right_p_t.png"},
-            {RIGHT, "../client/resources/images/weapons/baculo_engarzado_left_p_t.png"}
+            {UP,
+             "../client/resources/images/weapons/baculo_engarzado_up_p_t.png"},
+            {DOWN,
+          "../client/resources/images/weapons/baculo_engarzado_down_p_t.png"},
+            {LEFT,
+          "../client/resources/images/weapons/baculo_engarzado_right_p_t.png"},
+            {RIGHT,
+             "../client/resources/images/weapons/baculo_engarzado_left_p_t.png"}
     };
     std::map<int, std::string> espada_orientations = {
             {UP, "../client/resources/images/weapons/espada_up_p_t.png"},
@@ -284,9 +309,12 @@ void GameSurfacesManager::loadEquippedPaths() {
     };
     std::map<int, std::string> flauta_elfica_orientations = {
             {UP, "../client/resources/images/weapons/flauta_elfica_up_p_t.png"},
-            {DOWN, "../client/resources/images/weapons/flauta_elfica_down_p_t.png"},
-            {LEFT, "../client/resources/images/weapons/flauta_elfica_right_p_t.png"},
-            {RIGHT, "../client/resources/images/weapons/flauta_elfica_left_p_t.png"}
+            {DOWN,
+             "../client/resources/images/weapons/flauta_elfica_down_p_t.png"},
+            {LEFT,
+             "../client/resources/images/weapons/flauta_elfica_right_p_t.png"},
+            {RIGHT,
+             "../client/resources/images/weapons/flauta_elfica_left_p_t.png"}
     };
     std::map<int, std::string> hacha_orientations = {
             {UP, "../client/resources/images/weapons/hacha_up_p_t.png"},
@@ -296,22 +324,31 @@ void GameSurfacesManager::loadEquippedPaths() {
     };
     std::map<int, std::string> martillo_orientations = {
             {UP, "../client/resources/images/weapons/martillo_up_p_t.png"},
-            {DOWN, "../client/resources/images/weapons/martillo_down_p_t.png"},
-            {LEFT, "../client/resources/images/weapons/martillo_right_p_t.png"},
-            {RIGHT, "../client/resources/images/weapons/martillo_left_p_t.png"}
+            {DOWN,
+             "../client/resources/images/weapons/martillo_down_p_t.png"},
+            {LEFT,
+             "../client/resources/images/weapons/martillo_right_p_t.png"},
+            {RIGHT,
+             "../client/resources/images/weapons/martillo_left_p_t.png"}
     };
 
     std::map<int, std::string> armadura_placas_orientations = {
             {UP, "../client/resources/images/items/armadura_placas_up_p_t.png"},
-            {DOWN, "../client/resources/images/items/armadura_placas_down_p_t.png"},
-            {LEFT, "../client/resources/images/items/armadura_placas_left_p_t.png"},
-            {RIGHT, "../client/resources/images/items/armadura_placas_right_p_t.png"}
+            {DOWN,
+             "../client/resources/images/items/armadura_placas_down_p_t.png"},
+            {LEFT,
+             "../client/resources/images/items/armadura_placas_left_p_t.png"},
+            {RIGHT,
+             "../client/resources/images/items/armadura_placas_right_p_t.png"}
     };
     std::map<int, std::string> armadura_cuero_orientations = {
             {UP, "../client/resources/images/items/armadura_cuero_up_t.png"},
-            {DOWN, "../client/resources/images/items/armadura_cuero_down_t.png"},
-            {LEFT, "../client/resources/images/items/armadura_cuero_left_t.png"},
-            {RIGHT, "../client/resources/images/items/armadura_cuero_right_t.png"}
+            {DOWN,
+             "../client/resources/images/items/armadura_cuero_down_t.png"},
+            {LEFT,
+             "../client/resources/images/items/armadura_cuero_left_t.png"},
+            {RIGHT,
+             "../client/resources/images/items/armadura_cuero_right_t.png"}
     };
     std::map<int, std::string> tunica_azul_orientations = {
             {UP, "../client/resources/images/items/tunica_azul_up_t.png"},
@@ -321,15 +358,21 @@ void GameSurfacesManager::loadEquippedPaths() {
     };
     std::map<int, std::string> escudo_hierro_orientations = {
             {UP, "../client/resources/images/items/escudo_hierro_up_p_t.png"},
-            {DOWN, "../client/resources/images/items/escudo_hierro_down_p_t.png"},
-            {LEFT, "../client/resources/images/items/escudo_hierro_right_p_t.png"},
-            {RIGHT, "../client/resources/images/items/escudo_hierro_left_p_t.png"}
+            {DOWN,
+             "../client/resources/images/items/escudo_hierro_down_p_t.png"},
+            {LEFT,
+             "../client/resources/images/items/escudo_hierro_right_p_t.png"},
+            {RIGHT,
+             "../client/resources/images/items/escudo_hierro_left_p_t.png"}
     };
     std::map<int, std::string> escudo_tortuga_orientations = {
             {UP, "../client/resources/images/items/escudo_tortuga_up_t.png"},
-            {DOWN, "../client/resources/images/items/escudo_tortuga_down_t.png"},
-            {LEFT, "../client/resources/images/items/escudo_tortuga_right_t.png"},
-            {RIGHT, "../client/resources/images/items/escudo_tortuga_left_t.png"}
+            {DOWN,
+             "../client/resources/images/items/escudo_tortuga_down_t.png"},
+            {LEFT,
+             "../client/resources/images/items/escudo_tortuga_right_t.png"},
+            {RIGHT,
+             "../client/resources/images/items/escudo_tortuga_left_t.png"}
     };
     std::map<int, std::string> capucha_orientations = {
             {UP, "../client/resources/images/items/capucha_up_t.png"},
@@ -346,9 +389,12 @@ void GameSurfacesManager::loadEquippedPaths() {
 
     std::map<int, std::string> sombrero_magico_orientations = {
             {UP, "../client/resources/images/items/sombrero_magico_up_t.png"},
-            {DOWN, "../client/resources/images/items/sombrero_magico_down_t.png"},
-            {LEFT, "../client/resources/images/items/sombrero_magico_right_t.png"},
-            {RIGHT, "../client/resources/images/items/sombrero_magico_left_t.png"}
+            {DOWN,
+             "../client/resources/images/items/sombrero_magico_down_t.png"},
+            {LEFT,
+             "../client/resources/images/items/sombrero_magico_right_t.png"},
+            {RIGHT,
+             "../client/resources/images/items/sombrero_magico_left_t.png"}
     };
 
 
@@ -413,7 +459,6 @@ void GameSurfacesManager::loadEquippedPaths() {
             {CAPUCHA, capucha_surfaces},
             {SOMBRERO_MAGICO, sombrero_magico_surfaces}
     };
-
 }
 
 
@@ -435,7 +480,8 @@ void GameSurfacesManager::loadNpcPaths() {
             {UP, "../client/resources/images/characters/merchant_up_t.png"},
             {DOWN, "../client/resources/images/characters/merchant_down_t.png"},
             {LEFT, "../client/resources/images/characters/merchant_left_t.png"},
-            {RIGHT, "../client/resources/images/characters/merchant_right_t.png"}
+            {RIGHT,
+             "../client/resources/images/characters/merchant_right_t.png"}
     };
 
     npcSurfacesPaths = {
@@ -458,21 +504,28 @@ void GameSurfacesManager::loadNpcPaths() {
 void GameSurfacesManager::loadAttackPaths() {
     std::map<int, std::string> multiple_arrow_orientations = {
             {UP, "../client/resources/images/attacks/triple_arrow_up_t.png"},
-            {DOWN, "../client/resources/images/attacks/triple_arrow_down_t.png"},
-            {LEFT, "../client/resources/images/attacks/triple_arrow_left_t.png"},
-            {RIGHT, "../client/resources/images/attacks/triple_arrow_right_t.png"}
+            {DOWN,
+             "../client/resources/images/attacks/triple_arrow_down_t.png"},
+            {LEFT,
+             "../client/resources/images/attacks/triple_arrow_left_t.png"},
+            {RIGHT,
+             "../client/resources/images/attacks/triple_arrow_right_t.png"}
     };
     std::map<int, std::string> magic_arrow_orientations = {
             {UP, "../client/resources/images/attacks/magic_arrow_up_t.png"},
             {DOWN, "../client/resources/images/attacks/magic_arrow_down_t.png"},
             {LEFT, "../client/resources/images/attacks/magic_arrow_left_t.png"},
-            {RIGHT, "../client/resources/images/attacks/magic_arrow_right_t.png"}
+            {RIGHT,
+             "../client/resources/images/attacks/magic_arrow_right_t.png"}
     };
     std::map<int, std::string> single_arrow_orientations = {
             {UP, "../client/resources/images/attacks/single_arrow_up_t.png"},
-            {DOWN, "../client/resources/images/attacks/single_arrow_down_t.png"},
-            {LEFT, "../client/resources/images/attacks/single_arrow_left_t.png"},
-            {RIGHT, "../client/resources/images/attacks/single_arrow_right_t.png"}
+            {DOWN,
+             "../client/resources/images/attacks/single_arrow_down_t.png"},
+            {LEFT,
+             "../client/resources/images/attacks/single_arrow_left_t.png"},
+            {RIGHT,
+             "../client/resources/images/attacks/single_arrow_right_t.png"}
     };
     std::map<int, std::string> melee_orientations = {
             {UP, "../client/resources/images/attacks/melee_attack_t_big.png"},
@@ -481,10 +534,14 @@ void GameSurfacesManager::loadAttackPaths() {
             {RIGHT, "../client/resources/images/attacks/melee_attack_t_big.png"}
     };
     std::map<int, std::string> no_weapon_melee_orientations = {
-            {UP, "../client/resources/images/attacks/hit_effect_2_small_t.png"},
-            {DOWN, "../client/resources/images/attacks/hit_effect_2_small_t.png"},
-            {LEFT, "../client/resources/images/attacks/hit_effect_2_small_t.png"},
-            {RIGHT, "../client/resources/images/attacks/hit_effect_2_small_t.png"}
+            {UP,
+             "../client/resources/images/attacks/hit_effect_2_small_t.png"},
+            {DOWN,
+             "../client/resources/images/attacks/hit_effect_2_small_t.png"},
+            {LEFT,
+             "../client/resources/images/attacks/hit_effect_2_small_t.png"},
+            {RIGHT,
+             "../client/resources/images/attacks/hit_effect_2_small_t.png"}
     };
     std::map<int, std::string> missile_orientations = {
             {UP, "../client/resources/images/attacks/missile_up_t.png"},
@@ -577,29 +634,61 @@ void GameSurfacesManager::loadPlayerPaths() {
                          {ELF, elf_surfaces},
                          {DWARF, dwarf_surfaces},
                          {GNOME, gnome_surfaces}};
-    std::map<int, Surface*> ghostSurfacesMap = {{UP,    new Surface("../client/resources/images/characters/ghost_up_t.png", window, 1)},
-                        {DOWN,  new Surface("../client/resources/images/characters/ghost_down_t.png", window, 1)},
-                        {LEFT,  new Surface("../client/resources/images/characters/ghost_left_t.png", window, 1)},
-                        {RIGHT, new Surface("../client/resources/images/characters/ghost_right_t.png", window, 1)}
-
+    std::map<int, Surface*> ghostSurfacesMap = {
+            {UP,    new Surface(
+                    "../client/resources/images/characters/ghost_up_t.png",
+                    window, 1)},
+            {DOWN,  new Surface(
+                    "../client/resources/images/characters/ghost_down_t.png",
+                    window, 1)},
+            {LEFT,  new Surface(
+                    "../client/resources/images/characters/ghost_left_t.png",
+                    window, 1)},
+            {RIGHT, new Surface(
+                    "../client/resources/images/characters/ghost_right_t.png",
+                    window, 1)}
     };
-    std::map<int, Surface*> reviveSurfacesMap = {{UP,    new Surface("../client/resources/images/characters/reviving_up_t.png", window, 1)},
-                                                {DOWN,  new Surface("../client/resources/images/characters/reviving_down_t.png", window, 1)},
-                                                {LEFT,  new Surface("../client/resources/images/characters/reviving_left_t.png", window, 1)},
-                                                {RIGHT, new Surface("../client/resources/images/characters/reviving_right_t.png", window, 1)}
-
+    std::map<int, Surface*> reviveSurfacesMap = {
+            {UP,    new Surface(
+                    "../client/resources/images/characters/reviving_up_t.png",
+                    window, 1)},
+            {DOWN,  new Surface(
+                    "../client/resources/images/characters/reviving_down_t.png",
+                    window, 1)},
+            {LEFT,  new Surface(
+                    "../client/resources/images/characters/reviving_left_t.png",
+                    window, 1)},
+            {RIGHT, new Surface(
+             "../client/resources/images/characters/reviving_right_t.png",
+                    window, 1)}
     };
-    std::map<int, Surface*> meditateSurfacesMap = {{UP,    new Surface("../client/resources/images/characters/meditating_up_t.png", window, 1)},
-                                                 {DOWN,  new Surface("../client/resources/images/characters/meditating_down_t.png", window, 1)},
-                                                 {LEFT,  new Surface("../client/resources/images/characters/meditating_left_t.png", window, 1)},
-                                                 {RIGHT, new Surface("../client/resources/images/characters/meditating_right_t.png", window, 1)}
-
+    std::map<int, Surface*> meditateSurfacesMap = {
+            {UP,    new Surface(
+                    "../client/resources/images/characters/meditating_up_t.png",
+                    window, 1)},
+            {DOWN,  new Surface(
+             "../client/resources/images/characters/meditating_down_t.png",
+                    window, 1)},
+            {LEFT,  new Surface(
+             "../client/resources/images/characters/meditating_left_t.png",
+                    window, 1)},
+            {RIGHT, new Surface(
+            "../client/resources/images/characters/meditating_right_t.png",
+                    window, 1)}
     };
-    std::map<int, Surface*> dyingSurfacesMap = {{UP,    new Surface("../client/resources/images/characters/dying_creature_up_t.png", window, 1)},
-                                                   {DOWN,  new Surface("../client/resources/images/characters/dying_creature_down_t.png", window, 1)},
-                                                   {LEFT,  new Surface("../client/resources/images/characters/dying_creature_left_t.png", window, 1)},
-                                                   {RIGHT, new Surface("../client/resources/images/characters/dying_creature_right_t.png", window, 1)}
-
+    std::map<int, Surface*> dyingSurfacesMap = {
+            {UP,    new Surface(
+             "../client/resources/images/characters/dying_creature_up_t.png",
+                    window, 1)},
+            {DOWN,  new Surface(
+             "../client/resources/images/characters/dying_creature_down_t.png",
+                    window, 1)},
+            {LEFT,  new Surface(
+            "../client/resources/images/characters/dying_creature_left_t.png",
+                    window, 1)},
+            {RIGHT, new Surface(
+             "../client/resources/images/characters/dying_creature_right_t.png",
+                    window, 1)}
     };
     stateSurfacesMap = {
             {STATE_GHOST, ghostSurfacesMap},
@@ -607,8 +696,6 @@ void GameSurfacesManager::loadPlayerPaths() {
             {STATE_MEDITATING, meditateSurfacesMap},
             {STATE_DYING, dyingSurfacesMap}
     };
-
-
 }
 
 void GameSurfacesManager::loadItemPaths() {
@@ -616,12 +703,16 @@ void GameSurfacesManager::loadItemPaths() {
             {ESPADA, "../client/resources/images/weapons/espada_t.png"},
             {HACHA, "../client/resources/images/weapons/hacha_t.png"},
             {MARTILLO, "../client/resources/images/weapons/martillo_t.png"},
-            {VARA_FRESNO, "../client/resources/images/weapons/vara_fresno_t.png"},
-            {FLAUTA_ELFICA, "../client/resources/images/weapons/flauta_elfica_t.png"},
-            {BACULO_NUDOSO, "../client/resources/images/weapons/baculo_nudoso_t.png"},
+            {VARA_FRESNO,
+             "../client/resources/images/weapons/vara_fresno_t.png"},
+            {FLAUTA_ELFICA,
+                 "../client/resources/images/weapons/flauta_elfica_t.png"},
+            {BACULO_NUDOSO,
+                "../client/resources/images/weapons/baculo_nudoso_t.png"},
             {BACULO_ENGARZADO,
-                    "../client/resources/images/weapons/baculo_engarzado_t.png"},
-            {ARCO_SIMPLE, "../client/resources/images/weapons/arco_simple_t.png"},
+             "../client/resources/images/weapons/baculo_engarzado_t.png"},
+            {ARCO_SIMPLE,
+             "../client/resources/images/weapons/arco_simple_t.png"},
             {ARCO_COMPUESTO,
                     "../client/resources/images/weapons/arco_compuesto_t.png"},
             {ARMADURA_CUERO,
@@ -631,12 +722,14 @@ void GameSurfacesManager::loadItemPaths() {
             {TUNICA_AZUL,
                     "../client/resources/images/items/tunica_azul_t.png"},
             {CAPUCHA, "../client/resources/images/items/capucha_t.png"},
-            {CASCO_HIERRO, "../client/resources/images/items/casco_hierro_t.png"},
+            {CASCO_HIERRO,
+                "../client/resources/images/items/casco_hierro_t.png"},
             {SOMBRERO_MAGICO,
                     "../client/resources/images/items/sombrero_magico_t.png"},
             {ESCUDO_TORTUGA,
                     "../client/resources/images/items/escudo_tortuga_t.png"},
-            {ESCUDO_HIERRO, "../client/resources/images/items/escudo_hierro_t.png"},
+            {ESCUDO_HIERRO,
+                "../client/resources/images/items/escudo_hierro_t.png"},
             {POCION_VIDA, "../client/resources/images/items/pocion_vida_t.png"},
             {POCION_MANA, "../client/resources/images/items/pocion_mana_t.png"},
     };
@@ -659,8 +752,9 @@ void GameSurfacesManager::createFrameSurfaces() {
             "../tiled/world.png", window, 0);
     goldSurface = new Surface(
             "../client/resources/images/items/gold_t.png", window, 1);
-    Surface* life_bar = new Surface("../client/resources/images/etc/life_bar.png",
-                                    window, 0);
+    Surface* life_bar = new Surface(
+            "../client/resources/images/etc/life_bar.png",
+            window, 0);
     Surface* black_bar = new Surface(
             "../client/resources/images/etc/black_bar.png", window, 0);
     Surface* mana_bar = new Surface(

@@ -13,7 +13,6 @@
 
 
 class GameSoundManager {
-
     Mix_Music* music;
     std::map<soundType, Mix_Chunk*> chunkMap;
     void addNewSound(std::string path, soundType type);

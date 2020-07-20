@@ -16,6 +16,7 @@
 #include "../data_transfer_objects/sell_item_command_dto.h"
 #include "../data_transfer_objects/buy_item_command_dto.h"
 #include "game_input_handler.h"
+#include <vector>
 
 
 

@@ -111,12 +111,10 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
             window.renderMapObjectLifeBar(it->pos.x, it->pos.y,
                     surfacesManager.infoSurfacesMap[LIFE],
                     (it->actual_life/(float) it->max_life));
-        }
-        else {
+        } else {
             window.renderMapObject(it->pos.x, it->pos.y,
                     surfacesManager(it->state, it->orientation));
         }
-
     }
 }
 
@@ -182,16 +180,16 @@ void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         stateType state = it->state;
-        if (state == STATE_NORMAL)
+        if (state == STATE_NORMAL) {
             window.renderMapObject(it->pos.x, it->pos.y,
                                    surfacesManager(*it));
-        else {
+        } else {
             try {
                 window.renderAnimatedMapObject(it->pos.x, it->pos.y,
                         surfacesManager.animation(state), iteration);
             } catch (SurfaceExistanceException& e) {
                 window.renderMapObject(it->pos.x, it->pos.y,
-                                       surfacesManager(it->state, it->orientation));
+                        surfacesManager(it->state, it->orientation));
             }
         }
     }
@@ -206,18 +204,16 @@ void GameRender::renderEquipped(std::vector<player_t>& players) {
         if (it->state == STATE_GHOST) continue;
         if (it->armor != NO_ITEM_EQUIPPED)
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.getEquipped(it->armor, it->orientation));
+                surfacesManager.getEquipped(it->armor, it->orientation));
         if (it->shield != NO_ITEM_EQUIPPED)
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.getEquipped(it->shield, it->orientation));
+                surfacesManager.getEquipped(it->shield, it->orientation));
         if (it->weapon != NO_ITEM_EQUIPPED)
             window.renderMapObject(it->pos.x, it->pos.y,
-                                   surfacesManager.getEquipped(it->weapon, it->orientation));
+                    surfacesManager.getEquipped(it->weapon, it->orientation));
         if (it->helmet != NO_ITEM_EQUIPPED)
             window.renderMapObject(it->pos.x, it->pos.y,
-                                   surfacesManager.getEquipped(it->helmet, it->orientation));
-
-
+                    surfacesManager.getEquipped(it->helmet, it->orientation));
     }
 }
 

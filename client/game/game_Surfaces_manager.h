@@ -78,7 +78,6 @@ public:
     std::vector<Surface*> operator()(std::vector<list_item_t> items);
 
     Surface* animation(stateType state);
-
 };
 
 
