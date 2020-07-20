@@ -81,7 +81,8 @@ public:
     int getYPixelPos(int y_tile_position);
 
     void renderMapObject(int x, int y, Surface *character_surface);
-    void renderAnimatedMapObject(int x, int y, Surface *character_surface, int iteration);
+    void renderAnimatedMapObject(int x, int y, Surface *character_surface,
+            int iteration);
     void renderMapObjectLifeBar(int x, int y, Surface* bar, float percentage);
 
     //renderizadores marco + lo que contiene

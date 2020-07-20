@@ -31,7 +31,8 @@ Surface::Surface(const std::string filename, const SDLWindow& window,
     }
 }
 
-Surface::Surface(std::string text, const SDLWindow &window, TTF_Font* font, SDL_Color& color) {
+Surface::Surface(std::string text, const SDLWindow &window,
+        TTF_Font* font, SDL_Color& color) {
     SDL_Surface *basic_surface = TTF_RenderText_Solid(font,
             text.c_str(), color);
     SDL_Surface *optimized_surface = SDL_ConvertSurface(

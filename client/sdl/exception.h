@@ -18,7 +18,7 @@ class SurfaceExistanceException : public std::exception {
     std::string message;
 public:
     // Constructor
-    SurfaceExistanceException(const char *message);
+    explicit SurfaceExistanceException(const char *message);
 
     // Devuelve el mensaje de error
     const char * what() const noexcept;

@@ -74,7 +74,8 @@ void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
 }
 
 
-void SDLWindow::renderAnimatedMapObject(int x, int y, Surface* character_surface, int iteration) {
+void SDLWindow::renderAnimatedMapObject(int x, int y,
+        Surface* character_surface, int iteration) {
     game_area_t& frame_area = measurements.frame;
     SDL_Rect stretchRect;
     stretchRect.x = getXPixelPos(x);
@@ -90,7 +91,8 @@ void SDLWindow::renderAnimatedMapObject(int x, int y, Surface* character_surface
                    getSurface(), &stretchRect);
 }
 
-void SDLWindow::renderMapObjectLifeBar(int x, int y, Surface* bar, float percentage) {
+void SDLWindow::renderMapObjectLifeBar(int x, int y, Surface* bar,
+        float percentage) {
     game_area_t& frame_area = measurements.frame;
     SDL_Rect stretchRect;
     float bar_width = measurements.xWidthTileSize*0.6 * percentage;
@@ -245,7 +247,8 @@ void SDLWindow::renderEquipped(player_t& player,
                                std::map<int, Surface*>& surfaces_map) {
     game_area_t& equipped_area = measurements.equipped;
     int equipped_width = (equipped_area.x_pixel_end -
-                          equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
+                          equipped_area.x_pixel_begin) /
+                                  EQUIPPED_MAX_TILES_WIDTH;
     SDL_Rect stretchRect;
     stretchRect.x = equipped_area.x_pixel_begin;
     stretchRect.y = equipped_area.y_pixel_begin;
@@ -457,8 +460,7 @@ void SDLWindow::toggleFullscreen() {
         SDL_SetWindowFullscreen(window, 0);
         fullscreen = false;
         measurements.updateResolution(screenWidth, screenHeight);
-    }
-    else {
+    } else {
         //to fullscreen
         SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
         fullscreen = true;
