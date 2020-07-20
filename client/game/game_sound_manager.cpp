@@ -39,6 +39,7 @@ void GameSoundManager::initSounds() {
     std::string path_explosion = "../client/resources/audio/explosion.wav";
     std::string path_melee = "../client/resources/audio/melee.wav";
     std::string path_magic_strike = "../client/resources/audio/shot.mp3";
+    std::string arrow_strike = "../client/resources/audio/arrow.mp3";
     addNewSound(path_melee, PLAYER_PUNCH);
     addNewSound(path_melee, CREATURE_PUNCH);
     addNewSound(path_sword, SWORD_STRIKE);
