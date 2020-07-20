@@ -281,26 +281,6 @@ void SDLWindow::renderListPrices(std::vector<Surface*>& surfaces) {
     renderListArea(measurements.list_prices, surfaces);
 }
 
-void SDLWindow::renderListArea(game_area_t& list_area,
-        std::vector<Surface*>& surfaces) {
-    int x,y, w, h;
-    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/LIST_MAX_TILES_WIDTH;
-    h = w;
-    x = list_area.x_pixel_begin;
-    y = list_area.y_pixel_begin;
-    int surfaces_size = surfaces.size();
-    int current_index = 0;
-    SDL_Rect stretchRect;
-    while (current_index < surfaces_size) {
-        stretchRect = {x, y, w, h};
-        SDL_BlitScaled(surfaces[current_index]->getRenderable(), NULL,
-                       getSurface(), &stretchRect);
-        x = x + w;
-        current_index ++;
-    }
-}
-
-
 
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     measurements.initialize(tileWidth,
@@ -365,24 +345,38 @@ int SDLWindow::getRenderedEquipedTypeByPosition(int x, int y) {
     return -1;
 }
 
+void SDLWindow::renderListArea(game_area_t& list_area,
+                               std::vector<Surface*>& surfaces) {
+    int surfaces_size = surfaces.size();
+    int current_index = 0;
+    SDL_Rect stretchRect = calculateListStartRect(list_area);
+    while (current_index < surfaces_size) {
+        SDL_BlitScaled(surfaces[current_index]->getRenderable(), NULL,
+                       getSurface(), &stretchRect);
+        stretchRect.x = stretchRect.x + stretchRect.w;
+        current_index ++;
+    }
+}
+SDL_Rect SDLWindow::calculateListStartRect(game_area_t& list_area) {
+    int side = (list_area.x_pixel_end - list_area.x_pixel_begin) /
+            LIST_MAX_TILES_WIDTH;
+    SDL_Rect stretchRect = {
+            list_area.x_pixel_begin,
+            list_area.y_pixel_begin,
+            side, side
+    };
+    return stretchRect;
+}
 
 
 int SDLWindow::getRenderedListIndexByPosition(int xClicked,
         int yClicked, size_t list_length) {
-    //codigo repetido con render list, sacarlo afuera
-    game_area_t& list_area = measurements.list;
-    int x,y, w, h;
-    w = (list_area.x_pixel_end-list_area.x_pixel_begin)/LIST_MAX_TILES_WIDTH;
-    h = w;
-    x = list_area.x_pixel_begin;
-    y = list_area.y_pixel_begin;
     size_t current_index = 0;
-    SDL_Rect stretchRect;
+    SDL_Rect stretchRect = calculateListStartRect(measurements.list);
     while (current_index < list_length) {
-        stretchRect = {x, y, w, h};
         if (isInsideArea(stretchRect, xClicked, yClicked))
             return current_index;
-        x = x + w;
+        stretchRect.x = stretchRect.x + stretchRect.w;
         current_index ++;
     }
     return -1;

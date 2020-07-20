@@ -12,6 +12,7 @@
 #include "../../common/defines/world_structs.h"
 #include "../sdl/surface.h"
 #include "../sdl/window.h"
+#include "image_path_container.h"
 
 class GameImagesManager {
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
@@ -27,13 +28,7 @@ class GameImagesManager {
     Surface* goldSurface;
     Surface* gameFrameSurface;
     Surface* worldSurface;
-    std::map<int, std::string> animatedStatePaths;
-    std::map<int, std::map<int, std::string>> npcSurfacesPaths;
-    std::map<int, std::map<int, std::string>> equippedWeaponSurfacesPaths;
-    std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
-    std::map<int, std::map<int, std::string>> playerSurfacesPaths;
-    std::map<int, std::map<int, std::string>> attackSurfacesPaths;
-    std::map<int, std::string> itemSurfacesPaths;
+    ImagePathContainer pathContainer;
     TTF_Font* mainFont;
     SDL_Color mainColor;
     SDLWindow& window;
