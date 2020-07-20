@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include "states.h"
-#include "position.h"
+#include "../utilities/position.hpp"
 
 // ---------------------- //
 // Listado de items y oro //

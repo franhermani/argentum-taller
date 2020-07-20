@@ -1,7 +1,7 @@
 #ifndef ATTACK_H
 #define ATTACK_H
 
-#include "../../../common/defines/position.h"
+#include "../../../common/utilities/position.hpp"
 
 class LivingBeing;
 
