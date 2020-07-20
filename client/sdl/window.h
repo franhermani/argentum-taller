@@ -38,8 +38,11 @@ class SDLWindow {
     void renderEqIfExists(std::map<int, Surface*>& surfaces_map,
                                      SDL_Rect& rect, int item);
 
+    SDL_Rect calculateMapObjectRect(int x, int y);
+    int isOutsideFrameArea(SDL_Rect& stretch_rect, game_area_t& frame_area);
 
-public:
+
+        public:
     // Constructor
     SDLWindow(const int screenWidth, const int screenHeight);
 

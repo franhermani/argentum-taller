@@ -74,34 +74,48 @@ SDL_PixelFormat* SDLWindow::getSurfaceFormat() const {
     return SDL_GetWindowSurface(window)->format;
 }
 
-void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
-    game_area_t& frame_area = measurements.frame;
+
+void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
+                                 std::map<int, Surface *>& info_surfaces_map,
+                                 Surface* level_surface, Surface* name_surface) {
+    renderLife(player_info, info_surfaces_map);
+    renderMana(player_info, info_surfaces_map);
+    renderExperience(player_info, info_surfaces_map);
+    renderLevel(level_surface);
+    renderName(name_surface);
+}
+
+int SDLWindow::isOutsideFrameArea(SDL_Rect& stretch_rect, game_area_t& frame_area) {
+    return ((stretch_rect.x+measurements.xWidthTileSize
+         >= frame_area.x_pixel_end) ||
+        (stretch_rect.y+measurements.yHeightTileSize
+         >= frame_area.y_pixel_end));
+}
+
+
+SDL_Rect SDLWindow::calculateMapObjectRect(int x, int y) {
     SDL_Rect stretchRect;
     stretchRect.x = getXPixelPos(x);
     stretchRect.y = getYPixelPos(y);
     stretchRect.w = measurements.xWidthTileSize;
     stretchRect.h = measurements.yHeightTileSize;
-    if ((stretchRect.x+measurements.xWidthTileSize
-        >= frame_area.x_pixel_end) ||
-        (stretchRect.y+measurements.yHeightTileSize
-        >= frame_area.y_pixel_end)) return;
+    return std::move(stretchRect);
+
+}
+
+void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
+    game_area_t& frame_area = measurements.frame;
+    SDL_Rect stretchRect = calculateMapObjectRect(x,y);
+    if (isOutsideFrameArea(stretchRect, frame_area)) return;
     SDL_BlitScaled(character_surface->getRenderable(), NULL,
                    getSurface(), &stretchRect);
 }
 
-
 void SDLWindow::renderAnimatedMapObject(int x, int y,
         Surface* character_surface, int iteration) {
     game_area_t& frame_area = measurements.frame;
-    SDL_Rect stretchRect;
-    stretchRect.x = getXPixelPos(x);
-    stretchRect.y = getYPixelPos(y);
-    stretchRect.w = measurements.xWidthTileSize;
-    stretchRect.h = measurements.yHeightTileSize;
-    if ((stretchRect.x+measurements.xWidthTileSize
-         >= frame_area.x_pixel_end) ||
-        (stretchRect.y+measurements.yHeightTileSize
-         >= frame_area.y_pixel_end)) return;
+    SDL_Rect stretchRect = calculateMapObjectRect(x,y);
+    if (isOutsideFrameArea(stretchRect, frame_area)) return;
     SDL_Rect origin_rect = measurements.measureAnimatedRect(iteration);
     SDL_BlitScaled(character_surface->getRenderable(), &origin_rect,
                    getSurface(), &stretchRect);
@@ -199,11 +213,7 @@ void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
     y = inventory_area.y_pixel_begin;
     int surfaces_size = inventory.size(), current_index = 0;
     while (current_index < surfaces_size) {
-        SDL_Rect stretchRect;
-        stretchRect.x = x;
-        stretchRect.y = y;
-        stretchRect.w = w;
-        stretchRect.h = h;
+        SDL_Rect stretchRect({x, y, w, h});
         SDL_BlitScaled(surfaces[inventory[current_index]]->
                                getRenderable(), NULL,
                        getSurface(), &stretchRect);
@@ -319,20 +329,6 @@ void SDLWindow::renderName(Surface* level_surface) {
     SDL_BlitScaled(level_surface->getRenderable(), NULL,
                    getSurface(), &measurements.nameStaticRect);
 }
-
-
-void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
-        std::map<int, Surface *>& info_surfaces_map,
-        Surface* level_surface, Surface* name_surface) {
-    renderLife(player_info, info_surfaces_map);
-    renderMana(player_info, info_surfaces_map);
-    renderExperience(player_info, info_surfaces_map);
-    renderLevel(level_surface);
-    renderName(name_surface);
-}
-
-
-
 
 
 void SDLWindow::renderList(std::vector<Surface*>& surfaces) {
