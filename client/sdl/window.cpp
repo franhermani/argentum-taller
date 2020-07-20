@@ -204,9 +204,8 @@ void SDLWindow::renderListGold(Surface* surface, Surface* quantity_surface) {
 
 
 
-
-
-void SDLWindow::renderInfoBar(Surface * bar, Surface* background, game_area_t& area, float percentage) {
+void SDLWindow::renderInfoBar(Surface * bar, Surface* background,
+        game_area_t& area, float percentage) {
     SDL_Rect stretchRect;
     stretchRect.x = area.x_pixel_begin;
     stretchRect.y = area.y_pixel_begin;
@@ -222,9 +221,25 @@ void SDLWindow::renderInfoBar(Surface * bar, Surface* background, game_area_t& a
     stretchRect.h = area.y_pixel_end - area.y_pixel_begin;
     SDL_BlitScaled(background->getRenderable(), NULL,
                    getSurface(), &stretchRect);
-
 }
 
+void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
+                                std::map<int,Surface*>& surfaces) {
+    game_area_t& inventory_area = measurements.inventory;
+    SDL_Rect stretchRect = calculateInventoryStartRect();
+    int surfaces_size = inventory.size(), current_index = 0;
+    while (current_index < surfaces_size) {
+        SDL_BlitScaled(surfaces[inventory[current_index]]->
+                               getRenderable(), NULL,
+                       getSurface(), &stretchRect);
+        stretchRect.y = stretchRect.y + stretchRect.h;
+        current_index ++;
+        if (current_index == INVENTORY_MAX_TILES_HEIGHT){
+            stretchRect.x = stretchRect.x + stretchRect.w;
+            stretchRect.y = inventory_area.y_pixel_begin;
+        }
+    }
+}
 
 void SDLWindow::renderEqIfExists(std::map<int, Surface*>& surfaces_map,
         SDL_Rect& rect, int item) {
@@ -235,13 +250,8 @@ void SDLWindow::renderEqIfExists(std::map<int, Surface*>& surfaces_map,
 
 void SDLWindow::renderEquipped(player_t& player,
         std::map<int, Surface*>& surfaces_map) {
-    game_area_t& equipped_area = measurements.equipped;
-    int equipped_width = (equipped_area.x_pixel_end -
-            equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
-    SDL_Rect stretchRect = {
-            equipped_area.x_pixel_begin, equipped_area.y_pixel_begin,
-            equipped_width, equipped_area.y_pixel_end-equipped_area.
-            y_pixel_begin};
+    SDL_Rect stretchRect = calculateEquippedStartRect();
+    int equipped_width = stretchRect.w;
     renderEqIfExists(surfaces_map, stretchRect, player.weapon);
     stretchRect.x = stretchRect.x + equipped_width;
     renderEqIfExists(surfaces_map, stretchRect, player.armor);
@@ -297,23 +307,6 @@ void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
                             tileHeight, screenWidth, screenHeight);
 }
 
-void SDLWindow::renderInventory(std::vector<uint8_t>& inventory,
-                                std::map<int,Surface*>& surfaces) {
-    game_area_t& inventory_area = measurements.inventory;
-    SDL_Rect stretchRect = calculateInventoryStartRect();
-    int surfaces_size = inventory.size(), current_index = 0;
-    while (current_index < surfaces_size) {
-        SDL_BlitScaled(surfaces[inventory[current_index]]->
-                               getRenderable(), NULL,
-                       getSurface(), &stretchRect);
-        stretchRect.y = stretchRect.y + stretchRect.h;
-        current_index ++;
-        if (current_index == INVENTORY_MAX_TILES_HEIGHT){
-            stretchRect.x = stretchRect.x + stretchRect.w;
-            stretchRect.y = inventory_area.y_pixel_begin;
-        }
-    }
-}
 
 SDL_Rect SDLWindow::calculateInventoryStartRect() {
     game_area_t& inventory_area = measurements.inventory;
@@ -347,15 +340,21 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
     return -1;
 }
 
-int SDLWindow::getRenderedEquipedTypeByPosition(int x, int y) {
+SDL_Rect SDLWindow::calculateEquippedStartRect() {
     game_area_t& equipped_area = measurements.equipped;
     int equipped_width = (equipped_area.x_pixel_end -
-            equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
+                          equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
     SDL_Rect stretchRect;
     stretchRect.x = equipped_area.x_pixel_begin;
     stretchRect.y = equipped_area.y_pixel_begin;
     stretchRect.w = equipped_width;
     stretchRect.h = equipped_area.y_pixel_end-equipped_area.y_pixel_begin;
+    return stretchRect;
+}
+
+int SDLWindow::getRenderedEquipedTypeByPosition(int x, int y) {
+    SDL_Rect stretchRect = calculateEquippedStartRect();
+    int equipped_width = stretchRect.w;
     if (isInsideArea(stretchRect, x, y)) return UNEQUIP_WEAPON;
     stretchRect.x = stretchRect.x + equipped_width;
     if (isInsideArea(stretchRect, x, y)) return UNEQUIP_ARMOR;

@@ -32,6 +32,7 @@ class SDLWindow {
     SDL_Rect calculateMapObjectRect(int x, int y);
     int isOutsideFrameArea(SDL_Rect& stretch_rect, game_area_t& frame_area);
     SDL_Rect calculateInventoryStartRect();
+    SDL_Rect calculateEquippedStartRect();
 
     void renderInfoBar(Surface * bar, Surface* background,
             game_area_t& area, float percentage);
