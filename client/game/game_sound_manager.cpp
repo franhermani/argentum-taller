@@ -41,8 +41,13 @@ void GameSoundManager::initSounds() {
     std::string path_magic_strike = "../client/resources/audio/shot.mp3";
     std::string path_arrow_strike = "../client/resources/audio/arrow.mp3";
     std::string path_heal = "../client/resources/audio/flute.wav";
+    std::string path_axe = "../client/resources/audio/axe.mp3";
+    std::string path_hammer = "../client/resources/audio/hammer.mp3";
+
     addNewSound(path_melee, PLAYER_PUNCH);
     addNewSound(path_melee, CREATURE_PUNCH);
+    addNewSound(path_hammer, HAMMER_STRIKE);
+    addNewSound(path_axe, AXE_STRIKE);
     addNewSound(path_arrow_strike, ARROW_STRIKE);
     addNewSound(path_sword, SWORD_STRIKE);
     addNewSound(path_magic_strike, MAGIC_STRIKE);
