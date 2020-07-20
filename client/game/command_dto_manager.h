@@ -13,25 +13,11 @@ class GameInputHandler;
 
 class CommandDTOManager {
     MapMonitor &mapMonitor;
-    GameRender* gameRender;
-    GameInputHandler& inputHandler;
-
-public:
-    // Constructor
-    CommandDTOManager(MapMonitor &mapMonitor, GameRender* gameRender,
-            GameInputHandler& inputHandler);
+    GameRender *gameRender;
+    GameInputHandler &inputHandler;
 
 
-    // Destrutor
-    ~CommandDTOManager();
-
-    // Constructor y asignacion por copia deshabilitados
-    CommandDTOManager(const CommandDTOManager& other) = delete;
-    CommandDTOManager& operator=(const CommandDTOManager& other) = delete;
-
-    // Recibe un evento ingresado por input
-    CommandDTO* operator()(int key);
-
+    // Funciones internas para manejo y creacion de cada tipo de comando
     CommandDTO* handleEquip();
     CommandDTO* handleUnequip();
     CommandDTO* handleHeal();
@@ -46,6 +32,22 @@ public:
     CommandDTO* handleAttack();
     CommandDTO* handleMeditate();
     CommandDTO* handleMove(moveDirection direction);
+
+public:
+    // Constructor
+    CommandDTOManager(MapMonitor &mapMonitor, GameRender* gameRender,
+            GameInputHandler& inputHandler);
+
+    // Destrutor
+    ~CommandDTOManager();
+
+    // Constructor y asignacion por copia deshabilitados
+    CommandDTOManager(const CommandDTOManager& other) = delete;
+    CommandDTOManager& operator=(const CommandDTOManager& other) = delete;
+
+    // Recibe un evento ingresado por input
+    CommandDTO* operator()(int key);
+
 };
 
 

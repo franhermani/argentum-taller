@@ -98,6 +98,8 @@ public:
     void interact();
     void uninteract();
     int isInteracting();
+
+    // Funcion template que busca en vision
     template<typename T>
     std::vector<T> findVisible(std::vector<T> vec);
 };

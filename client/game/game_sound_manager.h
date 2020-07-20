@@ -24,8 +24,14 @@ class GameSoundManager {
 public:
     GameSoundManager();
     ~GameSoundManager();
+
+    //Recibe un tipo de sonido y lo reproduce en canal libre si existe
     void playSound(soundType type);
+
+    //activa/desactiva musica
     void toggleMusic();
+
+    //activa/desactiva sonido
     void toggleSound();
 };
 

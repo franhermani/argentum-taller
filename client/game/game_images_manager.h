@@ -32,9 +32,7 @@ class GameImagesManager {
     TTF_Font* mainFont;
     SDL_Color mainColor;
     SDLWindow& window;
-
     friend class GameRender;
-
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();
@@ -56,9 +54,13 @@ public:
 
     //Destructor
     ~GameImagesManager();
+
     // Constructor y asignacion por copia deshabilitados
     GameImagesManager(const GameImagesManager& other) = delete;
     GameImagesManager& operator=(const GameImagesManager& other) = delete;
+
+    // Dado un tipo devuelve su surface correspondiente.
+    // Si no existe ,lo crea y lo guarda en un mapa
     Surface* operator()(player_t& player);
     Surface* operator()(int item_type);
     Surface* operator()(stateType state, int orientation);
@@ -67,7 +69,6 @@ public:
     Surface* operator()(npc_t& npc);
     Surface* operator()(std::string str);
     std::vector<Surface*> operator()(std::vector<list_item_t> items);
-
     Surface* animation(stateType state);
 };
 

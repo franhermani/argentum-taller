@@ -59,13 +59,6 @@ void SDLWindow::fill(const int r, const int g, const int b, const int alpha) {
     SDL_RenderClear(renderer);
 }
 
-void SDLWindow::render() {
-    SDL_RenderPresent(renderer);
-}
-
-SDL_Renderer* SDLWindow::getRenderer() const {
-    return renderer;
-}
 SDL_Surface* SDLWindow::getSurface() const {
     return SDL_GetWindowSurface(window);
 }
@@ -280,6 +273,8 @@ void SDLWindow::renderList(std::vector<Surface*>& surfaces) {
 void SDLWindow::renderListPrices(std::vector<Surface*>& surfaces) {
     renderListArea(measurements.list_prices, surfaces);
 }
+
+
 
 
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {

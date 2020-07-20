@@ -34,18 +34,16 @@ public:
     int getPlayerVisionHeight();
     std::vector<int> getDimensions();
 
-    // devuelve la posicion mas cercana apuntando
-    // a la orientacion del jugador principal
+    // devuelve npc/posicion al que se mira
     std::vector<int> getPositionLookingAt();
-
     std::vector<int> getPriestLookingAt();
 
+    //devuelve item/posicion donde se esta prado
     std::vector<int> getItemStandingAt();
-
     std::vector<int> getGoldStandingAt();
-
     std::vector<int> getNpcLookingAt();
 
+    //Devuelve estado actual del mundo
     client_world_t getCurrentWorld();
 
     //npc interaction related functions

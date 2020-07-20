@@ -41,9 +41,13 @@ public:
     // false en caso contrario
     bool isDead();
 
-
+    // Devuelve true si hubo click izquierdo
     int isLeftClick(SDL_Event &event);
+
+    // Devuelve true si se apreto alguna flecha
     int isMoveKey(SDL_Event& event);
+
+    // Espera a click izq y pone en x,y sus coordenadas
     void waitForLeftClick(int &x, int &y);
 };
 

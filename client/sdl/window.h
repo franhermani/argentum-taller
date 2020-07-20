@@ -26,20 +26,21 @@ class SDLWindow {
     SDL_Renderer *renderer;
     WindowMeasurements measurements;
 
-    void renderEqIfExists(std::map<int, Surface*>& surfaces_map,
-                                     SDL_Rect& rect, int item);
 
+    // Calculadores de rects
     SDL_Rect calculateMapObjectRect(int x, int y);
     int isOutsideFrameArea(SDL_Rect& stretch_rect, game_area_t& frame_area);
     SDL_Rect calculateInventoryStartRect();
     SDL_Rect calculateEquippedStartRect();
     SDL_Rect calculateListStartRect(game_area_t& list_area);
 
+    // Renderizadores auxiliares internos de la clase
     void renderInfoBar(Surface * bar, Surface* background,
             game_area_t& area, float percentage);
-
     void renderListArea(game_area_t& list_area,
             std::vector<Surface*>& surfaces);
+    void renderEqIfExists(std::map<int, Surface*>& surfaces_map,
+                          SDL_Rect& rect, int item);
 
 public:
     // Constructor
@@ -60,13 +61,9 @@ public:
     void fill(const int r = 0, const int g = 0, const int b = 0,
               const int alpha = 255);
 
-    // Renderiza la pantalla
-    void render();
 
     void toggleFullscreen();
 
-    // Devuelve el renderer
-    SDL_Renderer *getRenderer() const;
 
     // Devuelve la surface de toda la ventana
     SDL_Surface *getSurface() const;

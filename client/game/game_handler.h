@@ -58,7 +58,6 @@ public:
     // Setea la variable booleana 'keepRunning' en false
     void stop();
 
-    void render_test_window();
 };
 
 #endif // CONNECTION_HANDLER_H

@@ -9,7 +9,6 @@
 #include "../client.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "../sdl/texture.h"
 #include "vector"
 #include "map"
 #include <utility>

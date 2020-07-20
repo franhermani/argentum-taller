@@ -24,7 +24,6 @@ struct ImagePathContainer {
     std::map<int, std::map<int, std::string>> attackSurfacesPaths;
     std::map<int, std::map<int, std::string>> stateSurfacesPaths;
     std::map<int, std::string> itemSurfacesPaths;
-
     std::string gameFrameSurface;
     std::string worldSurface;
     std::string goldSurface;
@@ -33,7 +32,8 @@ struct ImagePathContainer {
     std::string mana_bar;
     std::string experience_bar;
 
-
+private:
+    //cargadores de rutas a imagenes
     void loadCreaturePaths();
     void loadNpcPaths();
     void loadPlayerPaths();
