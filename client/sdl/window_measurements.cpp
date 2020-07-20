@@ -125,12 +125,12 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
                 (int) ((screenHeight / 100.0) * 74.2),
                 (int) ((screenHeight /100.0) * 78)};
 
-    list = {(int) (screenWidth / 100.0) * 44,
+    list = {(int) (screenWidth / 100.0) * 46,
             (int) (screenWidth / 100.0) * 74,
             (int) (screenHeight / 100.0) * 5,
             (int) (screenHeight /100.0) * 15};
 
-    list_prices = {(int) (screenWidth / 100.0) * 44,
+    list_prices = {(int) (screenWidth / 100.0) * 46,
             (int) (screenWidth / 100.0) * 74,
             (int) (screenHeight / 100.0) * 10,
             (int) (screenHeight /100.0) * 15};
