@@ -282,9 +282,6 @@ void SDLWindow::renderListPrices(std::vector<Surface*>& surfaces) {
 }
 
 
-
-
-
 void SDLWindow::setTilesSize(int tileWidth, int tileHeight) {
     measurements.initialize(tileWidth,
                             tileHeight, screenWidth, screenHeight);
@@ -350,7 +347,6 @@ int SDLWindow::getRenderedEquipedTypeByPosition(int x, int y) {
 
 void SDLWindow::renderListArea(game_area_t& list_area,
                                std::vector<Surface*>& surfaces) {
-
     int surfaces_size = surfaces.size();
     int current_index = 0;
     SDL_Rect stretchRect = calculateListStartRect(list_area);
@@ -375,7 +371,6 @@ SDL_Rect SDLWindow::calculateListStartRect(game_area_t& list_area) {
 
 int SDLWindow::getRenderedListIndexByPosition(int xClicked,
         int yClicked, size_t list_length) {
-    //codigo repetido con render list, sacarlo afuera
     size_t current_index = 0;
     SDL_Rect stretchRect = calculateListStartRect(measurements.list);
     while (current_index < list_length) {
