@@ -68,7 +68,15 @@ Surface* GameImagesManager::operator()(std::string text) {
 
 
 Surface* GameImagesManager::operator()(stateType state, int orientation) {
-    return stateSurfacesMap[state][orientation];
+    if (stateSurfacesMap[state].find(orientation)
+        == stateSurfacesMap[state].end()) {
+        Surface* surface = new Surface(
+                pathContainer.stateSurfacesPaths[state][orientation], window, 1);
+        stateSurfacesMap[state].insert({orientation, surface});
+        return surface;
+    } else {
+        return stateSurfacesMap[state][orientation];
+    }
 }
 
 
@@ -309,62 +317,10 @@ void GameImagesManager::initPlayers() {
                          {ELF, elf_surfaces},
                          {DWARF, dwarf_surfaces},
                          {GNOME, gnome_surfaces}};
-    std::map<int, Surface*> ghostSurfacesMap = {
-            {UP,    new Surface(
-                    "../client/resources/images/characters/ghost_up_t.png",
-                    window, 1)},
-            {DOWN,  new Surface(
-                    "../client/resources/images/characters/ghost_down_t.png",
-                    window, 1)},
-            {LEFT,  new Surface(
-                    "../client/resources/images/characters/ghost_left_t.png",
-                    window, 1)},
-            {RIGHT, new Surface(
-                    "../client/resources/images/characters/ghost_right_t.png",
-                    window, 1)}
-    };
-    std::map<int, Surface*> reviveSurfacesMap = {
-            {UP,    new Surface(
-                    "../client/resources/images/characters/reviving_up_t.png",
-                    window, 1)},
-            {DOWN,  new Surface(
-                    "../client/resources/images/characters/reviving_down_t.png",
-                    window, 1)},
-            {LEFT,  new Surface(
-                    "../client/resources/images/characters/reviving_left_t.png",
-                    window, 1)},
-            {RIGHT, new Surface(
-             "../client/resources/images/characters/reviving_right_t.png",
-                    window, 1)}
-    };
-    std::map<int, Surface*> meditateSurfacesMap = {
-            {UP,    new Surface(
-                    "../client/resources/images/characters/meditating_up_t.png",
-                    window, 1)},
-            {DOWN,  new Surface(
-             "../client/resources/images/characters/meditating_down_t.png",
-                    window, 1)},
-            {LEFT,  new Surface(
-             "../client/resources/images/characters/meditating_left_t.png",
-                    window, 1)},
-            {RIGHT, new Surface(
-            "../client/resources/images/characters/meditating_right_t.png",
-                    window, 1)}
-    };
-    std::map<int, Surface*> dyingSurfacesMap = {
-            {UP,    new Surface(
-             "../client/resources/images/characters/dying_creature_up_t.png",
-                    window, 1)},
-            {DOWN,  new Surface(
-             "../client/resources/images/characters/dying_creature_down_t.png",
-                    window, 1)},
-            {LEFT,  new Surface(
-            "../client/resources/images/characters/dying_creature_left_t.png",
-                    window, 1)},
-            {RIGHT, new Surface(
-             "../client/resources/images/characters/dying_creature_right_t.png",
-                    window, 1)}
-    };
+    std::map<int, Surface*> ghostSurfacesMap;
+    std::map<int, Surface*> reviveSurfacesMap;
+    std::map<int, Surface*> meditateSurfacesMap;
+    std::map<int, Surface*> dyingSurfacesMap;
     stateSurfacesMap = {
             {STATE_GHOST, ghostSurfacesMap},
             {STATE_REVIVING, reviveSurfacesMap},
