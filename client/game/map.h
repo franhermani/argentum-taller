@@ -40,11 +40,11 @@ class Map {
 
 
     //busca en la lista actual de jugadores y devuelve el principal
-    player_t getMainPlayer();
+    player_t findMainPlayer();
 
 
-    int getNewBordersXPosition(int pos_x, player_t& main_player);
-    int getNewBordersYPosition(int pos_y, player_t& main_player);
+    uint16_t getNewBordersXPosition(uint16_t pos_x, player_t& main_player);
+    uint16_t getNewBordersYPosition(uint16_t pos_y, player_t& main_player);
 
 
     // devuelve los npcs/players/criatura/item
