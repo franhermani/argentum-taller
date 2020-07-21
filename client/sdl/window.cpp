@@ -7,8 +7,12 @@
 #include <utility>
 #include "../sdl/exception.h"
 #define INVENTORY_MAX_TILES_WIDTH 2
+#define SIXTY_PERCENT 0.6
+#define TWENTY_PERCENT 0.2
+#define TEN_PERCENT 0.1
 #define INVENTORY_MAX_TILES_HEIGHT 5
 #define EQUIPPED_MAX_TILES_WIDTH 4
+
 #define LIST_MAX_TILES_WIDTH 10
 
 SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
@@ -116,12 +120,12 @@ void SDLWindow::renderMapObjectLifeBar(int x, int y, Surface* bar,
         float percentage) {
     game_area_t& frame_area = measurements.frame;
     SDL_Rect stretchRect;
-    //TODO sacar el 0.6 , 0.2 y 0.1 a measurements
-    float bar_width = measurements.xWidthTileSize*0.6 * percentage;
-    stretchRect.x = getXPixelPos(x) + (measurements.xWidthTileSize) * 0.2;
+    float bar_width = measurements.xWidthTileSize*SIXTY_PERCENT * percentage;
+    stretchRect.x = getXPixelPos(x) + (measurements.xWidthTileSize) *
+            TWENTY_PERCENT;
     stretchRect.y = getYPixelPos(y);
     stretchRect.w = bar_width;
-    stretchRect.h = (measurements.yHeightTileSize)*0.1;
+    stretchRect.h = (measurements.yHeightTileSize)*TEN_PERCENT;
     if (isOutsideFrameArea(stretchRect, frame_area)) return;
     SDL_BlitScaled(bar->getRenderable(), NULL,
                    getSurface(), &stretchRect);
