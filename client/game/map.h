@@ -12,11 +12,9 @@ class Map {
     npcs_t npcs;
     list_t list;
     player_t mainPlayer;
-    //el 108
     std::vector<int> mapDimensions;
     std::atomic<bool> interactingWithNpc;
     int username_id;
-    //el 9
     int playerVisionWidth;
     int playerVisionHeight;
     //Dada la posicion de un jugador, devuelve la posicion donde

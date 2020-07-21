@@ -9,7 +9,6 @@
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/items.h"
 #include "../../common/defines/commands.h"
-#include "area.h"
 #include "window_measurements.h"
 
 //SACAR ESTO DE ACA OBVIAMENTE

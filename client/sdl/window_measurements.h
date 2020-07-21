@@ -45,7 +45,7 @@ struct WindowMeasurements {
 
 private:
 
-    // Inicializadores internos 
+    // Inicializadores internos
     void initializePlayerInfo(int screenWidth, int screenHeight);
     void initializeItemInfo(int screenWidth, int screenHeight);
     void initializeMainStaticAreas();

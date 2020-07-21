@@ -1,28 +1,13 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
 #include "game_render.h"
-#include <iostream>
-#include <exception>
 #include <string>
 #include <chrono>
 #include <unistd.h>
-#include "../client.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include "vector"
 #include "map"
 #include <utility>
-#include <SDL2/SDL_ttf.h>
-#include "../sdl/window.h"
-#include "../../common/defines/world_structs.h"
-#include "../../common/defines/races.h"
-#include "../../common/defines/creatures.h"
-#include "../../common/defines/npcs.h"
-#include "../../common/defines/items.h"
-#include "../../common/defines/states.h"
 #include "exception.h"
 #include "../sdl/exception.h"
-#include "../../common/defines/attacks.h"
 #define NUMBER_OF_ITERATIONS_FOR_ANIMATION 5
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
 
