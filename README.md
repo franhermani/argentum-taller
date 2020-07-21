@@ -1,7 +1,7 @@
 # Alumnos
 
-- Francisco Hermani		98223
-- Martin Rosas Sommer	98535
+- Francisco Hermani	Vittori		- 98223
+- Martin Rosas Sommer			- 98535
 
 Link GitHub: https://github.com/franhermani/taller-tp4
 
@@ -48,7 +48,6 @@ En la carpeta donde se clonó el repositorio ejecutar:
 bash clean.sh
 ```
 
-
 ### Generar archivo de supresión
 
 Esto sirve para detectar los leaks que tiene la librería SDL y omitirlos
@@ -74,7 +73,6 @@ Valgrind filtrando los logs obtenidos:
 ```
 valgrind --leak-check=full --show-leak-kinds=all --suppressions=minimal.supp ./client
 ```
-
 
 ### Ejecutar el servidor
 
