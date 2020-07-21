@@ -21,7 +21,7 @@
 
 
 CommandDTOManager::CommandDTOManager(ClientWorldMonitor &worldMonitor,
-                                     GameRender* gameRender, GameInputHandler& inputHandler)
+        GameRender* gameRender, GameInputHandler& inputHandler)
         : worldMonitor(worldMonitor), gameRender(gameRender),
           inputHandler(inputHandler){}
 

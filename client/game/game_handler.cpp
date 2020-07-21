@@ -21,7 +21,7 @@ GameHandler::GameHandler(const char *host, const char *port,
     try {
         printStartMessage();
         gameRender = new GameRender(resolution["width"],
-                                    resolution["height"], worldMonitor, username);
+                resolution["height"], worldMonitor, username);
     } catch (SDLException& e) {
         delete connectionSender;
         delete connectionReceiver;

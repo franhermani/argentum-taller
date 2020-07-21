@@ -47,7 +47,6 @@ public:
 
     // Recibe un evento ingresado por input
     CommandDTO* operator()(int key);
-
 };
 
 

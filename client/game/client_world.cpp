@@ -43,8 +43,10 @@ std::vector<T> ClientWorld::findVisible(std::vector<T> vec) {
             continue;
         } else {
             T converted_elem = elem;
-            converted_elem.pos.x = getNewBordersXPosition(elem.pos.x, mainPlayer);
-            converted_elem.pos.y = getNewBordersYPosition(elem.pos.y, mainPlayer);
+            converted_elem.pos.x = getNewBordersXPosition(elem.pos.x,
+                    mainPlayer);
+            converted_elem.pos.y = getNewBordersYPosition(elem.pos.y,
+                    mainPlayer);
             visible_elems.push_back(converted_elem);
         }
     }
@@ -52,8 +54,8 @@ std::vector<T> ClientWorld::findVisible(std::vector<T> vec) {
 }
 
 void ClientWorld::initialize(int received_id,
-                             std::vector<int>& blocks_around,
-                             npcs_t& received_npcs, std::vector<int>& map_dimensions) {
+        std::vector<int>& blocks_around,
+        npcs_t& received_npcs, std::vector<int>& map_dimensions) {
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
@@ -109,13 +111,15 @@ int ClientWorld::betweenPlayerBorders(int pos_x, int pos_y) {
     && (pos_y >= y_start) && (pos_y <= y_finish));
 }
 
-uint16_t ClientWorld::getNewBordersXPosition(uint16_t pos_x, player_t& main_player) {
+uint16_t ClientWorld::getNewBordersXPosition(uint16_t pos_x,
+        player_t& main_player) {
     uint16_t pos;
     pos = pos_x - getPlayerXStart(main_player);
     if (pos < 0) pos = 0;
     return pos;
 }
-uint16_t ClientWorld::getNewBordersYPosition(uint16_t pos_y, player_t& main_player) {
+uint16_t ClientWorld::getNewBordersYPosition(uint16_t pos_y,
+        player_t& main_player) {
     uint16_t pos;
     pos = pos_y - getPlayerYStart(main_player);
     if (pos < 0) pos = 0;

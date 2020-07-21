@@ -12,7 +12,8 @@ class ConnectionReceiver : public Thread {
 
 public:
     // Constructor
-    explicit ConnectionReceiver(Socket& socket, ClientWorldMonitor& worldMonitor);
+    explicit ConnectionReceiver(Socket& socket,
+            ClientWorldMonitor& worldMonitor);
 
     // Constructor y asignacion por copia deshabilitados
     ConnectionReceiver(const ConnectionReceiver&) = delete;

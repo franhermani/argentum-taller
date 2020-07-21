@@ -4,6 +4,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "window.h"
+#include <utility>
 #include "../sdl/exception.h"
 #define INVENTORY_MAX_TILES_WIDTH 2
 #define INVENTORY_MAX_TILES_HEIGHT 5
@@ -16,7 +17,8 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         throw SDLException("\nError al inicializar SDL", SDL_GetError());
 
-    window = SDL_CreateWindow("Argentum", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    window = SDL_CreateWindow("Argentum",
+            SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             screenWidth, screenHeight, 0);
     if (window == NULL)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
@@ -61,8 +63,8 @@ SDL_PixelFormat* SDLWindow::getSurfaceFormat() const {
 
 
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
-                                 std::map<int, Surface *>& info_surfaces_map,
-                                 Surface* level_surface, Surface* name_surface) {
+        std::map<int, Surface *>& info_surfaces_map,
+        Surface* level_surface, Surface* name_surface) {
     Surface* background = info_surfaces_map[BACKGROUND];
     renderInfoBar(info_surfaces_map[LIFE], background,
                   measurements.life, player_info[LIFE]);
@@ -74,7 +76,8 @@ void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
     renderName(name_surface);
 }
 
-int SDLWindow::isOutsideFrameArea(SDL_Rect& stretch_rect, game_area_t& frame_area) {
+int SDLWindow::isOutsideFrameArea(SDL_Rect& stretch_rect,
+        game_area_t& frame_area) {
     return ((stretch_rect.x+measurements.xWidthTileSize
          >= frame_area.x_pixel_end) ||
         (stretch_rect.y+measurements.yHeightTileSize
@@ -89,7 +92,6 @@ SDL_Rect SDLWindow::calculateMapObjectRect(int x, int y) {
     stretchRect.w = measurements.xWidthTileSize;
     stretchRect.h = measurements.yHeightTileSize;
     return std::move(stretchRect);
-
 }
 
 void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
@@ -309,7 +311,7 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
 SDL_Rect SDLWindow::calculateEquippedStartRect() {
     game_area_t& equipped_area = measurements.equipped;
     int equipped_width = (equipped_area.x_pixel_end -
-                          equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
+            equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
     SDL_Rect stretchRect;
     stretchRect.x = equipped_area.x_pixel_begin;
     stretchRect.y = equipped_area.y_pixel_begin;

@@ -71,7 +71,8 @@ Surface* GameImagesManager::operator()(stateType state, int orientation) {
     if (stateSurfacesMap[state].find(orientation)
         == stateSurfacesMap[state].end()) {
         Surface* surface = new Surface(
-                pathContainer.stateSurfacesPaths[state][orientation], window, 1);
+                pathContainer.stateSurfacesPaths[state][orientation],
+                window, 1);
         stateSurfacesMap[state].insert({orientation, surface});
         return surface;
     } else {
@@ -86,7 +87,8 @@ Surface* GameImagesManager::operator()(attack_t& attack) {
     if (attackSurfacesMap[type].find(orientation)
         == attackSurfacesMap[type].end()) {
         Surface* surface = new Surface(
-                pathContainer.attackSurfacesPaths[type][orientation], window, 1);
+                pathContainer.attackSurfacesPaths[type][orientation],
+                window, 1);
         attackSurfacesMap[type].insert({orientation, surface});
         return surface;
     } else {
@@ -115,7 +117,8 @@ Surface* GameImagesManager::operator()(creature_t& creature) {
     if (creatureSurfacesMap[type].find(orientation)
         == creatureSurfacesMap[type].end()) {
         Surface *surface = new Surface(
-                pathContainer.creatureSurfacesPaths[type][orientation], window, 1);
+                pathContainer.creatureSurfacesPaths[type][orientation],
+                window, 1);
         creatureSurfacesMap[type].insert({orientation, surface});
         return surface;
     } else {
@@ -130,7 +133,8 @@ Surface* GameImagesManager::operator()(player_t& player) {
     if (playerSurfacesMap[race].find(orientation)
         == playerSurfacesMap[race].end()) {
         Surface* surface = new Surface(
-                pathContainer.playerSurfacesPaths[race][orientation], window, 1);
+                pathContainer.playerSurfacesPaths[race][orientation],
+                window, 1);
         playerSurfacesMap[race].insert({orientation, surface});
         return surface;
     } else {
@@ -195,7 +199,8 @@ Surface* GameImagesManager::getEquipped(
     if (equippedWeaponSurfacesMap[weapon].find(orientation)
             == equippedWeaponSurfacesMap[weapon].end()) {
             Surface* surface = new Surface(
-                    pathContainer.equippedWeaponSurfacesPaths[weapon][orientation],
+                    pathContainer.equippedWeaponSurfacesPaths
+                    [weapon][orientation],
                     window, 1);
             equippedWeaponSurfacesMap[weapon].insert({orientation, surface});
             return surface;
@@ -220,7 +225,6 @@ void GameImagesManager::createNecessaryFrameItems(
 
 
 void GameImagesManager::initCreatures() {
-
     std::map<int, Surface*> skeleton_surfaces;
     std::map<int, Surface*> zombie_surfaces;
     std::map<int, Surface*> goblin_surfaces;
@@ -231,7 +235,6 @@ void GameImagesManager::initCreatures() {
 }
 
 void GameImagesManager::initEquipped() {
-
     std::map<int, Surface*> baculo_nudoso_surfaces;
     std::map<int, Surface*> arco_compuesto_surfaces;
     std::map<int, Surface*> arco_simple_surfaces;
@@ -274,7 +277,6 @@ void GameImagesManager::initEquipped() {
 
 
 void GameImagesManager::initNpc() {
-
     std::map<int, Surface*> priest_surfaces;
     std::map<int, Surface*> merchant_surfaces;
     std::map<int, Surface*> banker_surfaces;
@@ -348,7 +350,8 @@ void GameImagesManager::initFrame() {
             window, 0);
     Surface* black_bar = new Surface(pathContainer.black_bar, window, 0);
     Surface* mana_bar = new Surface(pathContainer.mana_bar, window, 0);
-    Surface* experience_bar = new Surface(pathContainer.experience_bar, window, 0);
+    Surface* experience_bar = new Surface(
+            pathContainer.experience_bar, window, 0);
 
     infoSurfacesMap = {
             {LIFE, life_bar},

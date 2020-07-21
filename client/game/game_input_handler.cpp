@@ -6,8 +6,9 @@
 #include <vector>
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
-                                   ClientWorldMonitor& worldMonitor, GameRender* gameRender):
-        commandQueue(commandQueue), worldMonitor(worldMonitor), gameRender(gameRender) {}
+        ClientWorldMonitor& worldMonitor, GameRender* gameRender):
+        commandQueue(commandQueue), worldMonitor(worldMonitor),
+        gameRender(gameRender) {}
 
 GameInputHandler::~GameInputHandler() = default;
 

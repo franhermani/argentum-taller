@@ -84,7 +84,7 @@ void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
             std::to_string(level));
     Surface* name_surface = imagesManager(username);
     window.renderPlayerInfo(current_world.percentages,
-                            imagesManager.infoSurfacesMap, level_surface, name_surface);
+            imagesManager.infoSurfacesMap, level_surface, name_surface);
 }
 
 
@@ -95,8 +95,8 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
             window.renderMapObject(it->pos.x, it->pos.y,
                                    imagesManager(*it));
             window.renderMapObjectLifeBar(it->pos.x, it->pos.y,
-                                          imagesManager.infoSurfacesMap[LIFE],
-                                          (it->actual_life/(float) it->max_life));
+                    imagesManager.infoSurfacesMap[LIFE],
+                    (it->actual_life/(float) it->max_life));
         } else {
             window.renderMapObject(it->pos.x, it->pos.y,
                                    imagesManager(it->state, it->orientation));
@@ -172,10 +172,10 @@ void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
         } else {
             try {
                 window.renderAnimatedMapObject(it->pos.x, it->pos.y,
-                                               imagesManager.animation(state), iteration);
+                        imagesManager.animation(state), iteration);
             } catch (SurfaceExistanceException& e) {
                 window.renderMapObject(it->pos.x, it->pos.y,
-                                       imagesManager(it->state, it->orientation));
+                        imagesManager(it->state, it->orientation));
             }
         }
     }

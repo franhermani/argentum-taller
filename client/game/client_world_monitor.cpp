@@ -10,8 +10,8 @@ ClientWorldMonitor::~ClientWorldMonitor() {}
 
 
 void ClientWorldMonitor::initialize(int username_id,
-                                    std::vector<int>& blocks_around,
-                                    npcs_t& npcs, std::vector<int>& map_dimensions) {
+        std::vector<int>& blocks_around,
+        npcs_t& npcs, std::vector<int>& map_dimensions) {
     std::unique_lock<std::mutex> lk(m);
     world.initialize(username_id, blocks_around, npcs, map_dimensions);
 }
