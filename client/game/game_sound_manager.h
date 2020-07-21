@@ -5,7 +5,7 @@
 
 
 #include <SDL2/SDL_mixer.h>
-#include "../../common/defines/attacks.h"
+#include "../../common/defines/sounds.h"
 #include <map>
 #include <iostream>
 #include <string>
