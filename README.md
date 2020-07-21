@@ -1,7 +1,7 @@
 # Alumnos
 
-- Francisco Hermani	Vittori		98223
-- Martin Rosas Sommer			98535
+- Francisco Hermani	Vittori		- 98223
+- Martin Rosas Sommer			- 98535
 
 Link GitHub: https://github.com/franhermani/taller-tp4
 
