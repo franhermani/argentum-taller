@@ -10,6 +10,7 @@
 #include "../sdl/exception.h"
 #define NUMBER_OF_ITERATIONS_FOR_ANIMATION 5
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
+#define MIN_TIME_TO_SLEEP 20
 
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
@@ -49,6 +50,7 @@ void GameRender::run() {
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = WAIT_TIME_FOR_WORLD_TO_UPDATE - elapsed;
+        if (time_to_sleep < 0) time_to_sleep = MIN_TIME_TO_SLEEP;
         std::this_thread::sleep_for(ms(time_to_sleep));
     }
 }

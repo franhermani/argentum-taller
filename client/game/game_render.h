@@ -20,7 +20,6 @@ class GameRender : public Thread {
     const int screenHeight;
     MapMonitor& mapMonitor;
     std::string username;
-    //todo renombrar estos dos para diferenciar el 9 del 108
     int blocksWidth;
     int blocksHeight;
     std::vector<int> mapDimensions;
