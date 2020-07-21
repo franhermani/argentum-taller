@@ -4,7 +4,7 @@
 #include <vector>
 #include "../../../../common/defines/items.h"
 #include "../../../../common/defines/world_structs.h"
-#include "../../../../common/defines/position.h"
+#include "../../../../common/utilities/position.hpp"
 
 class Player;
 

@@ -1,43 +1,28 @@
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
 #include "game_render.h"
-#include <iostream>
-#include <exception>
 #include <string>
 #include <chrono>
 #include <unistd.h>
-#include "../client.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include "../sdl/texture.h"
 #include "vector"
 #include "map"
 #include <utility>
-#include <SDL2/SDL_ttf.h>
-#include "../sdl/window.h"
-#include "../../common/defines/world_structs.h"
-#include "../../common/defines/races.h"
-#include "../../common/defines/creatures.h"
-#include "../../common/defines/npcs.h"
-#include "../../common/defines/items.h"
-#include "../../common/defines/states.h"
 #include "exception.h"
 #include "../sdl/exception.h"
-#include "../../common/defines/attacks.h"
 #define NUMBER_OF_ITERATIONS_FOR_ANIMATION 5
 #define WAIT_TIME_FOR_WORLD_TO_UPDATE 60
+#define MIN_TIME_TO_SLEEP 20
 
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
         MapMonitor& mapMonitor, std::string username) :
-                       screenWidth(screenWidth), screenHeight(screenHeight),
-                       mapMonitor(mapMonitor),
-                       username(username),
-                       window(screenWidth, screenHeight),
-                       surfacesManager(window) {
+        screenWidth(screenWidth), screenHeight(screenHeight),
+        mapMonitor(mapMonitor),
+        username(username),
+        window(screenWidth, screenHeight),
+        imagesManager(window) {
     init();
-    surfacesManager.loadSurfacePaths();
+    imagesManager.loadSurfacePaths();
     keepRunning = true;
 }
 
@@ -65,6 +50,7 @@ void GameRender::run() {
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
         auto time_to_sleep = WAIT_TIME_FOR_WORLD_TO_UPDATE - elapsed;
+        if (time_to_sleep < 0) time_to_sleep = MIN_TIME_TO_SLEEP;
         std::this_thread::sleep_for(ms(time_to_sleep));
     }
 }
@@ -94,11 +80,11 @@ void GameRender::renderGame() {
 }
 
 void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
-    Surface* level_surface = surfacesManager(
+    Surface* level_surface = imagesManager(
             std::to_string(level));
-    Surface* name_surface = surfacesManager(username);
+    Surface* name_surface = imagesManager(username);
     window.renderPlayerInfo(current_world.percentages,
-            surfacesManager.infoSurfacesMap, level_surface, name_surface);
+                            imagesManager.infoSurfacesMap, level_surface, name_surface);
 }
 
 
@@ -107,13 +93,13 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
          it != std::end(creatures); ++it) {
         if (it->state == STATE_NORMAL) {
             window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager(*it));
+                                   imagesManager(*it));
             window.renderMapObjectLifeBar(it->pos.x, it->pos.y,
-                    surfacesManager.infoSurfacesMap[LIFE],
-                    (it->actual_life/(float) it->max_life));
+                                          imagesManager.infoSurfacesMap[LIFE],
+                                          (it->actual_life/(float) it->max_life));
         } else {
             window.renderMapObject(it->pos.x, it->pos.y,
-                    surfacesManager(it->state, it->orientation));
+                                   imagesManager(it->state, it->orientation));
         }
     }
 }
@@ -122,7 +108,7 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
     for (auto it = std::begin(npcs);
          it != std::end(npcs); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager(*it));
+                               imagesManager(*it));
     }
 }
 
@@ -130,8 +116,8 @@ void GameRender::renderNpcs(std::vector<npc_t>& npcs) {
 void GameRender::renderEquippedList(player_t& player) {
     std::vector<uint8_t> equipped_items {player.weapon, player.armor,
                                      player.shield, player.helmet};
-    surfacesManager.createNecessaryFrameItems(equipped_items);
-    window.renderEquipped(player, surfacesManager.itemSurfacesMap);
+    imagesManager.createNecessaryFrameItems(equipped_items);
+    window.renderEquipped(player, imagesManager.itemSurfacesMap);
 }
 
 
@@ -140,7 +126,7 @@ void GameRender::renderAttacks(std::vector<attack_t>& attacks) {
          it != std::end(attacks); ++it) {
         soundManager.playSound((soundType) it->sound);
         window.renderMapObject(it->pos.x, it->pos.y,
-                surfacesManager(*it));
+                               imagesManager(*it));
     }
 }
 
@@ -149,7 +135,7 @@ void GameRender::renderItems(std::vector<item_t> &items) {
     for (auto it = std::begin(items);
          it != std::end(items); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager(it->type));
+                               imagesManager(it->type));
     }
 }
 
@@ -157,23 +143,23 @@ void GameRender::renderGolds(std::vector<gold_t> &golds) {
     for (auto it = std::begin(golds);
          it != std::end(golds); ++it) {
         window.renderMapObject(it->pos.x, it->pos.y,
-                               surfacesManager.goldSurface);
+                               imagesManager.goldSurface);
     }
 }
 
 void GameRender::renderWorld(position_t position) {
-    window.renderWorld(surfacesManager.worldSurface,
-        position, mapDimensions[0], mapDimensions[1]);
+    window.renderWorld(imagesManager.worldSurface,
+                       position, mapDimensions[0], mapDimensions[1]);
 }
 
 void GameRender::renderGameFrame() {
-    window.renderGameFrame(surfacesManager.gameFrameSurface);
+    window.renderGameFrame(imagesManager.gameFrameSurface);
 }
 
 void GameRender::renderInventory(std::vector<uint8_t>& inventory) {
-    surfacesManager.createNecessaryFrameItems(inventory);
+    imagesManager.createNecessaryFrameItems(inventory);
     window.renderInventory(inventory,
-                         surfacesManager.itemSurfacesMap);
+                           imagesManager.itemSurfacesMap);
 }
 
 void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
@@ -182,32 +168,29 @@ void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
         stateType state = it->state;
         if (state == STATE_NORMAL) {
             window.renderMapObject(it->pos.x, it->pos.y,
-                                   surfacesManager(*it));
+                                   imagesManager(*it));
         } else {
             try {
                 window.renderAnimatedMapObject(it->pos.x, it->pos.y,
-                        surfacesManager.animation(state), iteration);
+                                               imagesManager.animation(state), iteration);
             } catch (SurfaceExistanceException& e) {
                 window.renderMapObject(it->pos.x, it->pos.y,
-                        surfacesManager(it->state, it->orientation));
+                                       imagesManager(it->state, it->orientation));
             }
         }
     }
 }
 
 void GameRender::renderSingleEquipped(player_t& player, int part) {
-    //TODO PASAR GETTER A OPERATOR
-
     try {
         window.renderMapObject(player.pos.x, player.pos.y,
-                               surfacesManager.getEquipped(part, player.orientation));
+                imagesManager.getEquipped(part, player.orientation));
     } catch (SurfaceExistanceException& e) {
         return;
     }
 }
 
 void GameRender::renderEquipped(std::vector<player_t>& players) {
-    //todo podemos crear algo par aun fantasma. osea al pedo
     for (auto it = std::begin(players);
          it != std::end(players); ++it) {
         if (it->state == STATE_GHOST) continue;
@@ -219,27 +202,27 @@ void GameRender::renderEquipped(std::vector<player_t>& players) {
 }
 
 void GameRender::renderInventoryGolds(uint16_t quantity) {
-    window.renderInventoryGolds(surfacesManager.goldSurface,
-            surfacesManager(std::to_string(quantity)));
+    window.renderInventoryGolds(imagesManager.goldSurface,
+                                imagesManager(std::to_string(quantity)));
 }
 
 
 
 void GameRender::renderList(list_t list) {
-    std::vector<Surface*> surfaces = surfacesManager(list.items);
+    std::vector<Surface*> surfaces = imagesManager(list.items);
     window.renderList(surfaces);
     if (list.show_price) {
         std::vector<Surface*> price_surfaces;
         for (auto it = std::begin(list.items);
         it != std::end(list.items); ++it) {
-            price_surfaces.push_back(surfacesManager(
+            price_surfaces.push_back(imagesManager(
                     std::to_string(it->price) + " "));
         }
         window.renderListPrices(price_surfaces);
     } else {
-        Surface* quantity = surfacesManager(
+        Surface* quantity = imagesManager(
                 std::to_string(list.gold_quantity));
-        window.renderListGold(surfacesManager.goldSurface, quantity);
+        window.renderListGold(imagesManager.goldSurface, quantity);
     }
 }
 

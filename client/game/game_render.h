@@ -11,7 +11,7 @@
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
 #include "map_monitor.h"
-#include "game_Surfaces_manager.h"
+#include "game_images_manager.h"
 #include "game_sound_manager.h"
 
 
@@ -20,20 +20,35 @@ class GameRender : public Thread {
     const int screenHeight;
     MapMonitor& mapMonitor;
     std::string username;
-    //todo renombrar estos dos para diferenciar el 9 del 108
     int blocksWidth;
     int blocksHeight;
     std::vector<int> mapDimensions;
     SDLWindow window;
-    GameSurfacesManager surfacesManager;
+    GameImagesManager imagesManager;
     GameSoundManager soundManager;
     //conservamos mundo renderizado en el momento
     // para poder trabajar estructuras interactivas con usuario
     client_world_t current_world;
-    client_world_t previous_world;
 
-
+    // Funcion renderizadora principal
     void renderGame();
+    //Renderizadores
+    void renderPlayers(std::vector<player_t> &players, int iteration);
+    void renderNpcs(std::vector<npc_t>& npcs);
+    void renderCreatures(std::vector<creature_t>& creatures);
+    void renderPlayerInfo(std::map<int,float>& percentages,
+                          int level);
+    void renderItems(std::vector<item_t>& items);
+    void renderAttacks(std::vector<attack_t>& attacks);
+    void renderEquipped(std::vector<player_t>& players);
+    void renderSingleEquipped(player_t& player, int part);
+    void renderGolds(std::vector<gold_t> &golds);
+    void renderEquippedList(player_t& player);
+    void renderInventory(std::vector<uint8_t>& inventory);
+    void renderInventoryGolds(uint16_t quantity);
+    void renderGameFrame();
+    void renderList(list_t list);
+    void renderWorld(position_t position);
 
 public:
     //Constructor
@@ -52,25 +67,14 @@ public:
     // false en caso contrario
     bool isDead() override;
 
-    //Renderizadores
-    void renderPlayers(std::vector<player_t> &players, int iteration);
-    void renderNpcs(std::vector<npc_t>& npcs);
-    void renderCreatures(std::vector<creature_t>& creatures);
-    void renderPlayerInfo(std::map<int,float>& percentages,
-            int level);
-    void renderItems(std::vector<item_t>& items);
-    void renderAttacks(std::vector<attack_t>& attacks);
-    void renderEquipped(std::vector<player_t>& players);
-    void renderSingleEquipped(player_t& player, int part);
-    void renderGolds(std::vector<gold_t> &golds);
-    void renderEquippedList(player_t& player);
-    void renderInventory(std::vector<uint8_t>& inventory);
-    void renderInventoryGolds(uint16_t quantity);
-    void renderGameFrame();
-    void renderList(list_t list);
-    void renderWorld(position_t position);
+
+    //Activar/Desactivar pantalla completa
     void toggleFullscreen();
+
+    //Activar/Desactivar musica
     void toggleMusic();
+
+    //Activar/Desactivar sonido
     void toggleSound();
 
 

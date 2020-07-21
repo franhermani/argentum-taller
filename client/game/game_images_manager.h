@@ -1,6 +1,6 @@
 
-#ifndef ARGENTUM_GAME_SURFACES_MANAGER_H
-#define ARGENTUM_GAME_SURFACES_MANAGER_H
+#ifndef ARGENTUM_GAME_IMAGES_MANAGER_H
+#define ARGENTUM_GAME_IMAGES_MANAGER_H
 #include <vector>
 #include <map>
 #include <string>
@@ -12,8 +12,10 @@
 #include "../../common/defines/world_structs.h"
 #include "../sdl/surface.h"
 #include "../sdl/window.h"
+#include "image_path_container.h"
 
-class GameSurfacesManager {
+class GameImagesManager {
+    ImagePathContainer pathContainer;
     std::map<int, std::map<int, Surface *>> creatureSurfacesMap;
     std::map<int, std::map<int, Surface *>> npcSurfacesMap;
     std::map<int, std::map<int, Surface *>> playerSurfacesMap;
@@ -27,32 +29,19 @@ class GameSurfacesManager {
     Surface* goldSurface;
     Surface* gameFrameSurface;
     Surface* worldSurface;
-    std::map<int, std::string> animatedStatePaths;
-    std::map<int, std::map<int, std::string>> npcSurfacesPaths;
-    std::map<int, std::map<int, std::string>> equippedWeaponSurfacesPaths;
-    std::map<int, std::map<int, std::string>> creatureSurfacesPaths;
-    std::map<int, std::map<int, std::string>> playerSurfacesPaths;
-    std::map<int, std::map<int, std::string>> attackSurfacesPaths;
-    std::map<int, std::string> itemSurfacesPaths;
     TTF_Font* mainFont;
     SDL_Color mainColor;
     SDLWindow& window;
-
     friend class GameRender;
-
 
     //Inicializa paths a archivos de imagenes para surfaces
     void loadSurfacePaths();
-    void loadCreaturePaths();
-    void loadNpcPaths();
-    void loadPlayerPaths();
-    void loadItemPaths();
-    void loadAttackPaths();
-    void loadEquippedPaths();
-    void loadAnimatedPaths();
-
-
-    void createFrameSurfaces();
+    void initCreatures();
+    void initNpc();
+    void initPlayers();
+    void initAttack();
+    void initEquipped();
+    void initFrame();
 
     // inicializadores lazy de surfaces
     void createNecessaryFrameItems(std::vector<uint8_t>& items);
@@ -61,13 +50,17 @@ class GameSurfacesManager {
 
 public:
     //Constructor
-    explicit GameSurfacesManager(SDLWindow& window);
+    explicit GameImagesManager(SDLWindow& window);
 
     //Destructor
-    ~GameSurfacesManager();
+    ~GameImagesManager();
+
     // Constructor y asignacion por copia deshabilitados
-    GameSurfacesManager(const GameSurfacesManager& other) = delete;
-    GameSurfacesManager& operator=(const GameSurfacesManager& other) = delete;
+    GameImagesManager(const GameImagesManager& other) = delete;
+    GameImagesManager& operator=(const GameImagesManager& other) = delete;
+
+    // Dado un tipo devuelve su surface correspondiente.
+    // Si no existe ,lo crea y lo guarda en un mapa
     Surface* operator()(player_t& player);
     Surface* operator()(int item_type);
     Surface* operator()(stateType state, int orientation);
@@ -76,9 +69,8 @@ public:
     Surface* operator()(npc_t& npc);
     Surface* operator()(std::string str);
     std::vector<Surface*> operator()(std::vector<list_item_t> items);
-
     Surface* animation(stateType state);
 };
 
 
-#endif //ARGENTUM_GAME_SURFACES_MANAGER_H
+#endif //ARGENTUM_GAME_IMAGES_MANAGER_H

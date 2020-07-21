@@ -1,7 +1,7 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include "../../../../common/defines/position.h"
+#include "../../../../common/utilities/position.hpp"
 
 class Item {
 protected:

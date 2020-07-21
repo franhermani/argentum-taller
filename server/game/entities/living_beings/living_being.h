@@ -1,7 +1,7 @@
 #ifndef LIVING_BEING_H
 #define LIVING_BEING_H
 
-#include "../../../../common/defines/position.h"
+#include "../../../../common/utilities/position.hpp"
 #include "../../../../common/defines/states.h"
 
 class Player;

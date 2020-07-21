@@ -26,7 +26,6 @@ public:
 
     // Obtiene la resolucion de la pantalla
     const json getResolution(File& file);
-
 };
 
 #endif // FILE_PARSER_H

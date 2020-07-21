@@ -12,14 +12,11 @@ class Map {
     npcs_t npcs;
     list_t list;
     player_t mainPlayer;
-    //el 108
     std::vector<int> mapDimensions;
     std::atomic<bool> interactingWithNpc;
     int username_id;
-    //el 9
     int playerVisionWidth;
     int playerVisionHeight;
-
     //Dada la posicion de un jugador, devuelve la posicion donde
     // arrancaria en X su submatriz dentro de la matriz principal
     int getPlayerXStart(player_t& player);
@@ -40,22 +37,22 @@ class Map {
 
 
     //busca en la lista actual de jugadores y devuelve el principal
-    player_t getMainPlayer();
+    player_t findMainPlayer();
 
 
-    int getNewBordersXPosition(int pos_x, player_t& main_player);
-    int getNewBordersYPosition(int pos_y, player_t& main_player);
+    uint16_t getNewBordersXPosition(uint16_t pos_x, player_t& main_player);
+    uint16_t getNewBordersYPosition(uint16_t pos_y, player_t& main_player);
 
 
     // devuelve los npcs/players/criatura/item
     // dentro del rango de vision del jguador principal
     // con posiciones actualizadas a la submatriz
-    std::vector<player_t> getRenderablePlayers();
-    std::vector<npc_t> getRenderableNpcs();
-    std::vector<creature_t> getRenderableCreatures();
-    std::vector<item_t> getRenderableItems();
-    std::vector<gold_t> getRenderableGolds();
-    std::vector<attack_t> getRenderableAttacks();
+    std::vector<player_t> findRenderablePlayers();
+    std::vector<npc_t> findRenderableNpcs();
+    std::vector<creature_t> findRenderableCreatures();
+    std::vector<item_t> findRenderableItems();
+    std::vector<gold_t> findRenderableGolds();
+    std::vector<attack_t> findRenderableAttacks();
 
 public:
     // constructor
@@ -99,7 +96,11 @@ public:
     void interact();
     void uninteract();
     int isInteracting();
-    };
+
+    // Funcion template que busca en vision
+    template<typename T>
+    std::vector<T> findVisible(std::vector<T> vec);
+};
 
 
 

@@ -20,24 +20,25 @@ void WindowMeasurements::initialize(int receivedNumberOfTilesInWidth,
             numberOfTilesInHeight;
     initializeItemInfo(screenWidth, screenHeight);
     initializePlayerInfo(screenWidth, screenHeight);
-    initializeStaticAreas();
+    initializeMainStaticAreas();
+    initializeInfoStaticAreas();
+    initializeGoldStaticAreas();
 }
 
 void WindowMeasurements::updateResolution(int width, int height) {
     initialize(numberOfTilesInWidth, numberOfTilesInHeight, width, height);
 }
 
-void WindowMeasurements::initializeStaticAreas() {
-    worldStaticRect.x = frame.x_pixel_begin;
-    worldStaticRect.y = frame.y_pixel_begin;
-    worldStaticRect.w = frame.x_pixel_end - frame.x_pixel_begin;
-    worldStaticRect.h = frame.y_pixel_end - frame.y_pixel_begin;
+SDL_Rect WindowMeasurements::measureAnimatedRect(int iteration) {
+    SDL_Rect origin_rect = animatedObjStaticRect;
+    origin_rect.x = origin_rect.x*iteration;
+    origin_rect.y = origin_rect.y*iteration;
+    return origin_rect;
+}
 
-    gameFrameStaticRect.x = 0;
-    gameFrameStaticRect.y = 0;
-    gameFrameStaticRect.w = screenWidth;
-    gameFrameStaticRect.h = screenHeight;
+WindowMeasurements::~WindowMeasurements() {}
 
+void WindowMeasurements::initializeGoldStaticAreas() {
     game_area_t& inventory_gold_area = inventoryGold;
     inventoryGoldStaticRect.x = inventory_gold_area.x_pixel_begin;
     inventoryGoldStaticRect.y = inventory_gold_area.y_pixel_begin;
@@ -45,22 +46,6 @@ void WindowMeasurements::initializeStaticAreas() {
                                  inventory_gold_area.x_pixel_begin);
     inventoryGoldStaticRect.h = (inventory_gold_area.y_pixel_end -
                                  inventory_gold_area.y_pixel_begin);
-
-    game_area_t& level_area = level;
-    levelStaticRect.x = level_area.x_pixel_begin;
-    levelStaticRect.y = level_area.y_pixel_begin;
-    levelStaticRect.w = (level_area.x_pixel_end -
-            level_area.x_pixel_begin);
-    levelStaticRect.h = (level_area.y_pixel_end -
-            level_area.y_pixel_begin);
-
-    game_area_t& name_area = name;
-    nameStaticRect.x = name_area.x_pixel_begin;
-    nameStaticRect.y = name_area.y_pixel_begin;
-    nameStaticRect.w = (name_area.x_pixel_end -
-            name_area.x_pixel_begin);
-    nameStaticRect.h = (name_area.y_pixel_end -
-            name_area.y_pixel_begin);
 
 
     game_area_t& list_gold_area = listGold;
@@ -72,11 +57,43 @@ void WindowMeasurements::initializeStaticAreas() {
                             list_gold_area.y_pixel_begin);
     listGoldQuantityStaticRect.x = listGoldStaticRect.x;
     listGoldQuantityStaticRect.y = listGoldStaticRect.y +
-            (int) (listGoldStaticRect.h *1.1);
+                                   (int) (listGoldStaticRect.h *1.1);
     listGoldQuantityStaticRect.w = (list_gold_area.x_pixel_end -
-                            list_gold_area.x_pixel_begin);
+                                    list_gold_area.x_pixel_begin);
     listGoldQuantityStaticRect.h = (list_gold_area.y_pixel_end -
-                            list_gold_area.y_pixel_begin);
+                                    list_gold_area.y_pixel_begin);
+}
+
+void WindowMeasurements::initializeInfoStaticAreas() {
+    game_area_t& level_area = level;
+    levelStaticRect.x = level_area.x_pixel_begin;
+    levelStaticRect.y = level_area.y_pixel_begin;
+    levelStaticRect.w = (level_area.x_pixel_end -
+                         level_area.x_pixel_begin);
+    levelStaticRect.h = (level_area.y_pixel_end -
+                         level_area.y_pixel_begin);
+
+    game_area_t& name_area = name;
+    nameStaticRect.x = name_area.x_pixel_begin;
+    nameStaticRect.y = name_area.y_pixel_begin;
+    nameStaticRect.w = (name_area.x_pixel_end -
+                        name_area.x_pixel_begin);
+    nameStaticRect.h = (name_area.y_pixel_end -
+                        name_area.y_pixel_begin);
+
+}
+
+
+void WindowMeasurements::initializeMainStaticAreas() {
+    worldStaticRect.x = frame.x_pixel_begin;
+    worldStaticRect.y = frame.y_pixel_begin;
+    worldStaticRect.w = frame.x_pixel_end - frame.x_pixel_begin;
+    worldStaticRect.h = frame.y_pixel_end - frame.y_pixel_begin;
+
+    gameFrameStaticRect.x = 0;
+    gameFrameStaticRect.y = 0;
+    gameFrameStaticRect.w = screenWidth;
+    gameFrameStaticRect.h = screenHeight;
 
 
     animatedObjStaticRect.x = 80;
@@ -143,12 +160,3 @@ void WindowMeasurements::initializeItemInfo(int screenWidth,
     equipped = {(screenWidth / 100) * 1, (screenWidth / 100) * 45,
                 (screenHeight / 100) * 4, (screenHeight /100) * 15};
 }
-
-
-SDL_Rect WindowMeasurements::measureAnimatedRect(int iteration) {
-    SDL_Rect origin_rect = animatedObjStaticRect;
-    origin_rect.x = origin_rect.x*iteration;
-    origin_rect.y = origin_rect.y*iteration;
-    return origin_rect;
-}
-WindowMeasurements::~WindowMeasurements() {}

@@ -9,33 +9,34 @@
 #include "../../common/defines/world_structs.h"
 #include "../../common/defines/items.h"
 #include "../../common/defines/commands.h"
-#include "area.h"
 #include "window_measurements.h"
 
-//SACAR ESTO DE ACA OBVIAMENTE
 
 class SDL_Window;
 class SDL_Surface;
-class SDL_Renderer;
 
 class SDLWindow {
     int screenHeight;
     int screenWidth;
     int fullscreen;
     SDL_Window *window;
-    SDL_Renderer *renderer;
     WindowMeasurements measurements;
 
-    void renderExperience(std::map<int, float>& player_info,
-                          std::map<int, Surface *>& info_surfaces_map);
 
-    void renderLife(std::map<int, float>& player_info,
-                          std::map<int, Surface *>& info_surfaces_map);
+    // Calculadores de rects
+    SDL_Rect calculateMapObjectRect(int x, int y);
+    int isOutsideFrameArea(SDL_Rect& stretch_rect, game_area_t& frame_area);
+    SDL_Rect calculateInventoryStartRect();
+    SDL_Rect calculateEquippedStartRect();
+    SDL_Rect calculateListStartRect(game_area_t& list_area);
 
-    void renderMana(std::map<int, float>& player_info,
-                          std::map<int, Surface *>& info_surfaces_map);
-
-
+    // Renderizadores auxiliares internos de la clase
+    void renderInfoBar(Surface * bar, Surface* background,
+            game_area_t& area, float percentage);
+    void renderListArea(game_area_t& list_area,
+            std::vector<Surface*>& surfaces);
+    void renderEqIfExists(std::map<int, Surface*>& surfaces_map,
+                          SDL_Rect& rect, int item);
 
 public:
     // Constructor
@@ -52,17 +53,9 @@ public:
     //inicializa areas estaticas donde se renderizara
     void initializeStaticAreas();
 
-    // Colorea la pantalla segun el codigo RGB recibido
-    void fill(const int r = 0, const int g = 0, const int b = 0,
-              const int alpha = 255);
-
-    // Renderiza la pantalla
-    void render();
-
+    // activa/desactiva pantalla completa
     void toggleFullscreen();
 
-    // Devuelve el renderer
-    SDL_Renderer *getRenderer() const;
 
     // Devuelve la surface de toda la ventana
     SDL_Surface *getSurface() const;
