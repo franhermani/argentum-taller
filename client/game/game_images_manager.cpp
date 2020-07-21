@@ -47,6 +47,9 @@ GameImagesManager::~GameImagesManager(){
     for (auto & orientations : attackSurfacesMap) {
         for (auto const& surface : orientations.second) delete surface.second;
     }
+    for (auto & orientations : equippedWeaponSurfacesMap) {
+        for (auto const& surface : orientations.second) delete surface.second;
+    }
 
     delete goldSurface;
     delete gameFrameSurface;
