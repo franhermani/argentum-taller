@@ -80,7 +80,6 @@ void WindowMeasurements::initializeInfoStaticAreas() {
                         name_area.x_pixel_begin);
     nameStaticRect.h = (name_area.y_pixel_end -
                         name_area.y_pixel_begin);
-
 }
 
 

@@ -44,7 +44,6 @@ struct WindowMeasurements {
     SDL_Rect measureAnimatedRect(int iteration);
 
 private:
-
     // Inicializadores internos
     void initializePlayerInfo(int screenWidth, int screenHeight);
     void initializeItemInfo(int screenWidth, int screenHeight);
