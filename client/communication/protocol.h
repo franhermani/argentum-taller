@@ -51,7 +51,6 @@ public:
     world_t receiveWorldUpdate();
 
     // Recibe un listado de items (incluye oro)
-    // TODO: devolver vector de structs
     list_t receiveItemsList();
 
     // Recibe un mensaje del juego

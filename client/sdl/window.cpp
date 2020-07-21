@@ -16,20 +16,18 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         throw SDLException("\nError al inicializar SDL", SDL_GetError());
 
-    if (SDL_CreateWindowAndRenderer(screenWidth, screenHeight,
-            SDL_RENDERER_ACCELERATED, &window, &renderer) < 0)
+    window = SDL_CreateWindow("Argentum", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+            screenWidth, screenHeight, 0);
+    if (window == NULL)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
     if (TTF_Init() < 0) {
+        SDL_DestroyWindow(window);
         throw SDLException("\nNo se pudo inicializar ttf", SDL_GetError());
     }
     fullscreen = false;
 }
 
 SDLWindow::~SDLWindow() {
-    if (renderer) {
-        SDL_DestroyRenderer(renderer);
-        renderer = nullptr;
-    }
     if (window) {
         SDL_DestroyWindow(window);
         window = nullptr;
@@ -51,12 +49,6 @@ void SDLWindow::toggleFullscreen() {
         SDL_GetDesktopDisplayMode(0, &dm);
         measurements.updateResolution(dm.w, dm.h);
     }
-}
-
-
-void SDLWindow::fill(const int r, const int g, const int b, const int alpha) {
-    SDL_SetRenderDrawColor(renderer, r, g, b, alpha);
-    SDL_RenderClear(renderer);
 }
 
 SDL_Surface* SDLWindow::getSurface() const {
@@ -167,7 +159,6 @@ SDL_Rect SDLWindow::getFrameRectByPosition(Surface* surface,
 
 void SDLWindow::renderWorld(Surface* surface,  position_t positon,
                             int dimensions_width, int dimensions_height) {
-    //todo una vez temriando esto matar render terrains
     SDL_Rect src_rect =
             getFrameRectByPosition(surface, positon,
                     dimensions_width, dimensions_height);

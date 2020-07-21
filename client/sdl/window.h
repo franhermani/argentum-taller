@@ -11,18 +11,15 @@
 #include "../../common/defines/commands.h"
 #include "window_measurements.h"
 
-//SACAR ESTO DE ACA OBVIAMENTE
 
 class SDL_Window;
 class SDL_Surface;
-class SDL_Renderer;
 
 class SDLWindow {
     int screenHeight;
     int screenWidth;
     int fullscreen;
     SDL_Window *window;
-    SDL_Renderer *renderer;
     WindowMeasurements measurements;
 
 
@@ -56,11 +53,7 @@ public:
     //inicializa areas estaticas donde se renderizara
     void initializeStaticAreas();
 
-    // Colorea la pantalla segun el codigo RGB recibido
-    void fill(const int r = 0, const int g = 0, const int b = 0,
-              const int alpha = 255);
-
-
+    // activa/desactiva pantalla completa
     void toggleFullscreen();
 
 
