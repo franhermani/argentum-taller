@@ -69,7 +69,7 @@ En la carpeta donde se clonó el repositorio ejecutar:
 bash execute.sh
 ```
 
-### Generar archivo de supresión
+### Ejecutar cliente con archivo de supresión
 
 Esto sirve para detectar los leaks que tiene la librería SDL y omitirlos
 en nuestras ejecuciones, así podemos ver realmente qué leaks son nuestros.
