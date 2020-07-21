@@ -12,7 +12,7 @@
 class GameInputHandler;
 
 class CommandDTOManager {
-    ClientWorldMonitor &mapMonitor;
+    ClientWorldMonitor &worldMonitor;
     GameRender *gameRender;
     GameInputHandler &inputHandler;
 
@@ -35,7 +35,7 @@ class CommandDTOManager {
 
 public:
     // Constructor
-    CommandDTOManager(ClientWorldMonitor &mapMonitor, GameRender* gameRender,
+    CommandDTOManager(ClientWorldMonitor &worldMonitor, GameRender* gameRender,
                       GameInputHandler& inputHandler);
 
     // Destrutor

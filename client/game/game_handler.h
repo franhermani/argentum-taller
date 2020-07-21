@@ -22,7 +22,7 @@ class GameHandler {
 
     // Receive related classes
     ConnectionReceiver* connectionReceiver;
-    ClientWorldMonitor mapMonitor;
+    ClientWorldMonitor worldMonitor;
     GameRender* gameRender;
     JsonParser jsonParser;
 

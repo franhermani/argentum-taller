@@ -8,11 +8,11 @@
 
 class ConnectionReceiver : public Thread {
     ClientProtocol protocol;
-    ClientWorldMonitor& mapMonitor;
+    ClientWorldMonitor& worldMonitor;
 
 public:
     // Constructor
-    explicit ConnectionReceiver(Socket& socket, ClientWorldMonitor& mapMonitor);
+    explicit ConnectionReceiver(Socket& socket, ClientWorldMonitor& worldMonitor);
 
     // Constructor y asignacion por copia deshabilitados
     ConnectionReceiver(const ConnectionReceiver&) = delete;

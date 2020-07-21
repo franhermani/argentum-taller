@@ -9,7 +9,7 @@
 
 class ClientWorldMonitor {
     std::mutex m;
-    ClientWorld map;
+    ClientWorld world;
 
 public:
     // Constructor

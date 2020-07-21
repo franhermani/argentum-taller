@@ -18,7 +18,7 @@
 class GameRender : public Thread {
     const int screenWidth;
     const int screenHeight;
-    ClientWorldMonitor& mapMonitor;
+    ClientWorldMonitor& worldMonitor;
     std::string username;
     int blocksWidth;
     int blocksHeight;
@@ -53,7 +53,7 @@ class GameRender : public Thread {
 public:
     //Constructor
     GameRender(const int screenWidth, const int screenHeight,
-               ClientWorldMonitor &mapMonitor, std::string username);
+               ClientWorldMonitor &worldMonitor, std::string username);
 
     //Destructor
     ~GameRender();

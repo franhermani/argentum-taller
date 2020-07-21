@@ -15,9 +15,9 @@
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
-                       ClientWorldMonitor& mapMonitor, std::string username) :
+                       ClientWorldMonitor& worldMonitor, std::string username) :
         screenWidth(screenWidth), screenHeight(screenHeight),
-        mapMonitor(mapMonitor),
+        worldMonitor(worldMonitor),
         username(username),
         window(screenWidth, screenHeight),
         imagesManager(window) {
@@ -38,14 +38,14 @@ void GameRender::run() {
     using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
     std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
-    blocksWidth = mapMonitor.getPlayerVisionWidth();
-    blocksHeight = mapMonitor.getPlayerVisionHeight();
-    mapDimensions = mapMonitor.getDimensions();
+    blocksWidth = worldMonitor.getPlayerVisionWidth();
+    blocksHeight = worldMonitor.getPlayerVisionHeight();
+    mapDimensions = worldMonitor.getDimensions();
     window.setTilesSize(blocksWidth,blocksHeight);
 
     while (keepRunning) {
         auto start = clock::now();
-        current_world = mapMonitor.getCurrentWorld();
+        current_world = worldMonitor.getCurrentWorld();
         renderGame();
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
@@ -71,7 +71,7 @@ void GameRender::renderGame() {
         renderAttacks(current_world.attacks);
         renderPlayerInfo(current_world.percentages,
                          current_world.main_player.level);
-        if (mapMonitor.isInteracting()) renderList(current_world.list);
+        if (worldMonitor.isInteracting()) renderList(current_world.list);
         window.UpdateWindowSurface();
         using ms = std::chrono::milliseconds;
         std::this_thread::sleep_for(ms(WAIT_TIME_FOR_WORLD_TO_UPDATE/

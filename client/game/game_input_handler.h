@@ -10,7 +10,7 @@
 
 class GameInputHandler {
     BlockingQueue<CommandDTO *> &commandQueue;
-    ClientWorldMonitor &mapMonitor;
+    ClientWorldMonitor &worldMonitor;
     GameRender *gameRender;
 
 
@@ -18,7 +18,7 @@ class GameInputHandler {
 public:
     // Constructor
     GameInputHandler(BlockingQueue<CommandDTO *> &commandQueue,
-                     ClientWorldMonitor &mapMonitor, GameRender *gameRender);
+                     ClientWorldMonitor &worldMonitor, GameRender *gameRender);
 
     // Destructor
     ~GameInputHandler();
