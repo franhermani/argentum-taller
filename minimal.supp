@@ -551,6 +551,43 @@
    <insert_a_suppression_name_here>
    Memcheck:Leak
    match-leak-kinds: reachable
+   fun:malloc
+   fun:__fopen_internal
+   fun:fopen@@GLIBC_2.2.5
+   obj:/usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0.8.0
+   fun:_ZN7SurfaceC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERK9SDLWindowi
+   fun:_ZN17GameImagesManagerclEi
+   fun:_ZN10GameRender11renderItemsERSt6vectorI6item_tSaIS1_EE
+   fun:_ZN10GameRender10renderGameEv
+   fun:_ZN10GameRender3runEv
+   fun:_ZSt13__invoke_implIvM6ThreadFvvEPS0_JEET_St21__invoke_memfun_derefOT0_OT1_DpOT2_
+   fun:_ZSt8__invokeIM6ThreadFvvEJPS0_EENSt15__invoke_resultIT_JDpT0_EE4typeEOS5_DpOS6_
+   fun:_ZNSt6thread8_InvokerISt5tupleIJM6ThreadFvvEPS2_EEE9_M_invokeIJLm0ELm1EEEEDTcl8__invokespcl10_S_declvalIXT_EEEEESt12_Index_tupleIJXspT_EEE
+   fun:_ZNSt6thread8_InvokerISt5tupleIJM6ThreadFvvEPS2_EEEclEv
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:__fopen_internal
+   fun:fopen@@GLIBC_2.2.5
+   obj:/usr/lib/x86_64-linux-gnu/libSDL2-2.0.so.0.8.0
+   fun:_ZN7SurfaceC1ENSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERK9SDLWindowi
+   fun:_ZN17GameImagesManagerclE9stateTypei
+   fun:_ZN10GameRender15renderCreaturesERSt6vectorI10creature_tSaIS1_EE
+   fun:_ZN10GameRender10renderGameEv
+   fun:_ZN10GameRender3runEv
+   fun:_ZSt13__invoke_implIvM6ThreadFvvEPS0_JEET_St21__invoke_memfun_derefOT0_OT1_DpOT2_
+   fun:_ZSt8__invokeIM6ThreadFvvEJPS0_EENSt15__invoke_resultIT_JDpT0_EE4typeEOS5_DpOS6_
+   fun:_ZNSt6thread8_InvokerISt5tupleIJM6ThreadFvvEPS2_EEE9_M_invokeIJLm0ELm1EEEEDTcl8__invokespcl10_S_declvalIXT_EEEEESt12_Index_tupleIJXspT_EEE
+   fun:_ZNSt6thread8_InvokerISt5tupleIJM6ThreadFvvEPS2_EEEclEv
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
    fun:calloc
    obj:/lib/x86_64-linux-gnu/libdbus-1.so.3.19.4
    fun:_dbus_message_loader_queue_messages
