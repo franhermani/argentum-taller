@@ -6,6 +6,8 @@
 #include "../../../../common/defines/commands.h"
 #include "../../../defines/creatures_death_drop.h"
 #include "../../../../common/defines/attacks.h"
+#include "../../../../common/defines/sounds.h"
+
 
 Creature::Creature(World &world, Equations& equations,
         const int new_id, const int type, const int new_level,

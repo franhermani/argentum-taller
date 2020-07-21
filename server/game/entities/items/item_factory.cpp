@@ -8,6 +8,7 @@
 #include "weapon.h"
 #include "../../../../common/defines/items.h"
 #include "../../../../common/defines/attacks.h"
+#include "../../../../common/defines/sounds.h"
 
 ItemFactory::ItemFactory(json item_params) :
 itemParams(std::move(item_params)) {
