@@ -5,12 +5,12 @@
 #include "../../common/thread.h"
 #include "../../common/blocking_queue.h"
 #include "../../common/defines/commands.h"
-#include "map_monitor.h"
+#include "client_world_monitor.h"
 #include "game_render.h"
 
 class GameInputHandler {
     BlockingQueue<CommandDTO *> &commandQueue;
-    MapMonitor &mapMonitor;
+    ClientWorldMonitor &mapMonitor;
     GameRender *gameRender;
 
 
@@ -18,7 +18,7 @@ class GameInputHandler {
 public:
     // Constructor
     GameInputHandler(BlockingQueue<CommandDTO *> &commandQueue,
-                     MapMonitor &mapMonitor, GameRender *gameRender);
+                     ClientWorldMonitor &mapMonitor, GameRender *gameRender);
 
     // Destructor
     ~GameInputHandler();

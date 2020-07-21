@@ -1,26 +1,26 @@
 
-#ifndef ARGENTUM_MAP_MONITOR_H
-#define ARGENTUM_MAP_MONITOR_H
+#ifndef ARGENTUM_CLIENT_WORLD_MONITOR_H
+#define ARGENTUM_CLIENT_WORLD_MONITOR_H
 #include <vector>
-#include "map.h"
+#include "client_world.h"
 #include <mutex>
 
 
 
-class MapMonitor {
+class ClientWorldMonitor {
     std::mutex m;
-    Map map;
+    ClientWorld map;
 
 public:
     // Constructor
-    MapMonitor();
+    ClientWorldMonitor();
 
     // Destructor
-    ~MapMonitor();
+    ~ClientWorldMonitor();
     
     // Constructor y asignacion por copia deshabilitados
-    MapMonitor(const MapMonitor& other) = delete;
-    MapMonitor& operator=(const MapMonitor& other) = delete;
+    ClientWorldMonitor(const ClientWorldMonitor& other) = delete;
+    ClientWorldMonitor& operator=(const ClientWorldMonitor& other) = delete;
 
     //inicializa matriz
     void initialize(int username_id, std::vector<int>& blocks_around,
@@ -53,4 +53,4 @@ public:
     };
 
 
-#endif //ARGENTUM_MAP_MONITOR_H
+#endif //ARGENTUM_CLIENT_WORLD_MONITOR_H

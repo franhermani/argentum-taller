@@ -1,5 +1,5 @@
 
-#include "map.h"
+#include "client_world.h"
 #include <vector>
 #include <iostream>
 #include <utility>
@@ -10,13 +10,13 @@
 #include "../sdl/render_structs.h"
 
 
-Map::Map() {
+ClientWorld::ClientWorld() {
     interactingWithNpc = false;
 }
 
-Map::~Map() {}
+ClientWorld::~ClientWorld() {}
 
-void Map::updateWorld(world_t receivedWorld, list_t received_list) {
+void ClientWorld::updateWorld(world_t receivedWorld, list_t received_list) {
     world.players = std::move(receivedWorld.players);
     world.num_players = std::move(receivedWorld.num_players);
     world.player_info = std::move(receivedWorld.player_info);
@@ -36,7 +36,7 @@ void Map::updateWorld(world_t receivedWorld, list_t received_list) {
 
 
 template<typename T>
-std::vector<T> Map::findVisible(std::vector<T> vec) {
+std::vector<T> ClientWorld::findVisible(std::vector<T> vec) {
     std::vector<T> visible_elems;
     for (auto& elem: vec) {
         if (not betweenPlayerBorders(elem.pos.x, elem.pos.y)) {
@@ -51,9 +51,9 @@ std::vector<T> Map::findVisible(std::vector<T> vec) {
     return std::move(visible_elems);
 }
 
-void Map::initialize(int received_id,
-                     std::vector<int>& blocks_around,
-                     npcs_t& received_npcs, std::vector<int>& map_dimensions) {
+void ClientWorld::initialize(int received_id,
+                             std::vector<int>& blocks_around,
+                             npcs_t& received_npcs, std::vector<int>& map_dimensions) {
     playerVisionWidth = blocks_around[0];
     playerVisionHeight = blocks_around[1];
     username_id = received_id;
@@ -61,7 +61,7 @@ void Map::initialize(int received_id,
     mapDimensions = std::move(map_dimensions);
 }
 
-player_t Map::findMainPlayer() {
+player_t ClientWorld::findMainPlayer() {
     for (int i=0; i<world.num_players; i++) {
         if (username_id == world.players[i].id) {
             return world.players[i];
@@ -71,27 +71,27 @@ player_t Map::findMainPlayer() {
 }
 
 
-int Map::getPlayerXStart(player_t& player) {
+int ClientWorld::getPlayerXStart(player_t& player) {
     int x_start = player.pos.x - playerVisionWidth/2;
     if (x_start < 0) return 0;
     return x_start;
 }
 
 
-int Map::getPlayerYStart(player_t& player) {
+int ClientWorld::getPlayerYStart(player_t& player) {
     int y_start = player.pos.y - playerVisionHeight/2;
     if (y_start < 0) return 0;
     return y_start;
 }
 
 
-int Map::getPlayerXEnd(player_t& player) {
+int ClientWorld::getPlayerXEnd(player_t& player) {
     int x_finish = player.pos.x  + (playerVisionWidth / 2) + 1;
     if (x_finish >= mapDimensions[0]) return mapDimensions[0];
     return x_finish;
 }
 
-int Map::getPlayerYEnd(player_t& player) {
+int ClientWorld::getPlayerYEnd(player_t& player) {
     int y_finish = player.pos.y  + (playerVisionHeight / 2) + 1;
     if (y_finish >= mapDimensions[1]) return mapDimensions[1];
     return y_finish;
@@ -99,7 +99,7 @@ int Map::getPlayerYEnd(player_t& player) {
 
 
 
-int Map::betweenPlayerBorders(int pos_x, int pos_y) {
+int ClientWorld::betweenPlayerBorders(int pos_x, int pos_y) {
     int x_start, y_start, x_finish, y_finish;
     x_start = getPlayerXStart(mainPlayer);
     y_start = getPlayerYStart(mainPlayer);
@@ -109,13 +109,13 @@ int Map::betweenPlayerBorders(int pos_x, int pos_y) {
     && (pos_y >= y_start) && (pos_y <= y_finish));
 }
 
-uint16_t Map::getNewBordersXPosition(uint16_t pos_x, player_t& main_player) {
+uint16_t ClientWorld::getNewBordersXPosition(uint16_t pos_x, player_t& main_player) {
     uint16_t pos;
     pos = pos_x - getPlayerXStart(main_player);
     if (pos < 0) pos = 0;
     return pos;
 }
-uint16_t Map::getNewBordersYPosition(uint16_t pos_y, player_t& main_player) {
+uint16_t ClientWorld::getNewBordersYPosition(uint16_t pos_y, player_t& main_player) {
     uint16_t pos;
     pos = pos_y - getPlayerYStart(main_player);
     if (pos < 0) pos = 0;
@@ -123,18 +123,18 @@ uint16_t Map::getNewBordersYPosition(uint16_t pos_y, player_t& main_player) {
 }
 
 
-int Map::getPlayerVisionWidth() {
+int ClientWorld::getPlayerVisionWidth() {
     return playerVisionWidth;
 }
-int Map::getPlayerVisionHeight() {
+int ClientWorld::getPlayerVisionHeight() {
     return playerVisionHeight;
 }
 
-std::vector<int> Map::getDimensions() {
+std::vector<int> ClientWorld::getDimensions() {
     return mapDimensions;
 }
 
-std::vector<int> Map::getPositionLookingAt() {
+std::vector<int> ClientWorld::getPositionLookingAt() {
     std::vector<int> position;
     if (mainPlayer.orientation == LEFT) {
         position.push_back(mainPlayer.pos.x - 1);
@@ -152,7 +152,7 @@ std::vector<int> Map::getPositionLookingAt() {
     return std::move(position);
 }
 
-std::vector<int> Map::getPriestLookingAt() {
+std::vector<int> ClientWorld::getPriestLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();
     for (int i=0; i<npcs.length; i++) {
         if (npcs.npcs[i].type==PRIEST
@@ -164,7 +164,7 @@ std::vector<int> Map::getPriestLookingAt() {
 }
 
 
-std::vector<int> Map::getItemStandingAt() {
+std::vector<int> ClientWorld::getItemStandingAt() {
     std::vector<int> player_position = {mainPlayer.pos.x, mainPlayer.pos.y};
     for (int i=0; i<world.num_items; i++) {
         if ((world.items[i].pos.x == player_position[0])
@@ -175,7 +175,7 @@ std::vector<int> Map::getItemStandingAt() {
 }
 
 
-std::vector<int> Map::getGoldStandingAt() {
+std::vector<int> ClientWorld::getGoldStandingAt() {
     std::vector<int> player_position = {mainPlayer.pos.x, mainPlayer.pos.y};
     for (int i=0; i<world.num_golds; i++) {
         if ((world.golds[i].pos.x == player_position[0])
@@ -186,17 +186,17 @@ std::vector<int> Map::getGoldStandingAt() {
 }
 
 
-void Map::interact() {
+void ClientWorld::interact() {
     interactingWithNpc = true;
 }
-void Map::uninteract() {
+void ClientWorld::uninteract() {
     interactingWithNpc = false;
 }
-int Map::isInteracting() {
+int ClientWorld::isInteracting() {
     return interactingWithNpc;
 }
 
-std::vector<int> Map::getNpcLookingAt() {
+std::vector<int> ClientWorld::getNpcLookingAt() {
     std::vector<int> looking_at = getPositionLookingAt();
     for (int i=0; i<npcs.length; i++) {
         if (npcs.npcs[i].pos.x == looking_at[0]
@@ -207,7 +207,7 @@ std::vector<int> Map::getNpcLookingAt() {
     throw MapException("No hay ningun npc en la posicion solicitada");
 }
 
-std::map<int, float> Map::getPercentages() {
+std::map<int, float> ClientWorld::getPercentages() {
     return {{LIFE, ((float) mainPlayer.actual_life)/
                            mainPlayer.max_life},
     {MANA, ((float) world.player_info.actual_mana)/
@@ -217,7 +217,7 @@ std::map<int, float> Map::getPercentages() {
 }
 
 
-client_world_t Map::getCurrentWorld() {
+client_world_t ClientWorld::getCurrentWorld() {
     client_world_t current_world;
     current_world.player_info = world.player_info;
     current_world.main_player = mainPlayer;

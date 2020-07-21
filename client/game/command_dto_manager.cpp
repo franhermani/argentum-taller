@@ -20,8 +20,8 @@
 
 
 
-CommandDTOManager::CommandDTOManager(MapMonitor &mapMonitor,
-        GameRender* gameRender, GameInputHandler& inputHandler)
+CommandDTOManager::CommandDTOManager(ClientWorldMonitor &mapMonitor,
+                                     GameRender* gameRender, GameInputHandler& inputHandler)
         :mapMonitor(mapMonitor), gameRender(gameRender),
         inputHandler(inputHandler){}
 

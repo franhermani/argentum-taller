@@ -4,15 +4,15 @@
 #include "../../common/thread.h"
 #include "protocol.h"
 #include <string>
-#include "../game/map_monitor.h"
+#include "../game/client_world_monitor.h"
 
 class ConnectionReceiver : public Thread {
     ClientProtocol protocol;
-    MapMonitor& mapMonitor;
+    ClientWorldMonitor& mapMonitor;
 
 public:
     // Constructor
-    explicit ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor);
+    explicit ConnectionReceiver(Socket& socket, ClientWorldMonitor& mapMonitor);
 
     // Constructor y asignacion por copia deshabilitados
     ConnectionReceiver(const ConnectionReceiver&) = delete;

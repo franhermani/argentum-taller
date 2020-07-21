@@ -1,12 +1,12 @@
 #include <iostream>
 #include "game_input_handler.h"
-#include "map_monitor.h"
+#include "client_world_monitor.h"
 #include "exception.h"
 #include "command_dto_manager.h"
 #include <vector>
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
-            MapMonitor& mapMonitor, GameRender* gameRender):
+                                   ClientWorldMonitor& mapMonitor, GameRender* gameRender):
 commandQueue(commandQueue), mapMonitor(mapMonitor), gameRender(gameRender) {}
 
 GameInputHandler::~GameInputHandler() = default;

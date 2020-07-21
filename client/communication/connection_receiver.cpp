@@ -5,7 +5,7 @@
 #include "connection_receiver.h"
 #include "../../common/socket_error.h"
 
-ConnectionReceiver::ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor) :
+ConnectionReceiver::ConnectionReceiver(Socket& socket, ClientWorldMonitor& mapMonitor) :
                 protocol(socket), mapMonitor(mapMonitor) {
     keepRunning = true;
     isRunning = true;

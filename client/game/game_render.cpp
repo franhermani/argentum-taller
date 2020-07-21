@@ -15,7 +15,7 @@
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
-        MapMonitor& mapMonitor, std::string username) :
+                       ClientWorldMonitor& mapMonitor, std::string username) :
         screenWidth(screenWidth), screenHeight(screenHeight),
         mapMonitor(mapMonitor),
         username(username),

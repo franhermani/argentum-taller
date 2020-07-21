@@ -1,13 +1,13 @@
 
-#ifndef ARGENTUM_MAP_H
-#define ARGENTUM_MAP_H
+#ifndef ARGENTUM_CLIENT_WORLD_H
+#define ARGENTUM_CLIENT_WORLD_H
 #include "../../common/defines/world_structs.h"
 #include "map_structs.h"
 #include <map>
 #include <vector>
 #include <atomic>
 
-class Map {
+class ClientWorld {
     world_t world;
     npcs_t npcs;
     list_t list;
@@ -56,13 +56,13 @@ class Map {
 
 public:
     // constructor
-    Map();
+    ClientWorld();
     // destructor
-    ~Map();
+    ~ClientWorld();
 
     // Constructor y asignacion por copia deshabilitados
-    Map(const Map&) = delete;
-    Map& operator=(const Map&) = delete;
+    ClientWorld(const ClientWorld&) = delete;
+    ClientWorld& operator=(const ClientWorld&) = delete;
 
     //inicializa matriz
     void initialize(int username_id, std::vector<int>&
@@ -105,4 +105,4 @@ public:
 
 
 
-#endif //ARGENTUM_MAP_H
+#endif //ARGENTUM_CLIENT_WORLD_H
