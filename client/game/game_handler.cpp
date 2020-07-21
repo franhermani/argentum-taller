@@ -11,23 +11,23 @@
 GameHandler::GameHandler(const char *host, const char *port,
         const std::string& username, const uint8_t race_type,
         const uint8_t class_type) : socket(host, port, false),
-        mapMonitor() {
+                                    worldMonitor() {
     connectionSender = new ConnectionSender(socket, commandQueue);
     connectionSender->sendPlayerInfo(username, race_type, class_type);
-    connectionReceiver = new ConnectionReceiver(socket, mapMonitor);
+    connectionReceiver = new ConnectionReceiver(socket, worldMonitor);
     checkUsername();
     File file("../client/config/screen_resolution.json");
     json resolution = jsonParser.getResolution(file);
     try {
         printStartMessage();
         gameRender = new GameRender(resolution["width"],
-                resolution["height"], mapMonitor, username);
+                resolution["height"], worldMonitor, username);
     } catch (SDLException& e) {
         delete connectionSender;
         delete connectionReceiver;
         throw e;
     }
-    inputHandler = new GameInputHandler(commandQueue, mapMonitor, gameRender);
+    inputHandler = new GameInputHandler(commandQueue, worldMonitor, gameRender);
 }
 
 GameHandler::~GameHandler() {

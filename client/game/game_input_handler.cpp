@@ -1,13 +1,14 @@
 #include <iostream>
 #include "game_input_handler.h"
-#include "map_monitor.h"
+#include "client_world_monitor.h"
 #include "exception.h"
 #include "command_dto_manager.h"
 #include <vector>
 
 GameInputHandler::GameInputHandler(BlockingQueue<CommandDTO*>& commandQueue,
-            MapMonitor& mapMonitor, GameRender* gameRender):
-commandQueue(commandQueue), mapMonitor(mapMonitor), gameRender(gameRender) {}
+        ClientWorldMonitor& worldMonitor, GameRender* gameRender):
+        commandQueue(commandQueue), worldMonitor(worldMonitor),
+        gameRender(gameRender) {}
 
 GameInputHandler::~GameInputHandler() = default;
 
@@ -18,7 +19,7 @@ void GameInputHandler::play() {
             SDL_Event event;
             SDL_WaitEvent(&event);
             CommandDTO* command;
-            CommandDTOManager command_manager(mapMonitor, gameRender, *this);
+            CommandDTOManager command_manager(worldMonitor, gameRender, *this);
             if (event.type == SDL_KEYDOWN) {
                 auto &keyEvent = (SDL_KeyboardEvent &) event;
                 int key = keyEvent.keysym.sym;

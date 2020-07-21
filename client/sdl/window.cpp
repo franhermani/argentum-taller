@@ -4,10 +4,15 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include "window.h"
+#include <utility>
 #include "../sdl/exception.h"
 #define INVENTORY_MAX_TILES_WIDTH 2
+#define SIXTY_PERCENT 0.6
+#define TWENTY_PERCENT 0.2
+#define TEN_PERCENT 0.1
 #define INVENTORY_MAX_TILES_HEIGHT 5
 #define EQUIPPED_MAX_TILES_WIDTH 4
+
 #define LIST_MAX_TILES_WIDTH 10
 
 SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
@@ -16,7 +21,8 @@ SDLWindow::SDLWindow(const int screenWidth, const int screenHeight):
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
         throw SDLException("\nError al inicializar SDL", SDL_GetError());
 
-    window = SDL_CreateWindow("Argentum", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+    window = SDL_CreateWindow("Argentum",
+            SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             screenWidth, screenHeight, 0);
     if (window == NULL)
         throw SDLException("\nError al crear la ventana", SDL_GetError());
@@ -61,8 +67,8 @@ SDL_PixelFormat* SDLWindow::getSurfaceFormat() const {
 
 
 void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
-                                 std::map<int, Surface *>& info_surfaces_map,
-                                 Surface* level_surface, Surface* name_surface) {
+        std::map<int, Surface *>& info_surfaces_map,
+        Surface* level_surface, Surface* name_surface) {
     Surface* background = info_surfaces_map[BACKGROUND];
     renderInfoBar(info_surfaces_map[LIFE], background,
                   measurements.life, player_info[LIFE]);
@@ -74,7 +80,8 @@ void SDLWindow::renderPlayerInfo(std::map<int, float>& player_info,
     renderName(name_surface);
 }
 
-int SDLWindow::isOutsideFrameArea(SDL_Rect& stretch_rect, game_area_t& frame_area) {
+int SDLWindow::isOutsideFrameArea(SDL_Rect& stretch_rect,
+        game_area_t& frame_area) {
     return ((stretch_rect.x+measurements.xWidthTileSize
          >= frame_area.x_pixel_end) ||
         (stretch_rect.y+measurements.yHeightTileSize
@@ -89,7 +96,6 @@ SDL_Rect SDLWindow::calculateMapObjectRect(int x, int y) {
     stretchRect.w = measurements.xWidthTileSize;
     stretchRect.h = measurements.yHeightTileSize;
     return std::move(stretchRect);
-
 }
 
 void SDLWindow::renderMapObject(int x, int y, Surface* character_surface) {
@@ -114,12 +120,12 @@ void SDLWindow::renderMapObjectLifeBar(int x, int y, Surface* bar,
         float percentage) {
     game_area_t& frame_area = measurements.frame;
     SDL_Rect stretchRect;
-    //TODO sacar el 0.6 , 0.2 y 0.1 a measurements
-    float bar_width = measurements.xWidthTileSize*0.6 * percentage;
-    stretchRect.x = getXPixelPos(x) + (measurements.xWidthTileSize) * 0.2;
+    float bar_width = measurements.xWidthTileSize*SIXTY_PERCENT * percentage;
+    stretchRect.x = getXPixelPos(x) + (measurements.xWidthTileSize) *
+            TWENTY_PERCENT;
     stretchRect.y = getYPixelPos(y);
     stretchRect.w = bar_width;
-    stretchRect.h = (measurements.yHeightTileSize)*0.1;
+    stretchRect.h = (measurements.yHeightTileSize)*TEN_PERCENT;
     if (isOutsideFrameArea(stretchRect, frame_area)) return;
     SDL_BlitScaled(bar->getRenderable(), NULL,
                    getSurface(), &stretchRect);
@@ -309,7 +315,7 @@ int SDLWindow::getRenderedItemIndexByPosition(int xClicked,
 SDL_Rect SDLWindow::calculateEquippedStartRect() {
     game_area_t& equipped_area = measurements.equipped;
     int equipped_width = (equipped_area.x_pixel_end -
-                          equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
+            equipped_area.x_pixel_begin) / EQUIPPED_MAX_TILES_WIDTH;
     SDL_Rect stretchRect;
     stretchRect.x = equipped_area.x_pixel_begin;
     stretchRect.y = equipped_area.y_pixel_begin;

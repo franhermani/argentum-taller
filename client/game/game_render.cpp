@@ -15,9 +15,9 @@
 #define WAIT_TIME_FOR_FIRST_SERVER_UPDATE 500
 
 GameRender::GameRender(const int screenWidth, const int screenHeight,
-        MapMonitor& mapMonitor, std::string username) :
+                       ClientWorldMonitor& worldMonitor, std::string username) :
         screenWidth(screenWidth), screenHeight(screenHeight),
-        mapMonitor(mapMonitor),
+        worldMonitor(worldMonitor),
         username(username),
         window(screenWidth, screenHeight),
         imagesManager(window) {
@@ -38,14 +38,14 @@ void GameRender::run() {
     using clock = std::chrono::system_clock;
     using ms = std::chrono::milliseconds;
     std::this_thread::sleep_for(ms(WAIT_TIME_FOR_FIRST_SERVER_UPDATE));
-    blocksWidth = mapMonitor.getPlayerVisionWidth();
-    blocksHeight = mapMonitor.getPlayerVisionHeight();
-    mapDimensions = mapMonitor.getDimensions();
+    blocksWidth = worldMonitor.getPlayerVisionWidth();
+    blocksHeight = worldMonitor.getPlayerVisionHeight();
+    mapDimensions = worldMonitor.getDimensions();
     window.setTilesSize(blocksWidth,blocksHeight);
 
     while (keepRunning) {
         auto start = clock::now();
-        current_world = mapMonitor.getCurrentWorld();
+        current_world = worldMonitor.getCurrentWorld();
         renderGame();
         auto end = clock::now();
         auto elapsed = std::chrono::duration_cast<ms>(end - start).count();
@@ -71,7 +71,7 @@ void GameRender::renderGame() {
         renderAttacks(current_world.attacks);
         renderPlayerInfo(current_world.percentages,
                          current_world.main_player.level);
-        if (mapMonitor.isInteracting()) renderList(current_world.list);
+        if (worldMonitor.isInteracting()) renderList(current_world.list);
         window.UpdateWindowSurface();
         using ms = std::chrono::milliseconds;
         std::this_thread::sleep_for(ms(WAIT_TIME_FOR_WORLD_TO_UPDATE/
@@ -84,7 +84,7 @@ void GameRender::renderPlayerInfo(std::map<int,float>& percentages, int level) {
             std::to_string(level));
     Surface* name_surface = imagesManager(username);
     window.renderPlayerInfo(current_world.percentages,
-                            imagesManager.infoSurfacesMap, level_surface, name_surface);
+            imagesManager.infoSurfacesMap, level_surface, name_surface);
 }
 
 
@@ -95,8 +95,8 @@ void GameRender::renderCreatures(std::vector<creature_t>& creatures) {
             window.renderMapObject(it->pos.x, it->pos.y,
                                    imagesManager(*it));
             window.renderMapObjectLifeBar(it->pos.x, it->pos.y,
-                                          imagesManager.infoSurfacesMap[LIFE],
-                                          (it->actual_life/(float) it->max_life));
+                    imagesManager.infoSurfacesMap[LIFE],
+                    (it->actual_life/(float) it->max_life));
         } else {
             window.renderMapObject(it->pos.x, it->pos.y,
                                    imagesManager(it->state, it->orientation));
@@ -172,10 +172,10 @@ void GameRender::renderPlayers(std::vector<player_t>& players, int iteration) {
         } else {
             try {
                 window.renderAnimatedMapObject(it->pos.x, it->pos.y,
-                                               imagesManager.animation(state), iteration);
+                        imagesManager.animation(state), iteration);
             } catch (SurfaceExistanceException& e) {
                 window.renderMapObject(it->pos.x, it->pos.y,
-                                       imagesManager(it->state, it->orientation));
+                        imagesManager(it->state, it->orientation));
             }
         }
     }

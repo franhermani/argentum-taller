@@ -43,7 +43,6 @@ private:
     void loadAnimatedPaths();
     void loadStatePaths();
     void loadRestOfPaths();
-
 };
 
 

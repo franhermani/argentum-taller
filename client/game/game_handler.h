@@ -22,7 +22,7 @@ class GameHandler {
 
     // Receive related classes
     ConnectionReceiver* connectionReceiver;
-    MapMonitor mapMonitor;
+    ClientWorldMonitor worldMonitor;
     GameRender* gameRender;
     JsonParser jsonParser;
 
@@ -57,7 +57,6 @@ public:
 
     // Setea la variable booleana 'keepRunning' en false
     void stop();
-
 };
 
 #endif // CONNECTION_HANDLER_H

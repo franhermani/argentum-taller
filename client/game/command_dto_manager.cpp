@@ -20,10 +20,10 @@
 
 
 
-CommandDTOManager::CommandDTOManager(MapMonitor &mapMonitor,
+CommandDTOManager::CommandDTOManager(ClientWorldMonitor &worldMonitor,
         GameRender* gameRender, GameInputHandler& inputHandler)
-        :mapMonitor(mapMonitor), gameRender(gameRender),
-        inputHandler(inputHandler){}
+        : worldMonitor(worldMonitor), gameRender(gameRender),
+          inputHandler(inputHandler){}
 
 CommandDTOManager::~CommandDTOManager() {}
 
@@ -47,7 +47,7 @@ CommandDTO* CommandDTOManager::operator()(int key) {
         throw CommandCreationException("Tecla ingresada no crea comando");
     } else if (key == SDLK_ESCAPE) {
         throw StopGameException("Han solicitado salir del juego");
-    } else if (mapMonitor.isInteracting()) {
+    } else if (worldMonitor.isInteracting()) {
         if (key == SDLK_w) {
             return handleWithdraw();
         } else if (key == SDLK_b) {
@@ -86,14 +86,14 @@ CommandDTO* CommandDTOManager::operator()(int key) {
 
 
 CommandDTO* CommandDTOManager::handleMove(moveDirection direction){
-    mapMonitor.uninteract();
+    worldMonitor.uninteract();
     return new MoveCommandDTO(direction);
 }
 
 CommandDTO* CommandDTOManager::handleBuy() {
     int x,y;
     inputHandler.waitForLeftClick(x, y);
-    std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
+    std::vector<int> npc_pos = worldMonitor.getNpcLookingAt();
     if (gameRender->isClickingListItems(x, y)) {
         return new BuyItemCommandDTO(gameRender->
                 getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
@@ -114,7 +114,7 @@ CommandDTO* CommandDTOManager::handleMeditate() {
 CommandDTO* CommandDTOManager::handleSell() {
     int x,y;
     inputHandler.waitForLeftClick(x, y);
-    std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
+    std::vector<int> npc_pos = worldMonitor.getNpcLookingAt();
     if (gameRender->isClickingInventoryItems(x, y))
         return new SellItemCommandDTO(
                 gameRender->getInventoryItemByPosition(x, y),
@@ -128,7 +128,7 @@ CommandDTO* CommandDTOManager::handleSell() {
 CommandDTO* CommandDTOManager::handleWithdraw() {
     int x,y;
     inputHandler.waitForLeftClick(x, y);
-    std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
+    std::vector<int> npc_pos = worldMonitor.getNpcLookingAt();
     if (gameRender->isClickingListItems(x, y))
         return new WithdrawItemCommandDTO(gameRender->
                 getListItemByPosition(x, y), npc_pos[0], npc_pos[1]);
@@ -143,7 +143,7 @@ CommandDTO* CommandDTOManager::handleWithdraw() {
 CommandDTO* CommandDTOManager::handleDeposit() {
     int x,y;
     inputHandler.waitForLeftClick(x, y);
-    std::vector<int> npc_pos = mapMonitor.getNpcLookingAt();
+    std::vector<int> npc_pos = worldMonitor.getNpcLookingAt();
     if (gameRender->isClickingInventoryItems(x, y))
         return new DepositItemCommandDTO(gameRender->
                 getInventoryItemByPosition(x, y), npc_pos[0], npc_pos[1]);
@@ -158,7 +158,7 @@ CommandDTO* CommandDTOManager::handleDeposit() {
 CommandDTO* CommandDTOManager::handleRevive() {
     try {
         std::vector<int> priest_position =
-                mapMonitor.getPriestLookingAt();
+                worldMonitor.getPriestLookingAt();
         return new ReviveCommandDTO(priest_position[0],
                                     priest_position[1]);
     } catch (MapException& e) {
@@ -175,25 +175,25 @@ CommandDTO* CommandDTOManager::handleThrow() {
 
 CommandDTO* CommandDTOManager::handleTake() {
     try {
-        std::vector<int> item_pos = mapMonitor.getItemStandingAt();
+        std::vector<int> item_pos = worldMonitor.getItemStandingAt();
         return new TakeCommandDTO(TAKE_ITEM, item_pos[0], item_pos[1]);
     } catch (MapException& e) {
         //si hay excepcion en getgold standing at, no la catcheamos
         //porque queremos que la catchee la funcion que llama a esta
-        std::vector<int> gold_pos = mapMonitor.getGoldStandingAt();
+        std::vector<int> gold_pos = worldMonitor.getGoldStandingAt();
         return new TakeCommandDTO(TAKE_GOLD, gold_pos[0], gold_pos[1]);
     }
 }
 
 CommandDTO* CommandDTOManager::handleList() {
     std::vector<int> npc_position =
-            mapMonitor.getNpcLookingAt();
-    mapMonitor.interact();
+            worldMonitor.getNpcLookingAt();
+    worldMonitor.interact();
     return new ListCommandDTO(npc_position[0], npc_position[1]);
 }
 CommandDTO* CommandDTOManager::handleHeal() {
     std::vector<int> priest_position =
-            mapMonitor.getPriestLookingAt();
+            worldMonitor.getPriestLookingAt();
     return new HealCommandDTO(priest_position[0],
                               priest_position[1]);
 }

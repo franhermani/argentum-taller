@@ -5,8 +5,9 @@
 #include "connection_receiver.h"
 #include "../../common/socket_error.h"
 
-ConnectionReceiver::ConnectionReceiver(Socket& socket, MapMonitor& mapMonitor) :
-                protocol(socket), mapMonitor(mapMonitor) {
+ConnectionReceiver::ConnectionReceiver(Socket& socket,
+        ClientWorldMonitor& worldMonitor) :
+        protocol(socket), worldMonitor(worldMonitor) {
     keepRunning = true;
     isRunning = true;
 }
@@ -19,15 +20,15 @@ void ConnectionReceiver::run() {
         std::vector<int> blocks_around = protocol.receiveBlocksAround();
         std::vector<int> map_dimensions = protocol.receiveMapDimensions();
         npcs_t npcs = protocol.receiveNPCs();
-
-        mapMonitor.initialize(username_id, blocks_around, npcs, map_dimensions);
+        worldMonitor.initialize(username_id,
+                blocks_around, npcs, map_dimensions);
 
         while (keepRunning) {
             world_t world = protocol.receiveWorldUpdate();
             message = protocol.receiveGameMessage();
             printGameMessage(message);
             list_t list = protocol.receiveItemsList();
-            mapMonitor.updateWorld(std::move(world), std::move(list));
+            worldMonitor.updateWorld(std::move(world), std::move(list));
         }
     } catch(SocketError&) {
         // Do nothing

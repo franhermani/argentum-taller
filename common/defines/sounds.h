@@ -1,8 +1,18 @@
-//
-// Created by martinrosas on 21/7/20.
-//
+
 
 #ifndef ARGENTUM_SOUNDS_H
 #define ARGENTUM_SOUNDS_H
+enum soundType {
+    PLAYER_PUNCH,
+    CREATURE_PUNCH,
+    SWORD_STRIKE,
+    AXE_STRIKE,
+    HAMMER_STRIKE,
+    ARROW_STRIKE,
+    MAGIC_STRIKE,
+    HEAL_STRIKE,
+    EXPLOSION,
+    LIST
+};
 
 #endif //ARGENTUM_SOUNDS_H

@@ -6,13 +6,13 @@
 #include "../data_transfer_objects/command_dto.h"
 #include "../../common/defines/commands.h"
 #include "exception.h"
-#include "map_monitor.h"
+#include "client_world_monitor.h"
 #include "game_render.h"
 
 class GameInputHandler;
 
 class CommandDTOManager {
-    MapMonitor &mapMonitor;
+    ClientWorldMonitor &worldMonitor;
     GameRender *gameRender;
     GameInputHandler &inputHandler;
 
@@ -35,8 +35,8 @@ class CommandDTOManager {
 
 public:
     // Constructor
-    CommandDTOManager(MapMonitor &mapMonitor, GameRender* gameRender,
-            GameInputHandler& inputHandler);
+    CommandDTOManager(ClientWorldMonitor &worldMonitor, GameRender* gameRender,
+                      GameInputHandler& inputHandler);
 
     // Destrutor
     ~CommandDTOManager();
@@ -47,7 +47,6 @@ public:
 
     // Recibe un evento ingresado por input
     CommandDTO* operator()(int key);
-
 };
 
 

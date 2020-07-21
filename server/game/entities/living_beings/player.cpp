@@ -8,6 +8,7 @@
 #include "../../../../common/defines/classes.h"
 #include "../../game_exception.h"
 #include "../../../../common/defines/attacks.h"
+#include "../../../../common/defines/sounds.h"
 
 Player::Player(World& world, Equations& equations, json params,
         const int new_id, const int race_type, const int class_type) :

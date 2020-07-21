@@ -10,7 +10,7 @@
 #include "../../common/thread.h"
 #include "../../common/defines/npcs.h"
 #include "../../common/defines/world_structs.h"
-#include "map_monitor.h"
+#include "client_world_monitor.h"
 #include "game_images_manager.h"
 #include "game_sound_manager.h"
 
@@ -18,7 +18,7 @@
 class GameRender : public Thread {
     const int screenWidth;
     const int screenHeight;
-    MapMonitor& mapMonitor;
+    ClientWorldMonitor& worldMonitor;
     std::string username;
     int blocksWidth;
     int blocksHeight;
@@ -53,7 +53,7 @@ class GameRender : public Thread {
 public:
     //Constructor
     GameRender(const int screenWidth, const int screenHeight,
-               MapMonitor &mapMonitor, std::string username);
+               ClientWorldMonitor &worldMonitor, std::string username);
 
     //Destructor
     ~GameRender();

@@ -65,7 +65,7 @@ void ImagePathContainer::loadCreaturePaths() {
 void ImagePathContainer::loadAnimatedPaths() {
     animatedStatePaths = {
             {STATE_MEDITATING,
-                    "../client/resources/images/characters/meditating_anim_t.png"},
+             "../client/resources/images/characters/meditating_anim_t.png"},
             {STATE_REVIVING,
                     "../client/resources/images/characters/reviving_anim_t.png"}
     };
@@ -82,19 +82,27 @@ void ImagePathContainer::loadStatePaths() {
             {UP, "../client/resources/images/characters/reviving_up_t.png"},
             {DOWN, "../client/resources/images/characters/reviving_down_t.png"},
             {LEFT, "../client/resources/images/characters/reviving_left_t.png"},
-            {RIGHT, "../client/resources/images/characters/reviving_right_t.png"}
+            {RIGHT,
+             "../client/resources/images/characters/reviving_right_t.png"}
     };
     std::map<int, std::string> meditateSurfacesPaths = {
             {UP, "../client/resources/images/characters/meditating_up_t.png"},
-            {DOWN, "../client/resources/images/characters/meditating_down_t.png"},
-            {LEFT, "../client/resources/images/characters/meditating_left_t.png"},
-            {RIGHT, "../client/resources/images/characters/meditating_right_t.png"}
+            {DOWN,
+             "../client/resources/images/characters/meditating_down_t.png"},
+            {LEFT,
+             "../client/resources/images/characters/meditating_left_t.png"},
+            {RIGHT,
+             "../client/resources/images/characters/meditating_right_t.png"}
     };
     std::map<int, std::string> dyingSurfacesPaths = {
-            {UP, "../client/resources/images/characters/dying_creature_up_t.png"},
-            {DOWN, "../client/resources/images/characters/dying_creature_down_t.png"},
-            {LEFT, "../client/resources/images/characters/dying_creature_left_t.png"},
-            {RIGHT, "../client/resources/images/characters/dying_creature_right_t.png"}
+            {UP,
+             "../client/resources/images/characters/dying_creature_up_t.png"},
+            {DOWN,
+             "../client/resources/images/characters/dying_creature_down_t.png"},
+            {LEFT,
+             "../client/resources/images/characters/dying_creature_left_t.png"},
+            {RIGHT,
+             "../client/resources/images/characters/dying_creature_right_t.png"}
     };
 
     stateSurfacesPaths = {
@@ -109,21 +117,21 @@ void ImagePathContainer::loadEquippedPaths() {
     std::map<int, std::string> baculo_orientations = {
             {UP, "../client/resources/images/weapons/baculo_nudoso_up_p_t.png"},
             {DOWN,
-                 "../client/resources/images/weapons/baculo_nudoso_down_p_t.png"},
+             "../client/resources/images/weapons/baculo_nudoso_down_p_t.png"},
             {LEFT,
-                 "../client/resources/images/weapons/baculo_nudoso_right_p_t.png"},
+             "../client/resources/images/weapons/baculo_nudoso_right_p_t.png"},
             {RIGHT,
-                 "../client/resources/images/weapons/baculo_nudoso_left_p_t.png"}
+             "../client/resources/images/weapons/baculo_nudoso_left_p_t.png"}
     };
     std::map<int, std::string> arco_compuesto_orientations = {
             {UP,
-                    "../client/resources/images/weapons/arco_compuesto_up_p_t.png"},
+             "../client/resources/images/weapons/arco_compuesto_up_p_t.png"},
             {DOWN,
-                    "../client/resources/images/weapons/arco_compuesto_down_p_t.png"},
+             "../client/resources/images/weapons/arco_compuesto_down_p_t.png"},
             {LEFT,
-                    "../client/resources/images/weapons/arco_compuesto_right_p_t.png"},
+             "../client/resources/images/weapons/arco_compuesto_right_p_t.png"},
             {RIGHT,
-                    "../client/resources/images/weapons/arco_compuesto_left_p_t.png"}
+             "../client/resources/images/weapons/arco_compuesto_left_p_t.png"}
     };
     std::map<int, std::string> arco_simple_orientations = {
             {UP, "../client/resources/images/weapons/arco_simple_up_p_t.png"},
@@ -136,13 +144,13 @@ void ImagePathContainer::loadEquippedPaths() {
     };
     std::map<int, std::string> baculo_engarzado_orientations = {
             {UP,
-                    "../client/resources/images/weapons/baculo_engarzado_up_p_t.png"},
+             "../client/resources/images/weapons/baculo_engarzado_up_p_t.png"},
             {DOWN,
-                    "../client/resources/images/weapons/baculo_engarzado_down_p_t.png"},
+          "../client/resources/images/weapons/baculo_engarzado_down_p_t.png"},
             {LEFT,
-                    "../client/resources/images/weapons/baculo_engarzado_right_p_t.png"},
+         "../client/resources/images/weapons/baculo_engarzado_right_p_t.png"},
             {RIGHT,
-                    "../client/resources/images/weapons/baculo_engarzado_left_p_t.png"}
+             "../client/resources/images/weapons/baculo_engarzado_left_p_t.png"}
     };
     std::map<int, std::string> espada_orientations = {
             {UP,    "../client/resources/images/weapons/espada_up_p_t.png"},
@@ -153,11 +161,11 @@ void ImagePathContainer::loadEquippedPaths() {
     std::map<int, std::string> flauta_elfica_orientations = {
             {UP, "../client/resources/images/weapons/flauta_elfica_up_p_t.png"},
             {DOWN,
-                 "../client/resources/images/weapons/flauta_elfica_down_p_t.png"},
+             "../client/resources/images/weapons/flauta_elfica_down_p_t.png"},
             {LEFT,
-                 "../client/resources/images/weapons/flauta_elfica_right_p_t.png"},
+             "../client/resources/images/weapons/flauta_elfica_right_p_t.png"},
             {RIGHT,
-                 "../client/resources/images/weapons/flauta_elfica_left_p_t.png"}
+             "../client/resources/images/weapons/flauta_elfica_left_p_t.png"}
     };
     std::map<int, std::string> hacha_orientations = {
             {UP,    "../client/resources/images/weapons/hacha_up_p_t.png"},
@@ -178,11 +186,11 @@ void ImagePathContainer::loadEquippedPaths() {
     std::map<int, std::string> armadura_placas_orientations = {
             {UP, "../client/resources/images/items/armadura_placas_up_p_t.png"},
             {DOWN,
-                 "../client/resources/images/items/armadura_placas_down_p_t.png"},
+             "../client/resources/images/items/armadura_placas_down_p_t.png"},
             {LEFT,
-                 "../client/resources/images/items/armadura_placas_left_p_t.png"},
+             "../client/resources/images/items/armadura_placas_left_p_t.png"},
             {RIGHT,
-                 "../client/resources/images/items/armadura_placas_right_p_t.png"}
+             "../client/resources/images/items/armadura_placas_right_p_t.png"}
     };
     std::map<int, std::string> armadura_cuero_orientations = {
             {UP, "../client/resources/images/items/armadura_cuero_up_t.png"},
@@ -204,7 +212,7 @@ void ImagePathContainer::loadEquippedPaths() {
             {DOWN,
                  "../client/resources/images/items/escudo_hierro_down_p_t.png"},
             {LEFT,
-                 "../client/resources/images/items/escudo_hierro_right_p_t.png"},
+             "../client/resources/images/items/escudo_hierro_right_p_t.png"},
             {RIGHT,
                  "../client/resources/images/items/escudo_hierro_left_p_t.png"}
     };
@@ -226,7 +234,8 @@ void ImagePathContainer::loadEquippedPaths() {
     std::map<int, std::string> casco_hierro_orientations = {
             {UP,    "../client/resources/images/items/casco_hierro_up_t.png"},
             {DOWN,  "../client/resources/images/items/casco_hierro_down_t.png"},
-            {LEFT,  "../client/resources/images/items/casco_hierro_right_t.png"},
+            {LEFT,
+             "../client/resources/images/items/casco_hierro_right_t.png"},
             {RIGHT, "../client/resources/images/items/casco_hierro_left_t.png"}
     };
 
@@ -235,7 +244,7 @@ void ImagePathContainer::loadEquippedPaths() {
             {DOWN,
                  "../client/resources/images/items/sombrero_magico_down_t.png"},
             {LEFT,
-                 "../client/resources/images/items/sombrero_magico_right_t.png"},
+             "../client/resources/images/items/sombrero_magico_right_t.png"},
             {RIGHT,
                  "../client/resources/images/items/sombrero_magico_left_t.png"}
     };
@@ -321,20 +330,24 @@ void ImagePathContainer::loadAttackPaths() {
                  "../client/resources/images/attacks/single_arrow_right_t.png"}
     };
     std::map<int, std::string> melee_orientations = {
-            {UP,    "../client/resources/images/attacks/melee_attack_t_big.png"},
-            {DOWN,  "../client/resources/images/attacks/melee_attack_t_big.png"},
-            {LEFT,  "../client/resources/images/attacks/melee_attack_t_big.png"},
-            {RIGHT, "../client/resources/images/attacks/melee_attack_t_big.png"}
+            {UP,
+             "../client/resources/images/attacks/melee_attack_t_big.png"},
+            {DOWN,
+             "../client/resources/images/attacks/melee_attack_t_big.png"},
+            {LEFT,
+             "../client/resources/images/attacks/melee_attack_t_big.png"},
+            {RIGHT,
+             "../client/resources/images/attacks/melee_attack_t_big.png"}
     };
     std::map<int, std::string> no_weapon_melee_orientations = {
             {UP,
-                    "../client/resources/images/attacks/hit_effect_2_small_t.png"},
+             "../client/resources/images/attacks/hit_effect_2_small_t.png"},
             {DOWN,
-                    "../client/resources/images/attacks/hit_effect_2_small_t.png"},
+             "../client/resources/images/attacks/hit_effect_2_small_t.png"},
             {LEFT,
-                    "../client/resources/images/attacks/hit_effect_2_small_t.png"},
+             "../client/resources/images/attacks/hit_effect_2_small_t.png"},
             {RIGHT,
-                    "../client/resources/images/attacks/hit_effect_2_small_t.png"}
+             "../client/resources/images/attacks/hit_effect_2_small_t.png"}
     };
     std::map<int, std::string> missile_orientations = {
             {UP,    "../client/resources/images/attacks/missile_up_t.png"},
@@ -419,7 +432,8 @@ void ImagePathContainer::loadItemPaths() {
             {BACULO_NUDOSO,
                     "../client/resources/images/weapons/baculo_nudoso_t.png"},
             {BACULO_ENGARZADO,
-                    "../client/resources/images/weapons/baculo_engarzado_t.png"},
+                    "../client/resources/images/weapons/baculo_engarzado_t.png"
+                    },
             {ARCO_SIMPLE,
                     "../client/resources/images/weapons/arco_simple_t.png"},
             {ARCO_COMPUESTO,
